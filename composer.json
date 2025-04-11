@@ -1,0 +1,19 @@
+{
+  "name": "eightyfourweb/waffle",
+  "description": "PHP Application",
+  "version": "dev-0.0.001",
+  "type": "project",
+  "license": ["proprietary"],
+  "autoload": {
+    "psr-4": {
+      "Waffle\\": "src/",
+      "WaffleTests\\": "tests/"
+    }
+  },
+  "authors": [
+    {"name": "Leslie Petrimaux"}
+  ],
+  "minimum-stability": "stable",
+  "require": {
+  }
+}
