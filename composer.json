@@ -1,6 +1,6 @@
 {
   "name": "eightyfourweb/waffle",
-  "description": "PHP Application",
+  "description": "PHP Framework",
   "version": "dev-0.0.001",
   "type": "project",
   "license": ["proprietary"],
