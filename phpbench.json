@@ -1,0 +1,21 @@
+{
+  "$schema":"./vendor/phpbench/phpbench/phpbench.schema.json",
+  "runner.bootstrap": "tests/Benchmark/bootstrap.php",
+  "runner.path": "tests",
+  "runner.file_pattern": "*Bench.php",
+  "report.outputs": {
+    "waffle_html": {
+      "extends": "html",
+      "path": "var/data/benchmark/index.html",
+      "title": "Benchmark of Waffle framework"
+    },
+    "waffle_cli": {
+      "extends": "console"
+    }
+  },
+  "report.generators": {
+    "default_report": {
+      "extends": "default"
+    }
+  }
+}

@@ -1,19 +1,71 @@
 {
-  "name": "eightyfourweb/waffle",
-  "description": "PHP Framework",
-  "version": "dev-0.0.001",
-  "type": "project",
-  "license": ["proprietary"],
-  "autoload": {
-    "psr-4": {
-      "Waffle\\": "src/",
-      "WaffleTests\\": "tests/"
+    "name": "eightyfour/waffle",
+    "version": "dev-0.0.001",
+    "description": "Base PHP Framework",
+    "type": "library",
+    "license": ["proprietary"],
+    "autoload": {
+        "psr-4": {
+            "Waffle\\": "src/",
+            "WaffleTests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Leslie Petrimaux"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.4.5",
+        "symfony/dotenv": "^7.2"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^12.0",
+        "overtrue/phplint": "^9.1",
+        "phpbench/phpbench": "^1.2",
+        "vimeo/psalm": "^6.9",
+        "squizlabs/php_codesniffer": "^3.12",
+        "friendsofphp/php-cs-fixer": "^3.75"
+    },
+    "scripts": {
+        "linter": "vendor/bin/phplint --configuration=phplint.yml",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon -vv",
+        "phpcs": "vendor/bin/phpcs -p -s",
+        "phpcsfixer": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --path-mode=intersection --config=php-cs-fixer.config.php",
+        "phpcbfapp": "vendor/bin/phpcbf app",
+        "phpcbfsrc": "vendor/bin/phpcbf src",
+        "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
+        "psalm": "vendor/bin/psalm --config=psalm.xml",
+        "phpunit": "vendor/bin/phpunit --coverage-html var/data/phpunit-coverage",
+        "benchmark": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+        ],
+        "phpcbf": [
+            "@phpcbfapp",
+            "@phpcbfsrc",
+            "@phpcbftests"
+        ],
+        "fixers": [
+            "@phpcsfixer",
+            "@phpcbf"
+        ],
+        "analysis": [
+            "@linter",
+            "@phpstan",
+            "@phpcs"
+        ],
+        "tests": [
+            "@phpunit"
+        ],
+        "gha": [
+            "@fixers",
+            "@analysis",
+            "@tests",
+            "@benchmark"
+        ]
     }
-  },
-  "authors": [
-    {"name": "Leslie Petrimaux"}
-  ],
-  "minimum-stability": "stable",
-  "require": {
-  }
 }
