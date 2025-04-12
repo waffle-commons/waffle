@@ -7,8 +7,6 @@
         errorLevel="1"
 >
     <projectFiles>
-        <directory name="app" />
-        <directory name="public" />
         <directory name="src" />
         <directory name="tests" />
     </projectFiles>

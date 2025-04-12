@@ -26,7 +26,6 @@
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
     <rule ref="Generic.Formatting.SpaceAfterCast"/>
 
-    <file>app/</file>
     <file>src/</file>
     <file>tests/</file>
     <exclude-pattern>tests/bootstrap.php</exclude-pattern>

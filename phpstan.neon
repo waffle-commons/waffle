@@ -7,7 +7,5 @@ parameters:
     - vendor
   level: 9
   paths:
-    - app
-    - public
     - src
     - tests
