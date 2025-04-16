@@ -1,6 +1,6 @@
 path: ./
 jobs: 10
-cache: var/cache/.phplint.cache
+cache-dir: var/cache/.phplint.cache
 extensions:
   - php
 exclude:

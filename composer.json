@@ -35,7 +35,6 @@
         "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon -vv",
         "phpcs": "vendor/bin/phpcs -p -s",
         "phpcsfixer": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --path-mode=intersection --config=php-cs-fixer.config.php",
-        "phpcbfapp": "vendor/bin/phpcbf app",
         "phpcbfsrc": "vendor/bin/phpcbf src",
         "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
         "psalm": "vendor/bin/psalm --config=psalm.xml",
@@ -45,7 +44,6 @@
             "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
         ],
         "phpcbf": [
-            "@phpcbfapp",
             "@phpcbfsrc",
             "@phpcbftests"
         ],
