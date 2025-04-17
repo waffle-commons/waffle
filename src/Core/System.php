@@ -9,11 +9,10 @@ use Waffle\Abstract\AbstractSystem;
 use Waffle\Attribute\Configuration;
 use Waffle\Exception\SecurityException;
 use Waffle\Interface\KernelInterface;
-use Waffle\Interface\SystemInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
-class System extends AbstractSystem implements SystemInterface
+class System extends AbstractSystem
 {
     public function __construct(Security $security)
     {

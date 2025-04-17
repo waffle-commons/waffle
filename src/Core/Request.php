@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractRequest;
-use Waffle\Interface\RequestInterface;
 
-class Request extends AbstractRequest implements RequestInterface
+class Request extends AbstractRequest
 {
     public function __construct(bool $cli = false)
     {

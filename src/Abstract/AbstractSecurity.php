@@ -6,9 +6,10 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Constant;
 use Waffle\Exception\SecurityException;
+use Waffle\Interface\SecurityInterface;
 use Waffle\Trait\SecurityTrait;
 
-abstract class AbstractSecurity
+abstract class AbstractSecurity implements SecurityInterface
 {
     use SecurityTrait;
 
