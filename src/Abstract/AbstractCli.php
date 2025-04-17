@@ -98,6 +98,7 @@ abstract class AbstractCli implements CliInterface
      */
     private(set) ? array $currentRoute = null
         {
+            get => $this->currentRoute;
             set => $this->currentRoute = $value;
         }
 

@@ -2,16 +2,30 @@
 
 namespace Waffle\Trait;
 
+use JsonException;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
+use Waffle\Exception\RenderingException;
 
 trait RenderingTrait
 {
     public function rendering(View $view, string $env): void
     {
-        $json = json_encode(value: $view, flags: JSON_PRETTY_PRINT);
-        if ($env !== Constant::ENV_TEST) {
-            print_r($json);
+        try {
+            $json = json_encode($view, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+            if ($env !== Constant::ENV_TEST) {
+                header('Content-Type: application/json');
+                echo $json;
+            }
+        } catch (JsonException $e) {
+            new RenderingException(
+                message: $e->getMessage(),
+                code: $e->getCode()
+            )->throw(view: new View(data: [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'previous' => $e->getPrevious(),
+            ]));
         }
     }
 

@@ -41,9 +41,14 @@ abstract class AbstractKernel implements KernelInterface
 
     public function configure(): self
     {
-        $this->config = $this->newAttributeInstance(className: $this->config, attribute: Configuration::class);
-        $security = new Security(cfg: $this->config);
-        $this->system = new System(security: $security)->boot(kernel: $this);
+        $this->config = $this->newAttributeInstance(
+            className: $this->config,
+            attribute: Configuration::class
+        );
+
+        $this->system = new System(
+            security: new Security(cfg: $this->config)
+        )->boot(kernel: $this);
 
         return $this;
     }
@@ -51,12 +56,10 @@ abstract class AbstractKernel implements KernelInterface
     public function createRequestFromGlobals(): RequestInterface
     {
         $req = new Request()->setCurrentRoute();
-        if ($req->cli === false) {
-            if ($this->system instanceof System && $this->system->router !== null) {
-                foreach ($this->system->router->routes as $route) {
-                    if ($this->system->router->match(req: $req, route: $route)) {
-                        $req->setCurrentRoute(route: $route);
-                    }
+        if (($req->cli === false) && $this->system instanceof System && $this->system->router !== null) {
+            foreach ($this->system->router->routes as $route) {
+                if ($this->system->router->match(req: $req, route: $route)) {
+                    $req->setCurrentRoute(route: $route);
                 }
             }
         }
@@ -66,6 +69,8 @@ abstract class AbstractKernel implements KernelInterface
 
     public function createCliFromRequest(): CliInterface
     {
+        // TODO: Handle CLI command from request
+
         return new Cli(cli: false)->setCurrentRoute();
     }
 

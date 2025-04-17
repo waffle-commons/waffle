@@ -8,7 +8,7 @@ trait MicrokernelTrait
 {
     public function isCli(): bool
     {
-        return match (php_sapi_name()) {
+        return match (PHP_SAPI) {
             'cli' => true,
             default => false,
         };

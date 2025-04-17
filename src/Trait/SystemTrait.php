@@ -6,4 +6,5 @@ namespace Waffle\Trait;
 
 trait SystemTrait
 {
+    // TODO: Implement basics methods
 }

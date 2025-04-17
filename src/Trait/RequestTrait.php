@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Trait;
 
-use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Constant;
-use Waffle\Core\Request;
-use Waffle\Interface\RequestInterface;
 
 trait RequestTrait
 {

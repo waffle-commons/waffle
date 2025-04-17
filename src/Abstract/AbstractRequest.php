@@ -101,6 +101,7 @@ abstract class AbstractRequest implements RequestInterface
      */
     private(set) ? array $currentRoute = null
         {
+            get => $this->currentRoute;
             set => $this->currentRoute = $value;
         }
 

@@ -13,9 +13,11 @@ trait ReflectionTrait
 {
     public function className(string $path): string
     {
-        $className = str_replace(search: Constant::PHPEXT, replace: '', subject: $path);
-        $className = str_replace(search: APP_ROOT . DIRECTORY_SEPARATOR, replace: '', subject: $className);
-        $className = str_replace(search: DIRECTORY_SEPARATOR, replace: '\\', subject: $className);
+        $className = str_replace(
+            search: [Constant::PHPEXT, APP_ROOT . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR],
+            replace: ['', '', '\\'],
+            subject: $path
+        );
 
         return ucfirst(string: $className);
     }

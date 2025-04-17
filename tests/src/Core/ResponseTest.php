@@ -50,7 +50,6 @@ class ResponseTest extends TestCase
     {
         $handler = $this->createMock(Cli::class);
         $handler
-            ->expects($this->any())
             ->method('configure')
         ;
 

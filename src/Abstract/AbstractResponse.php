@@ -51,7 +51,7 @@ abstract class AbstractResponse implements ResponseInterface
 
     public function render(): void
     {
-        $class = $method = $cli = $error = null;
+        $class = $method = $path = $name = $cli = $error = null;
         $argTypes = $args = [];
         $controller = $this->controllerValues(route: $this->handler->currentRoute);
         /**
@@ -63,11 +63,13 @@ abstract class AbstractResponse implements ResponseInterface
                 Constant::CLASSNAME => $class = $value,
                 Constant::METHOD => $method = $value,
                 Constant::ARGUMENTS => $argTypes = $value,
+                Constant::PATH => $path = $value,
+                Constant::NAME => $name = $value,
                 0 => $cli = true,
                 default => $error = true,
             };
         }
-        if ($cli !== true || $error === true) {
+        if (($cli !== true || $error !== true) && ($path !== null && $name !== null)) {
             $class = new $class();
             /** @var array<non-empty-string, string> $argTypes */
             foreach ($argTypes as $keyType => $argType) {
@@ -98,20 +100,18 @@ abstract class AbstractResponse implements ResponseInterface
             $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
             foreach ($arguments as $key => $value) {
                 if ($name === $key) {
-                    for ($i = 0; $i < count(value: $path); $i++) {
+                    for ($i = 0, $iMax = count(value: $path); $i < $iMax; $i++) {
                         preg_match(
                             pattern: '/^\{(.*)}$/',
                             subject: $path[$i],
                             matches: $matches,
                             flags: PREG_UNMATCHED_AS_NULL
                         );
-                        if (!empty($matches[0])) {
-                            if (!empty($matches[1]) && $name === $matches[1]) {
-                                $arg = match ($type) {
-                                    Constant::TYPE_INT => intval($url[$i]),
-                                    default => $url[$i],
-                                };
-                            }
+                        if (!empty($matches[0]) && !empty($matches[1]) && $name === $matches[1]) {
+                            $arg = match ($type) {
+                                Constant::TYPE_INT => (int) $url[$i],
+                                default => $url[$i],
+                            };
                         }
                     }
                 }
