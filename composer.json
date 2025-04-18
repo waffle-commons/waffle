@@ -59,7 +59,7 @@
         "tests": [
             "@phpunit"
         ],
-        "gha": [
+        "scan": [
             "@fixers",
             "@analysis",
             "@tests",
