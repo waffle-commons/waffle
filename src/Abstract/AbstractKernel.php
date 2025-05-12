@@ -27,7 +27,7 @@ abstract class AbstractKernel implements KernelInterface
             set => $this->config = $value;
         }
 
-    protected(set) ? System $system = null
+    protected(set) ?System $system = null
         {
             set => $this->system = $value;
         }

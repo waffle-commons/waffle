@@ -24,7 +24,7 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * @var View|null
      */
-    private(set) ? View $view
+    private(set) ?View $view
         {
             set => $this->view = $value;
         }
