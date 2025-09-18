@@ -25,7 +25,7 @@ abstract class AbstractSystem implements SystemInterface
             set => $this->config = $value;
         }
 
-    protected(set) ? Router $router = null
+    protected(set) ?Router $router = null
         {
             set => $this->router = $value;
         }

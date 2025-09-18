@@ -1,6 +1,6 @@
 {
     "name": "eightyfour/waffle",
-    "version": "dev-0.0.001",
+    "version": "0.1.0",
     "description": "Base PHP Framework",
     "type": "library",
     "license": ["proprietary"],
@@ -32,7 +32,7 @@
     },
     "scripts": {
         "linter": "vendor/bin/phplint --configuration=phplint.yml",
-        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon -vv",
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit 2G -c phpstan.neon -vv",
         "phpcs": "vendor/bin/phpcs -p -s",
         "phpcsfixer": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --path-mode=intersection --config=php-cs-fixer.config.php",
         "phpcbfsrc": "vendor/bin/phpcbf src",
@@ -59,7 +59,7 @@
         "tests": [
             "@phpunit"
         ],
-        "gha": [
+        "scan": [
             "@fixers",
             "@analysis",
             "@tests",

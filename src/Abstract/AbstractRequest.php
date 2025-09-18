@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Core\View;
+use Waffle\Exception\RenderingException;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\RequestTrait;
@@ -99,7 +101,7 @@ abstract class AbstractRequest implements RequestInterface
      *     name: non-falsy-string
      * }|null
      */
-    private(set) ? array $currentRoute = null
+    private(set) ?array $currentRoute = null
         {
             get => $this->currentRoute;
             set => $this->currentRoute = $value;
@@ -114,6 +116,16 @@ abstract class AbstractRequest implements RequestInterface
 
     public function process(): ResponseInterface
     {
+        if ($this->currentRoute === null && $this->cli === false) {
+            new RenderingException()->throw(view: new View(data: [
+                'message' => 'unknown route',
+                'code' => 404,
+            ]));
+            http_response_code(response_code: 404);
+            // phpcs:ignore Generic.PHP.ForbiddenFunctions.Found
+            exit;
+        }
+
         return new Response(handler: $this);
     }
 
