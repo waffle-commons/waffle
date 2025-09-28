@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WaffleTests\Abstract\Helper;
 
 use Waffle\Abstract\AbstractResponse;
