@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core;
+namespace WaffleTests\Core;
 
 use Waffle\Core\Cli;
 use Waffle\Core\Constant;
