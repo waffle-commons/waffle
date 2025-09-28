@@ -85,7 +85,7 @@ abstract class AbstractRequest implements RequestInterface
             get => $_ENV;
         }
 
-    private(set) bool $cli = false
+    protected(set) bool $cli = false
         {
             set => $this->cli = $value;
         }
@@ -99,7 +99,7 @@ abstract class AbstractRequest implements RequestInterface
      *     name: non-falsy-string
      * }|null
      */
-    private(set) ?array $currentRoute = null
+    protected(set) ?array $currentRoute = null
         {
             get => $this->currentRoute;
             set => $this->currentRoute = $value;
@@ -132,5 +132,24 @@ abstract class AbstractRequest implements RequestInterface
         $this->currentRoute = $route;
 
         return $this;
+    }
+
+    /**
+     * @return array{
+     *      classname: string,
+     *      method: non-empty-string,
+     *      arguments: array<non-empty-string, string>,
+     *      path: string,
+     *      name: non-falsy-string
+     *  }|null
+     */
+    public function getCurrentRoute(): ?array
+    {
+        return $this->currentRoute;
+    }
+
+    public function isCli(): bool
+    {
+        return $this->cli;
     }
 }

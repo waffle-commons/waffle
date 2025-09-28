@@ -82,7 +82,7 @@ abstract class AbstractCli implements CliInterface
             get => $_ENV;
         }
 
-    private(set) bool $cli = true
+    protected(set) bool $cli = true
         {
             set => $this->cli = $value;
         }
@@ -96,7 +96,7 @@ abstract class AbstractCli implements CliInterface
      *     name: non-falsy-string
      * }|null
      */
-    private(set) ?array $currentRoute = null
+    protected(set) ?array $currentRoute = null
         {
             get => $this->currentRoute;
             set => $this->currentRoute = $value;
@@ -129,5 +129,24 @@ abstract class AbstractCli implements CliInterface
         $this->currentRoute = $route;
 
         return $this;
+    }
+
+    /**
+     * @return array{
+     *      classname: string,
+     *      method: non-empty-string,
+     *      arguments: array<non-empty-string, string>,
+     *      path: string,
+     *      name: non-falsy-string
+     *  }|null
+     */
+    public function getCurrentRoute(): ?array
+    {
+        return $this->currentRoute;
+    }
+
+    public function isCli(): bool
+    {
+        return $this->cli;
     }
 }
