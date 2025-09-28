@@ -28,13 +28,16 @@ class System extends AbstractSystem
                 AbstractKernel::class,
                 KernelInterface::class,
             ]);
-            if ($kernel->config instanceof Configuration) {
-                $this->registerRouter(
-                    router: new Router(directory: $kernel->config->controllerDir)
-                        ->boot()
-                        ->registerRoutes()
-                );
-            }
+            /** @var Configuration $config */
+            $config = $kernel->config;
+            $this->security->analyze(object: $config, expectations: [
+                Configuration::class
+            ]);
+            $this->registerRouter(
+                router: new Router(directory: $config->controllerDir, system: $this)
+                    ->boot()
+                    ->registerRoutes()
+            );
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));
         } finally {

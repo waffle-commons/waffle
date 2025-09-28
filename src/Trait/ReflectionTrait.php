@@ -49,16 +49,17 @@ trait ReflectionTrait
      *      path: string,
      *      name: non-falsy-string
      * }|null $route
-     * @return Generator
+     * @return Generator|null
      */
-    public function controllerValues(?array $route = null): Generator
+    public function controllerValues(?array $route = null): ?Generator
     {
         if ($route === null) {
-            yield null;
-        } else {
-            foreach ($route as $key => $value) {
-                yield $key => $value;
-            }
+            return null;
+        }
+
+        foreach ($route as $key => $value) {
+            // @phpstan-ignore generator.returnType
+            yield $key => $value;
         }
     }
 }

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
+use Throwable;
 use Waffle\Attribute\Configuration;
 use Waffle\Core\Cli;
 use Waffle\Core\Request;
+use Waffle\Core\Response;
 use Waffle\Core\Security;
 use Waffle\Core\System;
+use Waffle\Core\View;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
@@ -76,9 +79,21 @@ abstract class AbstractKernel implements KernelInterface
 
     public function run(CliInterface|RequestInterface $handler): void
     {
-        $handler
-            ->process()
-            ->render()
-        ;
+        try {
+            $handler
+                ->process()
+                ->render()
+            ;
+        } catch (Throwable $e) {
+            new Response(handler: $handler)->throw(
+                view: new View(data: [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTrace(),
+                ]),
+            );
+        }
     }
 }

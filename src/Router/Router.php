@@ -7,14 +7,17 @@ namespace Waffle\Router;
 use Waffle\Attribute\Route;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
+use Waffle\Core\System;
+use Waffle\Exception\SecurityException;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait;
-use ReflectionNamedType;
 
-class Router
+final class Router
 {
     use ReflectionTrait;
     use RequestTrait;
+
+    private const string CACHE_FILE = 'waffle_routes_cache.php';
 
     private(set) string | false $directory
         {
@@ -43,15 +46,24 @@ class Router
             set => $this->routes = $value;
         }
 
+    private(set) System $system;
+
     public function __construct(
-        string|false $directory
+        string|false $directory,
+        System $system,
     ) {
         $this->directory = $directory;
         $this->files = false;
+        $this->system = $system;
     }
 
     public function boot(): self
     {
+        // 1. Critical Performance: Try to load from cache
+        if ($this->loadRoutesFromCache()) {
+            return $this;
+        }
+
         $this->routes = $this->files = [];
         if ($this->directory === false) {
             return $this;
@@ -77,11 +89,10 @@ class Router
                 }
                 $file = $directory . DIRECTORY_SEPARATOR . $path;
                 if (is_dir(filename: $file)) {
+                    // TODO: Optimize `array_merge` method (maybe do it manually?)
                     $files = array_merge($files, $this->scan(directory: $file));
-                } else {
-                    if (str_contains(haystack: $path, needle: Constant::PHPEXT)) {
-                        $files[] = $this->className(path: $file);
-                    }
+                } elseif (str_contains(haystack: $path, needle: Constant::PHPEXT)) {
+                    $files[] = $this->className(path: $file);
                 }
             }
         }
@@ -108,7 +119,8 @@ class Router
                                 $routeName = $route->name ?: Constant::DEFAULT;
                                 $params = [];
                                 foreach ($method->getParameters() as $param) {
-                                    if ($param->getType() instanceof ReflectionNamedType) {
+                                    // Uses Reflection to get parameter types for argument resolution
+                                    if ($param->getType() instanceof \ReflectionNamedType) {
                                         $params[$param->getName()] = $param->getType()->getName();
                                     }
                                 }
@@ -127,6 +139,17 @@ class Router
         }
         $this->routes = $routes;
 
+        // 2. Critical Performance: Writes routes to cache if in production mode
+        if ($this->isProduction()) {
+            $cacheFile = $this->getCacheFilePath();
+            // Uses var_export to generate a readable and fast-loading PHP array
+            $content = '<?php return ' . var_export($this->routes, true) . ';';
+
+            // Writes content to file. Uses @ to suppress errors in case of permission issues,
+            // although a real framework should handle permissions and cache directory creation.
+            @file_put_contents(filename: $cacheFile, data: $content, flags: LOCK_EX);
+        }
+
         return $this;
     }
 
@@ -143,16 +166,12 @@ class Router
      */
     private function isRouteRegistered(string $path, array $routes): bool
     {
-        foreach ($routes as $route) {
-            if ($route[Constant::PATH] === $path) {
-                return true;
-            }
-        }
-
-        return  false;
+        return array_any($routes, static fn($route) => $route[Constant::PATH] === $path);
     }
 
     /**
+     * Matches the current request against a registered route path.
+     *
      * @param Request $req
      * @param array{
      *     classname: string,
@@ -162,39 +181,86 @@ class Router
      *     name: non-falsy-string
      *  } $route
      * @return bool
+     * @throws SecurityException
      */
     public function match(Request $req, array $route): bool
     {
-        $path = $this->getPathUri(path: $route[Constant::PATH] ?: Constant::EMPTY_STRING);
-        $url = $this->getRequestUri(uri: $req->server[Constant::REQUEST_URI]);
-        if (count(value: $path) === count(value: $url)) {
-            $argsCount = count(value: $route[Constant::ARGUMENTS] ?: []);
-            for ($i = 0; $i < count(value: $path); $i++) {
-                preg_match(
-                    pattern: '/^\{(.*)}$/',
-                    subject: $path[$i],
-                    matches: $matches,
-                    flags: PREG_UNMATCHED_AS_NULL
-                );
-                if (!empty($matches[0])) {
-                    array_splice(array: $path, offset: $i, length: $argsCount);
-                    array_splice(array: $url, offset: $i, length: $argsCount);
+        $pathSegments = $this->getPathUri(path: $route[Constant::PATH] ?: Constant::EMPTY_STRING);
+        $urlSegments = $this->getRequestUri(uri: $req->server[Constant::REQUEST_URI]);
+
+        // 1. Path length must match exactly.
+        $iMax = count(value: $pathSegments);
+        if ($iMax !== count(value: $urlSegments)) {
+            return false;
+        }
+
+        $isMatch = true;
+
+        // 2. Iterate and compare each segment.
+        for ($i = 0; $i < $iMax; $i++) {
+            $pathSegment = $pathSegments[$i];
+            $urlSegment = $urlSegments[$i];
+
+            // Check if the segment in the route definition is a dynamic parameter {name}.
+            preg_match(
+                pattern: '/^\{(.*)}$/',
+                subject: $pathSegment,
+                matches: $matches,
+                flags: PREG_UNMATCHED_AS_NULL
+            );
+
+            if (!empty($matches[0])) {
+                // If it is a parameter, it matches unconditionally (e.g., /{id} matches /123).
+
+                // --- SECURITY INJECTION POINT ---
+                // We use the System's Security service to analyze the controller class
+                // immediately after a match is found. This prevents the execution
+                // of potentially insecure classes/methods.
+                if (class_exists(class: $route[Constant::CLASSNAME])) {
+                    $controllerInstance = new $route[Constant::CLASSNAME]();
+                    // We call analyze on the controller to validate its security level
+                    $this->system->security->analyze(object: $controllerInstance);
                 }
+                // --- END SECURITY INJECTION ---
+
+                continue;
             }
-            /** @var bool[] $isMatch */
-            $isMatch = [];
-            for ($i = 0; $i < count(value: $url); $i++) {
-                $isMatch[] = $path[$i] === $url[$i];
+
+            // If it is NOT a parameter, the segments must be an exact match.
+            if ($pathSegment !== $urlSegment) {
+                $isMatch = false;
+                break;
             }
-            if (
-                array_all($isMatch, function (bool $value) {
-                    return $value === true;
-                })
-            ) {
+        }
+
+        return $isMatch;
+    }
+
+    /**
+     * Attempts to load routes from the cache file.
+     * * @return bool True if routes were loaded successfully from cache, false otherwise.
+     */
+    private function loadRoutesFromCache(): bool
+    {
+        if ($this->isProduction()) {
+            $cacheFile = $this->getCacheFilePath();
+            if (file_exists(filename: $cacheFile)) {
+                // The cache file returns the routes array directly
+                $this->routes = require $cacheFile;
                 return true;
             }
         }
 
         return false;
+    }
+
+    private function isProduction(): bool
+    {
+        return (getenv(name: Constant::APP_ENV) === Constant::ENV_DEFAULT);
+    }
+
+    private function getCacheFilePath(): string
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::CACHE_FILE;
     }
 }

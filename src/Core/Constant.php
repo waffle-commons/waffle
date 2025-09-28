@@ -39,6 +39,8 @@ class Constant
     public const string  REQUEST_URI = 'REQUEST_URI';
     public const string TYPE_STRING = 'string';
     public const string TYPE_INT = 'int';
+    public const string TYPE_VOID = 'void';
+    public const string TYPE_MIXED = 'mixed';
 
     // Define security constants
     public const int  SECURITY_LEVEL0 = 0;
