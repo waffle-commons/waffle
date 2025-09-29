@@ -47,7 +47,8 @@
         "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
         "psalm": "vendor/bin/psalm --config=psalm.xml",
         "psalm-taint": "vendor/bin/psalm --taint-analysis --ignore-baseline",
-        "phpunit": "vendor/bin/phpunit --coverage-html var/data/phpunit-coverage",
+        "phpunit": "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage",
+        "clover": "vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml",
         "benchmark": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
