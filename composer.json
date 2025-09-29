@@ -31,6 +31,14 @@
         "friendsofphp/php-cs-fixer": "^3.75"
     },
     "scripts": {
+        "post-install-cmd": [
+          "mkdir -p var/cache",
+          "chmod -R 777 var/cache"
+        ],
+        "post-update-cmd": [
+          "mkdir -p var/cache",
+          "chmod -R 777 var/cache"
+        ],
         "linter": "vendor/bin/phplint --configuration=phplint.yml",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit 2G -c phpstan.neon -vv",
         "phpcs": "vendor/bin/phpcs -p -s",

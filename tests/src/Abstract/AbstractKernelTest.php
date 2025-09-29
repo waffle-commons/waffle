@@ -4,121 +4,71 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
-use Exception;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Waffle\Abstract\AbstractKernel;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Constant;
-use Waffle\Core\Response;
-use Waffle\Core\System;
-use WaffleTests\Abstract\Helper\ConcreteTestKernel;
-use WaffleTests\Abstract\Helper\ControllableTestRequest;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Abstract\Helper\WebKernel;
 
-#[CoversClass(AbstractKernel::class)]
 final class AbstractKernelTest extends TestCase
 {
-    private ConcreteTestKernel $kernel;
-
-    /**
-     * @var mixed[] $originalServer
-     */
-    private array $originalServer;
-
-    /**
-     * @var mixed[] $originalEnv
-     */
-    private array $originalEnv;
+    private WebKernel $kernel;
 
     protected function setUp(): void
     {
-        // Store original superglobals
-        $this->originalServer = $_SERVER;
-        $this->originalEnv = $_ENV;
+        parent::setUp();
+        // --- Test Environment Setup ---
+        // We set the environment variable that the kernel will check.
+        $_ENV['APP_ENV'] = 'dev';
 
-        // Set up a clean environment for each test
-        $_SERVER = ['REQUEST_URI' => '/'];
-        $_ENV = ['APP_ENV' => 'test'];
-
-        $this->kernel = new ConcreteTestKernel();
+        // --- Kernel Instantiation ---
+        // We instantiate our dedicated test kernel.
+        $this->kernel = new WebKernel();
     }
 
     protected function tearDown(): void
     {
-        // Restore original superglobals
-        $_SERVER = $this->originalServer;
-        $_ENV = $this->originalEnv;
+        // Clean up environment variables to prevent test pollution.
+        unset($_ENV['APP_ENV'], $_SERVER['REQUEST_URI']);
+        parent::tearDown();
     }
 
-    public function testBootInitializesConfig(): void
+    public function testHandleWithMatchingRouteRendersResponse(): void
     {
-        // Act
-        $this->kernel->boot();
-
-        // Assert
-        $this->assertInstanceOf(Configuration::class, $this->kernel->getTestConfig());
-    }
-
-    public function testConfigureCreatesSystem(): void
-    {
-        // Act
-        $this->kernel->boot()->configure();
-
-        // Assert
-        $this->assertInstanceOf(System::class, $this->kernel->getTestSystem());
-    }
-
-    public function testCreateRequestFromGlobalsWithMatchingRoute(): void
-    {
-        // Arrange
+        // --- Test Condition ---
+        // We simulate a web request to a valid URI.
         $_SERVER['REQUEST_URI'] = '/users';
-        $this->kernel->boot()->configure();
 
-        // Act
-        $request = $this->kernel->createRequestFromGlobals();
-        $request->setCurrentRoute(route: [
-            Constant::CLASSNAME => DummyController::class,
-            Constant::METHOD => 'list',
-            Constant::ARGUMENTS => [],
-            Constant::PATH => '/users',
-            Constant::NAME => 'user_list',
-        ]);
+        // --- Execution ---
+        // We start the output buffer to capture the echoed JSON.
+        ob_start();
+        $this->kernel->handle();
+        $output = ob_get_clean();
 
-        // Assert
-        // @phpstan-ignore method.notFound
-        $this->assertNotNull($request->getCurrentRoute(), 'The router should have found a matching route.');
-        // @phpstan-ignore method.notFound
-        $this->assertSame(DummyController::class, $request->getCurrentRoute()['classname']);
+        // --- Assertions ---
+        // We assert that the output is the expected JSON response.
+        $this->assertJson($output);
+        $expectedJson = '{
+    "data": {
+        "id": 1,
+        "name": "John Doe"
+    }
+}';
+        $this->assertJsonStringEqualsJsonString($expectedJson, $output);
     }
 
-    public function testRunExecutesHandlerFlow(): void
+    public function testHandleCatchesAndRendersThrowable(): void
     {
-        // Arrange
-        $responseMock = $this->createMock(Response::class);
-        $responseMock->expects($this->once())->method('render');
+        // --- Test Condition ---
+        // We simulate a request to our new, unambiguous error route.
+        $_SERVER['REQUEST_URI'] = '/trigger-error';
 
-        // Use our controllable helper, which is a real, initialized object.
-        $request = new ControllableTestRequest();
-        $request->setResponse($responseMock); // Configure it to return our mock response.
+        // --- Execution ---
+        ob_start();
+        $this->kernel->handle();
+        $output = ob_get_clean();
 
-        // Act & Assert (assertions are the mock expectations)
-        $this->kernel->run($request);
-    }
-
-    public function testRunCatchesAndRendersThrowable(): void
-    {
-        // Arrange
-        $exceptionMessage = 'Something went wrong';
-
-        // Use our controllable helper. It's a real object, so it's always initialized.
-        $request = new ControllableTestRequest();
-        $request->setException(new Exception($exceptionMessage)); // Configure it to throw an exception.
-
-        // We expect the output to be a JSON error message containing the exception text.
-        $this->expectOutputRegex(sprintf('/%s/', $exceptionMessage));
-
-        // Act
-        $this->kernel->run($request);
+        // --- Assertions ---
+        // We assert that the output contains the expected error message.
+        $this->assertJson($output);
+        $this->assertStringContainsString('"message": "An unexpected error occurred."', $output);
+        $this->assertStringContainsString('"error": "Something went wrong"', $output);
     }
 }

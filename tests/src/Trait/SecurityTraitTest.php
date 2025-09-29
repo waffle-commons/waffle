@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
+use WaffleTests\Trait\Helper\FinalReadOnlyClass;
+use WaffleTests\Trait\Helper\NonFinalTestController;
+use WaffleTests\Trait\Helper\NonReadonlyTestService;
 
 #[CoversTrait(traitName: SecurityTrait::class)]
 final class SecurityTraitTest extends TestCase
@@ -24,9 +27,12 @@ final class SecurityTraitTest extends TestCase
      * @param int $securityLevel The security level to test against.
      * @param string $expectedExceptionMessagePattern The regex pattern for the expected exception message.
      */
-    #[DataProvider('securityViolationProvider')]
-    public function testIsSecureThrowsExceptionOnViolation(object $violatingObject, int $securityLevel, string $expectedExceptionMessagePattern): void
-    {
+    #[DataProvider(methodName: 'securityViolationProvider')]
+    public function testIsSecureThrowsExceptionOnViolation(
+        object $violatingObject,
+        int $securityLevel,
+        string $expectedExceptionMessagePattern
+    ): void {
         // Expect a SecurityException to be thrown.
         $this->expectException(SecurityException::class);
         // Use a regex match to ignore the file path and line number in the anonymous class name.
@@ -62,42 +68,51 @@ final class SecurityTraitTest extends TestCase
     public static function securityViolationProvider(): Generator
     {
         // Level 2 Violation: A public property that is not typed.
+        $msgLvl2 = "/^Level 2: Public property 'untypedProperty' in class@anonymous.* must be typed\.$/";
         yield 'Level 2 Violation: Untyped public property' => [
             'violatingObject' => new class {
                 public $untypedProperty;
             },
             'securityLevel' => 2,
-            'expectedExceptionMessagePattern' => "/^Level 2: Public property 'untypedProperty' in class@anonymous.* must be typed\.$/",
+            'expectedExceptionMessagePattern' => $msgLvl2,
         ];
 
         // Level 3 Violation: A public method explicitly returning 'void'.
+        $msgLvl3 = "/^Level 3: Public method 'getSomething' in class@anonymous.* must not be of 'void' type\.$/";
         yield 'Level 3 Violation: Public method returns void' => [
             'violatingObject' => new class {
-                public function getSomething(): void {}
+                public function getSomething(): void
+                {
+                }
             },
             'securityLevel' => 3,
-            'expectedExceptionMessagePattern' => "/^Level 3: Public method 'getSomething' in class@anonymous.* must not be of 'void' type\.$/",
+            'expectedExceptionMessagePattern' => $msgLvl3,
         ];
 
         // Level 4 Violation: A public method with no declared return type.
+        $msgLvl4 = "/^Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type\.$/";
         yield 'Level 4 Violation: A public method with no declared return type' => [
             'violatingObject' => new class {
-                public function getSomething() {}
+                public function getSomething()
+                {
+                }
             },
             'securityLevel' => 4,
-            'expectedExceptionMessagePattern' => "/^Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type\.$/",
+            'expectedExceptionMessagePattern' => $msgLvl4,
         ];
 
         // Level 5 Violation: A private property that is not typed.
+        $msgLvl5 = "/^Level 5: Private property 'untypedPrivate' in class@anonymous.* must be typed\.$/";
         yield 'Level 5 Violation: Untyped private property' => [
             'violatingObject' => new class {
                 private $untypedPrivate;
             },
             'securityLevel' => 5,
-            'expectedExceptionMessagePattern' => "/^Level 5: Private property 'untypedPrivate' in class@anonymous.* must be typed\.$/",
+            'expectedExceptionMessagePattern' => $msgLvl5,
         ];
 
         // Level 7 Violation: A public method with a 'mixed' type argument.
+        $msgLvl7 = "/^Level 7: Public method 'doSomething' parameter 'untypedArgument' must be strictly typed\.$/";
         yield 'Level 7 Violation: Untyped public method argument' => [
             'violatingObject' => new class {
                 public function doSomething(mixed $untypedArgument): int
@@ -106,14 +121,15 @@ final class SecurityTraitTest extends TestCase
                 }
             },
             'securityLevel' => 7,
-            'expectedExceptionMessagePattern' => "/^Level 7: Public method 'doSomething' parameter 'untypedArgument' must be strictly typed\.$/",
+            'expectedExceptionMessagePattern' => $msgLvl7,
         ];
 
         // Level 8 Violation: A class with 'Controller' in its name that is not final.
+        $msgLvl8 = '/^Level 8: Controller classes must be declared final to prevent unintended extension\.$/';
         yield 'Level 8 Violation: Controller not final' => [
             'violatingObject' => new NonFinalTestController(),
             'securityLevel' => 8,
-            'expectedExceptionMessagePattern' => '/^Level 8: Controller classes must be declared final to prevent unintended extension\.$/',
+            'expectedExceptionMessagePattern' => $msgLvl8,
         ];
 
         // Level 9 Violation: A class with 'Service' in its name that is not readonly.
@@ -125,29 +141,10 @@ final class SecurityTraitTest extends TestCase
 
         // Level 10 Violation: A class that is not final.
         yield 'Level 10 Violation: Class not final' => [
-            'violatingObject' => new class {},
+            'violatingObject' => new class {
+            },
             'securityLevel' => 10,
             'expectedExceptionMessagePattern' => '/^Level 10: All classes must be declared final\.$/',
         ];
     }
 }
-
-// --- Helper classes for specific violation tests ---
-
-/**
- * A helper class that is fully compliant with all security rules up to level 10.
- */
-final readonly class FinalReadOnlyClass {}
-
-/**
- * A helper class that violates security rule #8 by containing "Controller" in its name
- * but not being declared as final.
- */
-class NonFinalTestController {}
-
-/**
- * A helper class that violates security rule #9 by containing "Service" in its name
- * but not being declared as readonly.
- */
-class NonReadonlyTestService {}
-

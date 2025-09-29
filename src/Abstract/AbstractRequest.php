@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Exception\RouteNotFoundException;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\RequestTrait;
@@ -112,8 +113,16 @@ abstract class AbstractRequest implements RequestInterface
         $this->cli = $cli;
     }
 
+    /**
+     * @throws RouteNotFoundException
+     */
     public function process(): ResponseInterface
     {
+        if ($this->currentRoute === null && !$this->isCli()) {
+            // Instead of exiting, we now throw a specific exception.
+            throw new RouteNotFoundException();
+        }
+
         return new Response(handler: $this);
     }
 

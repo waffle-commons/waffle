@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Waffle\Trait;
 
-use Waffle\Core\Constant;
 use Generator;
 use ReflectionMethod;
 use ReflectionObject;
@@ -13,13 +12,45 @@ trait ReflectionTrait
 {
     public function className(string $path): string
     {
-        $className = str_replace(
-            search: [Constant::PHPEXT, APP_ROOT . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR],
-            replace: ['', '', '\\'],
-            subject: $path
-        );
+        $content = file_get_contents($path);
+        if ($content === false) {
+            return ''; // Return empty string on file read error.
+        }
 
-        return ucfirst(string: $className);
+        $tokens = token_get_all($content);
+        $namespace = '';
+        $class = '';
+        $tokensCount = count($tokens);
+
+        for ($i = 0; $i < $tokensCount; $i++) {
+            if ($tokens[$i][0] === T_NAMESPACE) {
+                // Find the full namespace string.
+                for ($j = $i + 2; $j < $tokensCount; $j++) {
+                    $inArr = in_array($tokens[$j][0], [T_STRING, T_NAME_QUALIFIED, T_NS_SEPARATOR], true);
+                    if (is_array($tokens[$j]) && $inArr) {
+                        $namespace .= $tokens[$j][1];
+                    } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                        break;
+                    }
+                }
+            }
+
+            if ($tokens[$i][0] === T_CLASS) {
+                // Find the class name token.
+                for ($j = $i + 2; $j < $tokensCount; $j++) {
+                    if ($tokens[$j][0] === T_STRING) {
+                        $class = $tokens[$j][1];
+                        break 2; // Exit both loops once the class is found.
+                    }
+                }
+            }
+        }
+
+        if (empty($class)) {
+            return ''; // Return empty string if no class is found in the file.
+        }
+
+        return $namespace ? $namespace . '\\' . $class : $class;
     }
 
     public function newAttributeInstance(object $className, string $attribute): object

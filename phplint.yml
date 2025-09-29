@@ -6,5 +6,4 @@ extensions:
 exclude:
   - var
   - vendor
-  - tests/src/Trait/SecurityTraitTest.php
 warning: true

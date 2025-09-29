@@ -46,7 +46,11 @@ final class AbstractResponseTest extends TestCase
 
         // 5. Assert: Check the result.
         $this->assertInstanceOf(View::class, $response->getView());
-        $this->assertEquals(['message' => 'Dummy controller list action'], $response->getView()->data);
+        $expectedData = [
+            'id' => 1,
+            'name' => 'John Doe'
+        ];
+        $this->assertSame($expectedData, $response->getView()->data);
     }
 
     /**

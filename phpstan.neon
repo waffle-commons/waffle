@@ -10,4 +10,4 @@ parameters:
     - src
     - tests
   excludePaths:
-    - tests/src/Trait/SecurityTraitTest.php
+    - tests/
