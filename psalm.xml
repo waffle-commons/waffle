@@ -5,12 +5,16 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         errorLevel="1"
+        errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src" />
         <directory name="tests" />
         <ignoreFiles>
-            <file name="tests/src/Trait/SecurityTraitTest.php" />
+            <directory name="tests/src/Router/Dummy/" />
+            <directory name="tests/src/Abstract/Helper/" />
+            <directory name="tests/src/Core/Helper/" />
+            <directory name="tests/src/Trait/Helper/" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

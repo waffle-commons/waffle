@@ -46,6 +46,7 @@
         "phpcbfsrc": "vendor/bin/phpcbf src",
         "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
         "psalm": "vendor/bin/psalm --config=psalm.xml",
+        "psalm-taint": "vendor/bin/psalm --taint-analysis --ignore-baseline",
         "phpunit": "vendor/bin/phpunit --coverage-html var/data/phpunit-coverage",
         "benchmark": [
             "Composer\\Config::disableProcessTimeout",
@@ -62,6 +63,7 @@
         "analysis": [
             "@linter",
             "@phpstan",
+            "@psalm",
             "@phpcs"
         ],
         "tests": [

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
+  <file src="src/Abstract/AbstractCli.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function configure(bool $cli): void]]></code>
+      <code><![CDATA[public function process(): ResponseInterface]]></code>
+      <code><![CDATA[public function setCurrentRoute(?array $route = null): self]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[getCurrentRoute]]></code>
+      <code><![CDATA[isCli]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$cookie]]></code>
+      <code><![CDATA[$files]]></code>
+      <code><![CDATA[$get]]></code>
+      <code><![CDATA[$globals]]></code>
+      <code><![CDATA[$post]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$session]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Abstract/AbstractKernel.php">
+    <MissingConstructor>
+      <code><![CDATA[$config]]></code>
+    </MissingConstructor>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function boot(): self]]></code>
+      <code><![CDATA[public function configure(): self]]></code>
+      <code><![CDATA[public function createCliFromRequest(): CliInterface]]></code>
+      <code><![CDATA[public function createRequestFromGlobals(): RequestInterface]]></code>
+      <code><![CDATA[public function run(CliInterface|RequestInterface $handler): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Abstract/AbstractRequest.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function configure(bool $cli): void]]></code>
+      <code><![CDATA[public function process(): ResponseInterface]]></code>
+      <code><![CDATA[public function setCurrentRoute(?array $route = null): self]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[getCurrentRoute]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$cookie]]></code>
+      <code><![CDATA[$files]]></code>
+      <code><![CDATA[$get]]></code>
+      <code><![CDATA[$globals]]></code>
+      <code><![CDATA[$post]]></code>
+      <code><![CDATA[$request]]></code>
+      <code><![CDATA[$session]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Abstract/AbstractResponse.php">
+    <InvalidStringClass>
+      <code><![CDATA[new $class()]]></code>
+    </InvalidStringClass>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function build(CliInterface|RequestInterface $handler): void]]></code>
+      <code><![CDATA[public function render(): void]]></code>
+    </MissingOverrideAttribute>
+    <MixedMethodCall>
+      <code><![CDATA[new $argType()]]></code>
+    </MixedMethodCall>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$view]]></code>
+    </PossiblyUnusedProperty>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[empty($matches[0])]]></code>
+      <code><![CDATA[empty($matches[1])]]></code>
+    </RiskyTruthyFalsyComparison>
+    <UndefinedClass>
+      <code><![CDATA[new $class()]]></code>
+      <code><![CDATA[new $class()]]></code>
+    </UndefinedClass>
+    <UnusedForeachValue>
+      <code><![CDATA[$value]]></code>
+    </UnusedForeachValue>
+  </file>
+  <file src="src/Abstract/AbstractSecurity.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function analyze(object $object, array $expectations = []): void]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Abstract/AbstractSystem.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function registerRouter(Router $router): void]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$config]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Attribute/Argument.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Argument]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Attribute/Configuration.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$serviceDir]]></code>
+    </PossiblyUnusedProperty>
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+  </file>
+  <file src="src/Attribute/Route.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Route]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Core/BaseController.php">
+    <UnusedClass>
+      <code><![CDATA[BaseController]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Core/Cli.php">
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+      <code><![CDATA[Cli]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Core/Constant.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Constant]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Core/Request.php">
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+      <code><![CDATA[Request]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Core/Response.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Response]]></code>
+    </ClassMustBeFinal>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[Response]]></code>
+      <code><![CDATA[Response]]></code>
+      <code><![CDATA[Response]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Core/Security.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Security]]></code>
+    </ClassMustBeFinal>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[Security]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Core/System.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[System]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function boot(KernelInterface $kernel): self]]></code>
+    </MissingOverrideAttribute>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[System]]></code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Core/View.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[View]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Exception/RenderingException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RenderingException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Exception/RouteNotFoundException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RouteNotFoundException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Exception/SecurityException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[SecurityException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Interface/KernelInterface.php">
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[self]]></code>
+      <code><![CDATA[self]]></code>
+    </PossiblyUnusedReturnValue>
+  </file>
+  <file src="src/Interface/RequestInterface.php">
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[$this]]></code>
+    </PossiblyUnusedReturnValue>
+  </file>
+  <file src="src/Router/Router.php">
+    <InvalidNamedArgument>
+      <code><![CDATA[name]]></code>
+    </InvalidNamedArgument>
+    <InvalidStringClass>
+      <code><![CDATA[new $file()]]></code>
+    </InvalidStringClass>
+    <MixedAssignment>
+      <code><![CDATA[$this->routes]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[new $route[Constant::CLASSNAME]()]]></code>
+    </MixedMethodCall>
+    <MixedPropertyTypeCoercion>
+      <code><![CDATA[$this->scan(directory: $this->directory)]]></code>
+    </MixedPropertyTypeCoercion>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$routes]]></code>
+    </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$classRoute->name]]></code>
+      <code><![CDATA[$route->name]]></code>
+      <code><![CDATA[empty($matches[0])]]></code>
+    </RiskyTruthyFalsyComparison>
+  </file>
+  <file src="src/Trait/DotenvTrait.php">
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+  </file>
+  <file src="src/Trait/ReflectionTrait.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$attribute]]></code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Trait/SecurityTrait.php">
+    <UndefinedMethod>
+      <code><![CDATA[getName]]></code>
+      <code><![CDATA[getName]]></code>
+    </UndefinedMethod>
+  </file>
+  <file src="tests/src/Abstract/AbstractKernelTest.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function setUp(): void]]></code>
+      <code><![CDATA[protected function tearDown(): void]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyFalseArgument>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+    </PossiblyFalseArgument>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$kernel]]></code>
+    </PropertyNotSetInConstructor>
+    <UnusedClass>
+      <code><![CDATA[AbstractKernelTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/AbstractResponseTest.php">
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$response->getView()->data]]></code>
+    </PossiblyNullPropertyFetch>
+    <UnusedClass>
+      <code><![CDATA[AbstractResponseTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/AbstractSecurityTest.php">
+    <UnusedClass>
+      <code><![CDATA[AbstractSecurityTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Attribute/ArgumentTest.php">
+    <UnusedClass>
+      <code><![CDATA[ArgumentTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Attribute/ConfigurationTest.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function setUp(): void]]></code>
+      <code><![CDATA[protected function tearDown(): void]]></code>
+    </MissingOverrideAttribute>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$controllerDir]]></code>
+      <code><![CDATA[$serviceDir]]></code>
+    </PropertyNotSetInConstructor>
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+    <UnusedClass>
+      <code><![CDATA[ConfigurationTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Attribute/RouteTest.php">
+    <UnusedClass>
+      <code><![CDATA[RouteTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/SecurityTest.php">
+    <UnusedClass>
+      <code><![CDATA[SecurityTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/SystemTest.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[SystemTest]]></code>
+    </ClassMustBeFinal>
+    <UnusedClass>
+      <code><![CDATA[SystemTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/ViewTest.php">
+    <UnusedClass>
+      <code><![CDATA[ViewTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Exception/WaffleExceptionTest.php">
+    <RedundantCondition>
+      <code><![CDATA[assertIsArray]]></code>
+    </RedundantCondition>
+    <UnusedClass>
+      <code><![CDATA[WaffleExceptionTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/DotenvTraitTest.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DotenvTraitTest]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function setUp(): void]]></code>
+      <code><![CDATA[protected function tearDown(): void]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUndefinedArrayOffset>
+      <code><![CDATA[$_ENV['APP_ENV']]]></code>
+      <code><![CDATA[$_ENV['APP_ENV']]]></code>
+    </PossiblyUndefinedArrayOffset>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$envFilePath]]></code>
+      <code><![CDATA[$envTestFilePath]]></code>
+    </PropertyNotSetInConstructor>
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+    <UnusedClass>
+      <code><![CDATA[DotenvTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/MicrokernelTraitTest.php">
+    <UnusedClass>
+      <code><![CDATA[MicrokernelTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/ReflectionTraitTest.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ReflectionTraitTest]]></code>
+    </ClassMustBeFinal>
+    <MixedAssignment>
+      <code><![CDATA[$root]]></code>
+    </MixedAssignment>
+    <MixedOperand>
+      <code><![CDATA[$root]]></code>
+      <code><![CDATA[$root]]></code>
+    </MixedOperand>
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+    <UnusedClass>
+      <code><![CDATA[ReflectionTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/RenderingTraitTest.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function setUp(): void]]></code>
+    </MissingOverrideAttribute>
+    <MixedMethodCall>
+      <code><![CDATA[rendering]]></code>
+      <code><![CDATA[rendering]]></code>
+      <code><![CDATA[throw]]></code>
+    </MixedMethodCall>
+    <PossiblyFalseArgument>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+    </PossiblyFalseArgument>
+    <PropertyNotSetInConstructor>
+      <code><![CDATA[$traitObject]]></code>
+    </PropertyNotSetInConstructor>
+    <UnusedClass>
+      <code><![CDATA[RenderingTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/RequestTraitTest.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RequestTraitTest]]></code>
+    </ClassMustBeFinal>
+    <UnusedClass>
+      <code><![CDATA[RequestTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/SecurityTraitTest.php">
+    <InvalidArgument>
+      <code><![CDATA[SecurityTrait::class]]></code>
+    </InvalidArgument>
+    <MissingPropertyType>
+      <code><![CDATA[$untypedPrivate]]></code>
+      <code><![CDATA[$untypedProperty]]></code>
+    </MissingPropertyType>
+    <MissingReturnType>
+      <code><![CDATA[getSomething]]></code>
+    </MissingReturnType>
+    <UnusedClass>
+      <code><![CDATA[SecurityTraitTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="vendor/phpunit/phpunit/src/Framework/TestCase.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[final public function sortId(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+</files>
