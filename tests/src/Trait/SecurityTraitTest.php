@@ -4,81 +4,108 @@ declare(strict_types=1);
 
 namespace WaffleTests\Trait;
 
-use Generator;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use stdClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
 use WaffleTests\Trait\Helper\NonReadonlyTestService;
+use WaffleTests\Trait\Helper\UninitializedPropertyClass;
 
-#[CoversTrait(traitName: SecurityTrait::class)]
+#[CoversTrait(SecurityTrait::class)]
 final class SecurityTraitTest extends TestCase
 {
     use SecurityTrait;
 
-    /**
-     * This test ensures that the isSecure method correctly throws a SecurityException
-     * when an object violates the rules of a given security level.
-     *
-     * @param object $violatingObject The object instance that is expected to fail the security check.
-     * @param int $securityLevel The security level to test against.
-     * @param string $expectedExceptionMessagePattern The regex pattern for the expected exception message.
-     */
-    #[DataProvider(methodName: 'securityViolationProvider')]
-    public function testIsSecureThrowsExceptionOnViolation(
-        object $violatingObject,
-        int $securityLevel,
-        string $expectedExceptionMessagePattern
-    ): void {
-        // Expect a SecurityException to be thrown.
-        $this->expectException(SecurityException::class);
-        // Use a regex match to ignore the file path and line number in the anonymous class name.
-        $this->expectExceptionMessageMatches($expectedExceptionMessagePattern);
+    #[DataProvider('validExpectationsProvider')]
+    public function testIsValidReturnsTrueForMatchingExpectations(object $object, array $expectations): void
+    {
+        $this->assertTrue($this->isValid($object, $expectations));
+    }
 
-        // Execute the method that should trigger the exception.
+    public static function validExpectationsProvider(): array
+    {
+        return [
+            'Object matches its own class' => [new stdClass(), [stdClass::class]],
+        ];
+    }
+
+    #[DataProvider('mismatchedExpectationsProvider')]
+    public function testIsValidReturnsFalseForMismatchedExpectations(object $object, array $expectations): void
+    {
+        $this->assertFalse($this->isValid($object, $expectations));
+    }
+
+    public static function mismatchedExpectationsProvider(): array
+    {
+        return [
+            'Object does not match class' => [new stdClass(), [self::class]],
+            'Object does not match any expectation' => [new stdClass(), [TestCase::class, 'ArrayObject']],
+        ];
+    }
+
+
+    #[DataProvider('securityViolationProvider')]
+    public function testIsSecureThrowsExceptionOnViolation(object $violatingObject, int $securityLevel, string $expectedExceptionMessage): void
+    {
+        $this->expectException(SecurityException::class);
+        $this->expectExceptionMessageMatches($expectedExceptionMessage);
+
         $this->isSecure(object: $violatingObject, level: $securityLevel);
     }
 
-    /**
-     * This test ensures that a perfectly compliant object passes all security levels
-     * without throwing any exceptions.
-     */
     public function testIsSecurePassesWithValidObject(): void
     {
-        // A final readonly class is compliant with all security levels up to 10.
         $validObject = new FinalReadOnlyClass();
 
-        // Assert that no exception is thrown for various security levels.
         $this->assertTrue($this->isSecure(object: $validObject, level: 1));
         $this->assertTrue($this->isSecure(object: $validObject, level: 5));
         $this->assertTrue($this->isSecure(object: $validObject, level: 10));
     }
 
     /**
-     * Provides a set of test cases where security rules are violated.
+     * This test is special because it validates Security Level 6, which checks for
+     * uninitialized properties. To achieve this, we must bypass the normal object
+     * instantiation process, as PHP would otherwise throw a fatal error.
+     * We use Reflection to create an instance *without* calling its constructor,
+     * leaving its properties in the uninitialized state we need to detect.
      *
-     * Each yielded array contains:
-     * - An object specifically crafted to violate a rule.
-     * - The security level at which the violation should be detected.
-     * - The regex pattern for the expected exception message.
+     * @throws \ReflectionException
      */
-    public static function securityViolationProvider(): Generator
+    public function testIsSecureThrowsExceptionForUninitializedProperty_Level6(): void
     {
-        // Level 2 Violation: A public property that is not typed.
-        $msgLvl2 = "/^Level 2: Public property 'untypedProperty' in class@anonymous.* must be typed\.$/";
+        $this->expectException(SecurityException::class);
+        $this->expectExceptionMessage('Level 6: Property \'uninitializedProperty\' in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.');
+
+        // 1. Use Reflection to get the class blueprint.
+        $reflectionClass = new ReflectionClass(UninitializedPropertyClass::class);
+
+        // 2. Create an instance WITHOUT calling the constructor.
+        // This is the key to this test, as it leaves the property uninitialized.
+        $objectWithoutConstructor = $reflectionClass->newInstanceWithoutConstructor();
+
+        // 3. Action: Run the security check. It should now detect the uninitialized property.
+        $this->isSecure(object: $objectWithoutConstructor, level: 6);
+    }
+
+    public static function securityViolationProvider(): \Generator
+    {
+        // Level 2 Violation: An untyped public property.
+        $msg2 = "/Level 2: Public property 'untypedProperty' in class@anonymous.* must be typed./";
         yield 'Level 2 Violation: Untyped public property' => [
             'violatingObject' => new class {
                 public $untypedProperty;
             },
             'securityLevel' => 2,
-            'expectedExceptionMessagePattern' => $msgLvl2,
+            'expectedExceptionMessage' => $msg2,
         ];
 
-        // Level 3 Violation: A public method explicitly returning 'void'.
-        $msgLvl3 = "/^Level 3: Public method 'getSomething' in class@anonymous.* must not be of 'void' type\.$/";
+        // Level 3 Violation: A public method returning void.
+        $msg3 = "/Level 3: Public method 'getSomething' in class@anonymous.* must not be of 'void' type./";
         yield 'Level 3 Violation: Public method returns void' => [
             'violatingObject' => new class {
                 public function getSomething(): void
@@ -86,11 +113,11 @@ final class SecurityTraitTest extends TestCase
                 }
             },
             'securityLevel' => 3,
-            'expectedExceptionMessagePattern' => $msgLvl3,
+            'expectedExceptionMessage' => $msg3,
         ];
 
         // Level 4 Violation: A public method with no declared return type.
-        $msgLvl4 = "/^Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type\.$/";
+        $msg4 = "/Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type./";
         yield 'Level 4 Violation: A public method with no declared return type' => [
             'violatingObject' => new class {
                 public function getSomething()
@@ -98,21 +125,21 @@ final class SecurityTraitTest extends TestCase
                 }
             },
             'securityLevel' => 4,
-            'expectedExceptionMessagePattern' => $msgLvl4,
+            'expectedExceptionMessage' => $msg4,
         ];
 
-        // Level 5 Violation: A private property that is not typed.
-        $msgLvl5 = "/^Level 5: Private property 'untypedPrivate' in class@anonymous.* must be typed\.$/";
+        // Level 5 Violation: An untyped private property.
+        $msg5 = "/Level 5: Private property 'untypedPrivate' in class@anonymous.* must be typed./";
         yield 'Level 5 Violation: Untyped private property' => [
             'violatingObject' => new class {
                 private $untypedPrivate;
             },
             'securityLevel' => 5,
-            'expectedExceptionMessagePattern' => $msgLvl5,
+            'expectedExceptionMessage' => $msg5,
         ];
 
-        // Level 7 Violation: A public method with a 'mixed' type argument.
-        $msgLvl7 = "/^Level 7: Public method 'doSomething' parameter 'untypedArgument' must be strictly typed\.$/";
+        // Level 7 Violation: A public method argument that is not strictly typed.
+        $msg7 = "/Level 7: Public method 'doSomething' parameter 'untypedArgument' must be strictly typed./";
         yield 'Level 7 Violation: Untyped public method argument' => [
             'violatingObject' => new class {
                 public function doSomething(mixed $untypedArgument): int
@@ -121,30 +148,30 @@ final class SecurityTraitTest extends TestCase
                 }
             },
             'securityLevel' => 7,
-            'expectedExceptionMessagePattern' => $msgLvl7,
+            'expectedExceptionMessage' => $msg7,
         ];
 
-        // Level 8 Violation: A class with 'Controller' in its name that is not final.
-        $msgLvl8 = '/^Level 8: Controller classes must be declared final to prevent unintended extension\.$/';
+        // Level 8 Violation: A Controller class that is not declared as final.
+        $msg8 = '/Level 8: Controller classes must be declared final to prevent unintended extension./';
         yield 'Level 8 Violation: Controller not final' => [
             'violatingObject' => new NonFinalTestController(),
             'securityLevel' => 8,
-            'expectedExceptionMessagePattern' => $msgLvl8,
+            'expectedExceptionMessage' => $msg8,
         ];
 
-        // Level 9 Violation: A class with 'Service' in its name that is not readonly.
+        // Level 9 Violation: A Service class that is not declared as readonly.
         yield 'Level 9 Violation: Service not readonly' => [
             'violatingObject' => new NonReadonlyTestService(),
             'securityLevel' => 9,
-            'expectedExceptionMessagePattern' => '/^Level 9: Service classes must be declared readonly\.$/',
+            'expectedExceptionMessage' => '/Level 9: Service classes must be declared readonly./',
         ];
 
-        // Level 10 Violation: A class that is not final.
+        // Level 10 Violation: A class that is not declared as final.
         yield 'Level 10 Violation: Class not final' => [
             'violatingObject' => new class {
             },
             'securityLevel' => 10,
-            'expectedExceptionMessagePattern' => '/^Level 10: All classes must be declared final\.$/',
+            'expectedExceptionMessage' => '/Level 10: All classes must be declared final./',
         ];
     }
 }

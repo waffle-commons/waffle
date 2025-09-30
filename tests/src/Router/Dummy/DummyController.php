@@ -19,7 +19,7 @@ final class DummyController extends BaseController
     #[Route(path: 'users', name: 'users_list')]
     public function list(): View
     {
-        return new View([
+        return new View(data: [
             'id' => 1,
             'name' => 'John Doe',
         ]);
@@ -32,6 +32,18 @@ final class DummyController extends BaseController
             'id' => $id,
             'name' => 'John Doe',
         ]);
+    }
+
+    #[Route(path: 'users/{id}/{slug}', name: 'users_details')]
+    public function details(int $id, string $slug): View
+    {
+        return new View(data: ['id' => $id, 'slug' => $slug]);
+    }
+
+    #[Route(path: 'users/profile/view', name: 'users_profile_view')]
+    public function profile(): View
+    {
+        return new View(data: ['page' => 'profile']);
     }
 
     /**

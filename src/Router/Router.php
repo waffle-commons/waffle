@@ -34,11 +34,11 @@ final class Router
 
     /**
      * @var list<array{
-     *     classname: string,
-     *     method: non-empty-string,
-     *     arguments: array<non-empty-string, string>,
-     *     path: string,
-     *     name: non-falsy-string
+     * classname: string,
+     * method: non-empty-string,
+     * arguments: array<non-empty-string, string>,
+     * path: string,
+     * name: non-falsy-string
      * }>
      */
     private(set) array $routes
@@ -81,6 +81,12 @@ final class Router
     protected function scan(string $directory): array
     {
         $files = [];
+
+        // This prevents a fatal error if the configured controller directory is invalid.
+        if (!is_dir($directory)) {
+            return [];
+        }
+
         $paths = scandir(directory: $directory);
         if ($paths !== false) {
             foreach ($paths as $path) {
