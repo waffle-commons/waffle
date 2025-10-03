@@ -20,7 +20,29 @@
     <!-- additional rules -->
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
-            <property name="forbiddenFunctions" type="array" value="dd=>null,var_dump=>null,dump=>null,exit=>null,die=>null,eval=>null,sizeof=>count,delete=>unset,print=>echo,is_null=>null,create_function=>null,exec=>null,passthru=>null,shell_exec=>null,system=>null,proc_open=>null,popen=>null,curl_exec=>null,curl_multi_exec=>null,parse_ini_file=>null,show_source=>null"/>
+            <property name="forbiddenFunctions" type="array">
+                <element key="dd" value="null" />
+                <element key="var_dump" value="null" />
+                <element key="dump" value="null" />
+                <element key="exit" value="null" />
+                <element key="die" value="null" />
+                <element key="eval" value="null" />
+                <element key="sizeof" value="count" />
+                <element key="delete" value="unset" />
+                <element key="print" value="echo" />
+                <element key="is_null" value="null" />
+                <element key="create_function" value="null" />
+                <element key="exec" value="null" />
+                <element key="passthru" value="null" />
+                <element key="shell_exec" value="null" />
+                <element key="system" value="null" />
+                <element key="proc_open" value="null" />
+                <element key="popen" value="null" />
+                <element key="curl_exec" value="null" />
+                <element key="curl_multi_exec" value="null" />
+                <element key="parse_ini_file" value="null" />
+                <element key="show_source" value="null" />
+            </property>
         </properties>
     </rule>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>

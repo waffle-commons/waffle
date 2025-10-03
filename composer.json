@@ -27,10 +27,18 @@
         "overtrue/phplint": "^9.1",
         "phpbench/phpbench": "^1.2",
         "vimeo/psalm": "^6.9",
-        "squizlabs/php_codesniffer": "^3.12",
+        "squizlabs/php_codesniffer": "^4.0",
         "friendsofphp/php-cs-fixer": "^3.75"
     },
     "scripts": {
+        "post-install-cmd": [
+          "mkdir -p var/cache",
+          "chmod -R 777 var/cache"
+        ],
+        "post-update-cmd": [
+          "mkdir -p var/cache",
+          "chmod -R 777 var/cache"
+        ],
         "linter": "vendor/bin/phplint --configuration=phplint.yml",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit 2G -c phpstan.neon -vv",
         "phpcs": "vendor/bin/phpcs -p -s",
@@ -38,7 +46,10 @@
         "phpcbfsrc": "vendor/bin/phpcbf src",
         "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
         "psalm": "vendor/bin/psalm --config=psalm.xml",
-        "phpunit": "vendor/bin/phpunit --coverage-html var/data/phpunit-coverage",
+        "psalm-baseline": "vendor/bin/psalm --config=psalm.xml --update-baseline",
+        "psalm-taint": "vendor/bin/psalm --taint-analysis --ignore-baseline",
+        "phpunit": "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage",
+        "clover": "vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml",
         "benchmark": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
@@ -49,11 +60,13 @@
         ],
         "fixers": [
             "@phpcsfixer",
-            "@phpcbf"
+            "@phpcbf",
+            "@psalm-baseline"
         ],
         "analysis": [
             "@linter",
             "@phpstan",
+            "@psalm",
             "@phpcs"
         ],
         "tests": [

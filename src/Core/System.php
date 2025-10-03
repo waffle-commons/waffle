@@ -19,6 +19,7 @@ class System extends AbstractSystem
         $this->security = $security;
     }
 
+    #[\Override]
     public function boot(KernelInterface $kernel): self
     {
         try {

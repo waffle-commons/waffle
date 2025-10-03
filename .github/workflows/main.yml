@@ -43,19 +43,34 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: PHP Linter (PHPLint)
-        run: vendor/bin/phplint --configuration=phplint.yml
+        run: composer linter
 
       - name: PHP Static Analysis Tool (PHPStan)
-        run: vendor/bin/phpstan analyse -c phpstan.neon -vv
+        run: composer phpstan
+
+      - name: PHP Static Analysis Tool (Psalm)
+        run: composer psalm
 
       - name: PHPCodeSniffer Analysis Tool (PHPCS)
-        run: vendor/bin/phpcs -p -s
+        run: composer phpcs
+
+      - name: Security Audit of Composer Dependencies (SCA)
+        run: composer audit
+
+      - name: Security-focused Static Analysis (SAST)
+        run: composer psalm-taint
 
       - name: The PHP testing framework (PHPUnit)
-        run: vendor/bin/phpunit --coverage-text
+        run: composer tests && composer clover
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./var/data/phpunit-coverage/clover.xml
 
       - name: The PHP benchmark tool (PHPBench)
-        run: vendor/bin/phpbench run --report=default_report --output=waffle_cli --retry-threshold=10
+        run: composer benchmark
 
       - name: Save cache
         id: cache-save

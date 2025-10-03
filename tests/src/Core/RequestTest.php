@@ -4,26 +4,117 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
+use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
-use PHPUnit\Framework\TestCase;
 
-class RequestTest extends TestCase
+#[CoversClass(Request::class)]
+final class RequestTest extends TestCase
 {
-    public function testProcess(): void
+    /**
+     * This test ensures that the Request class can be successfully instantiated
+     * and that it correctly extends its abstract parent.
+     */
+    public function testCanBeInstantiated(): void
     {
-        // Given
-        $class = $this->getClass();
+        // When: A new Request object is created.
+        $request = new Request();
 
-        // When
-        $result = $class->process();
-
-        // Expects
-        $this->assertInstanceOf(Response::class, $result);
+        // Then: It should be an instance of both Request and AbstractRequest.
+        $this->assertInstanceOf(Request::class, $request);
+        $this->assertInstanceOf(AbstractRequest::class, $request);
     }
 
-    private function getClass(): Request
+    /**
+     * This test verifies that the process() method returns a Response object
+     * when a route has been set.
+     */
+    public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
-        return new Request();
+        // Given: A request object with a configured route.
+        $request = new Request();
+        $request->setCurrentRoute(['path' => '/test', 'name' => 'test_route']);
+
+        // When: The process() method is called.
+        $response = $request->process();
+
+        // Then: The method should return an instance of the Response class.
+        $this->assertInstanceOf(Response::class, $response);
+    }
+
+    /**
+     * This test ensures that `setCurrentRoute` correctly updates the internal
+     * state and maintains a fluent interface.
+     * @throws ReflectionException
+     */
+    public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
+    {
+        // Given: A new Request object.
+        $request = new Request();
+        $routeData = ['path' => '/users', 'name' => 'user_list'];
+
+        // When: The setCurrentRoute method is called.
+        $result = $request->setCurrentRoute($routeData);
+
+        // Then: The method should return the same instance for method chaining.
+        $this->assertSame($request, $result, 'The method should return its own instance (fluent interface).');
+
+        // And: The internal 'currentRoute' property should be correctly set.
+        $this->assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
+    }
+
+    /**
+     * This test verifies that the public properties of the Request object
+     * correctly expose the corresponding PHP superglobals.
+     *
+     * @param string $property The name of the public property to test.
+     * @param array<string, string> $superglobal The superglobal array to simulate.
+     */
+    #[DataProvider('superglobalProvider')]
+    public function testSuperglobalPropertiesAreCorrectlyExposed(string $property, array $superglobal): void
+    {
+        // Given: We simulate a superglobal array.
+        // This assignment depends on how PHPUnit handles superglobals.
+        // In some environments, direct assignment works.
+        $GLOBALS['_' . strtoupper($property)] = $superglobal;
+
+        // When: A new Request object is created.
+        $request = new Request();
+        $request->configure(cli: false); // Manually trigger configuration to load superglobals
+
+        // Then: The public property should accurately reflect the superglobal values.
+        $this->assertSame($superglobal, $request->{$property});
+    }
+
+    /**
+     * Provides test cases for each superglobal property.
+     *
+     * @return array<string, array{0: string, 1: array<string, string>}>
+     */
+    public static function superglobalProvider(): array
+    {
+        return [
+            'GET superglobal' => ['get', ['page' => '1']],
+            'POST superglobal' => ['post', ['name' => 'John']],
+            'COOKIE superglobal' => ['cookie', ['session_id' => 'abcde']],
+            'SERVER superglobal' => ['server', ['REQUEST_URI' => '/home']],
+            'ENV superglobal' => ['env', ['APP_ENV' => 'test']],
+        ];
+    }
+
+    /**
+     * Helper method to get the value of a protected property for assertion purposes.
+     * @throws ReflectionException
+     */
+    private function getProtectedRoute(object $object, string $property): mixed
+    {
+        $reflection = new ReflectionClass($object);
+        $property = $reflection->getProperty($property);
+        return $property->getValue($object);
     }
 }

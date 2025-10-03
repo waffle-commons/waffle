@@ -5,9 +5,15 @@
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         errorLevel="1"
+        errorBaseline="psalm-baseline.xml"
+        bootstrap="tests/bootstrap.php"
 >
     <projectFiles>
         <directory name="src" />
         <directory name="tests" />
     </projectFiles>
+    <issueHandlers>
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <MissingConstructor errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

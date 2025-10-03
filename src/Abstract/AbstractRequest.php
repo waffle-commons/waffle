@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Exception\RouteNotFoundException;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\RequestTrait;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ */
 abstract class AbstractRequest implements RequestInterface
 {
     use RequestTrait;
@@ -85,7 +89,7 @@ abstract class AbstractRequest implements RequestInterface
             get => $_ENV;
         }
 
-    private(set) bool $cli = false
+    protected(set) bool $cli = false
         {
             set => $this->cli = $value;
         }
@@ -99,21 +103,29 @@ abstract class AbstractRequest implements RequestInterface
      *     name: non-falsy-string
      * }|null
      */
-    private(set) ?array $currentRoute = null
+    protected(set) ?array $currentRoute = null
         {
             get => $this->currentRoute;
             set => $this->currentRoute = $value;
         }
 
-    abstract public function __construct(bool $cli = false);
-
+    #[\Override]
     public function configure(bool $cli): void
     {
         $this->cli = $cli;
     }
 
+    /**
+     * @throws RouteNotFoundException
+     */
+    #[\Override]
     public function process(): ResponseInterface
     {
+        if ($this->currentRoute === null && !$this->isCli()) {
+            // Instead of exiting, we now throw a specific exception.
+            throw new RouteNotFoundException();
+        }
+
         return new Response(handler: $this);
     }
 
@@ -127,10 +139,16 @@ abstract class AbstractRequest implements RequestInterface
      *  }|null $route
      * @return $this
      */
+    #[\Override]
     public function setCurrentRoute(?array $route = null): self
     {
         $this->currentRoute = $route;
 
         return $this;
+    }
+
+    public function isCli(): bool
+    {
+        return $this->cli;
     }
 }

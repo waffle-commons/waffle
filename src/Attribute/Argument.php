@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waffle\Attribute;
 
 use Attribute;
 
 #[Attribute]
-class Argument
+final class Argument
 {
     public function __construct(
         public string $classType,

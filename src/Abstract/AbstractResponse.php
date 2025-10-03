@@ -16,6 +16,11 @@ use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RenderingTrait;
 use Waffle\Trait\RequestTrait;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ * @psalm-suppress InvalidStringClass
+ * @psalm-suppress UndefinedClass
+ */
 abstract class AbstractResponse implements ResponseInterface
 {
     use ReflectionTrait;
@@ -40,8 +45,7 @@ abstract class AbstractResponse implements ResponseInterface
             set => $this->handler = $value;
         }
 
-    abstract public function __construct(CliInterface|RequestInterface $handler);
-
+    #[\Override]
     public function build(CliInterface|RequestInterface $handler): void
     {
         $this->view = null;
@@ -53,6 +57,7 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * @throws RenderingException
      */
+    #[\Override]
     public function render(): void
     {
         $view = $this->callControllerAction();

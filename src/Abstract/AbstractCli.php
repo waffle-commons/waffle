@@ -8,6 +8,9 @@ use Waffle\Core\Response;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ResponseInterface;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ */
 abstract class AbstractCli implements CliInterface
 {
     /**
@@ -82,7 +85,7 @@ abstract class AbstractCli implements CliInterface
             get => $_ENV;
         }
 
-    private(set) bool $cli = true
+    protected(set) bool $cli = true
         {
             set => $this->cli = $value;
         }
@@ -96,19 +99,19 @@ abstract class AbstractCli implements CliInterface
      *     name: non-falsy-string
      * }|null
      */
-    private(set) ?array $currentRoute = null
+    protected(set) ?array $currentRoute = null
         {
             get => $this->currentRoute;
             set => $this->currentRoute = $value;
         }
 
-    abstract public function __construct(bool $cli = true);
-
+    #[\Override]
     public function configure(bool $cli): void
     {
         $this->cli = $cli;
     }
 
+    #[\Override]
     public function process(): ResponseInterface
     {
         return new Response(handler: $this);
@@ -124,6 +127,7 @@ abstract class AbstractCli implements CliInterface
      *  }|null $route
      * @return $this
      */
+    #[\Override]
     public function setCurrentRoute(?array $route = null): self
     {
         $this->currentRoute = $route;

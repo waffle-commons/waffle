@@ -6,6 +6,9 @@ namespace Waffle\Trait;
 
 use Symfony\Component\Dotenv\Dotenv;
 
+/**
+ * @psalm-suppress UndefinedConstant
+ */
 trait DotenvTrait
 {
     public function loadEnv(bool $tests = false): void

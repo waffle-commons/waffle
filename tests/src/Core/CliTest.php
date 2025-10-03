@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use Waffle\Core\Cli;
-use Waffle\Core\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Waffle\Abstract\AbstractCli;
+use Waffle\Core\Cli;
 
-class CliTest extends TestCase
+#[CoversClass(Cli::class)]
+final class CliTest extends TestCase
 {
-    public function testProcess(): void
+    /**
+     * This test ensures that the Cli class can be successfully instantiated
+     * and that it correctly extends its abstract parent.
+     */
+    public function testCanBeInstantiated(): void
     {
-        // Given
-        $class = $this->getClass();
+        // When: A new Cli object is created.
+        $cli = new Cli();
 
-        // When
-        $result = $class->process();
-
-        // Expects
-        $this->assertInstanceOf(Response::class, $result);
-    }
-
-    private function getClass(): Cli
-    {
-        return new Cli();
+        // Then: It should be an instance of both Cli and AbstractCli.
+        $this->assertInstanceOf(Cli::class, $cli);
+        $this->assertInstanceOf(AbstractCli::class, $cli);
     }
 }

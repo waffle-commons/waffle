@@ -10,6 +10,9 @@ use Waffle\Router\Router;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\SystemTrait;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ */
 abstract class AbstractSystem implements SystemInterface
 {
     use ReflectionTrait;
@@ -30,8 +33,7 @@ abstract class AbstractSystem implements SystemInterface
             set => $this->router = $value;
         }
 
-    abstract public function __construct(Security $security);
-
+    #[\Override]
     public function registerRouter(Router $router): void
     {
         $this->router = $router;

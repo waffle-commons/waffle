@@ -12,6 +12,8 @@ use Waffle\Core\Response;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Core\View;
+use Waffle\Exception\RouteNotFoundException;
+use Waffle\Exception\SecurityException;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
@@ -35,6 +37,24 @@ abstract class AbstractKernel implements KernelInterface
             set => $this->system = $value;
         }
 
+    public function handle(): void
+    {
+        try {
+            $this->boot();
+            $this->configure();
+            $this->loadEnv();
+
+            $handler = $this->isCli() ?
+                $this->createCliFromRequest() :
+                $this->createRequestFromGlobals();
+
+            $this->run(handler: $handler);
+        } catch (Throwable $e) {
+            $this->handleException($e);
+        }
+    }
+
+    #[\Override]
     public function boot(): self
     {
         $this->config = new Configuration();
@@ -42,6 +62,7 @@ abstract class AbstractKernel implements KernelInterface
         return $this;
     }
 
+    #[\Override]
     public function configure(): self
     {
         $this->config = $this->newAttributeInstance(
@@ -56,13 +77,18 @@ abstract class AbstractKernel implements KernelInterface
         return $this;
     }
 
+    /**
+     * @throws SecurityException
+     */
+    #[\Override]
     public function createRequestFromGlobals(): RequestInterface
     {
-        $req = new Request()->setCurrentRoute();
-        if (($req->cli === false) && $this->system instanceof System && $this->system->router !== null) {
+        $req = new Request(); // Removed setCurrentRoute() from here
+        if (($this->system instanceof System) && $this->system->router !== null && ($req->isCli() === false)) {
             foreach ($this->system->router->routes as $route) {
                 if ($this->system->router->match(req: $req, route: $route)) {
                     $req->setCurrentRoute(route: $route);
+                    break; // Stop after the first match
                 }
             }
         }
@@ -70,6 +96,7 @@ abstract class AbstractKernel implements KernelInterface
         return $req;
     }
 
+    #[\Override]
     public function createCliFromRequest(): CliInterface
     {
         // TODO: Handle CLI command from request
@@ -77,23 +104,37 @@ abstract class AbstractKernel implements KernelInterface
         return new Cli(cli: false)->setCurrentRoute();
     }
 
+    #[\Override]
     public function run(CliInterface|RequestInterface $handler): void
     {
-        try {
-            $handler
-                ->process()
-                ->render()
-            ;
-        } catch (Throwable $e) {
-            new Response(handler: $handler)->throw(
-                view: new View(data: [
-                    'message' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'trace' => $e->getTrace(),
-                ]),
-            );
+        $handler
+            ->process()
+            ->render()
+        ;
+    }
+
+    private function handleException(Throwable $e): void
+    {
+        $handler = $this->isCli() ? new Cli() : new Request();
+        $statusCode = 500;
+        $data = [
+            'message' => 'An unexpected error occurred.',
+            'error'   => $e->getMessage(),
+            'file'    => $e->getFile(),
+            'line'    => $e->getLine(),
+        ];
+
+        if ($e instanceof RouteNotFoundException) {
+            $statusCode = 404;
+            $data = [
+                'message' => $e->getMessage(),
+                'code'    => $e->getCode(),
+            ];
         }
+
+        http_response_code($statusCode);
+        (new Response(handler: $handler))->throw(
+            view: new View(data: $data),
+        );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-class Constant
+final class Constant
 {
     // Define App constants
     public const string  APP_ENV = 'APP_ENV';

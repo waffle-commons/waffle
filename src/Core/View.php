@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-readonly class View
+final readonly class View
 {
     /**
      * @param array<mixed>|null $data
