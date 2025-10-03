@@ -6,7 +6,7 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractRequest;
 
-class Request extends AbstractRequest
+final class Request extends AbstractRequest
 {
     public function __construct(bool $cli = false)
     {

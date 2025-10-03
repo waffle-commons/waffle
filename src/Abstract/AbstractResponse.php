@@ -40,8 +40,7 @@ abstract class AbstractResponse implements ResponseInterface
             set => $this->handler = $value;
         }
 
-    abstract public function __construct(CliInterface|RequestInterface $handler);
-
+    #[\Override]
     public function build(CliInterface|RequestInterface $handler): void
     {
         $this->view = null;
@@ -53,6 +52,7 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * @throws RenderingException
      */
+    #[\Override]
     public function render(): void
     {
         $view = $this->callControllerAction();

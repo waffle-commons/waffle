@@ -6,7 +6,7 @@ use Waffle\Trait\RenderingTrait;
 use Exception;
 use Throwable;
 
-class WaffleException extends Exception
+final class WaffleException extends Exception
 {
     use RenderingTrait;
 

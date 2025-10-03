@@ -123,9 +123,14 @@ final class AbstractRequestTest extends TestCase
     /**
      * Helper method to set the value of a protected property for testing purposes.
      * This allows us to simulate the state of an object without exposing its internal properties publicly.
+     *
      * @throws ReflectionException
+     *
+     * @param string[] $value
+     *
+     * @psalm-param array{path: '/test'} $value
      */
-    private function setProtectedRoute(object $object, string $property, mixed $value): void
+    private function setProtectedRoute(object $object, string $property, array $value): void
     {
         $reflection = new ReflectionClass($object);
         $property = $reflection->getProperty($property);

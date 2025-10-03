@@ -7,13 +7,14 @@ namespace WaffleTests\Trait;
 use PHPUnit\Framework\TestCase;
 use Waffle\Trait\DotenvTrait;
 
-class DotenvTraitTest extends TestCase
+final class DotenvTraitTest extends TestCase
 {
     use DotenvTrait;
 
     private string $envFilePath;
     private string $envTestFilePath;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,6 +29,7 @@ class DotenvTraitTest extends TestCase
         file_put_contents($this->envTestFilePath, "APP_ENV=test\nTEST_VAR=HelloWaffleTest");
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up the created files.

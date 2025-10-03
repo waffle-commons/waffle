@@ -6,6 +6,7 @@
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
         errorLevel="1"
         errorBaseline="psalm-baseline.xml"
+        bootstrap="tests/bootstrap.php"
 >
     <projectFiles>
         <directory name="src" />

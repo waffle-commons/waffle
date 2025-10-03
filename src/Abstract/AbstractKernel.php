@@ -54,6 +54,7 @@ abstract class AbstractKernel implements KernelInterface
         }
     }
 
+    #[\Override]
     public function boot(): self
     {
         $this->config = new Configuration();
@@ -61,6 +62,7 @@ abstract class AbstractKernel implements KernelInterface
         return $this;
     }
 
+    #[\Override]
     public function configure(): self
     {
         $this->config = $this->newAttributeInstance(
@@ -78,6 +80,7 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * @throws SecurityException
      */
+    #[\Override]
     public function createRequestFromGlobals(): RequestInterface
     {
         $req = new Request(); // Removed setCurrentRoute() from here
@@ -93,6 +96,7 @@ abstract class AbstractKernel implements KernelInterface
         return $req;
     }
 
+    #[\Override]
     public function createCliFromRequest(): CliInterface
     {
         // TODO: Handle CLI command from request
@@ -100,6 +104,7 @@ abstract class AbstractKernel implements KernelInterface
         return new Cli(cli: false)->setCurrentRoute();
     }
 
+    #[\Override]
     public function run(CliInterface|RequestInterface $handler): void
     {
         $handler

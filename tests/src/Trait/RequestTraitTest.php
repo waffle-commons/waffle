@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Waffle\Trait\RequestTrait;
 
-class RequestTraitTest extends TestCase
+final class RequestTraitTest extends TestCase
 {
     use RequestTrait;
 

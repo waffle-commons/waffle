@@ -102,13 +102,13 @@ abstract class AbstractCli implements CliInterface
             set => $this->currentRoute = $value;
         }
 
-    abstract public function __construct(bool $cli = true);
-
+    #[\Override]
     public function configure(bool $cli): void
     {
         $this->cli = $cli;
     }
 
+    #[\Override]
     public function process(): ResponseInterface
     {
         return new Response(handler: $this);
@@ -124,29 +124,11 @@ abstract class AbstractCli implements CliInterface
      *  }|null $route
      * @return $this
      */
+    #[\Override]
     public function setCurrentRoute(?array $route = null): self
     {
         $this->currentRoute = $route;
 
         return $this;
-    }
-
-    /**
-     * @return array{
-     *      classname: string,
-     *      method: non-empty-string,
-     *      arguments: array<non-empty-string, string>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }|null
-     */
-    public function getCurrentRoute(): ?array
-    {
-        return $this->currentRoute;
-    }
-
-    public function isCli(): bool
-    {
-        return $this->cli;
     }
 }

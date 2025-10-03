@@ -37,6 +37,7 @@ final class AbstractSystemTest extends TestCase
      * (Don't Repeat Yourself) principle and makes the individual tests cleaner and
      * more focused on their specific assertions.
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -56,6 +57,7 @@ final class AbstractSystemTest extends TestCase
 
             // A minimal implementation of the abstract boot method is required to
             // instantiate the class, even if it's not used in all tests.
+            #[\Override]
             public function boot(KernelInterface $kernel): \Waffle\Interface\SystemInterface
             {
                 return $this;

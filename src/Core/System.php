@@ -12,13 +12,14 @@ use Waffle\Interface\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
-class System extends AbstractSystem
+final class System extends AbstractSystem
 {
     public function __construct(Security $security)
     {
         $this->security = $security;
     }
 
+    #[\Override]
     public function boot(KernelInterface $kernel): self
     {
         try {

@@ -31,6 +31,7 @@ final class RouterTest extends TestCase
      * environment by creating a real System object with a mocked Security dependency.
      * This solves the initialization error and allows the Router to be tested correctly.
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -56,6 +57,7 @@ final class RouterTest extends TestCase
      * This tearDown method restores the global state after each test,
      * ensuring that tests do not interfere with each other.
      */
+    #[\Override]
     protected function tearDown(): void
     {
         $_SERVER = $this->serverBackup;

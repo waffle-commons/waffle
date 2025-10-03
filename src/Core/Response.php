@@ -8,7 +8,7 @@ use Waffle\Abstract\AbstractResponse;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\RequestInterface;
 
-class Response extends AbstractResponse
+final class Response extends AbstractResponse
 {
     public function __construct(CliInterface|RequestInterface $handler)
     {

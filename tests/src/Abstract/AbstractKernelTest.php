@@ -11,6 +11,7 @@ final class AbstractKernelTest extends TestCase
 {
     private WebKernel $kernel;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -23,6 +24,7 @@ final class AbstractKernelTest extends TestCase
         $this->kernel = new WebKernel();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up environment variables to prevent test pollution.

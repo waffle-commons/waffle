@@ -7,7 +7,7 @@ namespace Waffle\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class Route
+final class Route
 {
     /**
      * @param string $path

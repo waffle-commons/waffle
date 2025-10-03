@@ -12,6 +12,7 @@ final class ConfigurationTest extends TestCase
     private string $controllerDir;
     private string $serviceDir;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,6 +23,7 @@ final class ConfigurationTest extends TestCase
         mkdir($this->serviceDir, 0777, true);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up the dummy directories after the test.

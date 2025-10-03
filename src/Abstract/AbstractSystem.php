@@ -30,8 +30,7 @@ abstract class AbstractSystem implements SystemInterface
             set => $this->router = $value;
         }
 
-    abstract public function __construct(Security $security);
-
+    #[\Override]
     public function registerRouter(Router $router): void
     {
         $this->router = $router;

@@ -2,7 +2,7 @@
 
 namespace Waffle\Exception;
 
-class SecurityException extends WaffleException
+final class SecurityException extends WaffleException
 {
     public function __construct(string $message = "", int $code = 0)
     {

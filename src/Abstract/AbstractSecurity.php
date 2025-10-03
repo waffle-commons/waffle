@@ -18,14 +18,13 @@ abstract class AbstractSecurity implements SecurityInterface
             set => $this->level = $value;
         }
 
-    abstract public function __construct(object $config);
-
     /**
      * @param object $object
      * @param string[] $expectations
      * @return void
      * @throws SecurityException
      */
+    #[\Override]
     public function analyze(object $object, array $expectations = []): void
     {
         $className = get_class(object: $object);

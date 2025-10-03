@@ -16,6 +16,7 @@ final class RenderingTraitTest extends TestCase
      */
     private object $traitObject;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

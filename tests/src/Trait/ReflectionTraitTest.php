@@ -10,7 +10,7 @@ use Waffle\Trait\ReflectionTrait;
 use WaffleTests\Trait\Helper\DummyAttribute;
 use WaffleTests\Trait\Helper\DummyClassWithAttribute;
 
-class ReflectionTraitTest extends TestCase
+final class ReflectionTraitTest extends TestCase
 {
     use ReflectionTrait;
 

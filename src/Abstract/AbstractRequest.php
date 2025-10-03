@@ -106,8 +106,7 @@ abstract class AbstractRequest implements RequestInterface
             set => $this->currentRoute = $value;
         }
 
-    abstract public function __construct(bool $cli = false);
-
+    #[\Override]
     public function configure(bool $cli): void
     {
         $this->cli = $cli;
@@ -116,6 +115,7 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @throws RouteNotFoundException
      */
+    #[\Override]
     public function process(): ResponseInterface
     {
         if ($this->currentRoute === null && !$this->isCli()) {
@@ -136,25 +136,12 @@ abstract class AbstractRequest implements RequestInterface
      *  }|null $route
      * @return $this
      */
+    #[\Override]
     public function setCurrentRoute(?array $route = null): self
     {
         $this->currentRoute = $route;
 
         return $this;
-    }
-
-    /**
-     * @return array{
-     *      classname: string,
-     *      method: non-empty-string,
-     *      arguments: array<non-empty-string, string>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }|null
-     */
-    public function getCurrentRoute(): ?array
-    {
-        return $this->currentRoute;
     }
 
     public function isCli(): bool

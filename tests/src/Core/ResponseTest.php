@@ -21,6 +21,7 @@ final class ResponseTest extends TestCase
     private ?string $originalAppEnv;
     private array $originalServer;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,6 +30,7 @@ final class ResponseTest extends TestCase
         $this->originalServer = $_SERVER;
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Restore original superglobal states
