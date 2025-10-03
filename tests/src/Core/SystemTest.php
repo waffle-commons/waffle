@@ -84,6 +84,10 @@ final class SystemTest extends TestCase
 
         // Second, we verify that the system produced the expected JSON error response.
         $this->assertJson($output, 'The output should be a valid JSON error response.');
-        $this->assertStringContainsString('Security analysis failed.', $output, 'The JSON output should contain the exception message.');
+        $this->assertStringContainsString(
+            'Security analysis failed.',
+            $output,
+            'The JSON output should contain the exception message.'
+        );
     }
 }

@@ -7,6 +7,9 @@ namespace WaffleTests\Attribute;
 use PHPUnit\Framework\TestCase;
 use Waffle\Attribute\Configuration;
 
+/**
+ * @psalm-suppress UndefinedConstant
+ */
 final class ConfigurationTest extends TestCase
 {
     private string $controllerDir;

@@ -8,6 +8,9 @@ use Waffle\Core\Response;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ResponseInterface;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ */
 abstract class AbstractCli implements CliInterface
 {
     /**

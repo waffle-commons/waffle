@@ -118,4 +118,3 @@ final class RequestTest extends TestCase
         return $property->getValue($object);
     }
 }
-

@@ -32,4 +32,3 @@ final class SecurityExceptionTest extends TestCase
         $this->assertSame($code, $exception->getCode());
     }
 }
-

@@ -51,4 +51,3 @@ final class KernelTest extends TestCase
         $this->assertSame($kernel, $bootedKernel);
     }
 }
-

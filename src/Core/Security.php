@@ -7,7 +7,7 @@ namespace Waffle\Core;
 use Waffle\Abstract\AbstractSecurity;
 use Waffle\Attribute\Configuration;
 
-final class Security extends AbstractSecurity
+class Security extends AbstractSecurity
 {
     public function __construct(object $cfg)
     {

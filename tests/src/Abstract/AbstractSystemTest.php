@@ -127,4 +127,3 @@ final class AbstractSystemTest extends TestCase
         $this->assertSame($router, $routerProperty->getValue($this->system));
     }
 }
-

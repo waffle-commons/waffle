@@ -6,6 +6,10 @@ namespace Waffle\Attribute;
 
 use Attribute;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ * @psalm-suppress UndefinedConstant
+ */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Configuration
 {

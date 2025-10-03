@@ -50,8 +50,11 @@ final class SecurityTraitTest extends TestCase
 
 
     #[DataProvider('securityViolationProvider')]
-    public function testIsSecureThrowsExceptionOnViolation(object $violatingObject, int $securityLevel, string $expectedExceptionMessage): void
-    {
+    public function testIsSecureThrowsExceptionOnViolation(
+        object $violatingObject,
+        int $securityLevel,
+        string $expectedExceptionMessage
+    ): void {
         $this->expectException(SecurityException::class);
         $this->expectExceptionMessageMatches($expectedExceptionMessage);
 
@@ -76,10 +79,12 @@ final class SecurityTraitTest extends TestCase
      *
      * @throws \ReflectionException
      */
-    public function testIsSecureThrowsExceptionForUninitializedProperty_Level6(): void
+    public function testIsSecureThrowsExceptionForUninitializedPropertyLevel6(): void
     {
         $this->expectException(SecurityException::class);
-        $this->expectExceptionMessage('Level 6: Property \'uninitializedProperty\' in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.');
+        $msg6 = 'Level 6: Property \'uninitializedProperty\' ' .
+            'in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.';
+        $this->expectExceptionMessage($msg6);
 
         // 1. Use Reflection to get the class blueprint.
         $reflectionClass = new ReflectionClass(UninitializedPropertyClass::class);
@@ -120,7 +125,7 @@ final class SecurityTraitTest extends TestCase
         $msg4 = "/Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type./";
         yield 'Level 4 Violation: A public method with no declared return type' => [
             'violatingObject' => new class {
-                public function getSomething(): void
+                public function getSomething()
                 {
                 }
             },

@@ -12,6 +12,9 @@ use Waffle\Exception\SecurityException;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait;
 
+/**
+ * @psalm-suppress InvalidStringClass
+ */
 final class Router
 {
     use ReflectionTrait;

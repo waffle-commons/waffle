@@ -12,7 +12,7 @@ use Waffle\Interface\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
-final class System extends AbstractSystem
+class System extends AbstractSystem
 {
     public function __construct(Security $security)
     {

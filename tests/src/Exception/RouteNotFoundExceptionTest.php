@@ -32,4 +32,3 @@ final class RouteNotFoundExceptionTest extends TestCase
         $this->assertSame($code, $exception->getCode());
     }
 }
-

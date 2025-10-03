@@ -11,11 +11,9 @@
     <projectFiles>
         <directory name="src" />
         <directory name="tests" />
-        <ignoreFiles>
-            <directory name="tests/src/Router/Dummy/" />
-            <directory name="tests/src/Abstract/Helper/" />
-            <directory name="tests/src/Core/Helper/" />
-            <directory name="tests/src/Trait/Helper/" />
-        </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <MissingConstructor errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

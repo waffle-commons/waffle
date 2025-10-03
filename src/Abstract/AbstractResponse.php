@@ -16,6 +16,11 @@ use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RenderingTrait;
 use Waffle\Trait\RequestTrait;
 
+/**
+ * @psalm-suppress PossiblyUnusedProperty
+ * @psalm-suppress InvalidStringClass
+ * @psalm-suppress UndefinedClass
+ */
 abstract class AbstractResponse implements ResponseInterface
 {
     use ReflectionTrait;

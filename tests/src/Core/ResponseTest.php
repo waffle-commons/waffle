@@ -68,9 +68,9 @@ final class ResponseTest extends TestCase
         $output = ob_get_clean();
 
         // 3. Assertions
-        $this->assertJson((string)$output);
+        $this->assertJson((string) $output);
         $expectedJson = json_encode(['data' => ['id' => 1, 'name' => 'John Doe']]);
-        $this->assertJsonStringEqualsJsonString((string)$expectedJson, (string)$output);
+        $this->assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
     }
 
     /**
@@ -121,9 +121,9 @@ final class ResponseTest extends TestCase
         $output = ob_get_clean();
 
         // 3. Assertions
-        $this->assertJson((string)$output);
+        $this->assertJson((string) $output);
         $expectedData = ['data' => ['id' => 123, 'name' => 'John Doe']];
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedData), (string)$output);
+        $this->assertJsonStringEqualsJsonString(json_encode($expectedData), (string) $output);
     }
 
     /**
@@ -179,8 +179,8 @@ final class ResponseTest extends TestCase
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
-        $this->assertJson((string)$output);
-        $data = json_decode((string)$output, true);
+        $this->assertJson((string) $output);
+        $data = json_decode((string) $output, true);
         $this->assertArrayHasKey('data', $data);
         $this->assertArrayHasKey('service', $data['data']);
         $this->assertSame('injected', $data['data']['service']);
@@ -215,4 +215,3 @@ final class ResponseTest extends TestCase
         $this->assertEmpty($output);
     }
 }
-

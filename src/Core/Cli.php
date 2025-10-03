@@ -6,7 +6,7 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractCli;
 
-final class Cli extends AbstractCli
+class Cli extends AbstractCli
 {
     public function __construct(bool $cli = true)
     {

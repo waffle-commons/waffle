@@ -1,114 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
-  <file src="src/Abstract/AbstractCli.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$cookie]]></code>
-      <code><![CDATA[$files]]></code>
-      <code><![CDATA[$get]]></code>
-      <code><![CDATA[$globals]]></code>
-      <code><![CDATA[$post]]></code>
-      <code><![CDATA[$request]]></code>
-      <code><![CDATA[$session]]></code>
-    </PossiblyUnusedProperty>
-  </file>
-  <file src="src/Abstract/AbstractKernel.php">
-    <MissingConstructor>
-      <code><![CDATA[$config]]></code>
-    </MissingConstructor>
-  </file>
-  <file src="src/Abstract/AbstractRequest.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$cookie]]></code>
-      <code><![CDATA[$files]]></code>
-      <code><![CDATA[$get]]></code>
-      <code><![CDATA[$globals]]></code>
-      <code><![CDATA[$post]]></code>
-      <code><![CDATA[$request]]></code>
-      <code><![CDATA[$session]]></code>
-    </PossiblyUnusedProperty>
-  </file>
   <file src="src/Abstract/AbstractResponse.php">
-    <InvalidStringClass>
-      <code><![CDATA[new $class()]]></code>
-    </InvalidStringClass>
     <MixedMethodCall>
       <code><![CDATA[new $argType()]]></code>
     </MixedMethodCall>
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$view]]></code>
-    </PossiblyUnusedProperty>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[empty($matches[0])]]></code>
       <code><![CDATA[empty($matches[1])]]></code>
     </RiskyTruthyFalsyComparison>
-    <UndefinedClass>
-      <code><![CDATA[new $class()]]></code>
-      <code><![CDATA[new $class()]]></code>
-    </UndefinedClass>
     <UnusedForeachValue>
       <code><![CDATA[$value]]></code>
     </UnusedForeachValue>
   </file>
-  <file src="src/Abstract/AbstractSystem.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$config]]></code>
-    </PossiblyUnusedProperty>
-  </file>
-  <file src="src/Attribute/Configuration.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$serviceDir]]></code>
-    </PossiblyUnusedProperty>
-    <UndefinedConstant>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-    </UndefinedConstant>
-  </file>
-  <file src="src/Core/Cli.php">
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-      <code><![CDATA[Cli]]></code>
-    </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Core/Request.php">
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-      <code><![CDATA[Request]]></code>
-    </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Core/Response.php">
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[Response]]></code>
-      <code><![CDATA[Response]]></code>
-      <code><![CDATA[Response]]></code>
-    </PropertyNotSetInConstructor>
-  </file>
   <file src="src/Core/Security.php">
-    <PropertyNotSetInConstructor>
+    <ClassMustBeFinal>
       <code><![CDATA[Security]]></code>
-    </PropertyNotSetInConstructor>
+    </ClassMustBeFinal>
   </file>
   <file src="src/Core/System.php">
-    <PropertyNotSetInConstructor>
+    <ClassMustBeFinal>
       <code><![CDATA[System]]></code>
-    </PropertyNotSetInConstructor>
+    </ClassMustBeFinal>
   </file>
   <file src="src/Interface/KernelInterface.php">
     <PossiblyUnusedReturnValue>
-      <code><![CDATA[self]]></code>
       <code><![CDATA[self]]></code>
     </PossiblyUnusedReturnValue>
   </file>
@@ -116,9 +31,6 @@
     <InvalidNamedArgument>
       <code><![CDATA[name]]></code>
     </InvalidNamedArgument>
-    <InvalidStringClass>
-      <code><![CDATA[new $file()]]></code>
-    </InvalidStringClass>
     <MixedAssignment>
       <code><![CDATA[$this->routes]]></code>
     </MixedAssignment>
@@ -128,9 +40,6 @@
     <MixedPropertyTypeCoercion>
       <code><![CDATA[$this->scan(directory: $this->directory)]]></code>
     </MixedPropertyTypeCoercion>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$routes]]></code>
-    </PropertyNotSetInConstructor>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$classRoute->name]]></code>
       <code><![CDATA[$route->name]]></code>
@@ -153,6 +62,14 @@
       <code><![CDATA[getName]]></code>
     </UndefinedMethod>
   </file>
+  <file src="tests/src/Abstract/AbstractCliTest.php">
+    <InvalidArgument>
+      <code><![CDATA[$routeData]]></code>
+    </InvalidArgument>
+    <UnusedClass>
+      <code><![CDATA[AbstractCliTest]]></code>
+    </UnusedClass>
+  </file>
   <file src="tests/src/Abstract/AbstractKernelTest.php">
     <PossiblyFalseArgument>
       <code><![CDATA[$output]]></code>
@@ -161,11 +78,16 @@
       <code><![CDATA[$output]]></code>
       <code><![CDATA[$output]]></code>
     </PossiblyFalseArgument>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$kernel]]></code>
-    </PropertyNotSetInConstructor>
     <UnusedClass>
       <code><![CDATA[AbstractKernelTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/AbstractRequestTest.php">
+    <InvalidArgument>
+      <code><![CDATA[$routeData]]></code>
+    </InvalidArgument>
+    <UnusedClass>
+      <code><![CDATA[AbstractRequestTest]]></code>
     </UnusedClass>
   </file>
   <file src="tests/src/Abstract/AbstractResponseTest.php">
@@ -181,22 +103,79 @@
       <code><![CDATA[AbstractSecurityTest]]></code>
     </UnusedClass>
   </file>
+  <file src="tests/src/Abstract/AbstractSystemTest.php">
+    <UnusedClass>
+      <code><![CDATA[AbstractSystemTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/Helper/ConcreteTestKernel.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function boot(): self]]></code>
+    </MissingOverrideAttribute>
+    <MixedOperand>
+      <code><![CDATA[APP_ROOT]]></code>
+    </MixedOperand>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getTestConfig]]></code>
+      <code><![CDATA[getTestSystem]]></code>
+    </PossiblyUnusedMethod>
+    <UndefinedConstant>
+      <code><![CDATA[APP_ROOT]]></code>
+    </UndefinedConstant>
+  </file>
+  <file src="tests/src/Abstract/Helper/ConcreteTestResponse.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ConcreteTestResponse]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Abstract/Helper/ConcreteTestSecurity.php">
+    <UnusedParam>
+      <code><![CDATA[$config]]></code>
+    </UnusedParam>
+  </file>
+  <file src="tests/src/Abstract/Helper/ControllableTestRequest.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ControllableTestRequest]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function process(): ResponseInterface]]></code>
+    </MissingOverrideAttribute>
+    <UnusedClass>
+      <code><![CDATA[ControllableTestRequest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/Helper/LoadEnvDisabledKernel.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[LoadEnvDisabledKernel]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function loadEnv(bool $tests = false): void]]></code>
+    </MissingOverrideAttribute>
+    <UnusedClass>
+      <code><![CDATA[LoadEnvDisabledKernel]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Abstract/Helper/TestCli.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[TestCli]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Abstract/Helper/WebKernel.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[WebKernel]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function boot(): self]]></code>
+      <code><![CDATA[public function isCli(): bool]]></code>
+      <code><![CDATA[public function loadEnv(bool $tests = false): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
   <file src="tests/src/Attribute/ArgumentTest.php">
     <UnusedClass>
       <code><![CDATA[ArgumentTest]]></code>
     </UnusedClass>
   </file>
   <file src="tests/src/Attribute/ConfigurationTest.php">
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$controllerDir]]></code>
-      <code><![CDATA[$serviceDir]]></code>
-    </PropertyNotSetInConstructor>
-    <UndefinedConstant>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-    </UndefinedConstant>
     <UnusedClass>
       <code><![CDATA[ConfigurationTest]]></code>
     </UnusedClass>
@@ -206,12 +185,72 @@
       <code><![CDATA[RouteTest]]></code>
     </UnusedClass>
   </file>
+  <file src="tests/src/Core/BaseControllerTest.php">
+    <UnusedClass>
+      <code><![CDATA[BaseControllerTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/CliTest.php">
+    <UnusedClass>
+      <code><![CDATA[CliTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/Helper/DummyControllerWithService.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DummyControllerWithService]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[index]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="tests/src/Core/Helper/DummyService.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DummyService]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Core/Helper/TestKernelWithConfig.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[TestKernelWithConfig]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Core/RequestTest.php">
+    <InvalidArgument>
+      <code><![CDATA[$routeData]]></code>
+      <code><![CDATA[['path' => '/test', 'name' => 'test_route']]]></code>
+    </InvalidArgument>
+    <UnusedClass>
+      <code><![CDATA[RequestTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Core/ResponseTest.php">
+    <MixedArgument>
+      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$data['data']]]></code>
+      <code><![CDATA[$data['data']]]></code>
+    </MixedArgument>
+    <MixedArrayAccess>
+      <code><![CDATA[$data['data']['service']]]></code>
+    </MixedArrayAccess>
+    <MixedAssignment>
+      <code><![CDATA[$data]]></code>
+    </MixedAssignment>
+    <PossiblyFalseArgument>
+      <code><![CDATA[json_encode($expectedData)]]></code>
+    </PossiblyFalseArgument>
+    <UnusedClass>
+      <code><![CDATA[ResponseTest]]></code>
+    </UnusedClass>
+  </file>
   <file src="tests/src/Core/SecurityTest.php">
     <UnusedClass>
       <code><![CDATA[SecurityTest]]></code>
     </UnusedClass>
   </file>
   <file src="tests/src/Core/SystemTest.php">
+    <PossiblyFalseArgument>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
+    </PossiblyFalseArgument>
     <UnusedClass>
       <code><![CDATA[SystemTest]]></code>
     </UnusedClass>
@@ -219,6 +258,21 @@
   <file src="tests/src/Core/ViewTest.php">
     <UnusedClass>
       <code><![CDATA[ViewTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Exception/RenderingExceptionTest.php">
+    <UnusedClass>
+      <code><![CDATA[RenderingExceptionTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Exception/RouteNotFoundExceptionTest.php">
+    <UnusedClass>
+      <code><![CDATA[RouteNotFoundExceptionTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Exception/SecurityExceptionTest.php">
+    <UnusedClass>
+      <code><![CDATA[SecurityExceptionTest]]></code>
     </UnusedClass>
   </file>
   <file src="tests/src/Exception/WaffleExceptionTest.php">
@@ -229,30 +283,74 @@
       <code><![CDATA[WaffleExceptionTest]]></code>
     </UnusedClass>
   </file>
+  <file src="tests/src/KernelTest.php">
+    <UnusedClass>
+      <code><![CDATA[KernelTest]]></code>
+    </UnusedClass>
+  </file>
+  <file src="tests/src/Router/Dummy/DummyController.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[details]]></code>
+      <code><![CDATA[list]]></code>
+      <code><![CDATA[profile]]></code>
+      <code><![CDATA[show]]></code>
+      <code><![CDATA[throwError]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="tests/src/Router/RouterTest.php">
+    <MixedArgument>
+      <code><![CDATA[$cachedRoutes]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$cachedRoutes]]></code>
+    </MixedAssignment>
+    <UnusedClass>
+      <code><![CDATA[RouterTest]]></code>
+    </UnusedClass>
+  </file>
   <file src="tests/src/Trait/DotenvTraitTest.php">
     <PossiblyUndefinedArrayOffset>
       <code><![CDATA[$_ENV['APP_ENV']]]></code>
       <code><![CDATA[$_ENV['APP_ENV']]]></code>
     </PossiblyUndefinedArrayOffset>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$envFilePath]]></code>
-      <code><![CDATA[$envTestFilePath]]></code>
-    </PropertyNotSetInConstructor>
-    <UndefinedConstant>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-      <code><![CDATA[APP_ROOT]]></code>
-    </UndefinedConstant>
     <UnusedClass>
       <code><![CDATA[DotenvTraitTest]]></code>
     </UnusedClass>
+  </file>
+  <file src="tests/src/Trait/Helper/DummyAttribute.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DummyAttribute]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Trait/Helper/DummyClassWithAttribute.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DummyClassWithAttribute]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[protectedMethod]]></code>
+      <code><![CDATA[publicMethod]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="tests/src/Trait/Helper/NonFinalTestController.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[NonFinalTestController]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Trait/Helper/NonReadonlyTestService.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[NonReadonlyTestService]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="tests/src/Trait/Helper/UninitializedPropertyClass.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[UninitializedPropertyClass]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$uninitializedProperty]]></code>
+    </PossiblyUnusedProperty>
   </file>
   <file src="tests/src/Trait/MicrokernelTraitTest.php">
     <UnusedClass>
@@ -267,9 +365,6 @@
       <code><![CDATA[$root]]></code>
       <code><![CDATA[$root]]></code>
     </MixedOperand>
-    <UndefinedConstant>
-      <code><![CDATA[APP_ROOT]]></code>
-    </UndefinedConstant>
     <UnusedClass>
       <code><![CDATA[ReflectionTraitTest]]></code>
     </UnusedClass>
@@ -286,9 +381,6 @@
       <code><![CDATA[$output]]></code>
       <code><![CDATA[$output]]></code>
     </PossiblyFalseArgument>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$traitObject]]></code>
-    </PropertyNotSetInConstructor>
     <UnusedClass>
       <code><![CDATA[RenderingTraitTest]]></code>
     </UnusedClass>
@@ -306,13 +398,26 @@
       <code><![CDATA[$untypedPrivate]]></code>
       <code><![CDATA[$untypedProperty]]></code>
     </MissingPropertyType>
+    <MissingReturnType>
+      <code><![CDATA[getSomething]]></code>
+    </MissingReturnType>
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[$expectations]]></code>
+      <code><![CDATA[$expectations]]></code>
+    </MixedArgumentTypeCoercion>
     <UnusedClass>
       <code><![CDATA[SecurityTraitTest]]></code>
     </UnusedClass>
   </file>
-  <file src="vendor/phpunit/phpunit/src/Framework/TestCase.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[final public function sortId(): string]]></code>
-    </MissingOverrideAttribute>
+  <file src="tests/src/Trait/SystemTraitTest.php">
+    <InvalidArgument>
+      <code><![CDATA[SystemTrait::class]]></code>
+    </InvalidArgument>
+    <PossiblyFalseArgument>
+      <code><![CDATA[class_uses($testObject)]]></code>
+    </PossiblyFalseArgument>
+    <UnusedClass>
+      <code><![CDATA[SystemTraitTest]]></code>
+    </UnusedClass>
   </file>
 </files>
