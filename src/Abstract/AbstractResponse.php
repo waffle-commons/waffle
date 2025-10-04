@@ -126,7 +126,7 @@ abstract class AbstractResponse implements ResponseInterface
             $arguments = $this->handler->currentRoute[Constant::ARGUMENTS] ?: [];
             $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH] ?: Constant::EMPTY_STRING);
             $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
-            foreach ($arguments as $key => $value) {
+            foreach ($arguments as $key => $_) {
                 if ($name === $key) {
                     for ($i = 0, $iMax = count(value: $path); $i < $iMax; $i++) {
                         preg_match(

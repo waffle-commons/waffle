@@ -37,11 +37,11 @@ final class Router
 
     /**
      * @var list<array{
-     * classname: string,
-     * method: non-empty-string,
-     * arguments: array<non-empty-string, string>,
-     * path: string,
-     * name: non-falsy-string
+     *      classname: string,
+     *      method: non-empty-string,
+     *      arguments: array<non-empty-string, string>,
+     *      path: string,
+     *      name: non-falsy-string
      * }>
      */
     private(set) array $routes
@@ -255,7 +255,17 @@ final class Router
             $cacheFile = $this->getCacheFilePath();
             if (file_exists(filename: $cacheFile)) {
                 // The cache file returns the routes array directly
-                $this->routes = require $cacheFile;
+                /**
+                 * @var list<array{
+                 *       classname: string,
+                 *       method: non-empty-string,
+                 *       arguments: array<non-empty-string, string>,
+                 *       path: string,
+                 *       name: non-falsy-string
+                 *   }> $routesArray
+                 */
+                $routesArray = require $cacheFile;
+                $this->routes = $routesArray;
                 return true;
             }
         }
