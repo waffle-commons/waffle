@@ -11,6 +11,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Response;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase
@@ -40,7 +41,22 @@ final class AbstractCliTest extends TestCase
     {
         // Given: A new CLI object.
         $cli = new ConcreteTestCli();
-        $routeData = ['path' => 'app:command', 'name' => 'app_command'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'show',
+            'arguments' => ['123'],
+            'path' => 'app:command',
+            'name' => 'app_command',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $cli->setCurrentRoute($routeData);

@@ -1,5 +1,9 @@
+includes:
+  - phpstan-baseline.neon
+
 parameters:
   tmpDir: var/cache/phpstan
+  errorFormat: checkstyle
   bootstrapFiles:
     - vendor/autoload.php
     - tests/bootstrap.php
@@ -8,3 +12,4 @@ parameters:
   level: 9
   paths:
     - src
+    - tests

@@ -1,0 +1,247 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^PHPDoc tag @var with type array\{classname\: string, method\: non\-empty\-string, arguments\: array\<non\-empty\-string, string\>, path\: string, name\: non\-falsy\-string\}\|null is not subtype of native type array\{classname\: ''WaffleTests\\\\Router\\\\Dummy\\\\DummyController'', method\: ''show'', arguments\: array\{''123''\}, path\: ''app\:command'', name\: ''app_command''\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: tests/src/Abstract/AbstractCliTest.php
+
+		-
+			message: '#^Parameter \#1 \$actual of method PHPUnit\\Framework\\Assert\:\:assertJson\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/src/Abstract/AbstractKernelTest.php
+
+		-
+			message: '#^Parameter \#2 \$actualJson of method PHPUnit\\Framework\\Assert\:\:assertJsonStringEqualsJsonString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/src/Abstract/AbstractKernelTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/src/Abstract/AbstractKernelTest.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\{classname\: string, method\: non\-empty\-string, arguments\: array\<non\-empty\-string, string\>, path\: string, name\: non\-falsy\-string\}\|null is not subtype of native type array\{classname\: ''WaffleTests\\\\Router\\\\Dummy\\\\DummyController'', method\: ''list'', arguments\: array\{''123''\}, path\: ''/home'', name\: ''user_hole''\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: tests/src/Abstract/AbstractRequestTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true and ''No exception was…'' will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/src/Abstract/AbstractSecurityTest.php
+
+		-
+			message: '#^Constructor of class WaffleTests\\Abstract\\Helper\\ConcreteTestSecurity has an unused parameter \$config\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: tests/src/Abstract/Helper/ConcreteTestSecurity.php
+
+		-
+			message: '#^Method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) invoked with named argument \$actual, but it''s not allowed because of @no\-named\-arguments\.$#'
+			identifier: argument.named
+			count: 2
+			path: tests/src/Core/BaseControllerTest.php
+
+		-
+			message: '#^Method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) invoked with named argument \$expected, but it''s not allowed because of @no\-named\-arguments\.$#'
+			identifier: argument.named
+			count: 2
+			path: tests/src/Core/BaseControllerTest.php
+
+		-
+			message: '#^Method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) invoked with named argument \$message, but it''s not allowed because of @no\-named\-arguments\.$#'
+			identifier: argument.named
+			count: 2
+			path: tests/src/Core/BaseControllerTest.php
+
+		-
+			message: '#^Method WaffleTests\\Core\\Helper\\DummyService\:\:getServiceData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Core/Helper/DummyService.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\{classname\: string, method\: non\-empty\-string, arguments\: array\<non\-empty\-string, string\>, path\: string, name\: non\-falsy\-string\}\|null is not subtype of native type array\{classname\: ''WaffleTests\\\\Router\\\\Dummy\\\\DummyController'', method\: ''list'', arguments\: array\{''123''\}, path\: ''/users'', name\: ''user_list''\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: tests/src/Core/RequestTest.php
+
+		-
+			message: '#^PHPDoc tag @var with type array\{classname\: string, method\: non\-empty\-string, arguments\: array\<non\-empty\-string, string\>, path\: string, name\: non\-falsy\-string\}\|null is not subtype of native type array\{classname\: ''WaffleTests\\\\Router\\\\Dummy\\\\DummyController'', method\: ''test_route'', arguments\: array\{''123''\}, path\: ''/test'', name\: ''test_route''\}\.$#'
+			identifier: varTag.nativeType
+			count: 1
+			path: tests/src/Core/RequestTest.php
+
+		-
+			message: '#^Cannot access offset ''data'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Cannot access offset ''service'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Parameter \#1 \$expectedJson of method PHPUnit\\Framework\\Assert\:\:assertJsonStringEqualsJsonString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of method PHPUnit\\Framework\\Assert\:\:assertArrayHasKey\(\) expects array\<mixed\>\|ArrayAccess\<\(int\|string\), mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Property WaffleTests\\Core\\ResponseTest\:\:\$originalAppEnv \(string\|null\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Property WaffleTests\\Core\\ResponseTest\:\:\$originalServer type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Core/ResponseTest.php
+
+		-
+			message: '#^Parameter \#1 \$actual of method PHPUnit\\Framework\\Assert\:\:assertJson\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/src/Core/SystemTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/src/Core/SystemTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{message\: string, code\: int, previous\: Throwable\|null\} will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/src/Exception/WaffleExceptionTest.php
+
+		-
+			message: '#^Property WaffleTests\\Router\\RouterTest\:\:\$serverBackup type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Router/RouterTest.php
+
+		-
+			message: '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider constructor invoked with named argument \$methodName, but it''s not allowed because of @no\-named\-arguments\.$#'
+			identifier: argument.named
+			count: 1
+			path: tests/src/Trait/ReflectionTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\ReflectionTraitTest\:\:classNameProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/ReflectionTraitTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:rendering\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: tests/src/Trait/RenderingTraitTest.php
+
+		-
+			message: '#^Call to an undefined method object\:\:throw\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/src/Trait/RenderingTraitTest.php
+
+		-
+			message: '#^Parameter \#1 \$actual of method PHPUnit\\Framework\\Assert\:\:assertJson\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/src/Trait/RenderingTraitTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/src/Trait/RenderingTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\RequestTraitTest\:\:pathUriProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/RequestTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\RequestTraitTest\:\:requestUriProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/RequestTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\RequestTraitTest\:\:testGetPathUri\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/RequestTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\RequestTraitTest\:\:testGetRequestUri\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/RequestTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\SecurityTraitTest\:\:mismatchedExpectationsProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\SecurityTraitTest\:\:testIsValidReturnsFalseForMismatchedExpectations\(\) has parameter \$expectations with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\SecurityTraitTest\:\:testIsValidReturnsTrueForMatchingExpectations\(\) has parameter \$expectations with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Method WaffleTests\\Trait\\SecurityTraitTest\:\:validExpectationsProvider\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Method class@anonymous/tests/src/Trait/SecurityTraitTest\.php\:127\:\:getSomething\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Property class@anonymous/tests/src/Trait/SecurityTraitTest\.php\:105\:\:\$untypedProperty has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Property class@anonymous/tests/src/Trait/SecurityTraitTest\.php\:139\:\:\$untypedPrivate has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php
+
+		-
+			message: '#^Property class@anonymous/tests/src/Trait/SecurityTraitTest\.php\:139\:\:\$untypedPrivate is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: tests/src/Trait/SecurityTraitTest.php

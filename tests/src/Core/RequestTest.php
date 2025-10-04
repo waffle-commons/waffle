@@ -12,6 +12,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase
@@ -38,7 +39,23 @@ final class RequestTest extends TestCase
     {
         // Given: A request object with a configured route.
         $request = new Request();
-        $request->setCurrentRoute(['path' => '/test', 'name' => 'test_route']);
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'test_route',
+            'arguments' => ['123'],
+            'path' => '/test',
+            'name' => 'test_route',
+        ];
+        $request->setCurrentRoute($routeData);
 
         // When: The process() method is called.
         $response = $request->process();
@@ -56,7 +73,22 @@ final class RequestTest extends TestCase
     {
         // Given: A new Request object.
         $request = new Request();
-        $routeData = ['path' => '/users', 'name' => 'user_list'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'list',
+            'arguments' => ['123'],
+            'path' => '/users',
+            'name' => 'user_list',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $request->setCurrentRoute($routeData);

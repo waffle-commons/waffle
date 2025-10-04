@@ -12,6 +12,7 @@ use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\Abstract\Helper\ConcreteTestRequest;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase
@@ -85,7 +86,22 @@ final class AbstractRequestTest extends TestCase
     {
         // Given: A new request object.
         $request = new ConcreteTestRequest();
-        $routeData = ['path' => '/home'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'list',
+            'arguments' => ['123'],
+            'path' => '/home',
+            'name' => 'user_hole',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $request->setCurrentRoute($routeData);
