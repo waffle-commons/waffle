@@ -78,16 +78,20 @@ abstract class AbstractKernel implements KernelInterface
     public function createRequestFromGlobals(): RequestInterface
     {
         $req = new Request(); // Removed setCurrentRoute() from here
-        if ($this->system instanceof System && null !== $this->system->router && $req->isCli() === false) {
-            foreach ($this->system->router->routes as $route) {
-                if (
-                    $this->system->router->match(
-                        req: $req,
-                        route: $route,
-                    )
-                ) {
-                    $req->setCurrentRoute(route: $route);
-                    break; // Stop after the first match
+        if ($this->system instanceof System) {
+            $router = $this->system->getRouter();
+            if (null !== $router && $req->isCli() === false) {
+                $routes = $router->getRoutes();
+                foreach ($routes as $route) {
+                    if (
+                        $router->match(
+                            req: $req,
+                            route: $route,
+                        )
+                    ) {
+                        $req->setCurrentRoute(route: $route);
+                        break; // Stop after the first match
+                    }
                 }
             }
         }

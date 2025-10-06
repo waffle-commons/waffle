@@ -1,28 +1,3 @@
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "invalid-iterator"
-start_line = 81
-end_line = 81
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "invalid-property-read"
-start_line = 80
-end_line = 80
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-property-access"
-start_line = 81
-end_line = 81
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-comparison"
-start_line = 80
-end_line = 80
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-logical-operation"
-start_line = 80
-end_line = 80
-
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "ambiguous-instantiation-target"
 start_line = 97

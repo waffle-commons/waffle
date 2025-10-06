@@ -13,6 +13,7 @@ return $config
         '@PSR1' => true,
         '@PSR2' => true,
         '@PSR12' => true,
+        '@PER-CS3x0' => true,
         '@PHP84Migration' => true,
         '@PhpCsFixer' => true,
         'concat_space' => ['spacing' => 'one'],

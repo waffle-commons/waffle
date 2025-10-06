@@ -20,13 +20,13 @@ end_line = 125
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "no-boolean-literal-comparison"
-start_line = 80
-end_line = 80
+start_line = 82
+end_line = 82
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "tagged-todo"
-start_line = 100
-end_line = 100
+start_line = 104
+end_line = 104
 
 [[entries."src/Abstract/AbstractRequest.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -156,7 +156,7 @@ end_line = 8
 [[entries."src/Router/Router.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 17
-end_line = 296
+end_line = 310
 
 [[entries."src/Router/Router.php".issues]]
 code = "excessive-nesting"
@@ -171,7 +171,7 @@ end_line = 72
 [[entries."src/Router/Router.php".issues]]
 code = "kan-defect"
 start_line = 17
-end_line = 296
+end_line = 310
 
 [[entries."src/Router/Router.php".issues]]
 code = "no-boolean-literal-comparison"

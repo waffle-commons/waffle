@@ -35,4 +35,9 @@ abstract class AbstractSystem implements SystemInterface
     {
         $this->router = $router;
     }
+
+    public function getRouter(): ?Router
+    {
+        return $this->router;
+    }
 }

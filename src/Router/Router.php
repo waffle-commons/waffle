@@ -294,4 +294,18 @@ final class Router
     {
         return sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::CACHE_FILE;
     }
+
+    /**
+     * @return list<array{
+     *       classname: string,
+     *       method: non-empty-string,
+     *       arguments: array<non-empty-string, string>,
+     *       path: string,
+     *       name: non-falsy-string
+     *  }>
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
 }
