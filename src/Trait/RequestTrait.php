@@ -15,9 +15,15 @@ trait RequestTrait
     {
         /** @var string $reqUri */
         $reqUri = !empty($uri) ? $uri : Constant::EMPTY_STRING;
-        $url = explode(separator: Constant::QUESTIONMARK, string: $reqUri);
+        $url = explode(
+            separator: Constant::QUESTIONMARK,
+            string: $reqUri,
+        );
 
-        return explode(separator: Constant::DIR_SEPARATOR, string: $url[0]);
+        return explode(
+            separator: Constant::DIR_SEPARATOR,
+            string: $url[0],
+        );
     }
 
     /**
@@ -25,6 +31,9 @@ trait RequestTrait
      */
     public function getPathUri(string $path): array
     {
-        return explode(separator: Constant::DIR_SEPARATOR, string: $path);
+        return explode(
+            separator: Constant::DIR_SEPARATOR,
+            string: $path,
+        );
     }
 }

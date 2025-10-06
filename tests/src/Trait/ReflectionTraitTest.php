@@ -22,7 +22,7 @@ final class ReflectionTraitTest extends TestCase
     {
         // This test ensures that file paths are correctly converted to Fully Qualified Class Names (FQCN),
         // respecting the PSR-4 mapping defined in composer.json.
-        $this->assertSame($expectedFqcn, $this->className($path));
+        static::assertSame($expectedFqcn, $this->className($path));
     }
 
     // @phpstan-ignore missingType.iterableValue
@@ -49,8 +49,8 @@ final class ReflectionTraitTest extends TestCase
         $classWithAttribute = new DummyClassWithAttribute();
         $attributeInstance = $this->newAttributeInstance($classWithAttribute, DummyAttribute::class);
 
-        $this->assertInstanceOf(DummyAttribute::class, $attributeInstance);
-        $this->assertSame('test-value', $attributeInstance->value);
+        static::assertInstanceOf(DummyAttribute::class, $attributeInstance);
+        static::assertSame('test-value', $attributeInstance->value);
     }
 
     public function testGetMethodsReturnsAllMethods(): void
@@ -60,9 +60,9 @@ final class ReflectionTraitTest extends TestCase
         $instance = new DummyClassWithAttribute();
         $methods = $this->getMethods($instance);
 
-        $this->assertCount(2, $methods);
+        static::assertCount(2, $methods);
         $methodNames = array_map(fn($method) => $method->getName(), $methods);
-        $this->assertContains('publicMethod', $methodNames);
-        $this->assertContains('protectedMethod', $methodNames);
+        static::assertContains('publicMethod', $methodNames);
+        static::assertContains('protectedMethod', $methodNames);
     }
 }

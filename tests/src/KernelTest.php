@@ -29,10 +29,10 @@ final class KernelTest extends TestCase
         $kernel = new Kernel();
 
         // Assert that the object is an instance of the concrete Kernel class.
-        $this->assertInstanceOf(Kernel::class, $kernel);
+        static::assertInstanceOf(Kernel::class, $kernel);
 
         // Assert that it also fulfills the contract of the AbstractKernel.
-        $this->assertInstanceOf(AbstractKernel::class, $kernel);
+        static::assertInstanceOf(AbstractKernel::class, $kernel);
     }
 
     /**
@@ -47,7 +47,7 @@ final class KernelTest extends TestCase
 
         // The primary assertion is that the boot method returns an instance of itself,
         // allowing for a fluent interface.
-        $this->assertInstanceOf(Kernel::class, $bootedKernel);
-        $this->assertSame($kernel, $bootedKernel);
+        static::assertInstanceOf(Kernel::class, $bootedKernel);
+        static::assertSame($kernel, $bootedKernel);
     }
 }

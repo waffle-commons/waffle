@@ -19,7 +19,7 @@ final class ViewTest extends TestCase
 
         // --- Assertions ---
         // Assert that the public property 'data' holds the exact array we passed.
-        $this->assertSame($data, $view->data);
+        static::assertSame($data, $view->data);
     }
 
     public function testConstructorWithNullData(): void
@@ -30,6 +30,6 @@ final class ViewTest extends TestCase
 
         // --- Assertions ---
         // Assert that the public property 'data' is null by default.
-        $this->assertNull($view->data);
+        static::assertNull($view->data);
     }
 }

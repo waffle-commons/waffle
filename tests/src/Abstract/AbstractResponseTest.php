@@ -45,12 +45,12 @@ final class AbstractResponseTest extends TestCase
         $response->render();
 
         // 5. Assert: Check the result.
-        $this->assertInstanceOf(View::class, $response->getView());
+        static::assertInstanceOf(View::class, $response->getView());
         $expectedData = [
             'id' => 1,
-            'name' => 'John Doe'
+            'name' => 'John Doe',
         ];
-        $this->assertSame($expectedData, $response->getView()->data);
+        static::assertSame($expectedData, $response->getView()->data);
     }
 
     /**
@@ -92,6 +92,6 @@ final class AbstractResponseTest extends TestCase
         $response = new ConcreteTestResponse(handler: $cliHandler);
 
         // Assert
-        $this->assertTrue($response->isCli());
+        static::assertTrue($response->isCli());
     }
 }

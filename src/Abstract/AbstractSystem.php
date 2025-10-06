@@ -18,20 +18,17 @@ abstract class AbstractSystem implements SystemInterface
     use ReflectionTrait;
     use SystemTrait;
 
-    protected(set) Security $security
-        {
-            set => $this->security = $value;
-        }
+    protected(set) Security $security {
+        set => $this->security = $value;
+    }
 
-    protected(set) object $config
-        {
-            set => $this->config = $value;
-        }
+    protected(set) object $config {
+        set => $this->config = $value;
+    }
 
-    protected(set) ?Router $router = null
-        {
-            set => $this->router = $value;
-        }
+    protected(set) null|Router $router = null {
+        set => $this->router = $value;
+    }
 
     #[\Override]
     public function registerRouter(Router $router): void

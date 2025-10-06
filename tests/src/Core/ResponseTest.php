@@ -36,7 +36,7 @@ final class ResponseTest extends TestCase
     protected function tearDown(): void
     {
         // Restore original superglobal states
-        if ($this->originalAppEnv === null) {
+        if (null === $this->originalAppEnv) {
             unset($_ENV[Constant::APP_ENV]);
         } else {
             $_ENV[Constant::APP_ENV] = $this->originalAppEnv;
@@ -70,9 +70,9 @@ final class ResponseTest extends TestCase
         $output = ob_get_clean();
 
         // 3. Assertions
-        $this->assertJson((string) $output);
+        static::assertJson((string) $output);
         $expectedJson = json_encode(['data' => ['id' => 1, 'name' => 'John Doe']]);
-        $this->assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
+        static::assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
     }
 
     /**
@@ -95,7 +95,7 @@ final class ResponseTest extends TestCase
         }
 
         // 3. Assertions
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 
     /**
@@ -129,12 +129,12 @@ final class ResponseTest extends TestCase
         }
 
         // 3. Assertions
-        $this->assertJson((string) $output);
+        static::assertJson((string) $output);
         $expectedData = json_encode(['data' => ['id' => 123, 'name' => 'John Doe']]);
         if (!$expectedData) {
             $expectedData = '';
         }
-        $this->assertJsonStringEqualsJsonString($expectedData, (string) $output);
+        static::assertJsonStringEqualsJsonString($expectedData, (string) $output);
     }
 
     /**
@@ -193,7 +193,7 @@ final class ResponseTest extends TestCase
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
-        $this->assertJson((string) $output);
+        static::assertJson((string) $output);
         /**
          * @var array{
          *        data: array{
@@ -203,10 +203,10 @@ final class ResponseTest extends TestCase
          *    } $data
          */
         $data = json_decode((string) $output, true);
-        $this->assertArrayHasKey('data', $data);
-        $this->assertArrayHasKey('service', $data['data']);
-        $this->assertSame('injected', $data['data']['service']);
-        $this->assertArrayHasKey('timestamp', $data['data']);
+        static::assertArrayHasKey('data', $data);
+        static::assertArrayHasKey('service', $data['data']);
+        static::assertSame('injected', $data['data']['service']);
+        static::assertArrayHasKey('timestamp', $data['data']);
     }
 
     /**
@@ -237,6 +237,6 @@ final class ResponseTest extends TestCase
         }
 
         // 3. Assertions
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 }

@@ -27,8 +27,8 @@ final class RequestTest extends TestCase
         $request = new Request();
 
         // Then: It should be an instance of both Request and AbstractRequest.
-        $this->assertInstanceOf(Request::class, $request);
-        $this->assertInstanceOf(AbstractRequest::class, $request);
+        static::assertInstanceOf(Request::class, $request);
+        static::assertInstanceOf(AbstractRequest::class, $request);
     }
 
     /**
@@ -62,7 +62,7 @@ final class RequestTest extends TestCase
         $response = $request->process();
 
         // Then: The method should return an instance of the Response class.
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -96,10 +96,10 @@ final class RequestTest extends TestCase
         $result = $request->setCurrentRoute($routeData);
 
         // Then: The method should return the same instance for method chaining.
-        $this->assertSame($request, $result, 'The method should return its own instance (fluent interface).');
+        static::assertSame($request, $result, 'The method should return its own instance (fluent interface).');
 
         // And: The internal 'currentRoute' property should be correctly set.
-        $this->assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
+        static::assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
     }
 
     /**
@@ -122,7 +122,7 @@ final class RequestTest extends TestCase
         $request->configure(cli: false); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.
-        $this->assertSame($superglobal, $request->{$property});
+        static::assertSame($superglobal, $request->{$property});
     }
 
     /**

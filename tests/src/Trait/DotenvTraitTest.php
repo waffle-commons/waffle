@@ -67,8 +67,8 @@ final class DotenvTraitTest extends TestCase
 
         $trait->loadEnv();
 
-        $this->assertSame('test', $_ENV['APP_ENV']);
-        $this->assertSame('HelloWaffle', $_ENV['TEST_VAR']);
+        static::assertSame('test', $_ENV['APP_ENV']);
+        static::assertSame('HelloWaffle', $_ENV['TEST_VAR']);
     }
 
     public function testLoadEnvForTestsLoadsTestVariables(): void
@@ -89,7 +89,7 @@ final class DotenvTraitTest extends TestCase
 
         $trait->loadEnv(tests: true);
 
-        $this->assertSame('test', $_ENV['APP_ENV']);
-        $this->assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
+        static::assertSame('test', $_ENV['APP_ENV']);
+        static::assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
     }
 }

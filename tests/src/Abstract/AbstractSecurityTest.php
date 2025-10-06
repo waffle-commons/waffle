@@ -21,8 +21,8 @@ final class AbstractSecurityTest extends TestCase
         // --- Execution & Assertions ---
         // We expect no exception to be thrown because the object is valid.
         $security->analyze($validObject, [\DateTime::class, \DateTimeInterface::class]);
-        // @phpstan-ignore method.alreadyNarrowedType
-        $this->assertTrue(true, 'No exception was thrown for a valid object.');
+        // @phpstan-ignore-next-line
+        self::assertTrue(true, 'No exception was thrown for a valid object.');
     }
 
     public function testAnalyzeThrowsExceptionForInvalidObject(): void

@@ -16,21 +16,17 @@ final class BaseControllerTest extends TestCase
     {
         $controller = new BaseController();
 
-        $this->assertInstanceOf(
-            BaseController::class,
-            $controller,
-            'BaseController should be instantiable.'
-        );
+        static::assertInstanceOf(BaseController::class, $controller, 'BaseController should be instantiable.');
     }
 
     public function testImplementsRequiredInterfaces(): void
     {
         $controller = new BaseController();
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             BaseControllerInterface::class,
             $controller,
-            'BaseController must implement BaseControllerInterface.'
+            'BaseController must implement BaseControllerInterface.',
         );
     }
 }

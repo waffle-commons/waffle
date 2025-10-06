@@ -24,20 +24,29 @@ class System extends AbstractSystem
     {
         try {
             /** @var Kernel $kernel */
-            $this->security->analyze(object: $kernel, expectations: [
-                Kernel::class,
-                AbstractKernel::class,
-                KernelInterface::class,
-            ]);
+            $this->security->analyze(
+                object: $kernel,
+                expectations: [
+                    Kernel::class,
+                    AbstractKernel::class,
+                    KernelInterface::class,
+                ],
+            );
             /** @var Configuration $config */
             $config = $kernel->config;
-            $this->security->analyze(object: $config, expectations: [
-                Configuration::class
-            ]);
+            $this->security->analyze(
+                object: $config,
+                expectations: [
+                    Configuration::class,
+                ],
+            );
             $this->registerRouter(
-                router: new Router(directory: $config->controllerDir, system: $this)
+                router: new Router(
+                    directory: $config->controllerDir,
+                    system: $this,
+                )
                     ->boot()
-                    ->registerRoutes()
+                    ->registerRoutes(),
             );
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));

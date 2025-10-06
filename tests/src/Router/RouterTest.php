@@ -76,20 +76,20 @@ final class RouterTest extends TestCase
         $this->router->boot()->registerRoutes();
 
         // Assertions:
-        $this->assertNotEmpty($this->router->routes, 'The router should have discovered at least one route.');
-        $this->assertCount(5, $this->router->routes, 'The router should have discovered exactly 5 routes.');
+        static::assertNotEmpty($this->router->routes, 'The router should have discovered at least one route.');
+        static::assertCount(5, $this->router->routes, 'The router should have discovered exactly 5 routes.');
 
         $foundRoute = false;
         foreach ($this->router->routes as $route) {
-            if ($route['name'] === 'user_users_list') {
+            if ('user_users_list' === $route['name']) {
                 $foundRoute = true;
-                $this->assertSame(DummyController::class, $route['classname']);
-                $this->assertSame('/users', $route['path']);
-                $this->assertSame('list', $route['method']);
+                static::assertSame(DummyController::class, $route['classname']);
+                static::assertSame('/users', $route['path']);
+                static::assertSame('list', $route['method']);
                 break;
             }
         }
-        $this->assertTrue($foundRoute, 'The specific "user_users_list" route was not found.');
+        static::assertTrue($foundRoute, 'The specific "user_users_list" route was not found.');
     }
 
     /**
@@ -109,8 +109,8 @@ final class RouterTest extends TestCase
             }
         }
 
-        $this->assertNotNull($matchingRoute, 'A matching route should have been found for /users.');
-        $this->assertSame('user_users_list', $matchingRoute['name'], 'The matched route has an incorrect name.');
+        static::assertNotNull($matchingRoute, 'A matching route should have been found for /users.');
+        static::assertSame('user_users_list', $matchingRoute['name'], 'The matched route has an incorrect name.');
     }
 
     /**
@@ -131,8 +131,8 @@ final class RouterTest extends TestCase
             }
         }
 
-        $this->assertNotNull($matchingRoute, "A matching route should have been found for {$url}.");
-        $this->assertSame($expectedRouteName, $matchingRoute['name']);
+        static::assertNotNull($matchingRoute, "A matching route should have been found for {$url}.");
+        static::assertSame($expectedRouteName, $matchingRoute['name']);
     }
 
     /**
@@ -163,7 +163,7 @@ final class RouterTest extends TestCase
             }
         }
 
-        $this->assertNull($matchingRoute, 'No route should have been found for /non-existent-route.');
+        static::assertNull($matchingRoute, 'No route should have been found for /non-existent-route.');
     }
 
     /**
@@ -178,11 +178,11 @@ final class RouterTest extends TestCase
         }
 
         $this->router->boot()->registerRoutes();
-        $this->assertFileExists($cacheFile, 'The router should have created a cache file.');
+        static::assertFileExists($cacheFile, 'The router should have created a cache file.');
 
         $cachedRoutes = require $cacheFile;
-        $this->assertNotEmpty($cachedRoutes, 'The cache file should not be empty.');
-        $this->assertCount(5, $cachedRoutes, 'The cache file should contain the correct number of routes.');
+        static::assertNotEmpty($cachedRoutes, 'The cache file should not be empty.');
+        static::assertCount(5, $cachedRoutes, 'The cache file should contain the correct number of routes.');
 
         unlink($cacheFile);
         putenv('APP_ENV=test');
@@ -203,7 +203,7 @@ final class RouterTest extends TestCase
 
         // 3. Assertions: The expected behavior is that the router simply finds no routes
         // and its internal routes table remains empty. No exception should be thrown.
-        $this->assertEmpty($badRouter->routes, 'The routes array should be empty for a non-existent directory.');
-        $this->assertNotFalse($badRouter->boot(), 'The boot method should still return the router instance.');
+        static::assertEmpty($badRouter->routes, 'The routes array should be empty for a non-existent directory.');
+        static::assertNotFalse($badRouter->boot(), 'The boot method should still return the router instance.');
     }
 }

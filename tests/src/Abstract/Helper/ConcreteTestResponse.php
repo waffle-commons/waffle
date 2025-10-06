@@ -19,7 +19,7 @@ class ConcreteTestResponse extends AbstractResponse
         $this->build(handler: $handler);
     }
 
-    public function getView(): ?View
+    public function getView(): null|View
     {
         return $this->view;
     }

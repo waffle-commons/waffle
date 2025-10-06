@@ -17,7 +17,7 @@ trait SecurityTrait
      * @param string[] $expectations
      * @return bool
      */
-    public function isValid(?object $object = null, array $expectations = []): bool
+    public function isValid(null|object $object = null, array $expectations = []): bool
     {
         return array_all($expectations, static fn($expectation) => $object instanceof $expectation);
     }
@@ -31,78 +31,60 @@ trait SecurityTrait
         // Cumulative logic is handled here. We use a match expression for concise
         // comparisons, and chained function calls for cumulation.
         match (true) {
-            $level >= Constant::SECURITY_LEVEL10 => (
-                $this->checkLevel10(object: $object) &&
-                $this->checkLevel9(object: $object) &&
-                $this->checkLevel8(object: $object) &&
-                $this->checkLevel7(object: $object) &&
-                $this->checkLevel6(object: $object) &&
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL9 => (
-                $this->checkLevel9(object: $object) &&
-                $this->checkLevel8(object: $object) &&
-                $this->checkLevel7(object: $object) &&
-                $this->checkLevel6(object: $object) &&
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL8 => (
-                $this->checkLevel8(object: $object) &&
-                $this->checkLevel7(object: $object) &&
-                $this->checkLevel6(object: $object) &&
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL7 => (
-                $this->checkLevel7(object: $object) &&
-                $this->checkLevel6(object: $object) &&
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL6 => (
-                $this->checkLevel6(object: $object) &&
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL5 => (
-                $this->checkLevel5(object: $object) &&
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL4 => (
-                $this->checkLevel4(object: $object) &&
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL3 => (
-                $this->checkLevel3(object: $object) &&
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
-            $level >= Constant::SECURITY_LEVEL2 => (
-                $this->checkLevel2(object: $object) &&
-                $this->checkLevel1(object: $object)
-            ),
+            $level >= Constant::SECURITY_LEVEL10 => $this->checkLevel10(object: $object)
+                && $this->checkLevel9(object: $object)
+                && $this->checkLevel8(object: $object)
+                && $this->checkLevel7(object: $object)
+                && $this->checkLevel6(object: $object)
+                && $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL9 => $this->checkLevel9(object: $object)
+                && $this->checkLevel8(object: $object)
+                && $this->checkLevel7(object: $object)
+                && $this->checkLevel6(object: $object)
+                && $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL8 => $this->checkLevel8(object: $object)
+                && $this->checkLevel7(object: $object)
+                && $this->checkLevel6(object: $object)
+                && $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL7 => $this->checkLevel7(object: $object)
+                && $this->checkLevel6(object: $object)
+                && $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL6 => $this->checkLevel6(object: $object)
+                && $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL5 => $this->checkLevel5(object: $object)
+                && $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL4 => $this->checkLevel4(object: $object)
+                && $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL3 => $this->checkLevel3(object: $object)
+                && $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
+            $level >= Constant::SECURITY_LEVEL2 => $this->checkLevel2(object: $object)
+                && $this->checkLevel1(object: $object),
             $level >= Constant::SECURITY_LEVEL1 => $this->checkLevel1(object: $object),
             default => true,
         };
@@ -123,7 +105,7 @@ trait SecurityTrait
         if (!$object instanceof $class) {
             throw new SecurityException(
                 message: "Level 1: Object validation failed. Instance mismatch for {$class}.",
-                code: 500
+                code: 500,
             );
         }
 
@@ -145,7 +127,7 @@ trait SecurityTrait
             if ($property->getType() === null) {
                 throw new SecurityException(
                     message: "Level 2: Public property '{$property->getName()}' in {$class} must be typed.",
-                    code: 500
+                    code: 500,
                 );
             }
         }
@@ -165,19 +147,24 @@ trait SecurityTrait
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (str_starts_with(haystack: $method->getName(), needle: '__')) {
+            if (
+                str_starts_with(
+                    haystack: $method->getName(),
+                    needle: '__',
+                )
+            ) {
                 continue;
             }
 
             $returnType = $method->getReturnType();
-            if ($returnType !== null) {
+            if (null !== $returnType) {
                 // @phpstan-ignore method.notFound
                 $returnConditions = $returnType->getName() === Constant::TYPE_VOID;
                 if ($returnConditions && $method->getDeclaringClass()->getName() === $class) {
                     throw new SecurityException(
-                        message: "Level 3: Public method '{$method->getName()}' in {$class} " .
-                        "must not be of '{$returnType}' type.",
-                        code: 500
+                        message: "Level 3: Public method '{$method->getName()}' in {$class} "
+                        . "must not be of '{$returnType}' type.",
+                        code: 500,
                     );
                 }
             }
@@ -199,14 +186,19 @@ trait SecurityTrait
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (str_starts_with(haystack: $method->getName(), needle: '__')) {
+            if (
+                str_starts_with(
+                    haystack: $method->getName(),
+                    needle: '__',
+                )
+            ) {
                 continue;
             }
 
             if ($method->getReturnType() === null && $method->getDeclaringClass()->getName() === $class) {
                 throw new SecurityException(
                     message: "Level 4: Public method '{$method->getName()}' in {$class} must declare a return type.",
-                    code: 500
+                    code: 500,
                 );
             }
         }
@@ -228,7 +220,7 @@ trait SecurityTrait
             if ($property->getType() === null && $property->getDeclaringClass()->getName() === $class) {
                 throw new SecurityException(
                     message: "Level 5: Private property '{$property->getName()}' in {$class} must be typed.",
-                    code: 500
+                    code: 500,
                 );
             }
         }
@@ -250,7 +242,7 @@ trait SecurityTrait
             if (!$property->isInitialized(object: $object) && $property->getDeclaringClass()->getName() === $class) {
                 throw new SecurityException(
                     message: "Level 6: Property '{$property->getName()}' in {$class} is not initialized.",
-                    code: 500
+                    code: 500,
                 );
             }
         }
@@ -275,13 +267,13 @@ trait SecurityTrait
 
             foreach ($method->getParameters() as $param) {
                 $paramType = $param->getType();
-                if ($paramType !== null) {
+                if (null !== $paramType) {
                     // @phpstan-ignore method.notFound
                     if ($paramType->getName() === Constant::TYPE_MIXED && !$param->isDefaultValueAvailable()) {
                         throw new SecurityException(
-                            message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' " .
-                            "must be strictly typed.",
-                            code: 500
+                            message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' "
+                            . 'must be strictly typed.',
+                            code: 500,
                         );
                     }
                 }
@@ -299,10 +291,16 @@ trait SecurityTrait
     {
         // We check if the class name contains 'Controller' and if it is not final.
         $reflection = new ReflectionObject(object: $object);
-        if (!$reflection->isFinal() && str_contains(haystack: $reflection->getName(), needle: 'Controller')) {
+        if (
+            !$reflection->isFinal()
+            && str_contains(
+                haystack: $reflection->getName(),
+                needle: 'Controller',
+            )
+        ) {
             throw new SecurityException(
-                message: "Level 8: Controller classes must be declared final to prevent unintended extension.",
-                code: 500
+                message: 'Level 8: Controller classes must be declared final to prevent unintended extension.',
+                code: 500,
             );
         }
         return true;
@@ -318,10 +316,16 @@ trait SecurityTrait
         $reflection = new ReflectionObject(object: $object);
         // Here, we check if the object is a DTO class (simulating a DTO with "Service" in the name).
         // Note: The actual `isReadOnly()` method is available in PHP 8.2+.
-        if (!$reflection->isReadOnly() && str_contains(haystack: $reflection->getName(), needle: 'Service')) {
+        if (
+            !$reflection->isReadOnly()
+            && str_contains(
+                haystack: $reflection->getName(),
+                needle: 'Service',
+            )
+        ) {
             throw new SecurityException(
-                message: "Level 9: Service classes must be declared readonly.",
-                code: 500
+                message: 'Level 9: Service classes must be declared readonly.',
+                code: 500,
             );
         }
         return true;
@@ -337,8 +341,8 @@ trait SecurityTrait
         $reflection = new ReflectionObject(object: $object);
         if (!$reflection->isFinal()) {
             throw new SecurityException(
-                message: "Level 10: All classes must be declared final.",
-                code: 500
+                message: 'Level 10: All classes must be declared final.',
+                code: 500,
             );
         }
         return true;

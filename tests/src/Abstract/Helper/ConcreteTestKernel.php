@@ -19,7 +19,7 @@ class ConcreteTestKernel extends Kernel
         return $this->config;
     }
 
-    public function getTestSystem(): ?System
+    public function getTestSystem(): null|System
     {
         return $this->system;
     }

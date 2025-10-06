@@ -146,22 +146,6 @@
     <PropertyNotSetInConstructor>
       <code><![CDATA[$securityMock]]></code>
       <code><![CDATA[$system]]></code>
-      <code><![CDATA[class ($this->securityMock) extends AbstractSystem {
-            public function __construct(Security $security)
-            {
-                // We must call the parent constructor if it exists, but here we are
-                // setting the protected property directly as per the abstract class's design.
-                $this->security = $security;
-            }
-
-            // A minimal implementation of the abstract boot method is required to
-            // instantiate the class, even if it's not used in all tests.
-            #[\Override]
-            public function boot(KernelInterface $kernel): \Waffle\Interface\SystemInterface
-            {
-                return $this;
-            }
-        }]]></code>
     </PropertyNotSetInConstructor>
     <UnusedClass>
       <code><![CDATA[AbstractSystemTest]]></code>

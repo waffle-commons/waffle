@@ -53,6 +53,7 @@ final class AbstractSystemTest extends TestCase
                 // We must call the parent constructor if it exists, but here we are
                 // setting the protected property directly as per the abstract class's design.
                 $this->security = $security;
+                $this->config = new \stdClass();
             }
 
             // A minimal implementation of the abstract boot method is required to
@@ -80,7 +81,7 @@ final class AbstractSystemTest extends TestCase
 
         // Assert that the 'security' property holds the exact same mock object
         // we passed into the constructor.
-        $this->assertSame($this->securityMock, $securityProperty->getValue($this->system));
+        static::assertSame($this->securityMock, $securityProperty->getValue($this->system));
     }
 
     /**
@@ -97,7 +98,7 @@ final class AbstractSystemTest extends TestCase
 
         // Assert that the router property is null immediately after the object
         // is created, before `registerRouter` has been called.
-        $this->assertNull($routerProperty->getValue($this->system));
+        static::assertNull($routerProperty->getValue($this->system));
     }
 
     /**
@@ -112,7 +113,10 @@ final class AbstractSystemTest extends TestCase
         // PHPUnit cannot create a mock for a final class. Instead, we must create
         // a real instance. This requires providing its own dependencies.
         $routerSystemMock = $this->createMock(System::class);
-        $router = new Router(directory: false, system: $routerSystemMock);
+        $router = new Router(
+            directory: false,
+            system: $routerSystemMock,
+        );
 
         // 2. Action
         // Call the method we want to test.
@@ -124,6 +128,6 @@ final class AbstractSystemTest extends TestCase
         $routerProperty = $reflector->getProperty('router');
 
         // Assert that the property now holds the exact Router instance we passed to the method.
-        $this->assertSame($router, $routerProperty->getValue($this->system));
+        static::assertSame($router, $routerProperty->getValue($this->system));
     }
 }

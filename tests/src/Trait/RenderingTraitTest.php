@@ -44,8 +44,8 @@ final class RenderingTraitTest extends TestCase
 
         // --- Assertions ---
         // We assert that the output is a valid JSON string.
-        $this->assertJson($output);
-        $this->assertStringContainsString('"status": "ok"', $output);
+        static::assertJson($output);
+        static::assertStringContainsString('"status": "ok"', $output);
     }
 
     public function testRenderingOutputsNothingInTestEnvironment(): void
@@ -62,7 +62,7 @@ final class RenderingTraitTest extends TestCase
 
         // --- Assertions ---
         // We assert that nothing was echoed, as expected in a test environment.
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 
     public function testThrowMethodRendersContent(): void
@@ -81,7 +81,7 @@ final class RenderingTraitTest extends TestCase
         }
 
         // --- Assertions ---
-        $this->assertJson($output);
-        $this->assertStringContainsString('"error": "critical"', $output);
+        static::assertJson($output);
+        static::assertStringContainsString('"error": "critical"', $output);
     }
 }

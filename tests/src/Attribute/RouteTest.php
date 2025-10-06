@@ -15,15 +15,18 @@ final class RouteTest extends TestCase
         // --- Test Condition ---
         $path = '/test-path';
         $name = 'test_name';
-        $arguments = [new Argument(classType: 'string', paramName: 'id')];
+        $arguments = [new Argument(
+            classType: 'string',
+            paramName: 'id',
+        )];
 
         // --- Execution ---
         $route = new Route($path, $name, $arguments);
 
         // --- Assertions ---
-        $this->assertSame($path, $route->path);
-        $this->assertSame($name, $route->name);
-        $this->assertSame($arguments, $route->arguments);
+        static::assertSame($path, $route->path);
+        static::assertSame($name, $route->name);
+        static::assertSame($arguments, $route->arguments);
     }
 
     public function testConstructorWithDefaultParameters(): void
@@ -35,9 +38,9 @@ final class RouteTest extends TestCase
         $route = new Route($path);
 
         // --- Assertions ---
-        $this->assertSame($path, $route->path);
+        static::assertSame($path, $route->path);
         // Assert that the optional parameters are null by default.
-        $this->assertNull($route->name);
-        $this->assertNull($route->arguments);
+        static::assertNull($route->name);
+        static::assertNull($route->arguments);
     }
 }

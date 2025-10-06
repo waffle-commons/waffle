@@ -28,8 +28,7 @@ final class SystemTest extends TestCase
 
         // We expect the 'analyze' method to be called twice during the boot process:
         // once for the Kernel and once for the Configuration object.
-        $securityMock->expects($this->exactly(2))
-            ->method('analyze');
+        $securityMock->expects($this->exactly(2))->method('analyze');
 
         // Create a dummy Configuration object.
         $testConfig = new Configuration(controller: 'app/Controllers');
@@ -42,7 +41,7 @@ final class SystemTest extends TestCase
 
         // 3. Assertions
         // We assert that the boot process correctly instantiated and registered a Router.
-        $this->assertInstanceOf(Router::class, $system->router);
+        static::assertInstanceOf(Router::class, $system->router);
     }
 
     /**
@@ -60,7 +59,8 @@ final class SystemTest extends TestCase
         // We configure the 'analyze' method to throw a SecurityException. This simulates
         // a critical security validation failure during the framework's boot sequence.
         // We are testing the system's ability to catch this and respond gracefully.
-        $securityMock->method('analyze')
+        $securityMock
+            ->method('analyze')
             ->will($this->throwException(new SecurityException('Security analysis failed.')));
 
         // Create a dummy Configuration and Kernel for the test.
@@ -83,14 +83,14 @@ final class SystemTest extends TestCase
 
         // 3. Assertions
         // First, we assert that the router was NOT registered because the security check failed.
-        $this->assertNull($system->router, 'Router should not be registered when a security exception occurs.');
+        static::assertNull($system->router, 'Router should not be registered when a security exception occurs.');
 
         // Second, we verify that the system produced the expected JSON error response.
-        $this->assertJson($output, 'The output should be a valid JSON error response.');
-        $this->assertStringContainsString(
+        static::assertJson($output, 'The output should be a valid JSON error response.');
+        static::assertStringContainsString(
             'Security analysis failed.',
             $output,
-            'The JSON output should contain the exception message.'
+            'The JSON output should contain the exception message.',
         );
     }
 }

@@ -13,10 +13,9 @@ abstract class AbstractSecurity implements SecurityInterface
 {
     use SecurityTrait;
 
-    protected(set) int $level
-        {
-            set => $this->level = $value;
-        }
+    protected(set) int $level {
+        set => $this->level = $value;
+    }
 
     /**
      * @param object $object
@@ -28,17 +27,30 @@ abstract class AbstractSecurity implements SecurityInterface
     public function analyze(object $object, array $expectations = []): void
     {
         $className = get_class(object: $object);
-        $expects = implode(separator: Constant::ARRAY_SEPARATOR_ALL, array: $expectations);
-        if (!$this->isValid(object: $object, expectations: $expectations)) {
+        $expects = implode(
+            separator: Constant::ARRAY_SEPARATOR_ALL,
+            array: $expectations,
+        );
+        if (
+            !$this->isValid(
+                object: $object,
+                expectations: $expectations,
+            )
+        ) {
             throw new SecurityException(
                 message: "The object $className is not valid. It is not an instance of $expects.",
-                code: 500
+                code: 500,
             );
         }
-        if (!$this->isSecure(object: $object, level: $this->level)) {
+        if (
+            !$this->isSecure(
+                object: $object,
+                level: $this->level,
+            )
+        ) {
             throw new SecurityException(
                 message: "The object $className is not secure.",
-                code: 500
+                code: 500,
             );
         }
     }

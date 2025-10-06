@@ -29,7 +29,7 @@ final class SecurityTraitTest extends TestCase
     #[DataProvider('validExpectationsProvider')]
     public function testIsValidReturnsTrueForMatchingExpectations(object $object, array $expectations): void
     {
-        $this->assertTrue($this->isValid($object, $expectations));
+        static::assertTrue($this->isValid($object, $expectations));
     }
 
     // @phpstan-ignore missingType.iterableValue
@@ -48,7 +48,7 @@ final class SecurityTraitTest extends TestCase
     #[DataProvider('mismatchedExpectationsProvider')]
     public function testIsValidReturnsFalseForMismatchedExpectations(object $object, array $expectations): void
     {
-        $this->assertFalse($this->isValid($object, $expectations));
+        static::assertFalse($this->isValid($object, $expectations));
     }
 
     // @phpstan-ignore missingType.iterableValue
@@ -60,26 +60,37 @@ final class SecurityTraitTest extends TestCase
         ];
     }
 
-
     #[DataProvider('securityViolationProvider')]
     public function testIsSecureThrowsExceptionOnViolation(
         object $violatingObject,
         int $securityLevel,
-        string $expectedExceptionMessage
+        string $expectedExceptionMessage,
     ): void {
         $this->expectException(SecurityException::class);
         $this->expectExceptionMessageMatches($expectedExceptionMessage);
 
-        $this->isSecure(object: $violatingObject, level: $securityLevel);
+        $this->isSecure(
+            object: $violatingObject,
+            level: $securityLevel,
+        );
     }
 
     public function testIsSecurePassesWithValidObject(): void
     {
         $validObject = new FinalReadOnlyClass();
 
-        $this->assertTrue($this->isSecure(object: $validObject, level: 1));
-        $this->assertTrue($this->isSecure(object: $validObject, level: 5));
-        $this->assertTrue($this->isSecure(object: $validObject, level: 10));
+        static::assertTrue($this->isSecure(
+            object: $validObject,
+            level: 1,
+        ));
+        static::assertTrue($this->isSecure(
+            object: $validObject,
+            level: 5,
+        ));
+        static::assertTrue($this->isSecure(
+            object: $validObject,
+            level: 10,
+        ));
     }
 
     /**
@@ -94,8 +105,9 @@ final class SecurityTraitTest extends TestCase
     public function testIsSecureThrowsExceptionForUninitializedPropertyLevel6(): void
     {
         $this->expectException(SecurityException::class);
-        $msg6 = 'Level 6: Property \'uninitializedProperty\' ' .
-            'in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.';
+        $msg6 =
+            'Level 6: Property \'uninitializedProperty\' '
+            . 'in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.';
         $this->expectExceptionMessage($msg6);
 
         // 1. Use Reflection to get the class blueprint.
@@ -106,7 +118,10 @@ final class SecurityTraitTest extends TestCase
         $objectWithoutConstructor = $reflectionClass->newInstanceWithoutConstructor();
 
         // 3. Action: Run the security check. It should now detect the uninitialized property.
-        $this->isSecure(object: $objectWithoutConstructor, level: 6);
+        $this->isSecure(
+            object: $objectWithoutConstructor,
+            level: 6,
+        );
     }
 
     public static function securityViolationProvider(): \Generator

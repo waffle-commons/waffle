@@ -28,6 +28,6 @@ final class SecurityTest extends TestCase
         $property = $reflection->getProperty('level');
         $level = $property->getValue($security);
 
-        $this->assertSame(7, $level, 'The security level should be set from the configuration object.');
+        static::assertSame(7, $level, 'The security level should be set from the configuration object.');
     }
 }

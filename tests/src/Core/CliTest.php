@@ -22,7 +22,7 @@ final class CliTest extends TestCase
         $cli = new Cli();
 
         // Then: It should be an instance of both Cli and AbstractCli.
-        $this->assertInstanceOf(Cli::class, $cli);
-        $this->assertInstanceOf(AbstractCli::class, $cli);
+        static::assertInstanceOf(Cli::class, $cli);
+        static::assertInstanceOf(AbstractCli::class, $cli);
     }
 }

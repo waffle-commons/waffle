@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Waffle\Core\Constant;
 use Waffle\Core\Cli;
+use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException; // <-- NOUVEL IMPORT : Exception pour les erreurs de rendu (Bad Request 400)
@@ -30,20 +30,17 @@ abstract class AbstractResponse implements ResponseInterface
     /**
      * @var View|null
      */
-    private(set) ?View $view
-        {
-            set => $this->view = $value;
-        }
+    private(set) null|View $view {
+        set => $this->view = $value;
+    }
 
-    private(set) bool $cli
-        {
-            set => $this->cli = $value;
-        }
+    private(set) bool $cli {
+        set => $this->cli = $value;
+    }
 
-    private(set) Cli | Request $handler
-        {
-            set => $this->handler = $value;
-        }
+    private(set) Cli|Request $handler {
+        set => $this->handler = $value;
+    }
 
     #[\Override]
     public function build(CliInterface|RequestInterface $handler): void
@@ -51,7 +48,7 @@ abstract class AbstractResponse implements ResponseInterface
         $this->view = null;
         /** @var Cli|Request $handler */
         $this->cli = $handler->cli;
-        $this->handler = ($this->cli && $handler instanceof Cli) ? new Request(cli: true) : $handler;
+        $this->handler = $this->cli && $handler instanceof Cli ? new Request(cli: true) : $handler;
     }
 
     /**
@@ -63,22 +60,25 @@ abstract class AbstractResponse implements ResponseInterface
         $view = $this->callControllerAction();
         $this->view = $view;
 
-        if ($view !== null) {
+        if (null !== $view) {
             /** @var string $env */
             $env = $this->handler->env[Constant::APP_ENV];
-            $this->rendering(view: $view, env: $env);
+            $this->rendering(
+                view: $view,
+                env: $env,
+            );
         }
     }
 
     /**
      * @throws RenderingException
      */
-    private function callControllerAction(): ?View
+    private function callControllerAction(): null|View
     {
         $class = $method = $path = $name = $cli = $error = null;
         $argTypes = $args = [];
         $controller = $this->controllerValues(route: $this->handler->currentRoute);
-        if ($controller !== null) {
+        if (null !== $controller) {
             /**
              * @var string|int $key
              * @var string|array<non-empty-string, string> $value
@@ -94,21 +94,27 @@ abstract class AbstractResponse implements ResponseInterface
                     default => $error = true,
                 };
             }
-            if (($cli !== true || $error !== true) && ($path !== null && $name !== null)) {
+            if ((true !== $cli || true !== $error) && (null !== $path && null !== $name)) {
                 $class = new $class();
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
                     if (class_exists(class: $argType)) {
                         $arg = new $argType();
                     } else {
-                        $arg = $this->getRouteArgument(name: $keyType, type: $argType);
+                        $arg = $this->getRouteArgument(
+                            name: $keyType,
+                            type: $argType,
+                        );
                     }
                     $args[] = $arg;
                 }
                 /** @var callable $callable */
                 $callable = [$class, $method];
                 /** @var View $view */
-                $view = call_user_func_array(callback: $callable, args: $args);
+                $view = call_user_func_array(
+                    callback: $callable,
+                    args: $args,
+                );
                 return $view;
             }
         }
@@ -122,7 +128,7 @@ abstract class AbstractResponse implements ResponseInterface
     private function getRouteArgument(string $name, string $type = Constant::TYPE_STRING): string|int|null
     {
         $arg = null;
-        if ($this->handler->currentRoute !== null) {
+        if (null !== $this->handler->currentRoute) {
             $arguments = $this->handler->currentRoute[Constant::ARGUMENTS] ?: [];
             $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH] ?: Constant::EMPTY_STRING);
             $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
@@ -133,22 +139,21 @@ abstract class AbstractResponse implements ResponseInterface
                             pattern: '/^\{(.*)}$/',
                             subject: $path[$i],
                             matches: $matches,
-                            flags: PREG_UNMATCHED_AS_NULL
+                            flags: PREG_UNMATCHED_AS_NULL,
                         );
                         if (!empty($matches[0]) && !empty($matches[1]) && $name === $matches[1]) {
                             // TODO: Implements this in Security
                             $arg = match ($type) {
-                                Constant::TYPE_INT => (is_numeric(value: $url[$i])
+                                Constant::TYPE_INT => is_numeric(value: $url[$i])
                                     ? (int) $url[$i]
                                     : throw new RenderingException(
                                         message: sprintf(
                                             'URL parameter "%s" expects type int, got invalid value: "%s".',
                                             $name,
-                                            $url[$i]
+                                            $url[$i],
                                         ),
-                                        code: 400
-                                    )
-                                ),
+                                        code: 400,
+                                    ),
                                 default => $url[$i],
                             };
                         }

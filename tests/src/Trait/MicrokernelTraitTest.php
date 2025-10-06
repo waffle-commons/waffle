@@ -20,9 +20,9 @@ final class MicrokernelTraitTest extends TestCase
         // --- Execution & Assertions ---
         // Since PHPUnit is always run from the command line, PHP_SAPI should be 'cli'.
         // We assert that the method correctly identifies this environment.
-        $this->assertTrue(
+        static::assertTrue(
             $kernelLikeObject->isCli(),
-            'The isCli() method should return true when running in a CLI environment.'
+            'The isCli() method should return true when running in a CLI environment.',
         );
     }
 }

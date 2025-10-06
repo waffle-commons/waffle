@@ -11,10 +11,7 @@ use Waffle\Attribute\Configuration;
  * It extends the framework's base configuration to be used
  * within the test environment.
  */
-#[Configuration(
-    controller: 'tests/src/Router/Dummy',
-    securityLevel: 1
-)]
+#[Configuration(controller: 'tests/src/Router/Dummy', securityLevel: 1)]
 final class TestConfig extends Configuration
 {
 }

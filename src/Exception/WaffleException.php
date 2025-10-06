@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waffle\Exception;
 
-use Waffle\Trait\RenderingTrait;
 use Exception;
 use Throwable;
+use Waffle\Trait\RenderingTrait;
 
 class WaffleException extends Exception
 {

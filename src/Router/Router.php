@@ -22,18 +22,16 @@ final class Router
 
     private const string CACHE_FILE = 'waffle_routes_cache.php';
 
-    private(set) string | false $directory
-        {
-            set => $this->directory = $value;
-        }
+    private(set) string|false $directory {
+        set => $this->directory = $value;
+    }
 
     /**
      * @var array<string, string>|false
      */
-    private(set) array | false $files
-        {
-            set => $this->files = $value;
-        }
+    private(set) array|false $files {
+        set => $this->files = $value;
+    }
 
     /**
      * @var list<array{
@@ -44,17 +42,14 @@ final class Router
      *      name: non-falsy-string
      * }>
      */
-    private(set) array $routes
-        {
-            set => $this->routes = $value;
-        }
+    private(set) array $routes {
+        set => $this->routes = $value;
+    }
 
     private(set) System $system;
 
-    public function __construct(
-        string|false $directory,
-        System $system,
-    ) {
+    public function __construct(string|false $directory, System $system)
+    {
         $this->directory = $directory;
         $this->files = false;
         $this->system = $system;
@@ -68,7 +63,7 @@ final class Router
         }
 
         $this->routes = $this->files = [];
-        if ($this->directory === false) {
+        if (false === $this->directory) {
             return $this;
         }
 
@@ -91,7 +86,7 @@ final class Router
         }
 
         $paths = scandir(directory: $directory);
-        if ($paths !== false) {
+        if (false !== $paths) {
             foreach ($paths as $path) {
                 if ($path === Constant::CURRENT_DIR || $path === Constant::PREVIOUS_DIR) {
                     continue;
@@ -100,7 +95,12 @@ final class Router
                 if (is_dir(filename: $file)) {
                     // TODO: Optimize `array_merge` method (maybe do it manually?)
                     $files = array_merge($files, $this->scan(directory: $file));
-                } elseif (str_contains(haystack: $path, needle: Constant::PHPEXT)) {
+                } elseif (
+                    str_contains(
+                        haystack: $path,
+                        needle: Constant::PHPEXT,
+                    )
+                ) {
                     $files[] = $this->className(path: $file);
                 }
             }
@@ -112,10 +112,13 @@ final class Router
     public function registerRoutes(): self
     {
         $routes = [];
-        if ($this->files !== false) {
+        if (false !== $this->files) {
             foreach ($this->files as $file) {
                 $controller = new $file();
-                $classRoute = $this->newAttributeInstance(className: $controller, attribute: Route::class);
+                $classRoute = $this->newAttributeInstance(
+                    className: $controller,
+                    attribute: Route::class,
+                );
                 if ($classRoute instanceof Route) {
                     $methods = $this->getMethods(className: $controller);
                     foreach ($methods as $method) {
@@ -123,7 +126,12 @@ final class Router
                         foreach ($attributes as $attribute) {
                             $route = $attribute->newInstance();
                             $path = $classRoute->path . $route->path;
-                            if (!$this->isRouteRegistered(path: $path, routes: $routes)) {
+                            if (
+                                !$this->isRouteRegistered(
+                                    path: $path,
+                                    routes: $routes,
+                                )
+                            ) {
                                 $classRouteName = $classRoute->name ?: Constant::DEFAULT;
                                 $routeName = $route->name ?: Constant::DEFAULT;
                                 $params = [];
@@ -138,7 +146,7 @@ final class Router
                                     Constant::METHOD => $method->getName(),
                                     Constant::ARGUMENTS => $params,
                                     Constant::PATH => $path,
-                                    Constant::NAME => $classRouteName .  '_' . $routeName,
+                                    Constant::NAME => $classRouteName . '_' . $routeName,
                                 ];
                             }
                         }
@@ -156,7 +164,11 @@ final class Router
 
             // Writes content to file. Uses @ to suppress errors in case of permission issues,
             // although a real framework should handle permissions and cache directory creation.
-            @file_put_contents(filename: $cacheFile, data: $content, flags: LOCK_EX);
+            @file_put_contents(
+                filename: $cacheFile,
+                data: $content,
+                flags: LOCK_EX,
+            );
         }
 
         return $this;
@@ -199,7 +211,7 @@ final class Router
 
         // 1. Path length must match exactly.
         $iMax = count(value: $pathSegments);
-        if ($iMax !== count(value: $urlSegments)) {
+        if (count(value: $urlSegments) !== $iMax) {
             return false;
         }
 
@@ -215,7 +227,7 @@ final class Router
                 pattern: '/^\{(.*)}$/',
                 subject: $pathSegment,
                 matches: $matches,
-                flags: PREG_UNMATCHED_AS_NULL
+                flags: PREG_UNMATCHED_AS_NULL,
             );
 
             if (!empty($matches[0])) {
@@ -275,7 +287,7 @@ final class Router
 
     private function isProduction(): bool
     {
-        return (getenv(name: Constant::APP_ENV) === Constant::ENV_DEFAULT);
+        return getenv(name: Constant::APP_ENV) === Constant::ENV_DEFAULT;
     }
 
     private function getCacheFilePath(): string

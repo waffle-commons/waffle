@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Waffle\Trait;
 
 use JsonException;
@@ -20,7 +22,7 @@ trait RenderingTrait
         } catch (JsonException $e) {
             new RenderingException(
                 message: $e->getMessage(),
-                code: $e->getCode()
+                code: $e->getCode(),
             )->throw(view: new View(data: [
                 'message' => $e->getMessage(),
                 'code' => $e->getCode(),
@@ -31,6 +33,9 @@ trait RenderingTrait
 
     public function throw(View $view): void
     {
-        $this->rendering(view: $view, env: Constant::ENV_EXCEPTION);
+        $this->rendering(
+            view: $view,
+            env: Constant::ENV_EXCEPTION,
+        );
     }
 }

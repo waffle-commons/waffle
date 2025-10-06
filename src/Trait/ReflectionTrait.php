@@ -13,7 +13,7 @@ trait ReflectionTrait
     public function className(string $path): string
     {
         $content = file_get_contents($path);
-        if ($content === false) {
+        if (false === $content) {
             return ''; // Return empty string on file read error.
         }
 
@@ -23,22 +23,22 @@ trait ReflectionTrait
         $tokensCount = count($tokens);
 
         for ($i = 0; $i < $tokensCount; $i++) {
-            if ($tokens[$i][0] === T_NAMESPACE) {
+            if (T_NAMESPACE === $tokens[$i][0]) {
                 // Find the full namespace string.
                 for ($j = $i + 2; $j < $tokensCount; $j++) {
                     $inArr = in_array($tokens[$j][0], [T_STRING, T_NAME_QUALIFIED, T_NS_SEPARATOR], true);
                     if (is_array($tokens[$j]) && $inArr) {
                         $namespace .= $tokens[$j][1];
-                    } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                    } elseif ('{' === $tokens[$j] || ';' === $tokens[$j]) {
                         break;
                     }
                 }
             }
 
-            if ($tokens[$i][0] === T_CLASS) {
+            if (T_CLASS === $tokens[$i][0]) {
                 // Find the class name token.
                 for ($j = $i + 2; $j < $tokensCount; $j++) {
-                    if ($tokens[$j][0] === T_STRING) {
+                    if (T_STRING === $tokens[$j][0]) {
                         $class = $tokens[$j][1];
                         break 2; // Exit both loops once the class is found.
                     }
@@ -82,9 +82,9 @@ trait ReflectionTrait
      * }|null $route
      * @return Generator|null
      */
-    public function controllerValues(?array $route = null): ?Generator
+    public function controllerValues(null|array $route = null): null|Generator
     {
-        if ($route === null) {
+        if (null === $route) {
             return null;
         }
 

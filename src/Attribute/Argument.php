@@ -12,7 +12,7 @@ final class Argument
     public function __construct(
         public string $classType,
         public string $paramName,
-        public bool $required = true
+        public bool $required = true,
     ) {
     }
 }
