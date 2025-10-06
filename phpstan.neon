@@ -3,7 +3,6 @@ includes:
 
 parameters:
   tmpDir: var/cache/phpstan
-  errorFormat: checkstyle
   bootstrapFiles:
     - vendor/autoload.php
     - tests/bootstrap.php

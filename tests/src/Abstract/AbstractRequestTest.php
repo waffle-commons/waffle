@@ -21,7 +21,6 @@ final class AbstractRequestTest extends TestCase
      * This test verifies that the process() method correctly returns a Response object
      * when a valid route has been set on the request object. It simulates a typical
      * "happy path" scenario in a web context.
-     * @throws RouteNotFoundException
      * @throws ReflectionException
      */
     public function testProcessReturnsResponseWhenRouteIsSet(): void
@@ -61,7 +60,6 @@ final class AbstractRequestTest extends TestCase
      * This test validates a key architectural choice: in a Command-Line Interface (CLI)
      * context, the application should not fail if no route is provided. This allows for
      * CLI commands to be handled differently from web requests.
-     * @throws RouteNotFoundException
      */
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
@@ -94,6 +92,7 @@ final class AbstractRequestTest extends TestCase
          *       path: string,
          *       name: non-falsy-string
          *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
          */
         $routeData = [
             'classname' => DummyController::class,

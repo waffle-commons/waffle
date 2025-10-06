@@ -17,7 +17,7 @@ final class ReflectionTraitTest extends TestCase
 {
     use ReflectionTrait;
 
-    #[DataProvider(methodName: 'classNameProvider')]
+    #[DataProvider('classNameProvider')]
     public function testClassNameConversion(string $path, string $expectedFqcn): void
     {
         // This test ensures that file paths are correctly converted to Fully Qualified Class Names (FQCN),
@@ -25,6 +25,7 @@ final class ReflectionTraitTest extends TestCase
         $this->assertSame($expectedFqcn, $this->className($path));
     }
 
+    // @phpstan-ignore missingType.iterableValue
     public static function classNameProvider(): array
     {
         $root = APP_ROOT;

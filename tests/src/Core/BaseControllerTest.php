@@ -17,9 +17,9 @@ final class BaseControllerTest extends TestCase
         $controller = new BaseController();
 
         $this->assertInstanceOf(
-            expected: BaseController::class,
-            actual: $controller,
-            message: 'BaseController should be instantiable.'
+            BaseController::class,
+            $controller,
+            'BaseController should be instantiable.'
         );
     }
 
@@ -28,9 +28,9 @@ final class BaseControllerTest extends TestCase
         $controller = new BaseController();
 
         $this->assertInstanceOf(
-            expected: BaseControllerInterface::class,
-            actual: $controller,
-            message: 'BaseController must implement BaseControllerInterface.'
+            BaseControllerInterface::class,
+            $controller,
+            'BaseController must implement BaseControllerInterface.'
         );
     }
 }

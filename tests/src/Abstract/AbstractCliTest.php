@@ -49,6 +49,7 @@ final class AbstractCliTest extends TestCase
          *       path: string,
          *       name: non-falsy-string
          *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
          */
         $routeData = [
             'classname' => DummyController::class,

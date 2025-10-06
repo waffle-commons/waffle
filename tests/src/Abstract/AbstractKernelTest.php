@@ -43,6 +43,9 @@ final class AbstractKernelTest extends TestCase
         ob_start();
         $this->kernel->handle();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
         // We assert that the output is the expected JSON response.
@@ -66,6 +69,9 @@ final class AbstractKernelTest extends TestCase
         ob_start();
         $this->kernel->handle();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
         // We assert that the output contains the expected error message.

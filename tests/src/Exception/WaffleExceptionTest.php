@@ -27,6 +27,7 @@ final class WaffleExceptionTest extends TestCase
 
         // --- Assertions ---
         // We assert that the returned array has the expected structure.
+        // @phpstan-ignore method.alreadyNarrowedType
         $this->assertIsArray($serializedData);
         $this->assertArrayHasKey('message', $serializedData);
         $this->assertArrayHasKey('code', $serializedData);

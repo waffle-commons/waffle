@@ -18,7 +18,9 @@ use WaffleTests\Router\Dummy\DummyController;
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase
 {
-    private ?string $originalAppEnv;
+    private mixed $originalAppEnv;
+
+    // @phpstan-ignore missingType.iterableValue
     private array $originalServer;
 
     #[\Override]
@@ -88,6 +90,9 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $cli);
         $response->render(); // Should do nothing in CLI context for now
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         $this->assertEmpty($output);
@@ -119,11 +124,17 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         $this->assertJson((string) $output);
-        $expectedData = ['data' => ['id' => 123, 'name' => 'John Doe']];
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedData), (string) $output);
+        $expectedData = json_encode(['data' => ['id' => 123, 'name' => 'John Doe']]);
+        if (!$expectedData) {
+            $expectedData = '';
+        }
+        $this->assertJsonStringEqualsJsonString($expectedData, (string) $output);
     }
 
     /**
@@ -176,10 +187,21 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
         $this->assertJson((string) $output);
+        /**
+         * @var array{
+         *        data: array{
+         *         service: non-empty-string,
+         *         timestamp: int
+         *        }
+         *    } $data
+         */
         $data = json_decode((string) $output, true);
         $this->assertArrayHasKey('data', $data);
         $this->assertArrayHasKey('service', $data['data']);
@@ -210,6 +232,9 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         $this->assertEmpty($output);

@@ -77,6 +77,9 @@ final class SystemTest extends TestCase
 
         // We retrieve the captured output and stop buffering.
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         // First, we assert that the router was NOT registered because the security check failed.

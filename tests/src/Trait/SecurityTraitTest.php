@@ -21,12 +21,18 @@ final class SecurityTraitTest extends TestCase
 {
     use SecurityTrait;
 
+    /**
+     * @param object $object
+     * @param string[] $expectations
+     * @return void
+     */
     #[DataProvider('validExpectationsProvider')]
     public function testIsValidReturnsTrueForMatchingExpectations(object $object, array $expectations): void
     {
         $this->assertTrue($this->isValid($object, $expectations));
     }
 
+    // @phpstan-ignore missingType.iterableValue
     public static function validExpectationsProvider(): array
     {
         return [
@@ -34,12 +40,18 @@ final class SecurityTraitTest extends TestCase
         ];
     }
 
+    /**
+     * @param object $object
+     * @param string[] $expectations
+     * @return void
+     */
     #[DataProvider('mismatchedExpectationsProvider')]
     public function testIsValidReturnsFalseForMismatchedExpectations(object $object, array $expectations): void
     {
         $this->assertFalse($this->isValid($object, $expectations));
     }
 
+    // @phpstan-ignore missingType.iterableValue
     public static function mismatchedExpectationsProvider(): array
     {
         return [
@@ -103,6 +115,7 @@ final class SecurityTraitTest extends TestCase
         $msg2 = "/Level 2: Public property 'untypedProperty' in class@anonymous.* must be typed./";
         yield 'Level 2 Violation: Untyped public property' => [
             'violatingObject' => new class {
+                // @phpstan-ignore missingType.property
                 public $untypedProperty;
             },
             'securityLevel' => 2,
@@ -125,6 +138,7 @@ final class SecurityTraitTest extends TestCase
         $msg4 = "/Level 4: Public method 'getSomething' in class@anonymous.* must declare a return type./";
         yield 'Level 4 Violation: A public method with no declared return type' => [
             'violatingObject' => new class {
+                // @phpstan-ignore missingType.return
                 public function getSomething()
                 {
                 }
@@ -137,6 +151,7 @@ final class SecurityTraitTest extends TestCase
         $msg5 = "/Level 5: Private property 'untypedPrivate' in class@anonymous.* must be typed./";
         yield 'Level 5 Violation: Untyped private property' => [
             'violatingObject' => new class {
+                // @phpstan-ignore missingType.property, property.unused
                 private $untypedPrivate;
             },
             'securityLevel' => 5,
