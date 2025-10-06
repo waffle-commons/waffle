@@ -99,6 +99,7 @@ abstract class AbstractResponse implements ResponseInterface
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
                     if (class_exists(class: $argType)) {
+                        /** @psalm-suppress MixedMethodCall */
                         $arg = new $argType();
                     } else {
                         $arg = $this->getRouteArgument(
@@ -141,7 +142,9 @@ abstract class AbstractResponse implements ResponseInterface
                             matches: $matches,
                             flags: PREG_UNMATCHED_AS_NULL,
                         );
-                        if (!empty($matches[0]) && !empty($matches[1]) && $name === $matches[1]) {
+                        $m0 = (isset($matches[0]) && $matches[0] !== '');
+                        $m1 = (isset($matches[1]) && $matches[1] !== '');
+                        if (($m0 && $m1) && $name === $matches[1]) {
                             // TODO: Implements this in Security
                             $arg = match ($type) {
                                 Constant::TYPE_INT => is_numeric(value: $url[$i])

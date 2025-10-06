@@ -24,7 +24,7 @@ final class RouterTest extends TestCase
     private Router $router;
     private string $dummyControllerDir;
 
-    // @phpstan-ignore missingType.iterableValue
+    /** @phpstan-ignore missingType.iterableValue */
     private array $serverBackup;
     private System $system;
 

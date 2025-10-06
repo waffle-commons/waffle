@@ -35,7 +35,7 @@ final class RenderingTraitTest extends TestCase
         // We start the output buffer to capture what the trait "echoes".
         ob_start();
         // We call the rendering method, simulating a 'dev' environment.
-        // @phpstan-ignore method.notFound
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->rendering($view, Constant::ENV_DEV);
         $output = ob_get_clean();
         if (!$output) {
@@ -56,7 +56,7 @@ final class RenderingTraitTest extends TestCase
         // --- Execution ---
         ob_start();
         // We call the rendering method, simulating the 'test' environment.
-        // @phpstan-ignore method.notFound
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->rendering($view, Constant::ENV_TEST);
         $output = ob_get_clean();
 
@@ -73,7 +73,7 @@ final class RenderingTraitTest extends TestCase
         // --- Execution ---
         ob_start();
         // The throw() method should always render output, regardless of the environment.
-        // @phpstan-ignore method.notFound
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->throw($view);
         $output = ob_get_clean();
         if (!$output) {

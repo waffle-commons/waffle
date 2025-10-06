@@ -25,7 +25,7 @@ final class ReflectionTraitTest extends TestCase
         static::assertSame($expectedFqcn, $this->className($path));
     }
 
-    // @phpstan-ignore missingType.iterableValue
+    /** @phpstan-ignore missingType.iterableValue */
     public static function classNameProvider(): array
     {
         $root = APP_ROOT;

@@ -6,6 +6,9 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractRequest;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class Request extends AbstractRequest
 {
     public function __construct(bool $cli = false)
