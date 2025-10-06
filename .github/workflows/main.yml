@@ -45,6 +45,9 @@ jobs:
       - name: PHP Linter (PHPLint)
         run: composer linter
 
+      - name: Mago Linter (Mago Lint)
+        run: composer mago-lint
+
       - name: PHP Static Analysis Tool (PHPStan)
         run: composer phpstan
 
@@ -53,6 +56,9 @@ jobs:
 
       - name: PHPCodeSniffer Analysis Tool (PHPCS)
         run: composer phpcs
+
+      - name: Mago Analysis Tool (Mago Analyze)
+        run: composer mago-analyze
 
       - name: Security Audit of Composer Dependencies (SCA)
         run: composer audit
