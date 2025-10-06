@@ -11,7 +11,8 @@ use Waffle\Abstract\AbstractKernel;
  */
 class Kernel extends AbstractKernel
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->boot();
     }
 }

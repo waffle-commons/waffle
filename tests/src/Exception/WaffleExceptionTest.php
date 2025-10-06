@@ -28,15 +28,15 @@ final class WaffleExceptionTest extends TestCase
         // --- Assertions ---
         // We assert that the returned array has the expected structure.
         /** @phpstan-ignore-next-line */
-        self::assertIsArray($serializedData);
-        self::assertArrayHasKey('message', $serializedData);
-        self::assertArrayHasKey('code', $serializedData);
-        self::assertArrayHasKey('previous', $serializedData);
+        static::assertIsArray($serializedData);
+        static::assertArrayHasKey('message', $serializedData);
+        static::assertArrayHasKey('code', $serializedData);
+        static::assertArrayHasKey('previous', $serializedData);
 
         // We assert that the data within the array is correct.
-        self::assertSame('A waffle error occurred', $serializedData['message']);
-        self::assertSame(500, $serializedData['code']);
-        self::assertSame($previousException, $serializedData['previous']);
+        static::assertSame('A waffle error occurred', $serializedData['message']);
+        static::assertSame(500, $serializedData['code']);
+        static::assertSame($previousException, $serializedData['previous']);
     }
 
     public function testSerializeHandlesNullPreviousException(): void

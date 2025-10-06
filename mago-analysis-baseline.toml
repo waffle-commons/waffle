@@ -30,8 +30,8 @@ end_line = 97
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "docblock-type-mismatch"
-start_line = 110
-end_line = 110
+start_line = 111
+end_line = 111
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-class-string-expression"
@@ -55,13 +55,13 @@ end_line = 79
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-property-read"
-start_line = 130
-end_line = 130
+start_line = 131
+end_line = 131
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-property-read"
-start_line = 130
-end_line = 130
+start_line = 131
+end_line = 131
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
@@ -70,13 +70,13 @@ end_line = 100
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
-start_line = 104
-end_line = 104
+start_line = 105
+end_line = 105
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
-start_line = 105
-end_line = 105
+start_line = 106
+end_line = 106
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
@@ -115,8 +115,8 @@ end_line = 49
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "possibly-invalid-argument"
-start_line = 115
-end_line = 115
+start_line = 116
+end_line = 116
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "possibly-invalid-iterator"
@@ -130,13 +130,13 @@ end_line = 50
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "redundant-comparison"
-start_line = 130
-end_line = 130
+start_line = 131
+end_line = 131
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "redundant-condition"
-start_line = 130
-end_line = 130
+start_line = 131
+end_line = 131
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "unknown-class-instantiation"
@@ -145,8 +145,8 @@ end_line = 97
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 101
-end_line = 101
+start_line = 102
+end_line = 102
 
 [[entries."src/Abstract/AbstractSecurity.php".issues]]
 code = "named-argument-not-allowed"
@@ -155,13 +155,13 @@ end_line = 28
 
 [[entries."src/Attribute/Configuration.php".issues]]
 code = "mixed-operand"
-start_line = 32
-end_line = 32
+start_line = 33
+end_line = 33
 
 [[entries."src/Attribute/Configuration.php".issues]]
 code = "mixed-operand"
-start_line = 33
-end_line = 33
+start_line = 35
+end_line = 35
 
 [[entries."src/Core/Security.php".issues]]
 code = "invalid-property-read"
@@ -374,14 +374,9 @@ start_line = 52
 end_line = 52
 
 [[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 27
-end_line = 27
-
-[[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
 code = "mixed-operand"
-start_line = 33
-end_line = 33
+start_line = 34
+end_line = 34
 
 [[entries."tests/src/Abstract/Helper/ConcreteTestResponse.php".issues]]
 code = "mixed-return-statement"
@@ -402,36 +397,6 @@ end_line = 23
 code = "non-existent-property"
 start_line = 28
 end_line = 28
-
-[[entries."tests/src/Abstract/Helper/ConcreteTestSecurity.php".issues]]
-code = "unused-parameter"
-start_line = 15
-end_line = 15
-
-[[entries."tests/src/Abstract/Helper/ControllableTestRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 31
-end_line = 31
-
-[[entries."tests/src/Abstract/Helper/LoadEnvDisabledKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 16
-end_line = 16
-
-[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 17
-end_line = 17
-
-[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 29
-end_line = 29
-
-[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 37
-end_line = 37
 
 [[entries."tests/src/Attribute/ConfigurationTest.php".issues]]
 code = "mixed-operand"
@@ -652,11 +617,6 @@ end_line = 76
 code = "possibly-invalid-argument"
 start_line = 121
 end_line = 121
-
-[[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
-code = "unused-parameter"
-start_line = 179
-end_line = 179
 
 [[entries."tests/src/Trait/SystemTraitTest.php".issues]]
 code = "possibly-false-argument"

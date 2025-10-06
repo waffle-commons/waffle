@@ -174,10 +174,10 @@ final class SecurityTraitTest extends TestCase
         ];
 
         // Level 7 Violation: A public method argument that is not strictly typed.
-        $msg7 = "/Level 7: Public method 'doSomething' parameter 'untypedArgument' must be strictly typed./";
+        $msg7 = "/Level 7: Public method 'doSomething' parameter '_untypedArgument' must be strictly typed./";
         yield 'Level 7 Violation: Untyped public method argument' => [
             'violatingObject' => new class {
-                public function doSomething(mixed $untypedArgument): int
+                public function doSomething(mixed $_untypedArgument): int
                 {
                     return 1;
                 }

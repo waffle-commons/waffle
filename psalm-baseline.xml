@@ -109,9 +109,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="tests/src/Abstract/Helper/ConcreteTestKernel.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function boot(): self]]></code>
-    </MissingOverrideAttribute>
     <MixedOperand>
       <code><![CDATA[APP_ROOT]]></code>
     </MixedOperand>
@@ -146,18 +143,10 @@
       <code><![CDATA[ConcreteTestResponse]]></code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="tests/src/Abstract/Helper/ConcreteTestSecurity.php">
-    <UnusedParam>
-      <code><![CDATA[$config]]></code>
-    </UnusedParam>
-  </file>
   <file src="tests/src/Abstract/Helper/ControllableTestRequest.php">
     <ClassMustBeFinal>
       <code><![CDATA[ControllableTestRequest]]></code>
     </ClassMustBeFinal>
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function process(): ResponseInterface]]></code>
-    </MissingOverrideAttribute>
     <PropertyNotSetInConstructor>
       <code><![CDATA[ControllableTestRequest]]></code>
       <code><![CDATA[ControllableTestRequest]]></code>
@@ -177,9 +166,6 @@
     <ClassMustBeFinal>
       <code><![CDATA[LoadEnvDisabledKernel]]></code>
     </ClassMustBeFinal>
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function loadEnv(bool $tests = false): void]]></code>
-    </MissingOverrideAttribute>
     <UnusedClass>
       <code><![CDATA[LoadEnvDisabledKernel]]></code>
     </UnusedClass>
@@ -217,11 +203,6 @@
     <ClassMustBeFinal>
       <code><![CDATA[WebKernel]]></code>
     </ClassMustBeFinal>
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function boot(): self]]></code>
-      <code><![CDATA[public function isCli(): bool]]></code>
-      <code><![CDATA[public function loadEnv(bool $tests = false): void]]></code>
-    </MissingOverrideAttribute>
   </file>
   <file src="tests/src/Attribute/ArgumentTest.php">
     <UnusedClass>

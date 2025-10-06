@@ -15,6 +15,7 @@ class WebKernel extends ConcreteTestKernel
     /**
      * @Override
      */
+    #[\Override]
     public function boot(): self
     {
         // We override the boot method to inject a test-specific configuration.
@@ -27,6 +28,7 @@ class WebKernel extends ConcreteTestKernel
     /**
      * @Override
      */
+    #[\Override]
     public function loadEnv(bool $tests = false): void
     {
         // This method is intentionally left empty for the test.
@@ -35,6 +37,7 @@ class WebKernel extends ConcreteTestKernel
     /**
      * @Override
      */
+    #[\Override]
     public function isCli(): bool
     {
         // Force the kernel to behave as if it's in a web environment.

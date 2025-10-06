@@ -29,6 +29,7 @@ class ControllableTestRequest extends TestRequest
     /**
      * @throws Throwable
      */
+    #[\Override]
     public function process(): ResponseInterface
     {
         if (null !== $this->exceptionToThrow) {

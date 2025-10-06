@@ -51,12 +51,12 @@ end_line = 142
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 23
-end_line = 166
+end_line = 169
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "kan-defect"
 start_line = 23
-end_line = 166
+end_line = 169
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-boolean-literal-comparison"
@@ -70,18 +70,8 @@ end_line = 96
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-else-clause"
-start_line = 102
-end_line = 107
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "no-empty"
-start_line = 143
-end_line = 143
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "no-empty"
-start_line = 143
-end_line = 143
+start_line = 103
+end_line = 108
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-multi-assignments"
@@ -115,18 +105,18 @@ end_line = 78
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-shorthand-ternary"
-start_line = 131
-end_line = 131
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "no-shorthand-ternary"
 start_line = 132
 end_line = 132
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "no-shorthand-ternary"
+start_line = 133
+end_line = 133
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "tagged-todo"
-start_line = 144
-end_line = 144
+start_line = 147
+end_line = 147
 
 [[entries."src/Abstract/AbstractSecurity.php".issues]]
 code = "braced-string-interpolation"
@@ -140,13 +130,13 @@ end_line = 51
 
 [[entries."src/Core/Cli.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 10
-end_line = 10
+start_line = 13
+end_line = 13
 
 [[entries."src/Core/Request.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 10
-end_line = 10
+start_line = 13
+end_line = 13
 
 [[entries."src/Core/System.php".issues]]
 code = "no-unsafe-finally"
@@ -333,20 +323,15 @@ code = "tagged-todo"
 start_line = 8
 end_line = 8
 
-[[entries."tests/src/Abstract/AbstractSecurityTest.php".issues]]
-code = "assertion-style"
-start_line = 24
-end_line = 24
-
 [[entries."tests/src/Abstract/Helper/LoadEnvDisabledKernel.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 16
-end_line = 16
+start_line = 17
+end_line = 17
 
 [[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 29
-end_line = 29
+start_line = 31
+end_line = 31
 
 [[entries."tests/src/Attribute/ConfigurationTest.php".issues]]
 code = "explicit-octal"
@@ -372,41 +357,6 @@ end_line = 117
 code = "no-else-clause"
 start_line = 40
 end_line = 42
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 30
-end_line = 30
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 31
-end_line = 31
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 32
-end_line = 32
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 33
-end_line = 33
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 36
-end_line = 36
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/Exception/WaffleExceptionTest.php".issues]]
-code = "assertion-style"
-start_line = 38
-end_line = 38
 
 [[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
 code = "no-boolean-flag-parameter"

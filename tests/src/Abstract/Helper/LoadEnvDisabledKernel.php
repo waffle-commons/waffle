@@ -14,6 +14,7 @@ class LoadEnvDisabledKernel extends ConcreteTestKernel
     /**
      * @Override
      */
+    #[\Override]
     public function loadEnv(bool $tests = false): void
     {
         // This method is intentionally left empty for the test.
