@@ -113,16 +113,13 @@
     </UnusedClass>
   </file>
   <file src="tests/src/Abstract/AbstractKernelTest.php">
-    <PossiblyFalseArgument>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-    </PossiblyFalseArgument>
     <PropertyNotSetInConstructor>
       <code><![CDATA[$kernel]]></code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[!$output]]></code>
+      <code><![CDATA[!$output]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnusedClass>
       <code><![CDATA[AbstractKernelTest]]></code>
     </UnusedClass>
@@ -351,24 +348,26 @@
     </UnusedClass>
   </file>
   <file src="tests/src/Core/ResponseTest.php">
-    <MixedArgument>
-      <code><![CDATA[$data]]></code>
-      <code><![CDATA[$data['data']]]></code>
-      <code><![CDATA[$data['data']]]></code>
-    </MixedArgument>
-    <MixedArrayAccess>
-      <code><![CDATA[$data['data']['service']]]></code>
-    </MixedArrayAccess>
     <MixedAssignment>
-      <code><![CDATA[$data]]></code>
+      <code><![CDATA[$_ENV[Constant::APP_ENV]]]></code>
     </MixedAssignment>
-    <PossiblyFalseArgument>
-      <code><![CDATA[json_encode($expectedData)]]></code>
-    </PossiblyFalseArgument>
     <PropertyNotSetInConstructor>
       <code><![CDATA[$originalAppEnv]]></code>
       <code><![CDATA[$originalServer]]></code>
     </PropertyNotSetInConstructor>
+    <RedundantCast>
+      <code><![CDATA[(string) $output]]></code>
+      <code><![CDATA[(string) $output]]></code>
+      <code><![CDATA[(string) $output]]></code>
+      <code><![CDATA[(string) $output]]></code>
+    </RedundantCast>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[!$expectedData]]></code>
+      <code><![CDATA[!$output]]></code>
+      <code><![CDATA[!$output]]></code>
+      <code><![CDATA[!$output]]></code>
+      <code><![CDATA[!$output]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnusedClass>
       <code><![CDATA[ResponseTest]]></code>
     </UnusedClass>
@@ -379,10 +378,9 @@
     </UnusedClass>
   </file>
   <file src="tests/src/Core/SystemTest.php">
-    <PossiblyFalseArgument>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-    </PossiblyFalseArgument>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[!$output]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnusedClass>
       <code><![CDATA[SystemTest]]></code>
     </UnusedClass>
@@ -520,15 +518,13 @@
       <code><![CDATA[rendering]]></code>
       <code><![CDATA[throw]]></code>
     </MixedMethodCall>
-    <PossiblyFalseArgument>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-      <code><![CDATA[$output]]></code>
-    </PossiblyFalseArgument>
     <PropertyNotSetInConstructor>
       <code><![CDATA[$traitObject]]></code>
     </PropertyNotSetInConstructor>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[!$output]]></code>
+      <code><![CDATA[!$output]]></code>
+    </RiskyTruthyFalsyComparison>
     <UnusedClass>
       <code><![CDATA[RenderingTraitTest]]></code>
     </UnusedClass>
@@ -549,10 +545,6 @@
     <MissingReturnType>
       <code><![CDATA[getSomething]]></code>
     </MissingReturnType>
-    <MixedArgumentTypeCoercion>
-      <code><![CDATA[$expectations]]></code>
-      <code><![CDATA[$expectations]]></code>
-    </MixedArgumentTypeCoercion>
     <UnusedClass>
       <code><![CDATA[SecurityTraitTest]]></code>
     </UnusedClass>

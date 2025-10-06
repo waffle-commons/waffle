@@ -27,14 +27,17 @@
         "phpbench/phpbench": "^1.2",
         "vimeo/psalm": "^6.9",
         "squizlabs/php_codesniffer": "^4.0",
-        "friendsofphp/php-cs-fixer": "^3.75"
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "carthage-software/mago": "^1.0.0-beta.26"
     },
     "scripts": {
         "post-install-cmd": [
-          "mkdir -p var/cache",
-          "chmod -R 777 var/cache"
+          "@post-cmd"
         ],
         "post-update-cmd": [
+          "@post-cmd"
+        ],
+        "post-cmd": [
           "mkdir -p var/cache",
           "chmod -R 777 var/cache"
         ],
@@ -44,9 +47,12 @@
         "phpcsfixer": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --path-mode=intersection --config=php-cs-fixer.config.php",
         "phpcbfsrc": "vendor/bin/phpcbf src",
         "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
+        "mago-formatter": "vendor/bin/mago fmt",
+        "mago-lint": "vendor/bin/mago lint --baseline mago-lint-baseline.toml",
         "psalm": "vendor/bin/psalm --config=psalm.xml",
         "psalm-baseline": "vendor/bin/psalm --config=psalm.xml --update-baseline",
         "psalm-taint": "vendor/bin/psalm --taint-analysis --ignore-baseline",
+        "mago-analyze": "vendor/bin/mago analyze --baseline mago-analysis-baseline.toml",
         "phpunit": "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage",
         "clover": "vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml",
         "benchmark": [
@@ -64,9 +70,11 @@
         ],
         "analysis": [
             "@linter",
+            "@mago-lint",
             "@phpstan",
             "@psalm",
-            "@phpcs"
+            "@phpcs",
+            "@mago-analyze"
         ],
         "tests": [
             "@phpunit"
@@ -77,5 +85,10 @@
             "@tests",
             "@benchmark"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "carthage-software/mago": true
+        }
     }
 }
