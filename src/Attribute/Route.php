@@ -18,6 +18,5 @@ final class Route
         public string $path,
         public null|string $name = null,
         public null|array $arguments = null,
-    ) {
-    }
+    ) {}
 }

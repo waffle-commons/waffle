@@ -11,6 +11,5 @@ final readonly class View
      */
     public function __construct(
         public null|array $data = null,
-    ) {
-    }
+    ) {}
 }

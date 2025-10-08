@@ -38,11 +38,7 @@ abstract class AbstractKernel implements KernelInterface
     public function handle(): void
     {
         try {
-            $this
-                ->boot()
-                ->configure()
-                ->loadEnv()
-            ;
+            $this->boot()->configure()->loadEnv();
 
             $handler = $this->isCli() ? $this->createCliFromRequest() : $this->createRequestFromGlobals();
 
@@ -85,12 +81,10 @@ abstract class AbstractKernel implements KernelInterface
             if (null !== $router && $req->isCli() === false) {
                 $routes = $router->getRoutes();
                 foreach ($routes as $route) {
-                    if (
-                        $router->match(
-                            req: $req,
-                            route: $route,
-                        )
-                    ) {
+                    if ($router->match(
+                        req: $req,
+                        route: $route,
+                    )) {
                         $req->setCurrentRoute(route: $route);
                         break; // Stop after the first match
                     }

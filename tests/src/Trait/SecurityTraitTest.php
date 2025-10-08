@@ -203,8 +203,7 @@ final class SecurityTraitTest extends TestCase
 
         // Level 10 Violation: A class that is not declared as final.
         yield 'Level 10 Violation: Class not final' => [
-            'violatingObject' => new class {
-            },
+            'violatingObject' => new class {},
             'securityLevel' => 10,
             'expectedExceptionMessage' => '/Level 10: All classes must be declared final./',
         ];

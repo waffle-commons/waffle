@@ -13,6 +13,5 @@ final class Argument
         public string $classType,
         public string $paramName,
         public bool $required = true,
-    ) {
-    }
+    ) {}
 }

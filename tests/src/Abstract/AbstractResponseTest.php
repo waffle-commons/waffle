@@ -50,7 +50,7 @@ final class AbstractResponseTest extends TestCase
             'id' => 1,
             'name' => 'John Doe',
         ];
-        static::assertSame($expectedData, $response->getView()->data);
+        static::assertSame($expectedData, $response->getView()?->data);
     }
 
     /**

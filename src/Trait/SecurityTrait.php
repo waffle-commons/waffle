@@ -147,12 +147,10 @@ trait SecurityTrait
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (
-                str_starts_with(
-                    haystack: $method->getName(),
-                    needle: '__',
-                )
-            ) {
+            if (str_starts_with(
+                haystack: $method->getName(),
+                needle: '__',
+            )) {
                 continue;
             }
 
@@ -189,12 +187,10 @@ trait SecurityTrait
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (
-                str_starts_with(
-                    haystack: $method->getName(),
-                    needle: '__',
-                )
-            ) {
+            if (str_starts_with(
+                haystack: $method->getName(),
+                needle: '__',
+            )) {
                 continue;
             }
 
@@ -274,13 +270,17 @@ trait SecurityTrait
                  * @phpstan-ignore method.notFound
                  * @psalm-suppress UndefinedMethod
                  */
-                if ((null !== $paramType) && $paramType->getName() === Constant::TYPE_MIXED && !$param->isDefaultValueAvailable()) {
-                     throw new SecurityException(
-                         message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' "
-                         . 'must be strictly typed.',
-                         code: 500,
-                     );
-                 }
+                if (
+                    null !== $paramType
+                    && $paramType->getName() === Constant::TYPE_MIXED
+                    && !$param->isDefaultValueAvailable()
+                ) {
+                    throw new SecurityException(
+                        message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' "
+                        . 'must be strictly typed.',
+                        code: 500,
+                    );
+                }
             }
         }
         return true;

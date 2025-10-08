@@ -11,6 +11,5 @@ class DummyAttribute
 {
     public function __construct(
         public string $value,
-    ) {
-    }
+    ) {}
 }

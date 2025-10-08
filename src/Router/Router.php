@@ -96,12 +96,10 @@ final class Router
                 if (is_dir(filename: $file)) {
                     // TODO: Optimize `array_merge` method (maybe do it manually?)
                     $files = array_merge($files, $this->scan(directory: $file));
-                } elseif (
-                    str_contains(
-                        haystack: $path,
-                        needle: Constant::PHPEXT,
-                    )
-                ) {
+                } elseif (str_contains(
+                    haystack: $path,
+                    needle: Constant::PHPEXT,
+                )) {
                     $files[] = $this->className(path: $file);
                 }
             }
@@ -127,12 +125,10 @@ final class Router
                         foreach ($attributes as $attribute) {
                             $route = $attribute->newInstance();
                             $path = $classRoute->path . $route->path;
-                            if (
-                                !$this->isRouteRegistered(
-                                    path: $path,
-                                    routes: $routes,
-                                )
-                            ) {
+                            if (!$this->isRouteRegistered(
+                                path: $path,
+                                routes: $routes,
+                            )) {
                                 $classRouteName = $classRoute->name ?? Constant::DEFAULT;
                                 $routeName = $route->name ?? Constant::DEFAULT;
                                 $params = [];

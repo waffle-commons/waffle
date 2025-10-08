@@ -42,41 +42,28 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: PHP Linter (PHPLint)
-        run: composer linter
+      - name: Linter (Mago Lint)
+        run: vendor/bin/mago lint
 
-      - name: Mago Linter (Mago Lint)
-        run: composer mago-lint
-
-      - name: PHP Static Analysis Tool (PHPStan)
-        run: composer phpstan
-
-      - name: PHP Static Analysis Tool (Psalm)
-        run: composer psalm
-
-      - name: PHPCodeSniffer Analysis Tool (PHPCS)
-        run: composer phpcs
-
-      - name: Mago Analysis Tool (Mago Analyze)
-        run: composer mago-analyze
+      - name: Static Analysis Tool (Mago Analyze)
+        run: vendor/bin/mago analyze
 
       - name: Security Audit of Composer Dependencies (SCA)
         run: composer audit
 
       - name: Security-focused Static Analysis (SAST)
-        run: composer psalm-taint
+        run: vendor/bin/psalm --taint-analysis
 
       - name: The PHP testing framework (PHPUnit)
-        run: composer tests && composer clover
+        run: |
+          vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage
+          vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml
-
-      - name: The PHP benchmark tool (PHPBench)
-        run: composer benchmark
 
       - name: Save cache
         id: cache-save

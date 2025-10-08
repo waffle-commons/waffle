@@ -140,28 +140,28 @@ end_line = 35
 
 [[entries."src/Core/Security.php".issues]]
 code = "invalid-property-read"
-start_line = 14
-end_line = 14
+start_line = 17
+end_line = 17
 
 [[entries."src/Core/System.php".issues]]
 code = "impossible-assignment"
-start_line = 35
-end_line = 35
+start_line = 38
+end_line = 38
 
 [[entries."src/Core/System.php".issues]]
 code = "invalid-property-read"
-start_line = 35
-end_line = 35
+start_line = 38
+end_line = 38
 
 [[entries."src/Core/System.php".issues]]
 code = "invalid-property-read"
-start_line = 44
-end_line = 44
+start_line = 47
+end_line = 47
 
 [[entries."src/Core/System.php".issues]]
 code = "no-value"
-start_line = 44
-end_line = 44
+start_line = 47
+end_line = 47
 
 [[entries."src/Exception/WaffleException.php".issues]]
 code = "invalid-return-statement"
@@ -170,13 +170,13 @@ end_line = 27
 
 [[entries."src/Router/Router.php".issues]]
 code = "invalid-property-assignment-value"
-start_line = 156
-end_line = 156
+start_line = 153
+end_line = 153
 
 [[entries."src/Router/Router.php".issues]]
 code = "invalid-property-read"
-start_line = 242
-end_line = 242
+start_line = 241
+end_line = 241
 
 [[entries."src/Router/Router.php".issues]]
 code = "named-argument-not-allowed"
@@ -190,48 +190,43 @@ end_line = 100
 
 [[entries."src/Router/Router.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 239
-end_line = 239
+start_line = 237
+end_line = 237
 
 [[entries."src/Router/Router.php".issues]]
 code = "non-existent-method"
-start_line = 140
-end_line = 140
+start_line = 137
+end_line = 137
 
 [[entries."src/Router/Router.php".issues]]
 code = "non-existent-method"
-start_line = 140
-end_line = 140
+start_line = 137
+end_line = 137
 
 [[entries."src/Router/Router.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 140
-end_line = 140
+start_line = 137
+end_line = 137
 
 [[entries."src/Router/Router.php".issues]]
 code = "possibly-invalid-argument"
-start_line = 131
-end_line = 131
-
-[[entries."src/Router/Router.php".issues]]
-code = "property-type-coercion"
-start_line = 69
-end_line = 69
+start_line = 129
+end_line = 129
 
 [[entries."src/Router/Router.php".issues]]
 code = "reference-to-undefined-variable"
-start_line = 228
-end_line = 228
+start_line = 225
+end_line = 225
 
 [[entries."src/Router/Router.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 116
-end_line = 116
+start_line = 115
+end_line = 115
 
 [[entries."src/Router/Router.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 240
-end_line = 240
+start_line = 239
+end_line = 239
 
 [[entries."src/Trait/DotenvTrait.php".issues]]
 code = "mixed-operand"
@@ -240,8 +235,8 @@ end_line = 15
 
 [[entries."src/Trait/ReflectionTrait.php".issues]]
 code = "invalid-generator-return-type"
-start_line = 82
-end_line = 82
+start_line = 87
+end_line = 87
 
 [[entries."src/Trait/RenderingTrait.php".issues]]
 code = "possibly-invalid-argument"
@@ -265,18 +260,18 @@ end_line = 145
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
+start_line = 150
+end_line = 150
+
+[[entries."src/Trait/SecurityTrait.php".issues]]
+code = "named-argument-not-allowed"
 start_line = 151
 end_line = 151
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 152
-end_line = 152
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "named-argument-not-allowed"
-start_line = 184
-end_line = 184
+start_line = 185
+end_line = 185
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
@@ -290,63 +285,68 @@ end_line = 191
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 216
-end_line = 216
+start_line = 215
+end_line = 215
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 238
-end_line = 238
+start_line = 237
+end_line = 237
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 260
-end_line = 260
+start_line = 259
+end_line = 259
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 296
-end_line = 296
+start_line = 300
+end_line = 300
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 297
-end_line = 297
+start_line = 301
+end_line = 301
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 321
-end_line = 321
+start_line = 325
+end_line = 325
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 322
-end_line = 322
+start_line = 326
+end_line = 326
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "non-existent-method"
-start_line = 161
-end_line = 161
+start_line = 162
+end_line = 162
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "non-existent-method"
-start_line = 161
-end_line = 161
+start_line = 162
+end_line = 162
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "non-existent-method"
-start_line = 271
-end_line = 271
+start_line = 274
+end_line = 274
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "non-existent-method"
-start_line = 271
-end_line = 271
+start_line = 274
+end_line = 274
 
-[[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
-code = "possibly-null-property-access"
-start_line = 52
-end_line = 52
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 30
+end_line = 30
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 30
+end_line = 30
 
 [[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
 code = "mixed-operand"
@@ -397,6 +397,11 @@ end_line = 40
 code = "string-member-selector"
 start_line = 124
 end_line = 124
+
+[[entries."tests/src/Core/ResponseTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 39
+end_line = 39
 
 [[entries."tests/src/Core/ResponseTest.php".issues]]
 code = "redundant-cast"
@@ -552,6 +557,21 @@ end_line = 85
 code = "mixed-operand"
 start_line = 85
 end_line = 85
+
+[[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 46
+end_line = 46
+
+[[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 69
+end_line = 69
+
+[[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 91
+end_line = 91
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "mixed-assignment"

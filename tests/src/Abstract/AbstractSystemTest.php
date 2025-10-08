@@ -47,7 +47,7 @@ final class AbstractSystemTest extends TestCase
 
         // Create a concrete, anonymous class that extends AbstractSystem for testing purposes.
         // This allows us to instantiate and test the non-abstract methods of the parent.
-        $this->system = new class ($this->securityMock) extends AbstractSystem {
+        $this->system = new class($this->securityMock) extends AbstractSystem {
             public function __construct(Security $security)
             {
                 // We must call the parent constructor if it exists, but here we are

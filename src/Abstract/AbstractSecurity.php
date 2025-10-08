@@ -31,23 +31,19 @@ abstract class AbstractSecurity implements SecurityInterface
             separator: Constant::ARRAY_SEPARATOR_ALL,
             array: $expectations,
         );
-        if (
-            !$this->isValid(
-                object: $object,
-                expectations: $expectations,
-            )
-        ) {
+        if (!$this->isValid(
+            object: $object,
+            expectations: $expectations,
+        )) {
             throw new SecurityException(
                 message: "The object $className is not valid. It is not an instance of $expects.",
                 code: 500,
             );
         }
-        if (
-            !$this->isSecure(
-                object: $object,
-                level: $this->level,
-            )
-        ) {
+        if (!$this->isSecure(
+            object: $object,
+            level: $this->level,
+        )) {
             throw new SecurityException(
                 message: "The object $className is not secure.",
                 code: 500,
