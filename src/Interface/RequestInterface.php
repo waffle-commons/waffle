@@ -20,5 +20,5 @@ interface RequestInterface
      *  }|null $route
      * @return $this
      */
-    public function setCurrentRoute(?array $route = null): self;
+    public function setCurrentRoute(null|array $route = null): self;
 }

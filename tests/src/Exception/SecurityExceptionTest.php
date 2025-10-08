@@ -27,8 +27,8 @@ final class SecurityExceptionTest extends TestCase
         $exception = new SecurityException($message, $code);
 
         // 3. Assertions
-        $this->assertInstanceOf(WaffleException::class, $exception);
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame($code, $exception->getCode());
+        static::assertInstanceOf(WaffleException::class, $exception);
+        static::assertSame($message, $exception->getMessage());
+        static::assertSame($code, $exception->getCode());
     }
 }

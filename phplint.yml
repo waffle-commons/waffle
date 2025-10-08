@@ -1,9 +1,0 @@
-path: ./
-jobs: 10
-cache-dir: var/cache/.phplint.cache
-extensions:
-  - php
-exclude:
-  - var
-  - vendor
-warning: true

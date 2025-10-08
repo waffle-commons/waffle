@@ -19,12 +19,13 @@ class ConcreteTestKernel extends Kernel
         return $this->config;
     }
 
-    public function getTestSystem(): ?System
+    public function getTestSystem(): null|System
     {
         return $this->system;
     }
 
     // Override to use the dummy controller directory for tests
+    #[\Override]
     public function boot(): self
     {
         // Create a dummy config that points to our test controllers

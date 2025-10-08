@@ -10,7 +10,6 @@ final readonly class View
      * @param array<mixed>|null $data
      */
     public function __construct(
-        public ?array $data = null
-    ) {
-    }
+        public null|array $data = null,
+    ) {}
 }

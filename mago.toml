@@ -1,0 +1,31 @@
+# Welcome to Mago!
+# For full documentation, see https://mago.carthage.software/tools/overview
+php-version = "8.4.5"
+
+[source]
+paths = ["src/", "tests/"]
+includes = ["vendor"]
+excludes = []
+
+[formatter]
+print-width = 120
+tab-width = 4
+use-tabs = false
+
+[linter]
+baseline = "mago-linter-baseline.toml"
+integrations = ["phpunit"]
+
+[linter.rules]
+ambiguous-function-call = { enabled = false }
+literal-named-argument = { enabled = false }
+halstead = { effort-threshold = 7000 }
+
+[analyzer]
+baseline = "mago-analyzer-baseline.toml"
+find-unused-definitions = true
+find-unused-expressions = true
+analyze-dead-code = true
+check-throws = false
+allow-possibly-undefined-array-keys = true
+perform-heuristic-checks = true

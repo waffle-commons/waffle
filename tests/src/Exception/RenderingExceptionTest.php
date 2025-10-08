@@ -18,7 +18,7 @@ final class RenderingExceptionTest extends TestCase
     public function testCanBeInstantiated(): void
     {
         $exception = new RenderingException();
-        $this->assertInstanceOf(RenderingException::class, $exception);
-        $this->assertInstanceOf(WaffleException::class, $exception);
+        static::assertInstanceOf(RenderingException::class, $exception);
+        static::assertInstanceOf(WaffleException::class, $exception);
     }
 }

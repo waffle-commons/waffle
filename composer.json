@@ -21,62 +21,46 @@
         "symfony/dotenv": "^7.2"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.1",
-        "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpunit": "^12.0",
-        "overtrue/phplint": "^9.1",
-        "phpbench/phpbench": "^1.2",
-        "vimeo/psalm": "^6.9",
-        "squizlabs/php_codesniffer": "^4.0",
-        "friendsofphp/php-cs-fixer": "^3.75"
+        "carthage-software/mago": "^1.0.0-beta.26",
+        "vimeo/psalm": "^6.13"
     },
     "scripts": {
         "post-install-cmd": [
-          "mkdir -p var/cache",
-          "chmod -R 777 var/cache"
+          "@post-cmd"
         ],
         "post-update-cmd": [
+          "@post-cmd"
+        ],
+        "post-cmd": [
           "mkdir -p var/cache",
           "chmod -R 777 var/cache"
         ],
-        "linter": "vendor/bin/phplint --configuration=phplint.yml",
-        "phpstan": "vendor/bin/phpstan analyse --memory-limit 2G -c phpstan.neon -vv",
-        "phpcs": "vendor/bin/phpcs -p -s",
-        "phpcsfixer": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --path-mode=intersection --config=php-cs-fixer.config.php",
-        "phpcbfsrc": "vendor/bin/phpcbf src",
-        "phpcbftests": "vendor/bin/phpcbf --ignore=tests/bootstrap.php tests",
-        "psalm": "vendor/bin/psalm --config=psalm.xml",
-        "psalm-baseline": "vendor/bin/psalm --config=psalm.xml --update-baseline",
-        "psalm-taint": "vendor/bin/psalm --taint-analysis --ignore-baseline",
+        "formatter": "vendor/bin/mago fmt",
+        "linter": "vendor/bin/mago lint",
+        "analyzer": "vendor/bin/mago analyze",
         "phpunit": "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage",
-        "clover": "vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml",
         "benchmark": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
         ],
-        "phpcbf": [
-            "@phpcbfsrc",
-            "@phpcbftests"
-        ],
-        "fixers": [
-            "@phpcsfixer",
-            "@phpcbf",
-            "@psalm-baseline"
-        ],
-        "analysis": [
+        "mago": [
+            "@formatter",
             "@linter",
-            "@phpstan",
-            "@psalm",
-            "@phpcs"
+            "@analyzer"
         ],
         "tests": [
             "@phpunit"
         ],
         "scan": [
-            "@fixers",
             "@analysis",
             "@tests",
             "@benchmark"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "carthage-software/mago": true
+        }
     }
 }

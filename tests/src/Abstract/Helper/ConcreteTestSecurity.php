@@ -12,7 +12,8 @@ use Waffle\Abstract\AbstractSecurity;
  */
 final class ConcreteTestSecurity extends AbstractSecurity
 {
-    public function __construct(object $config)
+    /** @phpstan-ignore constructor.unusedParameter */
+    public function __construct(object $_config)
     {
         // For this test, we can use a simple stdClass as a config mock.
         // We set a default low security level, as the trait's logic is already tested elsewhere.

@@ -12,6 +12,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase
@@ -26,8 +27,8 @@ final class RequestTest extends TestCase
         $request = new Request();
 
         // Then: It should be an instance of both Request and AbstractRequest.
-        $this->assertInstanceOf(Request::class, $request);
-        $this->assertInstanceOf(AbstractRequest::class, $request);
+        static::assertInstanceOf(Request::class, $request);
+        static::assertInstanceOf(AbstractRequest::class, $request);
     }
 
     /**
@@ -38,13 +39,30 @@ final class RequestTest extends TestCase
     {
         // Given: A request object with a configured route.
         $request = new Request();
-        $request->setCurrentRoute(['path' => '/test', 'name' => 'test_route']);
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'test_route',
+            'arguments' => ['123'],
+            'path' => '/test',
+            'name' => 'test_route',
+        ];
+        $request->setCurrentRoute($routeData);
 
         // When: The process() method is called.
         $response = $request->process();
 
         // Then: The method should return an instance of the Response class.
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -56,16 +74,32 @@ final class RequestTest extends TestCase
     {
         // Given: A new Request object.
         $request = new Request();
-        $routeData = ['path' => '/users', 'name' => 'user_list'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'list',
+            'arguments' => ['123'],
+            'path' => '/users',
+            'name' => 'user_list',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $request->setCurrentRoute($routeData);
 
         // Then: The method should return the same instance for method chaining.
-        $this->assertSame($request, $result, 'The method should return its own instance (fluent interface).');
+        static::assertSame($request, $result, 'The method should return its own instance (fluent interface).');
 
         // And: The internal 'currentRoute' property should be correctly set.
-        $this->assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
+        static::assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
     }
 
     /**
@@ -88,7 +122,7 @@ final class RequestTest extends TestCase
         $request->configure(cli: false); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.
-        $this->assertSame($superglobal, $request->{$property});
+        static::assertSame($superglobal, $request->{$property});
     }
 
     /**

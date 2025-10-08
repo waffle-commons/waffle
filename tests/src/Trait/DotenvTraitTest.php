@@ -51,7 +51,7 @@ final class DotenvTraitTest extends TestCase
     public function testLoadEnvLoadsVariables(): void
     {
         // Redefine the path to our temporary file by overriding the trait's loadEnv method.
-        $trait = new class () {
+        $trait = new class() {
             use DotenvTrait {
                 DotenvTrait::loadEnv as public traitLoadEnv;
             }
@@ -67,13 +67,13 @@ final class DotenvTraitTest extends TestCase
 
         $trait->loadEnv();
 
-        $this->assertSame('test', $_ENV['APP_ENV']);
-        $this->assertSame('HelloWaffle', $_ENV['TEST_VAR']);
+        static::assertSame('test', $_ENV['APP_ENV']);
+        static::assertSame('HelloWaffle', $_ENV['TEST_VAR']);
     }
 
     public function testLoadEnvForTestsLoadsTestVariables(): void
     {
-        $trait = new class () {
+        $trait = new class() {
             use DotenvTrait {
                 DotenvTrait::loadEnv as public traitLoadEnv;
             }
@@ -89,7 +89,7 @@ final class DotenvTraitTest extends TestCase
 
         $trait->loadEnv(tests: true);
 
-        $this->assertSame('test', $_ENV['APP_ENV']);
-        $this->assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
+        static::assertSame('test', $_ENV['APP_ENV']);
+        static::assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
     }
 }

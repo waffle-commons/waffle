@@ -54,13 +54,13 @@ final class ConfigurationTest extends TestCase
         $reflection = new \ReflectionObject($config);
 
         $controllerDirProp = $reflection->getProperty('controllerDir');
-        $this->assertSame($this->controllerDir, $controllerDirProp->getValue($config));
+        static::assertSame($this->controllerDir, $controllerDirProp->getValue($config));
 
         $serviceDirProp = $reflection->getProperty('serviceDir');
-        $this->assertSame($this->serviceDir, $serviceDirProp->getValue($config));
+        static::assertSame($this->serviceDir, $serviceDirProp->getValue($config));
 
         $securityLevelProp = $reflection->getProperty('securityLevel');
-        $this->assertSame(10, $securityLevelProp->getValue($config), 'Default security level should be 10.');
+        static::assertSame(10, $securityLevelProp->getValue($config), 'Default security level should be 10.');
     }
 
     public function testConstructorHandlesNonExistentPaths(): void
@@ -78,9 +78,9 @@ final class ConfigurationTest extends TestCase
         $reflection = new \ReflectionObject($config);
 
         $controllerDirProp = $reflection->getProperty('controllerDir');
-        $this->assertFalse($controllerDirProp->getValue($config));
+        static::assertFalse($controllerDirProp->getValue($config));
 
         $serviceDirProp = $reflection->getProperty('serviceDir');
-        $this->assertFalse($serviceDirProp->getValue($config));
+        static::assertFalse($serviceDirProp->getValue($config));
     }
 }

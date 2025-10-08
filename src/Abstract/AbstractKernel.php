@@ -27,26 +27,20 @@ abstract class AbstractKernel implements KernelInterface
     use DotenvTrait;
     use ReflectionTrait;
 
-    protected(set) object $config
-        {
-            set => $this->config = $value;
-        }
+    protected(set) object $config {
+        set => $this->config = $value;
+    }
 
-    protected(set) ?System $system = null
-        {
-            set => $this->system = $value;
-        }
+    protected(set) null|System $system = null {
+        set => $this->system = $value;
+    }
 
     public function handle(): void
     {
         try {
-            $this->boot();
-            $this->configure();
-            $this->loadEnv();
+            $this->boot()->configure()->loadEnv();
 
-            $handler = $this->isCli() ?
-                $this->createCliFromRequest() :
-                $this->createRequestFromGlobals();
+            $handler = $this->isCli() ? $this->createCliFromRequest() : $this->createRequestFromGlobals();
 
             $this->run(handler: $handler);
         } catch (Throwable $e) {
@@ -67,12 +61,10 @@ abstract class AbstractKernel implements KernelInterface
     {
         $this->config = $this->newAttributeInstance(
             className: $this->config,
-            attribute: Configuration::class
+            attribute: Configuration::class,
         );
 
-        $this->system = new System(
-            security: new Security(cfg: $this->config)
-        )->boot(kernel: $this);
+        $this->system = new System(security: new Security(cfg: $this->config))->boot(kernel: $this);
 
         return $this;
     }
@@ -84,11 +76,18 @@ abstract class AbstractKernel implements KernelInterface
     public function createRequestFromGlobals(): RequestInterface
     {
         $req = new Request(); // Removed setCurrentRoute() from here
-        if (($this->system instanceof System) && $this->system->router !== null && ($req->isCli() === false)) {
-            foreach ($this->system->router->routes as $route) {
-                if ($this->system->router->match(req: $req, route: $route)) {
-                    $req->setCurrentRoute(route: $route);
-                    break; // Stop after the first match
+        if ($this->system instanceof System) {
+            $router = $this->system->getRouter();
+            if (null !== $router && $req->isCli() === false) {
+                $routes = $router->getRoutes();
+                foreach ($routes as $route) {
+                    if ($router->match(
+                        req: $req,
+                        route: $route,
+                    )) {
+                        $req->setCurrentRoute(route: $route);
+                        break; // Stop after the first match
+                    }
                 }
             }
         }
@@ -107,10 +106,7 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function run(CliInterface|RequestInterface $handler): void
     {
-        $handler
-            ->process()
-            ->render()
-        ;
+        $handler->process()->render();
     }
 
     private function handleException(Throwable $e): void
@@ -119,22 +115,20 @@ abstract class AbstractKernel implements KernelInterface
         $statusCode = 500;
         $data = [
             'message' => 'An unexpected error occurred.',
-            'error'   => $e->getMessage(),
-            'file'    => $e->getFile(),
-            'line'    => $e->getLine(),
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
         ];
 
         if ($e instanceof RouteNotFoundException) {
             $statusCode = 404;
             $data = [
                 'message' => $e->getMessage(),
-                'code'    => $e->getCode(),
+                'code' => $e->getCode(),
             ];
         }
 
         http_response_code($statusCode);
-        (new Response(handler: $handler))->throw(
-            view: new View(data: $data),
-        );
+        new Response(handler: $handler)->throw(view: new View(data: $data));
     }
 }

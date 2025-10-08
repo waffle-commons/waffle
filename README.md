@@ -30,9 +30,7 @@ Features
 
     *   **PHPUnit:** For unit and integration testing.
 
-    *   **PHPStan & Psalm:** For high-level static analysis.
-
-    *   **PHPCS:** For coding standards enforcement (PSR-12).
+    *   **Mago:** For high-level static analysis & coding standards enforcement (PSR-12).
 
     *   **Composer Audit:** For security analysis of dependencies (SCA).
 

@@ -18,7 +18,9 @@ use WaffleTests\Router\Dummy\DummyController;
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase
 {
-    private ?string $originalAppEnv;
+    private mixed $originalAppEnv;
+
+    /** @phpstan-ignore missingType.iterableValue */
     private array $originalServer;
 
     #[\Override]
@@ -34,7 +36,7 @@ final class ResponseTest extends TestCase
     protected function tearDown(): void
     {
         // Restore original superglobal states
-        if ($this->originalAppEnv === null) {
+        if (null === $this->originalAppEnv) {
             unset($_ENV[Constant::APP_ENV]);
         } else {
             $_ENV[Constant::APP_ENV] = $this->originalAppEnv;
@@ -68,9 +70,9 @@ final class ResponseTest extends TestCase
         $output = ob_get_clean();
 
         // 3. Assertions
-        $this->assertJson((string) $output);
+        static::assertJson((string) $output);
         $expectedJson = json_encode(['data' => ['id' => 1, 'name' => 'John Doe']]);
-        $this->assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
+        static::assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
     }
 
     /**
@@ -88,9 +90,12 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $cli);
         $response->render(); // Should do nothing in CLI context for now
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 
     /**
@@ -119,11 +124,17 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
-        $this->assertJson((string) $output);
-        $expectedData = ['data' => ['id' => 123, 'name' => 'John Doe']];
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedData), (string) $output);
+        static::assertJson((string) $output);
+        $expectedData = json_encode(['data' => ['id' => 123, 'name' => 'John Doe']]);
+        if (!$expectedData) {
+            $expectedData = '';
+        }
+        static::assertJsonStringEqualsJsonString($expectedData, (string) $output);
     }
 
     /**
@@ -176,15 +187,26 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
-        $this->assertJson((string) $output);
+        static::assertJson((string) $output);
+        /**
+         * @var array{
+         *        data: array{
+         *         service: non-empty-string,
+         *         timestamp: int
+         *        }
+         *    } $data
+         */
         $data = json_decode((string) $output, true);
-        $this->assertArrayHasKey('data', $data);
-        $this->assertArrayHasKey('service', $data['data']);
-        $this->assertSame('injected', $data['data']['service']);
-        $this->assertArrayHasKey('timestamp', $data['data']);
+        static::assertArrayHasKey('data', $data);
+        static::assertArrayHasKey('service', $data['data']);
+        static::assertSame('injected', $data['data']['service']);
+        static::assertArrayHasKey('timestamp', $data['data']);
     }
 
     /**
@@ -210,8 +232,11 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 }

@@ -16,79 +16,69 @@ abstract class AbstractCli implements CliInterface
     /**
      * @var array<mixed>
      */
-    public array $globals
-        {
-            get => $GLOBALS;
-        }
+    public array $globals {
+        get => $GLOBALS;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $server
-        {
-            get => $_SERVER;
-        }
+    public array $server {
+        get => $_SERVER;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $get
-        {
-            get => $_GET;
-        }
+    public array $get {
+        get => $_GET;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $post
-        {
-            get => $_POST;
-        }
+    public array $post {
+        get => $_POST;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $files
-        {
-            get => $_FILES;
-        }
+    public array $files {
+        get => $_FILES;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $cookie
-        {
-            get => $_COOKIE;
-        }
+    public array $cookie {
+        get => $_COOKIE;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $session
-        {
-            get => $_SESSION;
-        }
+    public array $session {
+        get => $_SESSION;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $request
-        {
-            get => $_REQUEST;
-        }
+    public array $request {
+        get => $_REQUEST;
+    }
 
     /**
      * @var array<mixed>
      */
-    public array $env
-        {
-            get => $_ENV;
-        }
+    public array $env {
+        get => $_ENV;
+    }
 
-    protected(set) bool $cli = true
-        {
-            set => $this->cli = $value;
-        }
+    protected(set) bool $cli = true {
+        set => $this->cli = $value;
+    }
 
     /**
      * @var array{
@@ -99,11 +89,10 @@ abstract class AbstractCli implements CliInterface
      *     name: non-falsy-string
      * }|null
      */
-    protected(set) ?array $currentRoute = null
-        {
-            get => $this->currentRoute;
-            set => $this->currentRoute = $value;
-        }
+    protected(set) null|array $currentRoute = null {
+        get => $this->currentRoute;
+        set => $this->currentRoute = $value;
+    }
 
     #[\Override]
     public function configure(bool $cli): void
@@ -128,7 +117,7 @@ abstract class AbstractCli implements CliInterface
      * @return $this
      */
     #[\Override]
-    public function setCurrentRoute(?array $route = null): self
+    public function setCurrentRoute(null|array $route = null): self
     {
         $this->currentRoute = $route;
 

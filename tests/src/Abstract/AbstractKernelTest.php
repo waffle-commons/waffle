@@ -43,17 +43,20 @@ final class AbstractKernelTest extends TestCase
         ob_start();
         $this->kernel->handle();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
         // We assert that the output is the expected JSON response.
-        $this->assertJson($output);
+        static::assertJson($output);
         $expectedJson = '{
     "data": {
         "id": 1,
         "name": "John Doe"
     }
 }';
-        $this->assertJsonStringEqualsJsonString($expectedJson, $output);
+        static::assertJsonStringEqualsJsonString($expectedJson, $output);
     }
 
     public function testHandleCatchesAndRendersThrowable(): void
@@ -66,11 +69,14 @@ final class AbstractKernelTest extends TestCase
         ob_start();
         $this->kernel->handle();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
         // We assert that the output contains the expected error message.
-        $this->assertJson($output);
-        $this->assertStringContainsString('"message": "An unexpected error occurred."', $output);
-        $this->assertStringContainsString('"error": "Something went wrong"', $output);
+        static::assertJson($output);
+        static::assertStringContainsString('"message": "An unexpected error occurred."', $output);
+        static::assertStringContainsString('"error": "Something went wrong"', $output);
     }
 }

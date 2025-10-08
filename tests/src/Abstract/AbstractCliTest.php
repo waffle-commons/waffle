@@ -11,6 +11,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Response;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase
@@ -28,7 +29,7 @@ final class AbstractCliTest extends TestCase
         $response = $cli->process();
 
         // Then: The method should return an instance of the Response class.
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -40,16 +41,32 @@ final class AbstractCliTest extends TestCase
     {
         // Given: A new CLI object.
         $cli = new ConcreteTestCli();
-        $routeData = ['path' => 'app:command', 'name' => 'app_command'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'show',
+            'arguments' => ['123'],
+            'path' => 'app:command',
+            'name' => 'app_command',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $cli->setCurrentRoute($routeData);
 
         // Then: The method should return the same instance for method chaining.
-        $this->assertSame($cli, $result, 'The method should return its own instance (fluent interface).');
+        static::assertSame($cli, $result, 'The method should return its own instance (fluent interface).');
 
         // And: The internal 'currentRoute' property should be correctly set.
-        $this->assertSame($routeData, $this->getProtectedRoute($cli, 'currentRoute'));
+        static::assertSame($routeData, $this->getProtectedRoute($cli, 'currentRoute'));
     }
 
     /**
@@ -66,8 +83,8 @@ final class AbstractCliTest extends TestCase
         $cli = new ConcreteTestCli();
 
         // Then: The public properties should accurately reflect the superglobal values.
-        $this->assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);
-        $this->assertSame('test', $cli->env['APP_ENV']);
+        static::assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);
+        static::assertSame('test', $cli->env['APP_ENV']);
 
         // Cleanup
         unset($_SERVER['PHP_SELF'], $_ENV['APP_ENV']);

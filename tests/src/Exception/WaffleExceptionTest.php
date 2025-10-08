@@ -18,7 +18,7 @@ final class WaffleExceptionTest extends TestCase
         $waffleException = new WaffleException(
             message: 'A waffle error occurred',
             code: 500,
-            previous: $previousException
+            previous: $previousException,
         );
 
         // --- Execution ---
@@ -27,15 +27,16 @@ final class WaffleExceptionTest extends TestCase
 
         // --- Assertions ---
         // We assert that the returned array has the expected structure.
-        $this->assertIsArray($serializedData);
-        $this->assertArrayHasKey('message', $serializedData);
-        $this->assertArrayHasKey('code', $serializedData);
-        $this->assertArrayHasKey('previous', $serializedData);
+        /** @phpstan-ignore-next-line */
+        static::assertIsArray($serializedData);
+        static::assertArrayHasKey('message', $serializedData);
+        static::assertArrayHasKey('code', $serializedData);
+        static::assertArrayHasKey('previous', $serializedData);
 
         // We assert that the data within the array is correct.
-        $this->assertSame('A waffle error occurred', $serializedData['message']);
-        $this->assertSame(500, $serializedData['code']);
-        $this->assertSame($previousException, $serializedData['previous']);
+        static::assertSame('A waffle error occurred', $serializedData['message']);
+        static::assertSame(500, $serializedData['code']);
+        static::assertSame($previousException, $serializedData['previous']);
     }
 
     public function testSerializeHandlesNullPreviousException(): void
@@ -49,8 +50,8 @@ final class WaffleExceptionTest extends TestCase
 
         // --- Assertions ---
         // We assert that the 'previous' key is null, as expected.
-        $this->assertNull($serializedData['previous']);
-        $this->assertSame('Simple error', $serializedData['message']);
-        $this->assertSame(404, $serializedData['code']);
+        static::assertNull($serializedData['previous']);
+        static::assertSame('Simple error', $serializedData['message']);
+        static::assertSame(404, $serializedData['code']);
     }
 }

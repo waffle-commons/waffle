@@ -12,6 +12,7 @@ use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\Abstract\Helper\ConcreteTestRequest;
+use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase
@@ -20,7 +21,6 @@ final class AbstractRequestTest extends TestCase
      * This test verifies that the process() method correctly returns a Response object
      * when a valid route has been set on the request object. It simulates a typical
      * "happy path" scenario in a web context.
-     * @throws RouteNotFoundException
      * @throws ReflectionException
      */
     public function testProcessReturnsResponseWhenRouteIsSet(): void
@@ -34,7 +34,7 @@ final class AbstractRequestTest extends TestCase
         $response = $request->process();
 
         // Then: The process() method should return an instance of the Response class.
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -60,7 +60,6 @@ final class AbstractRequestTest extends TestCase
      * This test validates a key architectural choice: in a Command-Line Interface (CLI)
      * context, the application should not fail if no route is provided. This allows for
      * CLI commands to be handled differently from web requests.
-     * @throws RouteNotFoundException
      */
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
@@ -72,7 +71,7 @@ final class AbstractRequestTest extends TestCase
         $response = $request->process();
 
         // Then: The method should still return a Response object without throwing an exception.
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -85,16 +84,32 @@ final class AbstractRequestTest extends TestCase
     {
         // Given: A new request object.
         $request = new ConcreteTestRequest();
-        $routeData = ['path' => '/home'];
+        /**
+         * @var array{
+         *       classname: string,
+         *       method: non-empty-string,
+         *       arguments: array<non-empty-string, string>,
+         *       path: string,
+         *       name: non-falsy-string
+         *   }|null $routeData
+         * @phpstan-ignore varTag.nativeType
+         */
+        $routeData = [
+            'classname' => DummyController::class,
+            'method' => 'list',
+            'arguments' => ['123'],
+            'path' => '/home',
+            'name' => 'user_hole',
+        ];
 
         // When: The setCurrentRoute method is called.
         $result = $request->setCurrentRoute($routeData);
 
         // Then: The method should return the same instance for method chaining.
-        $this->assertSame($request, $result, 'The method should return its own instance (fluent interface).');
+        static::assertSame($request, $result, 'The method should return its own instance (fluent interface).');
 
         // And: The internal 'currentRoute' property should be correctly set.
-        $this->assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
+        static::assertSame($routeData, $this->getProtectedRoute($request, 'currentRoute'));
     }
 
     /**
@@ -113,8 +128,8 @@ final class AbstractRequestTest extends TestCase
         $request->configure(cli: false);
 
         // Then: The public properties should accurately reflect the superglobal values.
-        $this->assertSame('GET', $request->server['REQUEST_METHOD']);
-        $this->assertSame('test', $request->env['APP_ENV']);
+        static::assertSame('GET', $request->server['REQUEST_METHOD']);
+        static::assertSame('test', $request->env['APP_ENV']);
 
         // Cleanup the superglobals to avoid side effects in other tests.
         unset($_SERVER['REQUEST_METHOD'], $_ENV['APP_ENV']);

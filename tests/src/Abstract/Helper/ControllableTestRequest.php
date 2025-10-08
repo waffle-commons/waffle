@@ -13,8 +13,8 @@ use Waffle\Interface\ResponseInterface;
  */
 class ControllableTestRequest extends TestRequest
 {
-    private ?ResponseInterface $responseToReturn = null;
-    private ?Throwable $exceptionToThrow = null;
+    private null|ResponseInterface $responseToReturn = null;
+    private null|Throwable $exceptionToThrow = null;
 
     public function setResponse(ResponseInterface $response): void
     {
@@ -29,9 +29,10 @@ class ControllableTestRequest extends TestRequest
     /**
      * @throws Throwable
      */
+    #[\Override]
     public function process(): ResponseInterface
     {
-        if ($this->exceptionToThrow !== null) {
+        if (null !== $this->exceptionToThrow) {
             throw $this->exceptionToThrow;
         }
 

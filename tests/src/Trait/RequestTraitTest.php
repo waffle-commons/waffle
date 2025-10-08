@@ -12,6 +12,7 @@ final class RequestTraitTest extends TestCase
 {
     use RequestTrait;
 
+    /** @phpstan-ignore missingType.iterableValue */
     public static function requestUriProvider(): array
     {
         return [
@@ -22,12 +23,18 @@ final class RequestTraitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $uri
+     * @param array{string, string[]} $expected
+     * @return void
+     */
     #[DataProvider('requestUriProvider')]
     public function testGetRequestUri(string $uri, array $expected): void
     {
-        $this->assertSame($expected, $this->getRequestUri($uri));
+        static::assertSame($expected, $this->getRequestUri($uri));
     }
 
+    /** @phpstan-ignore missingType.iterableValue */
     public static function pathUriProvider(): array
     {
         return [
@@ -37,9 +44,14 @@ final class RequestTraitTest extends TestCase
         ];
     }
 
+    /**
+     * @param string $path
+     * @param array{string, string[]} $expected
+     * @return void
+     */
     #[DataProvider('pathUriProvider')]
     public function testGetPathUri(string $path, array $expected): void
     {
-        $this->assertSame($expected, $this->getPathUri($path));
+        static::assertSame($expected, $this->getPathUri($path));
     }
 }

@@ -35,13 +35,17 @@ final class RenderingTraitTest extends TestCase
         // We start the output buffer to capture what the trait "echoes".
         ob_start();
         // We call the rendering method, simulating a 'dev' environment.
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->rendering($view, Constant::ENV_DEV);
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
         // We assert that the output is a valid JSON string.
-        $this->assertJson($output);
-        $this->assertStringContainsString('"status": "ok"', $output);
+        static::assertJson($output);
+        static::assertStringContainsString('"status": "ok"', $output);
     }
 
     public function testRenderingOutputsNothingInTestEnvironment(): void
@@ -52,12 +56,13 @@ final class RenderingTraitTest extends TestCase
         // --- Execution ---
         ob_start();
         // We call the rendering method, simulating the 'test' environment.
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->rendering($view, Constant::ENV_TEST);
         $output = ob_get_clean();
 
         // --- Assertions ---
         // We assert that nothing was echoed, as expected in a test environment.
-        $this->assertEmpty($output);
+        static::assertEmpty($output);
     }
 
     public function testThrowMethodRendersContent(): void
@@ -68,11 +73,15 @@ final class RenderingTraitTest extends TestCase
         // --- Execution ---
         ob_start();
         // The throw() method should always render output, regardless of the environment.
+        /** @phpstan-ignore method.notFound */
         $this->traitObject->throw($view);
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // --- Assertions ---
-        $this->assertJson($output);
-        $this->assertStringContainsString('"error": "critical"', $output);
+        static::assertJson($output);
+        static::assertStringContainsString('"error": "critical"', $output);
     }
 }
