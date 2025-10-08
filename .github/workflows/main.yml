@@ -43,29 +43,36 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Linter (Mago Lint)
-        run: vendor/bin/mago lint
+        if: success() || failure()
+        run: vendor/bin/mago lint --reporting-format=github
 
       - name: Static Analysis Tool (Mago Analyze)
-        run: vendor/bin/mago analyze
+        if: success() || failure()
+        run: vendor/bin/mago analyze --reporting-format=github
 
       - name: Security Audit of Composer Dependencies (SCA)
+        if: success() || failure()
         run: composer audit
 
       - name: Security-focused Static Analysis (SAST)
+        if: success() || failure()
         run: vendor/bin/psalm --taint-analysis
 
       - name: The PHP testing framework (PHPUnit)
+        if: success() || failure()
         run: |
           vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage
           vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml
 
       - name: Upload coverage reports to Codecov
+        if: success() || failure()
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml
 
       - name: Save cache
+        if: success() || failure()
         id: cache-save
         uses: actions/cache/save@v4
         with:
