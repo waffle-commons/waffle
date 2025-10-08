@@ -1,56 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
-  <file src="src/Core/Security.php">
-    <ClassMustBeFinal>
-      <code><![CDATA[Security]]></code>
-    </ClassMustBeFinal>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[Security]]></code>
-    </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Core/System.php">
-    <ClassMustBeFinal>
-      <code><![CDATA[System]]></code>
-    </ClassMustBeFinal>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[System]]></code>
-    </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Interface/KernelInterface.php">
-    <PossiblyUnusedReturnValue>
-      <code><![CDATA[self]]></code>
-    </PossiblyUnusedReturnValue>
-  </file>
-  <file src="src/Router/Router.php">
-    <InvalidNamedArgument>
-      <code><![CDATA[name]]></code>
-    </InvalidNamedArgument>
-    <MixedMethodCall>
-      <code><![CDATA[new $route[Constant::CLASSNAME]()]]></code>
-    </MixedMethodCall>
-    <MixedPropertyTypeCoercion>
-      <code><![CDATA[$this->scan(directory: $this->directory)]]></code>
-    </MixedPropertyTypeCoercion>
-    <PropertyNotSetInConstructor>
-      <code><![CDATA[$routes]]></code>
-    </PropertyNotSetInConstructor>
-    <RiskyTruthyFalsyComparison>
-      <code><![CDATA[$classRoute->name]]></code>
-      <code><![CDATA[$route->name]]></code>
-      <code><![CDATA[empty($matches[0])]]></code>
-    </RiskyTruthyFalsyComparison>
-  </file>
-  <file src="src/Trait/ReflectionTrait.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$attribute]]></code>
-    </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Trait/SecurityTrait.php">
-    <UndefinedMethod>
-      <code><![CDATA[getName]]></code>
-      <code><![CDATA[getName]]></code>
-    </UndefinedMethod>
-  </file>
   <file src="tests/src/Abstract/AbstractCliTest.php">
     <UnusedClass>
       <code><![CDATA[AbstractCliTest]]></code>

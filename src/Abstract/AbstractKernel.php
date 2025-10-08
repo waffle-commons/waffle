@@ -38,9 +38,11 @@ abstract class AbstractKernel implements KernelInterface
     public function handle(): void
     {
         try {
-            $this->boot();
-            $this->configure();
-            $this->loadEnv();
+            $this
+                ->boot()
+                ->configure()
+                ->loadEnv()
+            ;
 
             $handler = $this->isCli() ? $this->createCliFromRequest() : $this->createRequestFromGlobals();
 

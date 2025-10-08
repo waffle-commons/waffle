@@ -27,7 +27,7 @@ final class Router
     }
 
     /**
-     * @var array<string, string>|false
+     * @var array<array-key, string>|false
      */
     private(set) array|false $files {
         set => $this->files = $value;
@@ -50,6 +50,7 @@ final class Router
 
     public function __construct(string|false $directory, System $system)
     {
+        $this->routes = [];
         $this->directory = $directory;
         $this->files = false;
         $this->system = $system;
@@ -74,7 +75,7 @@ final class Router
 
     /**
      * @param string $directory
-     * @return string[]
+     * @return array<array-key, string>
      */
     protected function scan(string $directory): array
     {
@@ -132,8 +133,8 @@ final class Router
                                     routes: $routes,
                                 )
                             ) {
-                                $classRouteName = $classRoute->name ?: Constant::DEFAULT;
-                                $routeName = $route->name ?: Constant::DEFAULT;
+                                $classRouteName = $classRoute->name ?? Constant::DEFAULT;
+                                $routeName = $route->name ?? Constant::DEFAULT;
                                 $params = [];
                                 foreach ($method->getParameters() as $param) {
                                     // Uses Reflection to get parameter types for argument resolution
@@ -230,6 +231,7 @@ final class Router
                 flags: PREG_UNMATCHED_AS_NULL,
             );
 
+            /** @psalm-suppress RiskyTruthyFalsyComparison */
             if (!empty($matches[0])) {
                 // If it is a parameter, it matches unconditionally (e.g., /{id} matches /123).
 
@@ -238,6 +240,7 @@ final class Router
                 // immediately after a match is found. This prevents the execution
                 // of potentially insecure classes/methods.
                 if (class_exists(class: $route[Constant::CLASSNAME])) {
+                    /** @psalm-suppress MixedMethodCall */
                     $controllerInstance = new $route[Constant::CLASSNAME]();
                     // We call analyze on the controller to validate its security level
                     $this->system->security->analyze(object: $controllerInstance);
@@ -287,7 +290,7 @@ final class Router
 
     private function isProduction(): bool
     {
-        return getenv(name: Constant::APP_ENV) === Constant::ENV_DEFAULT;
+        return getenv(Constant::APP_ENV) === Constant::ENV_DEFAULT;
     }
 
     private function getCacheFilePath(): string

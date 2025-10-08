@@ -12,6 +12,9 @@ use Waffle\Interface\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor,ClassMustBeFinal
+ */
 class System extends AbstractSystem
 {
     public function __construct(Security $security)

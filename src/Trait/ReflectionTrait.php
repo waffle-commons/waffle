@@ -53,6 +53,11 @@ trait ReflectionTrait
         return $namespace ? $namespace . '\\' . $class : $class;
     }
 
+    /**
+     * @param object $className
+     * @param class-string $attribute
+     * @return object
+     */
     public function newAttributeInstance(object $className, string $attribute): object
     {
         $obj = $object = new ReflectionObject(object: $className);

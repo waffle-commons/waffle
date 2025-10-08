@@ -158,7 +158,10 @@ trait SecurityTrait
 
             $returnType = $method->getReturnType();
             if (null !== $returnType) {
-                /** @phpstan-ignore method.notFound */
+                /**
+                 * @phpstan-ignore method.notFound
+                 * @psalm-suppress UndefinedMethod
+                 */
                 $returnConditions = $returnType->getName() === Constant::TYPE_VOID;
                 if ($returnConditions && $method->getDeclaringClass()->getName() === $class) {
                     throw new SecurityException(
@@ -267,16 +270,17 @@ trait SecurityTrait
 
             foreach ($method->getParameters() as $param) {
                 $paramType = $param->getType();
-                if (null !== $paramType) {
-                    /** @phpstan-ignore method.notFound */
-                    if ($paramType->getName() === Constant::TYPE_MIXED && !$param->isDefaultValueAvailable()) {
-                        throw new SecurityException(
-                            message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' "
-                            . 'must be strictly typed.',
-                            code: 500,
-                        );
-                    }
-                }
+                /**
+                 * @phpstan-ignore method.notFound
+                 * @psalm-suppress UndefinedMethod
+                 */
+                if ((null !== $paramType) && $paramType->getName() === Constant::TYPE_MIXED && !$param->isDefaultValueAvailable()) {
+                     throw new SecurityException(
+                         message: "Level 7: Public method '{$method->getName()}' parameter '{$param->getName()}' "
+                         . 'must be strictly typed.',
+                         code: 500,
+                     );
+                 }
             }
         }
         return true;
