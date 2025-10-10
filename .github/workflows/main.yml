@@ -54,6 +54,31 @@ jobs:
       - name: Install dependencies with Composer
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+  mago_fmt:
+    name: 💅 Formatter (Mago Fmt)
+    needs: build
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist
+      - name: Check formatting with Mago Fmt
+        run: vendor/bin/mago fmt --check
+
   mago_lint:
     name: 🎨 Linter (Mago Lint)
     needs: build
