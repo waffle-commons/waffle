@@ -9,16 +9,26 @@ on:
   pull_request:
 
 jobs:
-  # Job 1: Build & Install Dependencies
-  # This job ensures the project is installable and warms up the cache for subsequent jobs.
+  prepare:
+    name: ⚙️ Prepare Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          echo 'matrix={"operating-system":["ubuntu-22.04","ubuntu-24.04"],"php-version":["8.4"]}' >> $GITHUB_OUTPUT
+
   build:
     name: 🏗️ Build & Install
+    needs: prepare
     runs-on: ${{ matrix.operating-system }}
+    outputs:
+      matrix: ${{ needs.prepare.outputs.matrix }}
     strategy:
       fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-        php-versions: ['8.4']
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,7 +36,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer:v2
 
       - name: Get Composer cache directory
@@ -37,121 +47,101 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-
+            ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
 
       - name: Install dependencies with Composer
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-  # Job 2: Linter (runs in parallel with other analysis jobs)
   mago_lint:
     name: 🎨 Linter (Mago Lint)
+    needs: build
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-        php-versions: ['8.4']
-    needs: build
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer:v2
       - name: Cache and Install (will be fast)
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
       - name: Run Mago Lint
         run: vendor/bin/mago lint --reporting-format=github
 
-  # Job 3: Static Analysis (runs in parallel with other analysis jobs)
   mago_analyze:
     name: 🔬 Static Analysis (Mago Analyze)
+    needs: build
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-        php-versions: ['8.4']
-    needs: build
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer:v2
       - uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
       - name: Run Mago Analyze
         run: vendor/bin/mago analyze --reporting-format=github
 
-  # Job 4: Security Scan (runs in parallel with other analysis jobs)
   security_scan:
     name: 🛡️ Security Scan (SCA & SAST)
+    needs: build
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-        php-versions: ['8.4']
-    needs: build
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           tools: composer:v2
       - uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
       - name: Audit Composer dependencies (SCA)
         run: composer audit
       - name: Run Taint Analysis (SAST)
         run: vendor/bin/psalm --taint-analysis
 
-  # Job 5: Unit Tests (runs only after all analysis jobs have passed)
   unit_tests:
-    name: 🧪 Tests (PHP ${{ matrix.php-versions }})
+    name: 🧪 Tests (PHP ${{ matrix.php-version }})
+    needs: [build, mago_lint, mago_analyze, security_scan]
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-        php-versions: ['8.4']
-    needs: [mago_lint, mago_analyze, security_scan]
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     if: failure() || success()
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           extensions: gd, pgsql, pdo_mysql, pdo_pgsql, gmp, fileinfo, intl, opcache, xml, iconv, redis, mailparse
           coverage: xdebug
           tools: composer:v2
       - uses: actions/cache@v4
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-versions }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml
@@ -160,5 +150,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml
-        # It's often best to upload coverage from only one job.
-        if: matrix.php-versions == '8.4'
+        if: matrix.php-version == '8.4'
