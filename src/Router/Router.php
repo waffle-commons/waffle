@@ -12,9 +12,6 @@ use Waffle\Exception\SecurityException;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait;
 
-/**
- * @psalm-suppress InvalidStringClass
- */
 final class Router
 {
     use ReflectionTrait;
@@ -227,7 +224,6 @@ final class Router
                 flags: PREG_UNMATCHED_AS_NULL,
             );
 
-            /** @psalm-suppress RiskyTruthyFalsyComparison */
             if (!empty($matches[0])) {
                 // If it is a parameter, it matches unconditionally (e.g., /{id} matches /123).
 
@@ -236,7 +232,6 @@ final class Router
                 // immediately after a match is found. This prevents the execution
                 // of potentially insecure classes/methods.
                 if (class_exists(class: $route[Constant::CLASSNAME])) {
-                    /** @psalm-suppress MixedMethodCall */
                     $controllerInstance = new $route[Constant::CLASSNAME]();
                     // We call analyze on the controller to validate its security level
                     $this->system->security->analyze(object: $controllerInstance);

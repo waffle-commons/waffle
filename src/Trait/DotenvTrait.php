@@ -12,7 +12,6 @@ trait DotenvTrait
     {
         $dotenv = new Dotenv();
         $test = $tests ? '.test' : '';
-        /** @psalm-suppress UndefinedConstant */
         $dotenv->loadEnv(path: APP_ROOT . DIRECTORY_SEPARATOR . ".env$test");
     }
 }

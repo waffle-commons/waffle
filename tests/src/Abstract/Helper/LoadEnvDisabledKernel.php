@@ -11,9 +11,6 @@ namespace WaffleTests\Abstract\Helper;
  */
 class LoadEnvDisabledKernel extends ConcreteTestKernel
 {
-    /**
-     * @Override
-     */
     #[\Override]
     public function loadEnv(bool $tests = false): void
     {

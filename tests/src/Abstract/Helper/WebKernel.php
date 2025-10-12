@@ -12,9 +12,6 @@ namespace WaffleTests\Abstract\Helper;
  */
 class WebKernel extends ConcreteTestKernel
 {
-    /**
-     * @Override
-     */
     #[\Override]
     public function boot(): self
     {
@@ -25,18 +22,12 @@ class WebKernel extends ConcreteTestKernel
         return $this;
     }
 
-    /**
-     * @Override
-     */
     #[\Override]
     public function loadEnv(bool $tests = false): void
     {
         // This method is intentionally left empty for the test.
     }
 
-    /**
-     * @Override
-     */
     #[\Override]
     public function isCli(): bool
     {

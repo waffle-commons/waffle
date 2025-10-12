@@ -24,7 +24,6 @@ final class RouterTest extends TestCase
     private Router $router;
     private string $dummyControllerDir;
 
-    /** @phpstan-ignore missingType.iterableValue */
     private array $serverBackup;
     private System $system;
 
@@ -113,9 +112,6 @@ final class RouterTest extends TestCase
         static::assertSame('user_users_list', $matchingRoute['name'], 'The matched route has an incorrect name.');
     }
 
-    /**
-     * @dataProvider dynamicRouteProvider
-     */
     #[DataProvider('dynamicRouteProvider')]
     public function testMatchWithDynamicParameterRoutes(string $url, string $expectedRouteName): void
     {

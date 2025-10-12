@@ -16,11 +16,6 @@ use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RenderingTrait;
 use Waffle\Trait\RequestTrait;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- * @psalm-suppress InvalidStringClass
- * @psalm-suppress UndefinedClass
- */
 abstract class AbstractResponse implements ResponseInterface
 {
     use ReflectionTrait;
@@ -99,7 +94,6 @@ abstract class AbstractResponse implements ResponseInterface
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
                     if (class_exists(class: $argType)) {
-                        /** @psalm-suppress MixedMethodCall */
                         $arg = new $argType();
                     } else {
                         $arg = $this->getRouteArgument(

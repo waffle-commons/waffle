@@ -156,10 +156,6 @@ trait SecurityTrait
 
             $returnType = $method->getReturnType();
             if (null !== $returnType) {
-                /**
-                 * @phpstan-ignore method.notFound
-                 * @psalm-suppress UndefinedMethod
-                 */
                 $returnConditions = $returnType->getName() === Constant::TYPE_VOID;
                 if ($returnConditions && $method->getDeclaringClass()->getName() === $class) {
                     throw new SecurityException(
@@ -266,10 +262,6 @@ trait SecurityTrait
 
             foreach ($method->getParameters() as $param) {
                 $paramType = $param->getType();
-                /**
-                 * @phpstan-ignore method.notFound
-                 * @psalm-suppress UndefinedMethod
-                 */
                 if (
                     null !== $paramType
                     && $paramType->getName() === Constant::TYPE_MIXED

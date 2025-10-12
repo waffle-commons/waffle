@@ -6,10 +6,6 @@ namespace Waffle\Attribute;
 
 use Attribute;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- * @psalm-suppress UndefinedConstant
- */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Configuration
 {
@@ -30,9 +26,7 @@ class Configuration
         string $service = 'app/Service',
         int $securityLevel = 10,
     ) {
-        /** @psalm-suppress MixedOperand */
         $this->controllerDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $controller);
-        /** @psalm-suppress MixedOperand */
         $this->serviceDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $service);
         $this->securityLevel = $securityLevel;
     }

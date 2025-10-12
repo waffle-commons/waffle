@@ -10,9 +10,6 @@ use Waffle\Router\Router;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\SystemTrait;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- */
 abstract class AbstractSystem implements SystemInterface
 {
     use ReflectionTrait;

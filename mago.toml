@@ -13,7 +13,7 @@ tab-width = 4
 use-tabs = false
 
 [linter]
-# baseline = "mago-linter-baseline.toml" # TODO: Handle this
+# baseline = "var/data/mago/linter-baseline.toml" # TODO: Handle this
 integrations = ["phpunit"]
 
 [linter.rules]
@@ -22,7 +22,7 @@ literal-named-argument = { enabled = false }
 halstead = { effort-threshold = 7000 }
 
 [analyzer]
-# baseline = "mago-analyzer-baseline.toml" # TODO: Handle this
+# baseline = "var/data/mago/analyzer-baseline.toml" # TODO: Handle this
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true

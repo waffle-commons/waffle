@@ -12,7 +12,6 @@ use Waffle\Abstract\AbstractSecurity;
  */
 final class ConcreteTestSecurity extends AbstractSecurity
 {
-    /** @phpstan-ignore constructor.unusedParameter */
     public function __construct(object $_config)
     {
         // For this test, we can use a simple stdClass as a config mock.

@@ -20,7 +20,6 @@ final class ResponseTest extends TestCase
 {
     private mixed $originalAppEnv;
 
-    /** @phpstan-ignore missingType.iterableValue */
     private array $originalServer;
 
     #[\Override]

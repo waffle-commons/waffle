@@ -94,7 +94,6 @@ trait ReflectionTrait
         }
 
         foreach ($route as $key => $value) {
-            /** @phpstan-ignore generator.returnType */
             yield $key => $value;
         }
     }

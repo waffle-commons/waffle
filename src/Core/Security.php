@@ -7,9 +7,6 @@ namespace Waffle\Core;
 use Waffle\Abstract\AbstractSecurity;
 use Waffle\Attribute\Configuration;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor,ClassMustBeFinal
- */
 class Security extends AbstractSecurity
 {
     public function __construct(object $cfg)

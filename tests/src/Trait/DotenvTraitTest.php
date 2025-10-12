@@ -7,9 +7,6 @@ namespace WaffleTests\Trait;
 use PHPUnit\Framework\TestCase;
 use Waffle\Trait\DotenvTrait;
 
-/**
- * @psalm-suppress UndefinedConstant
- */
 final class DotenvTraitTest extends TestCase
 {
     use DotenvTrait;
