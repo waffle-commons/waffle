@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
+use ReflectionNamedType;
 use Waffle\Attribute\Route;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
@@ -31,15 +32,15 @@ final class Router
     }
 
     /**
-     * @var list<array{
-     *      classname: string,
-     *      method: non-empty-string,
-     *      arguments: array<non-empty-string, string>,
+     * @var array{}|non-empty-list<array{
+     *      classname: class-string,
+     *      method: string,
+     *      arguments: array<string, mixed>,
      *      path: string,
      *      name: non-falsy-string
      * }>
      */
-    private(set) array $routes {
+    public array $routes {
         set => $this->routes = $value;
     }
 
@@ -95,10 +96,7 @@ final class Router
                     // TODO(@supa-chayajin): Optimize `array_merge` method (maybe do it manually?)
                     $files = array_merge($files, $this->scan(directory: $file));
                 }
-                if (str_contains(
-                    haystack: $path,
-                    needle: Constant::PHPEXT,
-                )) {
+                if (str_contains($path, Constant::PHPEXT)) {
                     $files[] = $this->className(path: $file);
                 }
             }
@@ -133,8 +131,10 @@ final class Router
                                 $params = [];
                                 foreach ($method->getParameters() as $param) {
                                     // Uses Reflection to get parameter types for argument resolution
-                                    if ($param->getType() instanceof \ReflectionNamedType) {
-                                        $params[$param->getName()] = $param->getType()->getName();
+                                    if ($param->getType() instanceof ReflectionNamedType) {
+                                        /** @var ReflectionNamedType $paramType */
+                                        $paramType = $param->getType();
+                                        $params[$param->getName()] = $paramType->getName();
                                     }
                                 }
                                 $routes[] = [
@@ -173,10 +173,10 @@ final class Router
 
     /**
      * @param string $path
-     * @param list<array{
-     *      classname: string,
-     *      method: non-empty-string,
-     *      arguments: array<non-empty-string, string>,
+     * @param array{}|non-empty-list<array{
+     *      classname: class-string,
+     *      method: string,
+     *      arguments: array<string, mixed>,
      *      path: string,
      *      name: non-falsy-string
      *  }> $routes
@@ -192,9 +192,9 @@ final class Router
      *
      * @param Request $req
      * @param array{
-     *     classname: string,
-     *     method: non-empty-string,
-     *     arguments: array<non-empty-string, string>,
+     *     classname: class-string,
+     *     method: string,
+     *     arguments: array<string, mixed>,
      *     path: string,
      *     name: non-falsy-string
      *  } $route
@@ -203,7 +203,8 @@ final class Router
      */
     public function match(Request $req, array $route): bool
     {
-        $pathSegments = $this->getPathUri(path: $route[Constant::PATH] ?? Constant::EMPTY_STRING);
+        $matches = null;
+        $pathSegments = $this->getPathUri(path: $route[Constant::PATH]);
         $urlSegments = $this->getRequestUri(uri: $req->server[Constant::REQUEST_URI]);
 
         // 1. Path length must match exactly.
@@ -234,7 +235,7 @@ final class Router
                 // We use the System's Security service to analyze the controller class
                 // immediately after a match is found. This prevents the execution
                 // of potentially insecure classes/methods.
-                if (class_exists(class: $route[Constant::CLASSNAME])) {
+                if (class_exists($route[Constant::CLASSNAME])) {
                     $controllerInstance = new $route[Constant::CLASSNAME]();
                     // We call analyze on the controller to validate its security level
                     $this->system->security->analyze(object: $controllerInstance);
@@ -264,13 +265,14 @@ final class Router
             $cacheFile = $this->getCacheFilePath();
             if (file_exists(filename: $cacheFile)) {
                 // The cache file returns the routes array directly
+
                 /**
-                 * @var list<array{
-                 *       classname: string,
-                 *       method: non-empty-string,
-                 *       arguments: array<non-empty-string, string>,
-                 *       path: string,
-                 *       name: non-falsy-string
+                 * @var array{}|non-empty-list<array{
+                 *      classname: class-string,
+                 *      method: string,
+                 *      arguments: array<string, mixed>,
+                 *      path: string,
+                 *      name: non-falsy-string
                  *   }> $routesArray
                  */
                 $routesArray = require $cacheFile;
@@ -293,10 +295,10 @@ final class Router
     }
 
     /**
-     * @return list<array{
-     *       classname: string,
-     *       method: non-empty-string,
-     *       arguments: array<non-empty-string, string>,
+     * @return array{}|non-empty-list<array{
+     *       classname: class-string,
+     *       method: string,
+     *       arguments: array<string, mixed>,
      *       path: string,
      *       name: non-falsy-string
      *  }>

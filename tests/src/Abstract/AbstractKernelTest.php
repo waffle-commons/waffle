@@ -28,7 +28,12 @@ final class AbstractKernelTest extends TestCase
     protected function tearDown(): void
     {
         // Clean up environment variables to prevent test pollution.
-        unset($_ENV['APP_ENV'], $_SERVER['REQUEST_URI']);
+        if (isset($_ENV['APP_ENV'])) {
+            unset($_ENV['APP_ENV']);
+        }
+        if (isset($_SERVER['REQUEST_URI'])) {
+            unset($_SERVER['REQUEST_URI']);
+        }
         parent::tearDown();
     }
 

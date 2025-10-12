@@ -26,7 +26,7 @@ abstract class AbstractSecurity implements SecurityInterface
     #[\Override]
     public function analyze(object $object, array $expectations = []): void
     {
-        $className = get_class(object: $object);
+        $className = get_class($object);
         $expects = implode(
             separator: Constant::ARRAY_SEPARATOR_ALL,
             array: $expectations,

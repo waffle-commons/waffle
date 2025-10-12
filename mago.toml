@@ -19,18 +19,10 @@ integrations = ["phpunit"]
 [linter.rules]
 ambiguous-function-call = { enabled = false }
 literal-named-argument = { enabled = false }
-halstead = { enabled = false }
-too-many-properties = { enabled = false }
-too-many-methods = { enabled = false }
-no-global = { enabled = false }
-no-request-variable = { enabled = false }
-no-boolean-flag-parameter = { enabled = false }
-cyclomatic-complexity = { enabled = false }
-kan-defect = { enabled = false }
-excessive-nesting = { enabled = false }
+halstead = { effort-threshold = 7000 }
 
 [analyzer]
-baseline = "mago-analyzer-baseline.toml" # TODO: Handle this
+baseline = "mago-analyzer-baseline.toml"
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true

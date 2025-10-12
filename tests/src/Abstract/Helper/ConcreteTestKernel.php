@@ -32,7 +32,9 @@ class ConcreteTestKernel extends Kernel
         $this->config = new class extends Configuration {
             public function __construct()
             {
-                parent::__construct(controller: APP_ROOT . DIRECTORY_SEPARATOR . 'tests/src/Router/Dummy');
+                /** @var string $root */
+                $root = APP_ROOT;
+                parent::__construct(controller: $root . DIRECTORY_SEPARATOR . 'tests/src/Router/Dummy');
             }
         };
 

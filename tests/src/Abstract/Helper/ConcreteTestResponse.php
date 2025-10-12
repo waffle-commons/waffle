@@ -21,11 +21,14 @@ class ConcreteTestResponse extends AbstractResponse
 
     public function getView(): null|View
     {
-        return $this->view;
+        return new View(data: [
+            'id' => 1,
+            'name' => 'John Doe',
+        ]);
     }
 
     public function isCli(): bool
     {
-        return $this->cli;
+        return true;
     }
 }

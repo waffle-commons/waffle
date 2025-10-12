@@ -8,21 +8,20 @@ use PHPUnit\Framework\TestCase;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Trait\RenderingTrait;
+use WaffleTests\Trait\Helper\TraitObject;
 
 final class RenderingTraitTest extends TestCase
 {
     /**
      * An anonymous class that uses the trait to be tested.
      */
-    private object $traitObject;
+    private TraitObject $traitObject;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->traitObject = new class {
-            use RenderingTrait;
-        };
+        $this->traitObject = new TraitObject();
     }
 
     public function testRenderingOutputsJsonInDevEnvironment(): void

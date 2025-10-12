@@ -15,7 +15,7 @@ class WaffleException extends Exception
     /**
      * @return array{
      *      message: string,
-     *      code: int,
+     *      code: int|string,
      *      previous: Throwable|null,
      *  }
      */

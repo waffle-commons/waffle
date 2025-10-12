@@ -25,6 +25,7 @@ final class ReflectionTraitTest extends TestCase
 
     public static function classNameProvider(): array
     {
+        /** @var string $root */
         $root = APP_ROOT;
 
         return [

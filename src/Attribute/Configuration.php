@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Waffle\Attribute;
 
 use Attribute;
+use Waffle\Core\Constant;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 class Configuration
 {
-    private(set) string|false $controllerDir {
+    public string $controllerDir {
         set => $this->controllerDir = $value;
     }
 
-    private(set) string|false $serviceDir {
+    public string $serviceDir {
         set => $this->serviceDir = $value;
     }
 
-    private(set) int $securityLevel {
+    public int $securityLevel {
         set => $this->securityLevel = $value;
     }
 
@@ -26,8 +27,10 @@ class Configuration
         string $service = 'app/Service',
         int $securityLevel = 10,
     ) {
-        $this->controllerDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $controller);
-        $this->serviceDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $service);
+        /** @var string $root */
+        $root = APP_ROOT;
+        $this->controllerDir = realpath(path: $root . DIRECTORY_SEPARATOR . $controller) ?: Constant::EMPTY_STRING;
+        $this->serviceDir = realpath(path: $root . DIRECTORY_SEPARATOR . $service) ?: Constant::EMPTY_STRING;
         $this->securityLevel = $securityLevel;
     }
 }

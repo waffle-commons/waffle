@@ -66,11 +66,14 @@ final class ResponseTest extends TestCase
         $response = new Response(handler: $request);
         $response->render();
         $output = ob_get_clean();
+        if (!$output) {
+            $output = '';
+        }
 
         // 3. Assertions
-        static::assertJson((string) $output);
+        static::assertJson($output);
         $expectedJson = json_encode(['data' => ['id' => 1, 'name' => 'John Doe']]);
-        static::assertJsonStringEqualsJsonString((string) $expectedJson, (string) $output);
+        static::assertJsonStringEqualsJsonString((string) $expectedJson, $output);
     }
 
     /**
@@ -127,12 +130,12 @@ final class ResponseTest extends TestCase
         }
 
         // 3. Assertions
-        static::assertJson((string) $output);
+        static::assertJson($output);
         $expectedData = json_encode(['data' => ['id' => 123, 'name' => 'John Doe']]);
         if (!$expectedData) {
             $expectedData = '';
         }
-        static::assertJsonStringEqualsJsonString($expectedData, (string) $output);
+        static::assertJsonStringEqualsJsonString($expectedData, $output);
     }
 
     /**
@@ -191,7 +194,7 @@ final class ResponseTest extends TestCase
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
-        static::assertJson((string) $output);
+        static::assertJson($output);
         /**
          * @var array{
          *        data: array{
@@ -200,7 +203,7 @@ final class ResponseTest extends TestCase
          *        }
          *    } $data
          */
-        $data = json_decode((string) $output, true);
+        $data = json_decode($output, true);
         static::assertArrayHasKey('data', $data);
         static::assertArrayHasKey('service', $data['data']);
         static::assertSame('injected', $data['data']['service']);

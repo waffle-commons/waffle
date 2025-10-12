@@ -48,7 +48,7 @@ trait ReflectionTrait
             }
         }
 
-        if (isset($class) && '' === $class) {
+        if ('' === $class) {
             return Constant::EMPTY_STRING; // Return empty string if no class is found in the file.
         }
 
@@ -88,12 +88,12 @@ trait ReflectionTrait
      *      path: string,
      *      name: non-falsy-string
      * }|null $route
-     * @return Generator|null
+     * @return Generator
      */
-    public function controllerValues(null|array $route = null): null|Generator
+    public function controllerValues(null|array $route = null): Generator
     {
         if (null === $route) {
-            return null;
+            return;
         }
 
         foreach ($route as $key => $value) {

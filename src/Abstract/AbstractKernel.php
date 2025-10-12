@@ -27,7 +27,7 @@ abstract class AbstractKernel implements KernelInterface
     use DotenvTrait;
     use ReflectionTrait;
 
-    protected(set) object $config {
+    public object $config {
         set => $this->config = $value;
     }
 

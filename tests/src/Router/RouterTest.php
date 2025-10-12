@@ -176,6 +176,7 @@ final class RouterTest extends TestCase
         $this->router->boot()->registerRoutes();
         static::assertFileExists($cacheFile, 'The router should have created a cache file.');
 
+        /** @var array $cachedRoutes */
         $cachedRoutes = require $cacheFile;
         static::assertNotEmpty($cachedRoutes, 'The cache file should not be empty.');
         static::assertCount(5, $cachedRoutes, 'The cache file should contain the correct number of routes.');
