@@ -5,13 +5,13 @@ end_line = 98
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "docblock-type-mismatch"
-start_line = 110
-end_line = 110
+start_line = 112
+end_line = 112
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "impossible-assignment"
-start_line = 131
-end_line = 131
+start_line = 133
+end_line = 133
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-class-string-expression"
@@ -35,18 +35,23 @@ end_line = 80
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-property-read"
-start_line = 130
-end_line = 130
+start_line = 132
+end_line = 132
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "invalid-property-read"
-start_line = 130
-end_line = 130
+start_line = 132
+end_line = 132
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 117
+end_line = 117
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
-start_line = 102
-end_line = 102
+start_line = 101
+end_line = 101
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
@@ -55,8 +60,13 @@ end_line = 104
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-argument"
-start_line = 105
-end_line = 105
+start_line = 106
+end_line = 106
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-argument"
+start_line = 107
+end_line = 107
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
@@ -75,8 +85,13 @@ end_line = 44
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "named-argument-not-allowed"
-start_line = 102
-end_line = 102
+start_line = 101
+end_line = 101
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "named-argument-not-allowed"
+start_line = 104
+end_line = 104
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-value"
@@ -85,8 +100,8 @@ end_line = 80
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "no-value"
-start_line = 132
-end_line = 132
+start_line = 134
+end_line = 134
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "non-existent-property"
@@ -97,11 +112,6 @@ end_line = 44
 code = "non-existent-property"
 start_line = 44
 end_line = 44
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 115
-end_line = 115
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "possibly-invalid-iterator"
@@ -115,23 +125,28 @@ end_line = 45
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "redundant-comparison"
-start_line = 130
-end_line = 130
+start_line = 132
+end_line = 132
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "redundant-condition"
-start_line = 130
-end_line = 130
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 131
-end_line = 131
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "redundant-null-coalesce"
 start_line = 132
 end_line = 132
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 133
+end_line = 133
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 134
+end_line = 134
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "undefined-variable"
+start_line = 110
+end_line = 110
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "unknown-class-instantiation"
@@ -140,8 +155,8 @@ end_line = 98
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 101
-end_line = 101
+start_line = 102
+end_line = 102
 
 [[entries."src/Abstract/AbstractSecurity.php".issues]]
 code = "named-argument-not-allowed"

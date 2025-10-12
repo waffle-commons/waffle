@@ -99,7 +99,9 @@ abstract class AbstractResponse implements ResponseInterface
                 $class = new $class();
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
-                    $arg = new $argType();
+                    if (class_exists(class: $argType)) {
+                        $arg = new $argType();
+                    }
                     if (!class_exists(class: $argType)) {
                         $arg = $this->getRouteArgument(
                             name: $keyType,
