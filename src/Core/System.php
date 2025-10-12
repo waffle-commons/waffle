@@ -50,8 +50,8 @@ class System extends AbstractSystem
             );
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));
-        } finally {
-            return $this;
         }
+
+        return $this;
     }
 }

@@ -70,8 +70,14 @@ abstract class AbstractResponse implements ResponseInterface
      */
     private function callControllerAction(): null|View
     {
-        $class = $method = $path = $name = $cli = $error = null;
-        $argTypes = $args = [];
+        $class = null;
+        $method = null;
+        $path = null;
+        $name = null;
+        $cli = false;
+        $error = false;
+        $argTypes = [];
+        $args = [];
         $controller = $this->controllerValues(route: $this->handler->currentRoute);
         if (null !== $controller) {
             /**
@@ -89,13 +95,12 @@ abstract class AbstractResponse implements ResponseInterface
                     default => $error = true,
                 };
             }
-            if ((true !== $cli || true !== $error) && (null !== $path && null !== $name)) {
+            if ((!$cli || !$error) && (null !== $path && null !== $name)) {
                 $class = new $class();
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
-                    if (class_exists(class: $argType)) {
-                        $arg = new $argType();
-                    } else {
+                    $arg = new $argType();
+                    if (!class_exists(class: $argType)) {
                         $arg = $this->getRouteArgument(
                             name: $keyType,
                             type: $argType,
@@ -124,8 +129,8 @@ abstract class AbstractResponse implements ResponseInterface
     {
         $arg = null;
         if (null !== $this->handler->currentRoute) {
-            $arguments = $this->handler->currentRoute[Constant::ARGUMENTS] ?: [];
-            $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH] ?: Constant::EMPTY_STRING);
+            $arguments = $this->handler->currentRoute[Constant::ARGUMENTS] ?? [];
+            $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH] ?? Constant::EMPTY_STRING);
             $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
             foreach ($arguments as $key => $_) {
                 if ($name === $key) {
@@ -139,7 +144,7 @@ abstract class AbstractResponse implements ResponseInterface
                         $m0 = isset($matches[0]) && '' !== $matches[0];
                         $m1 = isset($matches[1]) && '' !== $matches[1];
                         if ($m0 && $m1 && $name === $matches[1]) {
-                            // TODO: Implements this in Security
+                            // TODO(@supa-chayajin): Implements this in Security
                             $arg = match ($type) {
                                 Constant::TYPE_INT => is_numeric(value: $url[$i])
                                     ? (int) $url[$i]

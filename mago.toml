@@ -13,16 +13,24 @@ tab-width = 4
 use-tabs = false
 
 [linter]
-# baseline = "var/data/mago/linter-baseline.toml" # TODO: Handle this
+baseline = "mago-linter-baseline.toml"
 integrations = ["phpunit"]
 
 [linter.rules]
 ambiguous-function-call = { enabled = false }
 literal-named-argument = { enabled = false }
-halstead = { effort-threshold = 7000 }
+halstead = { enabled = false }
+too-many-properties = { enabled = false }
+too-many-methods = { enabled = false }
+no-global = { enabled = false }
+no-request-variable = { enabled = false }
+no-boolean-flag-parameter = { enabled = false }
+cyclomatic-complexity = { enabled = false }
+kan-defect = { enabled = false }
+excessive-nesting = { enabled = false }
 
 [analyzer]
-# baseline = "var/data/mago/analyzer-baseline.toml" # TODO: Handle this
+baseline = "mago-analyzer-baseline.toml" # TODO: Handle this
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true

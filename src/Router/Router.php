@@ -60,8 +60,9 @@ final class Router
             return $this;
         }
 
-        $this->routes = $this->files = [];
-        if (false === $this->directory) {
+        $this->routes = [];
+        $this->files = [];
+        if (!$this->directory) {
             return $this;
         }
 
@@ -84,16 +85,17 @@ final class Router
         }
 
         $paths = scandir(directory: $directory);
-        if (false !== $paths) {
+        if ($paths) {
             foreach ($paths as $path) {
                 if ($path === Constant::CURRENT_DIR || $path === Constant::PREVIOUS_DIR) {
                     continue;
                 }
                 $file = $directory . DIRECTORY_SEPARATOR . $path;
                 if (is_dir(filename: $file)) {
-                    // TODO: Optimize `array_merge` method (maybe do it manually?)
+                    // TODO(@supa-chayajin): Optimize `array_merge` method (maybe do it manually?)
                     $files = array_merge($files, $this->scan(directory: $file));
-                } elseif (str_contains(
+                }
+                if (str_contains(
                     haystack: $path,
                     needle: Constant::PHPEXT,
                 )) {
@@ -108,7 +110,7 @@ final class Router
     public function registerRoutes(): self
     {
         $routes = [];
-        if (false !== $this->files) {
+        if ($this->files) {
             foreach ($this->files as $file) {
                 $controller = new $file();
                 $classRoute = $this->newAttributeInstance(
@@ -158,7 +160,8 @@ final class Router
 
             // Writes content to file. Uses @ to suppress errors in case of permission issues,
             // although a real framework should handle permissions and cache directory creation.
-            @file_put_contents(
+            // TODO(@supa-chayajin): Handle error permissions and create directory before
+            file_put_contents(
                 filename: $cacheFile,
                 data: $content,
                 flags: LOCK_EX,
@@ -181,7 +184,7 @@ final class Router
      */
     private function isRouteRegistered(string $path, array $routes): bool
     {
-        return array_any($routes, static fn($route) => $route[Constant::PATH] === $path);
+        return array_any($routes, static fn(array $route): bool => $route[Constant::PATH] === $path);
     }
 
     /**
@@ -200,7 +203,7 @@ final class Router
      */
     public function match(Request $req, array $route): bool
     {
-        $pathSegments = $this->getPathUri(path: $route[Constant::PATH] ?: Constant::EMPTY_STRING);
+        $pathSegments = $this->getPathUri(path: $route[Constant::PATH] ?? Constant::EMPTY_STRING);
         $urlSegments = $this->getRequestUri(uri: $req->server[Constant::REQUEST_URI]);
 
         // 1. Path length must match exactly.
@@ -224,7 +227,7 @@ final class Router
                 flags: PREG_UNMATCHED_AS_NULL,
             );
 
-            if (!empty($matches[0])) {
+            if (isset($matches[0]) && '' !== $matches[0]) {
                 // If it is a parameter, it matches unconditionally (e.g., /{id} matches /123).
 
                 // --- SECURITY INJECTION POINT ---

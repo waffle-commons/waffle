@@ -7,13 +7,14 @@ namespace Waffle\Trait;
 use Generator;
 use ReflectionMethod;
 use ReflectionObject;
+use Waffle\Core\Constant;
 
 trait ReflectionTrait
 {
     public function className(string $path): string
     {
         $content = file_get_contents($path);
-        if (false === $content) {
+        if (!$content) {
             return ''; // Return empty string on file read error.
         }
 
@@ -29,7 +30,8 @@ trait ReflectionTrait
                     $inArr = in_array($tokens[$j][0], [T_STRING, T_NAME_QUALIFIED, T_NS_SEPARATOR], true);
                     if (is_array($tokens[$j]) && $inArr) {
                         $namespace .= $tokens[$j][1];
-                    } elseif ('{' === $tokens[$j] || ';' === $tokens[$j]) {
+                    }
+                    if ('{' === $tokens[$j] || ';' === $tokens[$j]) {
                         break;
                     }
                 }
@@ -46,8 +48,8 @@ trait ReflectionTrait
             }
         }
 
-        if (empty($class)) {
-            return ''; // Return empty string if no class is found in the file.
+        if (isset($class) && '' === $class) {
+            return Constant::EMPTY_STRING; // Return empty string if no class is found in the file.
         }
 
         return $namespace ? $namespace . '\\' . $class : $class;
@@ -60,7 +62,8 @@ trait ReflectionTrait
      */
     public function newAttributeInstance(object $className, string $attribute): object
     {
-        $obj = $object = new ReflectionObject(object: $className);
+        $obj = new ReflectionObject(object: $className);
+        $object = new ReflectionObject(object: $className);
         foreach ($object->getAttributes(name: $attribute) as $attr) {
             $obj = $attr->newInstance();
         }

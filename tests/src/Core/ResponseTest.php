@@ -34,11 +34,10 @@ final class ResponseTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
+        $_ENV[Constant::APP_ENV] = $this->originalAppEnv;
         // Restore original superglobal states
         if (null === $this->originalAppEnv) {
             unset($_ENV[Constant::APP_ENV]);
-        } else {
-            $_ENV[Constant::APP_ENV] = $this->originalAppEnv;
         }
         $_SERVER = $this->originalServer;
         parent::tearDown();

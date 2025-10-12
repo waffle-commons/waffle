@@ -19,8 +19,8 @@ final class ConfigurationTest extends TestCase
         // Create dummy directories to simulate a real application structure.
         $this->controllerDir = APP_ROOT . DIRECTORY_SEPARATOR . 'app/Controller';
         $this->serviceDir = APP_ROOT . DIRECTORY_SEPARATOR . 'app/Service';
-        mkdir($this->controllerDir, 0777, true);
-        mkdir($this->serviceDir, 0777, true);
+        mkdir($this->controllerDir, 0o777, true);
+        mkdir($this->serviceDir, 0o777, true);
     }
 
     #[\Override]
@@ -35,7 +35,8 @@ final class ConfigurationTest extends TestCase
         }
         // Clean up parent 'app' directory if it's empty
         if (is_dir(APP_ROOT . DIRECTORY_SEPARATOR . 'app')) {
-            @rmdir(APP_ROOT . DIRECTORY_SEPARATOR . 'app');
+            // TODO(@supa-chayajin): Handle error permissions
+            rmdir(APP_ROOT . DIRECTORY_SEPARATOR . 'app');
         }
         parent::tearDown();
     }

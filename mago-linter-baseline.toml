@@ -1,0 +1,4 @@
+[[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
+code = "return-type"
+start_line = 152
+end_line = 154

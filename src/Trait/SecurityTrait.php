@@ -19,7 +19,7 @@ trait SecurityTrait
      */
     public function isValid(null|object $object = null, array $expectations = []): bool
     {
-        return array_all($expectations, static fn($expectation) => $object instanceof $expectation);
+        return array_all($expectations, static fn(string $expectation): bool => $object instanceof $expectation);
     }
 
     /**

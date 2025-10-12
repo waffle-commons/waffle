@@ -36,7 +36,7 @@ abstract class AbstractSecurity implements SecurityInterface
             expectations: $expectations,
         )) {
             throw new SecurityException(
-                message: "The object $className is not valid. It is not an instance of $expects.",
+                message: "The object {$className} is not valid. It is not an instance of {$expects}.",
                 code: 500,
             );
         }
@@ -45,7 +45,7 @@ abstract class AbstractSecurity implements SecurityInterface
             level: $this->level,
         )) {
             throw new SecurityException(
-                message: "The object $className is not secure.",
+                message: "The object {$className} is not secure.",
                 code: 500,
             );
         }
