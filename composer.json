@@ -53,7 +53,7 @@
             "@phpunit"
         ],
         "scan": [
-            "@analysis",
+            "@mago",
             "@tests",
             "@benchmark"
         ]

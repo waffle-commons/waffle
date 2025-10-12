@@ -1,9 +1,4 @@
 [[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "ambiguous-instantiation-target"
-start_line = 99
-end_line = 99
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "docblock-type-mismatch"
 start_line = 116
 end_line = 116
@@ -22,11 +17,6 @@ end_line = 99
 code = "unknown-class-instantiation"
 start_line = 105
 end_line = 105
-
-[[entries."src/Router/Router.php".issues]]
-code = "ambiguous-instantiation-target"
-start_line = 238
-end_line = 238
 
 [[entries."src/Router/Router.php".issues]]
 code = "unknown-class-instantiation"
