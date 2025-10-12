@@ -5,23 +5,20 @@ declare(strict_types=1);
 namespace Waffle\Attribute;
 
 use Attribute;
+use Waffle\Core\Constant;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- * @psalm-suppress UndefinedConstant
- */
 #[Attribute(Attribute::TARGET_CLASS)]
 class Configuration
 {
-    private(set) string|false $controllerDir {
+    public string $controllerDir {
         set => $this->controllerDir = $value;
     }
 
-    private(set) string|false $serviceDir {
+    public string $serviceDir {
         set => $this->serviceDir = $value;
     }
 
-    private(set) int $securityLevel {
+    public int $securityLevel {
         set => $this->securityLevel = $value;
     }
 
@@ -30,10 +27,19 @@ class Configuration
         string $service = 'app/Service',
         int $securityLevel = 10,
     ) {
-        /** @psalm-suppress MixedOperand */
-        $this->controllerDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $controller);
-        /** @psalm-suppress MixedOperand */
-        $this->serviceDir = realpath(path: APP_ROOT . DIRECTORY_SEPARATOR . $service);
+        /** @var string $root */
+        $root = APP_ROOT;
+        $controllerDir = realpath(path: $root . DIRECTORY_SEPARATOR . $controller);
+        $serviceDir = realpath(path: $root . DIRECTORY_SEPARATOR . $service);
+        $emptyString = Constant::EMPTY_STRING;
+        if (!$controllerDir) {
+            $controllerDir = $emptyString;
+        }
+        if (!$serviceDir) {
+            $serviceDir = $emptyString;
+        }
+        $this->controllerDir = $controllerDir;
+        $this->serviceDir = $serviceDir;
         $this->securityLevel = $securityLevel;
     }
 }

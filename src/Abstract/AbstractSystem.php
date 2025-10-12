@@ -10,15 +10,12 @@ use Waffle\Router\Router;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\SystemTrait;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- */
 abstract class AbstractSystem implements SystemInterface
 {
     use ReflectionTrait;
     use SystemTrait;
 
-    protected(set) Security $security {
+    public Security $security {
         set => $this->security = $value;
     }
 
@@ -26,7 +23,7 @@ abstract class AbstractSystem implements SystemInterface
         set => $this->config = $value;
     }
 
-    protected(set) null|Router $router = null {
+    public null|Router $router = null {
         set => $this->router = $value;
     }
 

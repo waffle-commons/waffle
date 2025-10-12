@@ -27,7 +27,7 @@ abstract class AbstractKernel implements KernelInterface
     use DotenvTrait;
     use ReflectionTrait;
 
-    protected(set) object $config {
+    public object $config {
         set => $this->config = $value;
     }
 
@@ -78,8 +78,17 @@ abstract class AbstractKernel implements KernelInterface
         $req = new Request(); // Removed setCurrentRoute() from here
         if ($this->system instanceof System) {
             $router = $this->system->getRouter();
-            if (null !== $router && $req->isCli() === false) {
+            if (null !== $router && !$req->isCli()) {
                 $routes = $router->getRoutes();
+                /**
+                 * @var array{
+                 *      classname: string,
+                 *      method: non-empty-string,
+                 *      arguments: array<non-empty-string, string>,
+                 *      path: string,
+                 *      name: non-falsy-string
+                 *  } $route
+                 */
                 foreach ($routes as $route) {
                     if ($router->match(
                         req: $req,
@@ -98,7 +107,7 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function createCliFromRequest(): CliInterface
     {
-        // TODO: Handle CLI command from request
+        // TODO(@supa-chayajin): Handle CLI command from request
 
         return new Cli(cli: false)->setCurrentRoute();
     }

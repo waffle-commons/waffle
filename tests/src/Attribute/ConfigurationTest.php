@@ -7,9 +7,6 @@ namespace WaffleTests\Attribute;
 use PHPUnit\Framework\TestCase;
 use Waffle\Attribute\Configuration;
 
-/**
- * @psalm-suppress UndefinedConstant
- */
 final class ConfigurationTest extends TestCase
 {
     private string $controllerDir;
@@ -20,10 +17,12 @@ final class ConfigurationTest extends TestCase
     {
         parent::setUp();
         // Create dummy directories to simulate a real application structure.
-        $this->controllerDir = APP_ROOT . DIRECTORY_SEPARATOR . 'app/Controller';
-        $this->serviceDir = APP_ROOT . DIRECTORY_SEPARATOR . 'app/Service';
-        mkdir($this->controllerDir, 0777, true);
-        mkdir($this->serviceDir, 0777, true);
+        /** @var string $root */
+        $root = APP_ROOT;
+        $this->controllerDir = $root . DIRECTORY_SEPARATOR . 'app/Controller';
+        $this->serviceDir = $root . DIRECTORY_SEPARATOR . 'app/Service';
+        mkdir($this->controllerDir, 0o777, true);
+        mkdir($this->serviceDir, 0o777, true);
     }
 
     #[\Override]
@@ -37,8 +36,11 @@ final class ConfigurationTest extends TestCase
             rmdir($this->serviceDir);
         }
         // Clean up parent 'app' directory if it's empty
-        if (is_dir(APP_ROOT . DIRECTORY_SEPARATOR . 'app')) {
-            @rmdir(APP_ROOT . DIRECTORY_SEPARATOR . 'app');
+        /** @var string $root */
+        $root = APP_ROOT;
+        if (is_dir($root . DIRECTORY_SEPARATOR . 'app')) {
+            // TODO(@supa-chayajin): Handle error permissions
+            rmdir($root . DIRECTORY_SEPARATOR . 'app');
         }
         parent::tearDown();
     }
@@ -78,9 +80,9 @@ final class ConfigurationTest extends TestCase
         $reflection = new \ReflectionObject($config);
 
         $controllerDirProp = $reflection->getProperty('controllerDir');
-        static::assertFalse($controllerDirProp->getValue($config));
+        static::assertEmpty($controllerDirProp->getValue($config));
 
         $serviceDirProp = $reflection->getProperty('serviceDir');
-        static::assertFalse($serviceDirProp->getValue($config));
+        static::assertEmpty($serviceDirProp->getValue($config));
     }
 }

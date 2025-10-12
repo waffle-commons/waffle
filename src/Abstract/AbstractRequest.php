@@ -10,9 +10,6 @@ use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\RequestTrait;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- */
 abstract class AbstractRequest implements RequestInterface
 {
     use RequestTrait;
@@ -80,7 +77,7 @@ abstract class AbstractRequest implements RequestInterface
         get => $_ENV;
     }
 
-    protected(set) bool $cli = false {
+    public bool $cli = false {
         set => $this->cli = $value;
     }
 
@@ -93,7 +90,7 @@ abstract class AbstractRequest implements RequestInterface
      *     name: non-falsy-string
      * }|null
      */
-    protected(set) null|array $currentRoute = null {
+    public null|array $currentRoute = null {
         get => $this->currentRoute;
         set => $this->currentRoute = $value;
     }

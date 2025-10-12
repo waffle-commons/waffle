@@ -6,13 +6,11 @@ namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use Waffle\Trait\ReflectionTrait;
 use WaffleTests\Trait\Helper\DummyAttribute;
 use WaffleTests\Trait\Helper\DummyClassWithAttribute;
 
-/**
- * @psalm-suppress UndefinedConstant
- */
 final class ReflectionTraitTest extends TestCase
 {
     use ReflectionTrait;
@@ -25,9 +23,9 @@ final class ReflectionTraitTest extends TestCase
         static::assertSame($expectedFqcn, $this->className($path));
     }
 
-    /** @phpstan-ignore missingType.iterableValue */
     public static function classNameProvider(): array
     {
+        /** @var string $root */
         $root = APP_ROOT;
 
         return [
@@ -61,7 +59,7 @@ final class ReflectionTraitTest extends TestCase
         $methods = $this->getMethods($instance);
 
         static::assertCount(2, $methods);
-        $methodNames = array_map(fn($method) => $method->getName(), $methods);
+        $methodNames = array_map(fn(ReflectionMethod $method): string => $method->getName(), $methods);
         static::assertContains('publicMethod', $methodNames);
         static::assertContains('protectedMethod', $methodNames);
     }

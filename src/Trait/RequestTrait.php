@@ -14,7 +14,7 @@ trait RequestTrait
     public function getRequestUri(mixed $uri): array
     {
         /** @var string $reqUri */
-        $reqUri = !empty($uri) ? $uri : Constant::EMPTY_STRING;
+        $reqUri = isset($uri) && '' !== $uri ? $uri : Constant::EMPTY_STRING;
         $url = explode(
             separator: Constant::QUESTIONMARK,
             string: $reqUri,

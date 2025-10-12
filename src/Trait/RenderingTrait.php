@@ -22,7 +22,7 @@ trait RenderingTrait
         } catch (JsonException $e) {
             new RenderingException(
                 message: $e->getMessage(),
-                code: $e->getCode(),
+                code: (int) $e->getCode(),
             )->throw(view: new View(data: [
                 'message' => $e->getMessage(),
                 'code' => $e->getCode(),

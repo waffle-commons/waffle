@@ -10,9 +10,10 @@ trait DotenvTrait
 {
     public function loadEnv(bool $tests = false): void
     {
+        /** @var string $root */
+        $root = APP_ROOT;
         $dotenv = new Dotenv();
         $test = $tests ? '.test' : '';
-        /** @psalm-suppress UndefinedConstant */
-        $dotenv->loadEnv(path: APP_ROOT . DIRECTORY_SEPARATOR . ".env$test");
+        $dotenv->loadEnv(path: $root . DIRECTORY_SEPARATOR . ".env{$test}");
     }
 }

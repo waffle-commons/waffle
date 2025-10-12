@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Waffle\Core\Cli;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\View;
-use Waffle\Exception\RenderingException; // <-- NOUVEL IMPORT : Exception pour les erreurs de rendu (Bad Request 400)
+use Waffle\Exception\RenderingException;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
@@ -16,11 +15,6 @@ use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RenderingTrait;
 use Waffle\Trait\RequestTrait;
 
-/**
- * @psalm-suppress PossiblyUnusedProperty
- * @psalm-suppress InvalidStringClass
- * @psalm-suppress UndefinedClass
- */
 abstract class AbstractResponse implements ResponseInterface
 {
     use ReflectionTrait;
@@ -38,7 +32,7 @@ abstract class AbstractResponse implements ResponseInterface
         set => $this->cli = $value;
     }
 
-    private(set) Cli|Request $handler {
+    private(set) CliInterface|RequestInterface $handler {
         set => $this->handler = $value;
     }
 
@@ -46,9 +40,8 @@ abstract class AbstractResponse implements ResponseInterface
     public function build(CliInterface|RequestInterface $handler): void
     {
         $this->view = null;
-        /** @var Cli|Request $handler */
         $this->cli = $handler->cli;
-        $this->handler = $this->cli && $handler instanceof Cli ? new Request(cli: true) : $handler;
+        $this->handler = $this->cli && $handler instanceof CliInterface ? new Request(cli: true) : $handler;
     }
 
     /**
@@ -75,33 +68,44 @@ abstract class AbstractResponse implements ResponseInterface
      */
     private function callControllerAction(): null|View
     {
-        $class = $method = $path = $name = $cli = $error = null;
-        $argTypes = $args = [];
+        $className = Constant::EMPTY_STRING;
+        $method = null;
+        $path = null;
+        $name = null;
+        $cli = false;
+        $error = false;
+        $argTypes = [];
+        $args = [];
         $controller = $this->controllerValues(route: $this->handler->currentRoute);
-        if (null !== $controller) {
-            /**
-             * @var string|int $key
-             * @var string|array<non-empty-string, string> $value
-             */
-            foreach ($controller as $key => $value) {
-                match ($key) {
-                    Constant::CLASSNAME => $class = $value,
-                    Constant::METHOD => $method = $value,
-                    Constant::ARGUMENTS => $argTypes = $value,
-                    Constant::PATH => $path = $value,
-                    Constant::NAME => $name = $value,
-                    0 => $cli = true,
-                    default => $error = true,
-                };
+        /**
+         * @var string|int $key
+         * @var class-string|string|array<non-empty-string, string> $value
+         */
+        foreach ($controller as $key => $value) {
+            match ($key) {
+                Constant::CLASSNAME => $className = $value,
+                Constant::METHOD => $method = $value,
+                Constant::ARGUMENTS => $argTypes = $value,
+                Constant::PATH => $path = $value,
+                Constant::NAME => $name = $value,
+                0 => $cli = true,
+                default => $error = true,
+            };
+        }
+        if ((!$cli || !$error) && null !== $path && null !== $name && is_string($className)) {
+            if (!class_exists($className)) {
+                // TODO(@supa-chayajin): Implements this correctly
+                throw new RenderingException();
             }
-            if ((true !== $cli || true !== $error) && (null !== $path && null !== $name)) {
-                $class = new $class();
+            $class = new $className();
+            if (is_array($argTypes)) {
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
-                    if (class_exists(class: $argType)) {
-                        /** @psalm-suppress MixedMethodCall */
+                    $arg = null;
+                    if (class_exists($argType)) {
                         $arg = new $argType();
-                    } else {
+                    }
+                    if (null === $arg) {
                         $arg = $this->getRouteArgument(
                             name: $keyType,
                             type: $argType,
@@ -109,13 +113,16 @@ abstract class AbstractResponse implements ResponseInterface
                     }
                     $args[] = $arg;
                 }
-                /** @var callable $callable */
-                $callable = [$class, $method];
+            }
+            /** @var callable $callable */
+            $callable = [$class, $method];
+            if (is_callable($callable)) {
                 /** @var View $view */
                 $view = call_user_func_array(
                     callback: $callable,
                     args: $args,
                 );
+
                 return $view;
             }
         }
@@ -128,10 +135,11 @@ abstract class AbstractResponse implements ResponseInterface
      */
     private function getRouteArgument(string $name, string $type = Constant::TYPE_STRING): string|int|null
     {
+        $matches = null;
         $arg = null;
         if (null !== $this->handler->currentRoute) {
-            $arguments = $this->handler->currentRoute[Constant::ARGUMENTS] ?: [];
-            $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH] ?: Constant::EMPTY_STRING);
+            $arguments = $this->handler->currentRoute[Constant::ARGUMENTS];
+            $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH]);
             $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
             foreach ($arguments as $key => $_) {
                 if ($name === $key) {
@@ -145,7 +153,7 @@ abstract class AbstractResponse implements ResponseInterface
                         $m0 = isset($matches[0]) && '' !== $matches[0];
                         $m1 = isset($matches[1]) && '' !== $matches[1];
                         if ($m0 && $m1 && $name === $matches[1]) {
-                            // TODO: Implements this in Security
+                            // TODO(@supa-chayajin): Implements this in Security
                             $arg = match ($type) {
                                 Constant::TYPE_INT => is_numeric(value: $url[$i])
                                     ? (int) $url[$i]

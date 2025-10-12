@@ -12,9 +12,6 @@ use Waffle\Interface\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor,ClassMustBeFinal
- */
 class System extends AbstractSystem
 {
     public function __construct(Security $security)
@@ -53,8 +50,8 @@ class System extends AbstractSystem
             );
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));
-        } finally {
-            return $this;
         }
+
+        return $this;
     }
 }

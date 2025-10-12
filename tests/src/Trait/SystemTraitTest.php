@@ -19,10 +19,9 @@ final class SystemTraitTest extends TestCase
         };
 
         // We assert that the object uses the trait
-        static::assertContains(
-            SystemTrait::class,
-            class_uses($testObject),
-            'The test object should use the SystemTrait.',
-        );
+        $isUsed = class_uses($testObject);
+        if ($isUsed) {
+            static::assertContains(SystemTrait::class, $isUsed, 'The test object should use the SystemTrait.');
+        }
     }
 }

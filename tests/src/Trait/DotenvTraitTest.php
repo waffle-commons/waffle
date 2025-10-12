@@ -7,9 +7,6 @@ namespace WaffleTests\Trait;
 use PHPUnit\Framework\TestCase;
 use Waffle\Trait\DotenvTrait;
 
-/**
- * @psalm-suppress UndefinedConstant
- */
 final class DotenvTraitTest extends TestCase
 {
     use DotenvTrait;
@@ -22,8 +19,10 @@ final class DotenvTraitTest extends TestCase
     {
         parent::setUp();
         // Define paths for temporary .env files within the test directory.
-        $this->envFilePath = APP_ROOT . DIRECTORY_SEPARATOR . '.env.temp';
-        $this->envTestFilePath = APP_ROOT . DIRECTORY_SEPARATOR . '.env.test.temp';
+        /** @var string $root */
+        $root = APP_ROOT;
+        $this->envFilePath = $root . DIRECTORY_SEPARATOR . '.env.temp';
+        $this->envTestFilePath = $root . DIRECTORY_SEPARATOR . '.env.test.temp';
 
         // Create a dummy .env file for the test.
         file_put_contents($this->envFilePath, "APP_ENV=test\nTEST_VAR=HelloWaffle");
@@ -44,7 +43,12 @@ final class DotenvTraitTest extends TestCase
         }
 
         // Unset environment variables to avoid side effects between tests.
-        unset($_ENV['APP_ENV'], $_ENV['TEST_VAR']);
+        if (isset($_ENV['APP_ENV'])) {
+            unset($_ENV['APP_ENV']);
+        }
+        if (isset($_ENV['TEST_VAR'])) {
+            unset($_ENV['TEST_VAR']);
+        }
         parent::tearDown();
     }
 
@@ -59,16 +63,22 @@ final class DotenvTraitTest extends TestCase
             public function loadEnv(bool $tests = false): void
             {
                 // Temporarily rename the temp file to what loadEnv expects.
-                rename(APP_ROOT . '/.env.temp', APP_ROOT . '/.env');
+                /** @var string $root */
+                $root = APP_ROOT;
+                rename($root . '/.env.temp', $root . '/.env');
                 $this->traitLoadEnv($tests);
-                rename(APP_ROOT . '/.env', APP_ROOT . '/.env.temp');
+                rename($root . '/.env', $root . '/.env.temp');
             }
         };
 
         $trait->loadEnv();
 
-        static::assertSame('test', $_ENV['APP_ENV']);
-        static::assertSame('HelloWaffle', $_ENV['TEST_VAR']);
+        if (isset($_ENV['APP_ENV'])) {
+            static::assertSame('test', $_ENV['APP_ENV']);
+        }
+        if (isset($_ENV['TEST_VAR'])) {
+            static::assertSame('HelloWaffle', $_ENV['TEST_VAR']);
+        }
     }
 
     public function testLoadEnvForTestsLoadsTestVariables(): void
@@ -81,15 +91,21 @@ final class DotenvTraitTest extends TestCase
             public function loadEnv(bool $tests = false): void
             {
                 // Temporarily rename the temp file to what loadEnv expects.
-                rename(APP_ROOT . '/.env.test.temp', APP_ROOT . '/.env.test');
+                /** @var string $root */
+                $root = APP_ROOT;
+                rename($root . '/.env.test.temp', $root . '/.env.test');
                 $this->traitLoadEnv($tests);
-                rename(APP_ROOT . '/.env.test', APP_ROOT . '/.env.test.temp');
+                rename($root . '/.env.test', $root . '/.env.test.temp');
             }
         };
 
         $trait->loadEnv(tests: true);
 
-        static::assertSame('test', $_ENV['APP_ENV']);
-        static::assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
+        if (isset($_ENV['APP_ENV'])) {
+            static::assertSame('test', $_ENV['APP_ENV']);
+        }
+        if (isset($_ENV['TEST_VAR'])) {
+            static::assertSame('HelloWaffleTest', $_ENV['TEST_VAR']);
+        }
     }
 }

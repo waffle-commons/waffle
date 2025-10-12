@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Trait;
 
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionObject;
 use ReflectionProperty;
 use Waffle\Core\Constant;
@@ -19,7 +20,7 @@ trait SecurityTrait
      */
     public function isValid(null|object $object = null, array $expectations = []): bool
     {
-        return array_all($expectations, static fn($expectation) => $object instanceof $expectation);
+        return array_all($expectations, static fn(string $expectation): bool => $object instanceof $expectation);
     }
 
     /**
@@ -101,7 +102,7 @@ trait SecurityTrait
      */
     private function checkLevel1(object $object): bool
     {
-        $class = get_class(object: $object);
+        $class = get_class($object);
         if (!$object instanceof $class) {
             throw new SecurityException(
                 message: "Level 1: Object validation failed. Instance mismatch for {$class}.",
@@ -121,7 +122,7 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC);
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($properties as $property) {
             if ($property->getType() === null) {
@@ -143,23 +144,17 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $methods = $reflection->getMethods(filter: ReflectionMethod::IS_PUBLIC);
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (str_starts_with(
-                haystack: $method->getName(),
-                needle: '__',
-            )) {
+            if (str_starts_with($method->getName(), '__')) {
                 continue;
             }
 
+            /** @var null|ReflectionNamedType $returnType */
             $returnType = $method->getReturnType();
             if (null !== $returnType) {
-                /**
-                 * @phpstan-ignore method.notFound
-                 * @psalm-suppress UndefinedMethod
-                 */
                 $returnConditions = $returnType->getName() === Constant::TYPE_VOID;
                 if ($returnConditions && $method->getDeclaringClass()->getName() === $class) {
                     throw new SecurityException(
@@ -183,14 +178,11 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $methods = $reflection->getMethods(filter: ReflectionMethod::IS_PUBLIC);
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($methods as $method) {
             // Ignore constructor and magic methods
-            if (str_starts_with(
-                haystack: $method->getName(),
-                needle: '__',
-            )) {
+            if (str_starts_with($method->getName(), '__')) {
                 continue;
             }
 
@@ -213,7 +205,7 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $properties = $reflection->getProperties(filter: ReflectionProperty::IS_PRIVATE);
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($properties as $property) {
             if ($property->getType() === null && $property->getDeclaringClass()->getName() === $class) {
@@ -235,7 +227,7 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $properties = $reflection->getProperties();
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($properties as $property) {
             if (!$property->isInitialized(object: $object) && $property->getDeclaringClass()->getName() === $class) {
@@ -257,7 +249,7 @@ trait SecurityTrait
     {
         $reflection = new ReflectionObject(object: $object);
         $methods = $reflection->getMethods(filter: ReflectionMethod::IS_PUBLIC);
-        $class = get_class(object: $object);
+        $class = get_class($object);
 
         foreach ($methods as $method) {
             if ($method->getDeclaringClass()->getName() !== $class) {
@@ -265,11 +257,8 @@ trait SecurityTrait
             }
 
             foreach ($method->getParameters() as $param) {
+                /** @var null|ReflectionNamedType $paramType */
                 $paramType = $param->getType();
-                /**
-                 * @phpstan-ignore method.notFound
-                 * @psalm-suppress UndefinedMethod
-                 */
                 if (
                     null !== $paramType
                     && $paramType->getName() === Constant::TYPE_MIXED
@@ -295,13 +284,7 @@ trait SecurityTrait
     {
         // We check if the class name contains 'Controller' and if it is not final.
         $reflection = new ReflectionObject(object: $object);
-        if (
-            !$reflection->isFinal()
-            && str_contains(
-                haystack: $reflection->getName(),
-                needle: 'Controller',
-            )
-        ) {
+        if (!$reflection->isFinal() && str_contains($reflection->getName(), 'Controller')) {
             throw new SecurityException(
                 message: 'Level 8: Controller classes must be declared final to prevent unintended extension.',
                 code: 500,
@@ -320,13 +303,7 @@ trait SecurityTrait
         $reflection = new ReflectionObject(object: $object);
         // Here, we check if the object is a DTO class (simulating a DTO with "Service" in the name).
         // Note: The actual `isReadOnly()` method is available in PHP 8.2+.
-        if (
-            !$reflection->isReadOnly()
-            && str_contains(
-                haystack: $reflection->getName(),
-                needle: 'Service',
-            )
-        ) {
+        if (!$reflection->isReadOnly() && str_contains($reflection->getName(), 'Service')) {
             throw new SecurityException(
                 message: 'Level 9: Service classes must be declared readonly.',
                 code: 500,

@@ -26,6 +26,7 @@ final class SecurityTest extends TestCase
         // that it has been set correctly by the constructor.
         $reflection = new ReflectionObject($security);
         $property = $reflection->getProperty('level');
+        /** @var int $level */
         $level = $property->getValue($security);
 
         static::assertSame(7, $level, 'The security level should be set from the configuration object.');

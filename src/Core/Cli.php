@@ -6,9 +6,6 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractCli;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
 class Cli extends AbstractCli
 {
     public function __construct(bool $cli = true)

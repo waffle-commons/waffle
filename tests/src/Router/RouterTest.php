@@ -24,7 +24,6 @@ final class RouterTest extends TestCase
     private Router $router;
     private string $dummyControllerDir;
 
-    /** @phpstan-ignore missingType.iterableValue */
     private array $serverBackup;
     private System $system;
 
@@ -113,9 +112,6 @@ final class RouterTest extends TestCase
         static::assertSame('user_users_list', $matchingRoute['name'], 'The matched route has an incorrect name.');
     }
 
-    /**
-     * @dataProvider dynamicRouteProvider
-     */
     #[DataProvider('dynamicRouteProvider')]
     public function testMatchWithDynamicParameterRoutes(string $url, string $expectedRouteName): void
     {
@@ -180,6 +176,7 @@ final class RouterTest extends TestCase
         $this->router->boot()->registerRoutes();
         static::assertFileExists($cacheFile, 'The router should have created a cache file.');
 
+        /** @var array $cachedRoutes */
         $cachedRoutes = require $cacheFile;
         static::assertNotEmpty($cachedRoutes, 'The cache file should not be empty.');
         static::assertCount(5, $cachedRoutes, 'The cache file should contain the correct number of routes.');
