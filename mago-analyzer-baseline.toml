@@ -1,8 +1,3 @@
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 87
-end_line = 87
-
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "ambiguous-instantiation-target"
 start_line = 99
@@ -42,11 +37,6 @@ end_line = 112
 code = "unknown-class-instantiation"
 start_line = 238
 end_line = 238
-
-[[entries."src/Trait/RenderingTrait.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 24
-end_line = 24
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "string-member-selector"

@@ -29,8 +29,17 @@ class Configuration
     ) {
         /** @var string $root */
         $root = APP_ROOT;
-        $this->controllerDir = realpath(path: $root . DIRECTORY_SEPARATOR . $controller) ?: Constant::EMPTY_STRING;
-        $this->serviceDir = realpath(path: $root . DIRECTORY_SEPARATOR . $service) ?: Constant::EMPTY_STRING;
+        $controllerDir = realpath(path: $root . DIRECTORY_SEPARATOR . $controller);
+        $serviceDir = realpath(path: $root . DIRECTORY_SEPARATOR . $service);
+        $emptyString = Constant::EMPTY_STRING;
+        if (!$controllerDir) {
+            $controllerDir = $emptyString;
+        }
+        if (!$serviceDir) {
+            $serviceDir = $emptyString;
+        }
+        $this->controllerDir = $controllerDir;
+        $this->serviceDir = $serviceDir;
         $this->securityLevel = $securityLevel;
     }
 }

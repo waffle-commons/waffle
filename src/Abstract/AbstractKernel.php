@@ -80,6 +80,15 @@ abstract class AbstractKernel implements KernelInterface
             $router = $this->system->getRouter();
             if (null !== $router && !$req->isCli()) {
                 $routes = $router->getRoutes();
+                /**
+                 * @var array{
+                 *      classname: string,
+                 *      method: non-empty-string,
+                 *      arguments: array<non-empty-string, string>,
+                 *      path: string,
+                 *      name: non-falsy-string
+                 *  } $route
+                 */
                 foreach ($routes as $route) {
                     if ($router->match(
                         req: $req,

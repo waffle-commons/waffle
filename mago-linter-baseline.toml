@@ -48,16 +48,6 @@ code = "kan-defect"
 start_line = 17
 end_line = 177
 
-[[entries."src/Attribute/Configuration.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 31
-end_line = 31
-
-[[entries."src/Attribute/Configuration.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 32
-end_line = 32
-
 [[entries."src/Core/Cli.php".issues]]
 code = "no-boolean-flag-parameter"
 start_line = 10
