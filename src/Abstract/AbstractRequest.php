@@ -6,6 +6,7 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
 use Waffle\Exception\RouteNotFoundException;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\RequestTrait;
@@ -95,9 +96,16 @@ abstract class AbstractRequest implements RequestInterface
         set => $this->currentRoute = $value;
     }
 
+    public null|ContainerInterface $container = null {
+        set => $this->container = $value;
+    }
+
+    abstract public function __construct(ContainerInterface $container, bool $cli);
+
     #[\Override]
-    public function configure(bool $cli): void
+    public function configure(ContainerInterface $container, bool $cli): void
     {
+        $this->container = $container;
         $this->cli = $cli;
     }
 

@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
+use Waffle\Core\Container;
 use Waffle\Core\Response;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\Abstract\Helper\ConcreteTestRequest;
@@ -26,8 +27,12 @@ final class AbstractRequestTest extends TestCase
     public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
         // Given: A request object configured for a web environment.
-        $request = new ConcreteTestRequest();
-        $request->configure(cli: false);
+        $container = new Container();
+        $request = new ConcreteTestRequest(container: $container);
+        $request->configure(
+            container: $container,
+            cli: false,
+        );
 
         // When: A valid route is set on the request (simulating a successful match).
         $this->setProtectedRoute($request, 'currentRoute', ['path' => '/test']);
@@ -49,8 +54,12 @@ final class AbstractRequestTest extends TestCase
         $this->expectExceptionMessage('Route not found.');
 
         // Given: A request object for a web environment with no matching route.
-        $request = new ConcreteTestRequest();
-        $request->configure(cli: false);
+        $container = new Container();
+        $request = new ConcreteTestRequest(container: $container);
+        $request->configure(
+            container: $container,
+            cli: false,
+        );
 
         // When: The process() method is called without a currentRoute.
         $request->process();
@@ -64,8 +73,12 @@ final class AbstractRequestTest extends TestCase
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
         // Given: A request object configured for a CLI environment.
-        $request = new ConcreteTestRequest();
-        $request->configure(cli: true);
+        $container = new Container();
+        $request = new ConcreteTestRequest(container: $container);
+        $request->configure(
+            container: $container,
+            cli: true,
+        );
 
         // When: The process() method is called without a route.
         $response = $request->process();
@@ -83,7 +96,7 @@ final class AbstractRequestTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new request object.
-        $request = new ConcreteTestRequest();
+        $request = new ConcreteTestRequest(container: new Container());
         /**
          * @var array{
          *       classname: string,
@@ -123,8 +136,12 @@ final class AbstractRequestTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new request object is created and configured.
-        $request = new ConcreteTestRequest();
-        $request->configure(cli: false);
+        $container = new Container();
+        $request = new ConcreteTestRequest(container: $container);
+        $request->configure(
+            container: $container,
+            cli: false,
+        );
 
         // Then: The public properties should accurately reflect the superglobal values.
         static::assertSame('GET', $request->server['REQUEST_METHOD']);

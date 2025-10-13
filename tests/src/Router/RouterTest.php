@@ -7,6 +7,7 @@ namespace WaffleTests\Router;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
 use Waffle\Core\System;
@@ -51,7 +52,11 @@ final class RouterTest extends TestCase
         $this->system = new System($securityMock);
 
         // 3. Instantiate the Router with its dependencies.
-        $this->router = new Router($this->dummyControllerDir, $this->system);
+        $this->router = new Router(
+            directory: $this->dummyControllerDir,
+            system: $this->system,
+            container: new Container(),
+        );
     }
 
     /**
@@ -98,7 +103,7 @@ final class RouterTest extends TestCase
     {
         $this->router->boot()->registerRoutes();
         $_SERVER['REQUEST_URI'] = '/users';
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
@@ -117,7 +122,7 @@ final class RouterTest extends TestCase
     {
         $this->router->boot()->registerRoutes();
         $_SERVER['REQUEST_URI'] = $url;
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
@@ -149,7 +154,7 @@ final class RouterTest extends TestCase
     {
         $this->router->boot()->registerRoutes();
         $_SERVER['REQUEST_URI'] = '/non-existent-route';
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
@@ -193,7 +198,11 @@ final class RouterTest extends TestCase
     public function testRouterHandlesNonExistentDirectoryGracefully(): void
     {
         // 1. Setup: Create a new Router instance pointing to a directory we know does not exist.
-        $badRouter = new Router(__DIR__ . '/NonExistentDirectory', $this->system);
+        $badRouter = new Router(
+            directory: __DIR__ . '/NonExistentDirectory',
+            system: $this->system,
+            container: new Container(),
+        );
 
         // 2. Action: Execute the boot and registration process. This would crash if not handled.
         $badRouter->boot()->registerRoutes();

@@ -10,6 +10,7 @@ use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait;
 
@@ -46,12 +47,17 @@ final class Router
 
     private(set) System $system;
 
-    public function __construct(string|false $directory, System $system)
+    public null|ContainerInterface $container = null {
+        set => $this->container = $value;
+    }
+
+    public function __construct(string|false $directory, System $system, ContainerInterface $container)
     {
         $this->routes = [];
         $this->directory = $directory;
         $this->files = false;
         $this->system = $system;
+        $this->container = $container;
     }
 
     public function boot(): self
@@ -110,40 +116,42 @@ final class Router
         $routes = [];
         if ($this->files) {
             foreach ($this->files as $file) {
-                $controller = new $file();
-                $classRoute = $this->newAttributeInstance(
-                    className: $controller,
-                    attribute: Route::class,
-                );
-                if ($classRoute instanceof Route) {
-                    $methods = $this->getMethods(className: $controller);
-                    foreach ($methods as $method) {
-                        $attributes = $method->getAttributes(name: Route::class);
-                        foreach ($attributes as $attribute) {
-                            $route = $attribute->newInstance();
-                            $path = $classRoute->path . $route->path;
-                            if (!$this->isRouteRegistered(
-                                path: $path,
-                                routes: $routes,
-                            )) {
-                                $classRouteName = $classRoute->name ?? Constant::DEFAULT;
-                                $routeName = $route->name ?? Constant::DEFAULT;
-                                $params = [];
-                                foreach ($method->getParameters() as $param) {
-                                    // Uses Reflection to get parameter types for argument resolution
-                                    if ($param->getType() instanceof ReflectionNamedType) {
-                                        /** @var ReflectionNamedType $paramType */
-                                        $paramType = $param->getType();
-                                        $params[$param->getName()] = $paramType->getName();
+                if ($this->container->has(id: $file)) {
+                    $controller = $this->container->get(id: $file);
+                    $classRoute = $this->newAttributeInstance(
+                        className: $controller,
+                        attribute: Route::class,
+                    );
+                    if ($classRoute instanceof Route) {
+                        $methods = $this->getMethods(className: $controller);
+                        foreach ($methods as $method) {
+                            $attributes = $method->getAttributes(name: Route::class);
+                            foreach ($attributes as $attribute) {
+                                $route = $attribute->newInstance();
+                                $path = $classRoute->path . $route->path;
+                                if (!$this->isRouteRegistered(
+                                    path: $path,
+                                    routes: $routes,
+                                )) {
+                                    $classRouteName = $classRoute->name ?? Constant::DEFAULT;
+                                    $routeName = $route->name ?? Constant::DEFAULT;
+                                    $params = [];
+                                    foreach ($method->getParameters() as $param) {
+                                        // Uses Reflection to get parameter types for argument resolution
+                                        if ($param->getType() instanceof ReflectionNamedType) {
+                                            /** @var ReflectionNamedType $paramType */
+                                            $paramType = $param->getType();
+                                            $params[$param->getName()] = $paramType->getName();
+                                        }
                                     }
+                                    $routes[] = [
+                                        Constant::CLASSNAME => $file,
+                                        Constant::METHOD => $method->getName(),
+                                        Constant::ARGUMENTS => $params,
+                                        Constant::PATH => $path,
+                                        Constant::NAME => $classRouteName . '_' . $routeName,
+                                    ];
                                 }
-                                $routes[] = [
-                                    Constant::CLASSNAME => $file,
-                                    Constant::METHOD => $method->getName(),
-                                    Constant::ARGUMENTS => $params,
-                                    Constant::PATH => $path,
-                                    Constant::NAME => $classRouteName . '_' . $routeName,
-                                ];
                             }
                         }
                     }
@@ -235,8 +243,8 @@ final class Router
                 // We use the System's Security service to analyze the controller class
                 // immediately after a match is found. This prevents the execution
                 // of potentially insecure classes/methods.
-                if (class_exists($route[Constant::CLASSNAME])) {
-                    $controllerInstance = new $route[Constant::CLASSNAME]();
+                if ($this->container->has(id: $route[Constant::CLASSNAME])) {
+                    $controllerInstance = $this->container->get(id: $route[Constant::CLASSNAME]);
                     // We call analyze on the controller to validate its security level
                     $this->system->security->analyze(object: $controllerInstance);
                 }

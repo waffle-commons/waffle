@@ -6,6 +6,7 @@ namespace WaffleTests\Core\Helper;
 
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Attribute\Configuration;
+use Waffle\Core\Container;
 
 /**
  * A concrete Kernel implementation for testing purposes.
@@ -15,6 +16,7 @@ class TestKernelWithConfig extends AbstractKernel
 {
     public function __construct(Configuration $config)
     {
+        $this->container = new Container();
         $this->config = $config;
     }
 }

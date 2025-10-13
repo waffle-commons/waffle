@@ -44,6 +44,7 @@ class System extends AbstractSystem
                 router: new Router(
                     directory: $config->controllerDir,
                     system: $this,
+                    container: $kernel->container,
                 )
                     ->boot()
                     ->registerRoutes(),

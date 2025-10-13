@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Waffle\Core\Cli;
 use Waffle\Core\Constant;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
 use Waffle\Exception\RenderingException;
@@ -50,7 +51,7 @@ final class ResponseTest extends TestCase
     public function testRenderFromRequest(): void
     {
         // 1. Setup
-        $request = new Request();
+        $request = new Request(container: new Container());
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -84,7 +85,7 @@ final class ResponseTest extends TestCase
     public function testRenderFromCli(): void
     {
         // 1. Setup
-        $cli = new Cli();
+        $cli = new Cli(container: new Container());
 
         // 2. Action
         ob_start();
@@ -108,7 +109,7 @@ final class ResponseTest extends TestCase
         // 1. Setup
         // We manipulate the superglobal BEFORE instantiating the Request object.
         $_SERVER[Constant::REQUEST_URI] = '/users/123';
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -150,7 +151,7 @@ final class ResponseTest extends TestCase
 
         // Manipulate the superglobal with the invalid URI.
         $_SERVER[Constant::REQUEST_URI] = '/users/abc';
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -173,7 +174,7 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $request = new Request();
+        $request = new Request(container: new Container());
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -217,7 +218,7 @@ final class ResponseTest extends TestCase
     public function testRenderProducesNoOutputWhenAppEnvIsTest(): void
     {
         // 1. Setup
-        $request = new Request();
+        $request = new Request(container: new Container());
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',

@@ -14,7 +14,9 @@ use Waffle\Core\System;
 use Waffle\Core\View;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Exception\SecurityException;
+use Waffle\Factory\ContainerFactory;
 use Waffle\Interface\CliInterface;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Trait\DotenvTrait;
@@ -28,11 +30,18 @@ abstract class AbstractKernel implements KernelInterface
     use ReflectionTrait;
 
     public object $config {
+        get => $this->config;
         set => $this->config = $value;
     }
 
     protected(set) null|System $system = null {
+        get => $this->system;
         set => $this->system = $value;
+    }
+
+    public null|ContainerInterface $container = null {
+        get => $this->container;
+        set => $this->container = $value;
     }
 
     public function handle(): void
@@ -64,6 +73,11 @@ abstract class AbstractKernel implements KernelInterface
             attribute: Configuration::class,
         );
 
+        $containerFactory = new ContainerFactory();
+        /** @var Configuration $config */
+        $config = $this->config;
+        $this->container = $containerFactory->create(serviceDir: $config->serviceDir);
+
         $this->system = new System(security: new Security(cfg: $this->config))->boot(kernel: $this);
 
         return $this;
@@ -75,7 +89,7 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function createRequestFromGlobals(): RequestInterface
     {
-        $req = new Request(); // Removed setCurrentRoute() from here
+        $req = new Request(container: $this->container);
         if ($this->system instanceof System) {
             $router = $this->system->getRouter();
             if (null !== $router && !$req->isCli()) {
@@ -109,7 +123,10 @@ abstract class AbstractKernel implements KernelInterface
     {
         // TODO(@supa-chayajin): Handle CLI command from request
 
-        return new Cli(cli: false)->setCurrentRoute();
+        return new Cli(
+            container: $this->container,
+            cli: false,
+        );
     }
 
     #[\Override]
@@ -120,7 +137,9 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): void
     {
-        $handler = $this->isCli() ? new Cli() : new Request();
+        $containerFactory = new ContainerFactory();
+        $this->container = $containerFactory->create();
+        $handler = $this->isCli() ? new Cli(container: $this->container) : new Request(container: $this->container);
         $statusCode = 500;
         $data = [
             'message' => 'An unexpected error occurred.',

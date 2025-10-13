@@ -7,6 +7,7 @@ namespace WaffleTests\Abstract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractSystem;
+use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Interface\KernelInterface;
@@ -116,6 +117,7 @@ final class AbstractSystemTest extends TestCase
         $router = new Router(
             directory: false,
             system: $routerSystemMock,
+            container: new Container(),
         );
 
         // 2. Action

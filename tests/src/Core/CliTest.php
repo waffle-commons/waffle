@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Cli;
+use Waffle\Core\Container;
 
 #[CoversClass(Cli::class)]
 final class CliTest extends TestCase
@@ -19,7 +20,7 @@ final class CliTest extends TestCase
     public function testCanBeInstantiated(): void
     {
         // When: A new Cli object is created.
-        $cli = new Cli();
+        $cli = new Cli(container: new Container());
 
         // Then: It should be an instance of both Cli and AbstractCli.
         static::assertInstanceOf(Cli::class, $cli);

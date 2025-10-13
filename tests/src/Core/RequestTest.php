@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
 use WaffleTests\Router\Dummy\DummyController;
@@ -24,7 +25,7 @@ final class RequestTest extends TestCase
     public function testCanBeInstantiated(): void
     {
         // When: A new Request object is created.
-        $request = new Request();
+        $request = new Request(container: new Container());
 
         // Then: It should be an instance of both Request and AbstractRequest.
         static::assertInstanceOf(Request::class, $request);
@@ -38,7 +39,7 @@ final class RequestTest extends TestCase
     public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
         // Given: A request object with a configured route.
-        $request = new Request();
+        $request = new Request(container: new Container());
         /**
          * @var array{
          *       classname: string,
@@ -72,7 +73,7 @@ final class RequestTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new Request object.
-        $request = new Request();
+        $request = new Request(container: new Container());
         /**
          * @var array{
          *       classname: string,
@@ -116,8 +117,12 @@ final class RequestTest extends TestCase
         $GLOBALS['_' . strtoupper($property)] = $superglobal;
 
         // When: A new Request object is created.
-        $request = new Request();
-        $request->configure(cli: false); // Manually trigger configuration to load superglobals
+        $container = new Container();
+        $request = new Request(container: $container);
+        $request->configure(
+            container: $container,
+            cli: false,
+        ); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.
         static::assertSame($superglobal, $request->{$property});
