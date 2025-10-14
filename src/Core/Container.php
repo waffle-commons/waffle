@@ -54,9 +54,9 @@ final class Container implements ContainerInterface
             $concrete = $this->definitions[$id] ?? $id;
 
             $instance = match (true) {
-                ($concrete instanceof Closure) => $concrete($this),
-                (class_exists($concrete)) => $this->resolve($concrete),
-                default => throw new NotFoundException("Service or class \"{$id}\" not found.")
+                $concrete instanceof Closure => $concrete($this),
+                class_exists($concrete) => $this->resolve($concrete),
+                default => throw new NotFoundException("Service or class \"{$id}\" not found."),
             };
 
             $this->security->analyze($instance);
