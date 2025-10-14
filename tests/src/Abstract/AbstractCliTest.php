@@ -9,7 +9,10 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractCli;
+use Waffle\Attribute\Configuration;
+use Waffle\Core\Container;
 use Waffle\Core\Response;
+use Waffle\Core\Security;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
 use WaffleTests\Router\Dummy\DummyController;
 
@@ -23,7 +26,9 @@ final class AbstractCliTest extends TestCase
     public function testProcessReturnsResponse(): void
     {
         // Given: A CLI object.
-        $cli = new ConcreteTestCli();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $cli = new ConcreteTestCli(container: new Container(security: $security));
 
         // When: The process() method is called.
         $response = $cli->process();
@@ -40,7 +45,9 @@ final class AbstractCliTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new CLI object.
-        $cli = new ConcreteTestCli();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $cli = new ConcreteTestCli(container: new Container(security: $security));
         /**
          * @var array{
          *       classname: string,
@@ -79,7 +86,9 @@ final class AbstractCliTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new CLI object is created and configured.
-        $cli = new ConcreteTestCli();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $cli = new ConcreteTestCli(container: new Container(security: $security));
 
         // Then: The public properties should accurately reflect the superglobal values.
         static::assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);

@@ -10,6 +10,7 @@ use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait;
 
@@ -105,36 +106,29 @@ final class Router
         return $files;
     }
 
-    public function registerRoutes(): self
+    public function registerRoutes(null|ContainerInterface $container = null): self
     {
+        if (null === $container || !$this->files) {
+            return $this;
+        }
+
         $routes = [];
-        if ($this->files) {
-            foreach ($this->files as $file) {
-                $controller = new $file();
-                $classRoute = $this->newAttributeInstance(
-                    className: $controller,
-                    attribute: Route::class,
-                );
+        foreach ($this->files as $file) {
+            if ($container->has($file)) {
+                $controller = $container->get($file);
+                $classRoute = $this->newAttributeInstance($controller, Route::class);
+
                 if ($classRoute instanceof Route) {
-                    $methods = $this->getMethods(className: $controller);
-                    foreach ($methods as $method) {
-                        $attributes = $method->getAttributes(name: Route::class);
-                        foreach ($attributes as $attribute) {
+                    foreach ($this->getMethods($controller) as $method) {
+                        foreach ($method->getAttributes(Route::class) as $attribute) {
                             $route = $attribute->newInstance();
                             $path = $classRoute->path . $route->path;
-                            if (!$this->isRouteRegistered(
-                                path: $path,
-                                routes: $routes,
-                            )) {
-                                $classRouteName = $classRoute->name ?? Constant::DEFAULT;
-                                $routeName = $route->name ?? Constant::DEFAULT;
+
+                            if (!$this->isRouteRegistered($path, $routes)) {
                                 $params = [];
                                 foreach ($method->getParameters() as $param) {
-                                    // Uses Reflection to get parameter types for argument resolution
                                     if ($param->getType() instanceof ReflectionNamedType) {
-                                        /** @var ReflectionNamedType $paramType */
-                                        $paramType = $param->getType();
-                                        $params[$param->getName()] = $paramType->getName();
+                                        $params[$param->getName()] = $param->getType()?->getName();
                                     }
                                 }
                                 $routes[] = [
@@ -142,7 +136,8 @@ final class Router
                                     Constant::METHOD => $method->getName(),
                                     Constant::ARGUMENTS => $params,
                                     Constant::PATH => $path,
-                                    Constant::NAME => $classRouteName . '_' . $routeName,
+                                    Constant::NAME =>
+                                        ($classRoute->name ?? 'default') . '_' . ($route->name ?? 'default'),
                                 ];
                             }
                         }
@@ -152,20 +147,8 @@ final class Router
         }
         $this->routes = $routes;
 
-        // 2. Critical Performance: Writes routes to cache if in production mode
         if ($this->isProduction()) {
-            $cacheFile = $this->getCacheFilePath();
-            // Uses var_export to generate a readable and fast-loading PHP array
-            $content = '<?php return ' . var_export($this->routes, true) . ';';
-
-            // Writes content to file. Uses @ to suppress errors in case of permission issues,
-            // although a real framework should handle permissions and cache directory creation.
-            // TODO(@supa-chayajin): Handle error permissions and create directory before
-            file_put_contents(
-                filename: $cacheFile,
-                data: $content,
-                flags: LOCK_EX,
-            );
+            $this->cacheRoutes();
         }
 
         return $this;
@@ -201,58 +184,33 @@ final class Router
      * @return bool
      * @throws SecurityException
      */
-    public function match(Request $req, array $route): bool
+    public function match(ContainerInterface $container, Request $req, array $route): bool
     {
-        $matches = null;
-        $pathSegments = $this->getPathUri(path: $route[Constant::PATH]);
-        $urlSegments = $this->getRequestUri(uri: $req->server[Constant::REQUEST_URI]);
+        $pathSegments = $this->getPathUri($route[Constant::PATH]);
+        $urlSegments = $this->getRequestUri($req->server[Constant::REQUEST_URI] ?? '');
 
-        // 1. Path length must match exactly.
-        $iMax = count(value: $pathSegments);
-        if (count(value: $urlSegments) !== $iMax) {
+        if (count($pathSegments) !== count($urlSegments)) {
             return false;
         }
 
-        $isMatch = true;
-
-        // 2. Iterate and compare each segment.
-        for ($i = 0; $i < $iMax; $i++) {
-            $pathSegment = $pathSegments[$i];
-            $urlSegment = $urlSegments[$i];
-
-            // Check if the segment in the route definition is a dynamic parameter {name}.
-            preg_match(
-                pattern: '/^\{(.*)}$/',
-                subject: $pathSegment,
-                matches: $matches,
-                flags: PREG_UNMATCHED_AS_NULL,
-            );
-
-            if (isset($matches[0]) && '' !== $matches[0]) {
-                // If it is a parameter, it matches unconditionally (e.g., /{id} matches /123).
-
-                // --- SECURITY INJECTION POINT ---
-                // We use the System's Security service to analyze the controller class
-                // immediately after a match is found. This prevents the execution
-                // of potentially insecure classes/methods.
-                if (class_exists($route[Constant::CLASSNAME])) {
-                    $controllerInstance = new $route[Constant::CLASSNAME]();
-                    // We call analyze on the controller to validate its security level
-                    $this->system->security->analyze(object: $controllerInstance);
-                }
-                // --- END SECURITY INJECTION ---
-
+        foreach ($pathSegments as $i => $pathSegment) {
+            if (str_starts_with($pathSegment, '{') && str_ends_with($pathSegment, '}')) {
+                // This is a dynamic parameter, it's a match by default at this stage.
                 continue;
             }
 
-            // If it is NOT a parameter, the segments must be an exact match.
-            if ($pathSegment !== $urlSegment) {
-                $isMatch = false;
-                break;
+            if ($pathSegment !== $urlSegments[$i]) {
+                return false;
             }
         }
 
-        return $isMatch;
+        // Security check is done once a match is confirmed.
+        if ($container->has($route[Constant::CLASSNAME])) {
+            $controllerInstance = $container->get($route[Constant::CLASSNAME]);
+            $this->system->security->analyze($controllerInstance);
+        }
+
+        return true;
     }
 
     /**
@@ -282,6 +240,13 @@ final class Router
         }
 
         return false;
+    }
+
+    private function cacheRoutes(): void
+    {
+        $cacheFile = $this->getCacheFilePath();
+        $content = '<?php return ' . var_export($this->routes, true) . ';';
+        file_put_contents($cacheFile, $content, LOCK_EX);
     }
 
     private function isProduction(): bool

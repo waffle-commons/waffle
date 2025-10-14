@@ -7,7 +7,10 @@ namespace WaffleTests\Abstract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractResponse;
+use Waffle\Attribute\Configuration;
 use Waffle\Core\Constant;
+use Waffle\Core\Container;
+use Waffle\Core\Security;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Abstract\Helper\ConcreteTestResponse;
@@ -25,7 +28,9 @@ final class AbstractResponseTest extends TestCase
     public function testRenderCallsControllerActionAndView(): void
     {
         // 1. Setup: Create a real test instance of our abstract class.
-        $requestHandler = new TestRequest();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $requestHandler = new TestRequest(container: new Container(security: $security));
 
         // 2. Configure the object state using its public methods.
         $_ENV['APP_ENV'] = 'test';
@@ -63,7 +68,9 @@ final class AbstractResponseTest extends TestCase
         $this->expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
 
         // Setup
-        $requestHandler = new TestRequest();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $requestHandler = new TestRequest(container: new Container(security: $security));
         $_ENV['APP_ENV'] = 'test';
         $_SERVER['REQUEST_URI'] = '/users/abc';
         $requestHandler->setCurrentRoute(route: [
@@ -86,7 +93,9 @@ final class AbstractResponseTest extends TestCase
     public function testBuildFromCliHandler(): void
     {
         // Setup
-        $cliHandler = new TestCli();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $cliHandler = new TestCli(container: new Container(security: $security));
 
         // Action
         $response = new ConcreteTestResponse(handler: $cliHandler);

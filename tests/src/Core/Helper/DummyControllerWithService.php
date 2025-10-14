@@ -11,7 +11,7 @@ use Waffle\Core\View;
  * A dummy controller that requires a service in its action method.
  * This is used to test the service injection capabilities of the Response class.
  */
-class DummyControllerWithService extends BaseController
+final class DummyControllerWithService extends BaseController
 {
     public function index(DummyService $service): View
     {

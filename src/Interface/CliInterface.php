@@ -34,7 +34,12 @@ interface CliInterface
         set;
     }
 
-    public function configure(bool $cli): void;
+    public null|ContainerInterface $container {
+        get;
+        set;
+    }
+
+    public function configure(ContainerInterface $container, bool $cli): void;
 
     public function process(): ResponseInterface;
 

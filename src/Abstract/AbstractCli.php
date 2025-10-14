@@ -6,6 +6,7 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
 use Waffle\Interface\CliInterface;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\ResponseInterface;
 
 abstract class AbstractCli implements CliInterface
@@ -91,9 +92,16 @@ abstract class AbstractCli implements CliInterface
         set => $this->currentRoute = $value;
     }
 
+    public null|ContainerInterface $container = null {
+        set => $this->container = $value;
+    }
+
+    abstract public function __construct(ContainerInterface $container, bool $cli);
+
     #[\Override]
-    public function configure(bool $cli): void
+    public function configure(ContainerInterface $container, bool $cli): void
     {
+        $this->container = $container;
         $this->cli = $cli;
     }
 

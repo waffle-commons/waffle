@@ -7,6 +7,7 @@ namespace Waffle\Abstract;
 use Throwable;
 use Waffle\Attribute\Configuration;
 use Waffle\Core\Cli;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
 use Waffle\Core\Security;
@@ -14,7 +15,9 @@ use Waffle\Core\System;
 use Waffle\Core\View;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Exception\SecurityException;
+use Waffle\Factory\ContainerFactory;
 use Waffle\Interface\CliInterface;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Trait\DotenvTrait;
@@ -28,11 +31,18 @@ abstract class AbstractKernel implements KernelInterface
     use ReflectionTrait;
 
     public object $config {
+        get => $this->config;
         set => $this->config = $value;
     }
 
     protected(set) null|System $system = null {
+        get => $this->system;
         set => $this->system = $value;
+    }
+
+    public null|ContainerInterface $container = null {
+        get => $this->container;
+        set => $this->container = $value;
     }
 
     public function handle(): void
@@ -63,8 +73,24 @@ abstract class AbstractKernel implements KernelInterface
             className: $this->config,
             attribute: Configuration::class,
         );
+        /** @var Configuration $config */
+        $config = $this->config;
 
-        $this->system = new System(security: new Security(cfg: $this->config))->boot(kernel: $this);
+        $security = new Security(cfg: $this->config);
+
+        $this->container = new Container(security: $security);
+
+        $containerFactory = new ContainerFactory();
+        $containerFactory->create(
+            container: $this->container,
+            directory: $config->serviceDir,
+        );
+        $containerFactory->create(
+            container: $this->container,
+            directory: $config->controllerDir,
+        );
+
+        $this->system = new System(security: $security)->boot(kernel: $this);
 
         return $this;
     }
@@ -75,7 +101,7 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function createRequestFromGlobals(): RequestInterface
     {
-        $req = new Request(); // Removed setCurrentRoute() from here
+        $req = new Request(container: $this->container);
         if ($this->system instanceof System) {
             $router = $this->system->getRouter();
             if (null !== $router && !$req->isCli()) {
@@ -91,6 +117,7 @@ abstract class AbstractKernel implements KernelInterface
                  */
                 foreach ($routes as $route) {
                     if ($router->match(
+                        container: $this->container,
                         req: $req,
                         route: $route,
                     )) {
@@ -109,7 +136,10 @@ abstract class AbstractKernel implements KernelInterface
     {
         // TODO(@supa-chayajin): Handle CLI command from request
 
-        return new Cli(cli: false)->setCurrentRoute();
+        return new Cli(
+            container: $this->container,
+            cli: false,
+        );
     }
 
     #[\Override]
@@ -120,7 +150,10 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): void
     {
-        $handler = $this->isCli() ? new Cli() : new Request();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $this->container = new Container($security);
+        $handler = $this->isCli() ? new Cli(container: $this->container) : new Request(container: $this->container);
         $statusCode = 500;
         $data = [
             'message' => 'An unexpected error occurred.',

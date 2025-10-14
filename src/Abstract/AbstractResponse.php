@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Constant;
-use Waffle\Core\Request;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use Waffle\Interface\CliInterface;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
 use Waffle\Trait\ReflectionTrait;
@@ -36,12 +36,17 @@ abstract class AbstractResponse implements ResponseInterface
         set => $this->handler = $value;
     }
 
+    public null|ContainerInterface $container = null {
+        set => $this->container = $value;
+    }
+
     #[\Override]
     public function build(CliInterface|RequestInterface $handler): void
     {
         $this->view = null;
+        $this->handler = $handler;
+        $this->container = $handler->container;
         $this->cli = $handler->cli;
-        $this->handler = $this->cli && $handler instanceof CliInterface ? new Request(cli: true) : $handler;
     }
 
     /**
@@ -55,7 +60,7 @@ abstract class AbstractResponse implements ResponseInterface
 
         if (null !== $view) {
             /** @var string $env */
-            $env = $this->handler->env[Constant::APP_ENV];
+            $env = $this->handler->env[Constant::APP_ENV] ?? Constant::ENV_PROD;
             $this->rendering(
                 view: $view,
                 env: $env,
@@ -93,17 +98,17 @@ abstract class AbstractResponse implements ResponseInterface
             };
         }
         if ((!$cli || !$error) && null !== $path && null !== $name && is_string($className)) {
-            if (!class_exists($className)) {
+            if (!$this->container?->has(id: $className)) {
                 // TODO(@supa-chayajin): Implements this correctly
                 throw new RenderingException();
             }
-            $class = new $className();
+            $class = $this->container?->get(id: $className);
             if (is_array($argTypes)) {
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
                     $arg = null;
-                    if (class_exists($argType)) {
-                        $arg = new $argType();
+                    if ($this->container?->has(id: $argType)) {
+                        $arg = $this->container?->get(id: $argType);
                     }
                     if (null === $arg) {
                         $arg = $this->getRouteArgument(

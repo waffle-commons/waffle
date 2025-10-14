@@ -7,7 +7,7 @@ namespace WaffleTests\Core\Helper;
 /**
  * A simple dummy service for testing dependency injection.
  */
-class DummyService
+final class DummyService
 {
     /**
      * @return array{
