@@ -44,10 +44,9 @@ class System extends AbstractSystem
                 router: new Router(
                     directory: $config->controllerDir,
                     system: $this,
-                    container: $kernel->container,
                 )
                     ->boot()
-                    ->registerRoutes(),
+                    ->registerRoutes(container: $kernel->container),
             );
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));

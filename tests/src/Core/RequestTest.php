@@ -10,9 +10,11 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
+use Waffle\Attribute\Configuration;
 use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use Waffle\Core\Security;
 use WaffleTests\Router\Dummy\DummyController;
 
 #[CoversClass(Request::class)]
@@ -25,7 +27,9 @@ final class RequestTest extends TestCase
     public function testCanBeInstantiated(): void
     {
         // When: A new Request object is created.
-        $request = new Request(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
 
         // Then: It should be an instance of both Request and AbstractRequest.
         static::assertInstanceOf(Request::class, $request);
@@ -39,7 +43,9 @@ final class RequestTest extends TestCase
     public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
         // Given: A request object with a configured route.
-        $request = new Request(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
         /**
          * @var array{
          *       classname: string,
@@ -73,7 +79,9 @@ final class RequestTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new Request object.
-        $request = new Request(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
         /**
          * @var array{
          *       classname: string,
@@ -117,7 +125,9 @@ final class RequestTest extends TestCase
         $GLOBALS['_' . strtoupper($property)] = $superglobal;
 
         // When: A new Request object is created.
-        $container = new Container();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
         $request = new Request(container: $container);
         $request->configure(
             container: $container,

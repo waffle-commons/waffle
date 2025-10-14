@@ -7,6 +7,7 @@ namespace WaffleTests\Router;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Waffle\Attribute\Configuration;
 use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
@@ -55,7 +56,6 @@ final class RouterTest extends TestCase
         $this->router = new Router(
             directory: $this->dummyControllerDir,
             system: $this->system,
-            container: new Container(),
         );
     }
 
@@ -77,7 +77,10 @@ final class RouterTest extends TestCase
     public function testRegisterRoutesDiscoversAndBuildsRoutes(): void
     {
         // Action: Execute the boot and registration process.
-        $this->router->boot()->registerRoutes();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $this->router->boot()->registerRoutes(container: $container);
 
         // Assertions:
         static::assertNotEmpty($this->router->routes, 'The router should have discovered at least one route.');
@@ -101,13 +104,16 @@ final class RouterTest extends TestCase
      */
     public function testMatchWithStaticRoute(): void
     {
-        $this->router->boot()->registerRoutes();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = '/users';
-        $request = new Request(container: new Container());
+        $request = new Request(container: $container);
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
-            if ($this->router->match($request, $route)) {
+            if ($this->router->match($container, $request, $route)) {
                 $matchingRoute = $route;
                 break;
             }
@@ -120,13 +126,16 @@ final class RouterTest extends TestCase
     #[DataProvider('dynamicRouteProvider')]
     public function testMatchWithDynamicParameterRoutes(string $url, string $expectedRouteName): void
     {
-        $this->router->boot()->registerRoutes();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = $url;
-        $request = new Request(container: new Container());
+        $request = new Request(container: $container);
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
-            if ($this->router->match($request, $route)) {
+            if ($this->router->match($container, $request, $route)) {
                 $matchingRoute = $route;
                 break;
             }
@@ -152,13 +161,16 @@ final class RouterTest extends TestCase
      */
     public function testNoMatchForNonExistentRoute(): void
     {
-        $this->router->boot()->registerRoutes();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = '/non-existent-route';
-        $request = new Request(container: new Container());
+        $request = new Request(container: $container);
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
-            if ($this->router->match($request, $route)) {
+            if ($this->router->match($container, $request, $route)) {
                 $matchingRoute = $route;
                 break;
             }
@@ -178,7 +190,10 @@ final class RouterTest extends TestCase
             unlink($cacheFile);
         }
 
-        $this->router->boot()->registerRoutes();
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $this->router->boot()->registerRoutes(container: $container);
         static::assertFileExists($cacheFile, 'The router should have created a cache file.');
 
         /** @var array $cachedRoutes */
@@ -201,11 +216,13 @@ final class RouterTest extends TestCase
         $badRouter = new Router(
             directory: __DIR__ . '/NonExistentDirectory',
             system: $this->system,
-            container: new Container(),
         );
 
         // 2. Action: Execute the boot and registration process. This would crash if not handled.
-        $badRouter->boot()->registerRoutes();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
+        $badRouter->boot()->registerRoutes(container: $container);
 
         // 3. Assertions: The expected behavior is that the router simply finds no routes
         // and its internal routes table remains empty. No exception should be thrown.

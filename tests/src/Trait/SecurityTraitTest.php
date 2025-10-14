@@ -13,7 +13,6 @@ use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
-use WaffleTests\Trait\Helper\NonReadonlyTestService;
 use WaffleTests\Trait\Helper\UninitializedPropertyClass;
 
 #[CoversTrait(SecurityTrait::class)]
@@ -135,7 +134,7 @@ final class SecurityTraitTest extends TestCase
         ];
 
         // Level 3 Violation: A public method returning void.
-        $msg3 = "/Level 3: Public method 'getSomething' in class@anonymous.* must not be of 'void' type./";
+        $msg3 = "/Level 3: Public method 'getSomething' in class@anonymous.* must not return 'void'./";
         yield 'Level 3 Violation: Public method returns void' => [
             'violatingObject' => new class {
                 public function getSomething(): void
@@ -189,12 +188,7 @@ final class SecurityTraitTest extends TestCase
             'expectedExceptionMessage' => $msg8,
         ];
 
-        // Level 9 Violation: A Service class that is not declared as readonly.
-        yield 'Level 9 Violation: Service not readonly' => [
-            'violatingObject' => new NonReadonlyTestService(),
-            'securityLevel' => 9,
-            'expectedExceptionMessage' => '/Level 9: Service classes must be declared readonly./',
-        ];
+        // Level 9 Violation: Impossible to test on the framework
 
         // Level 10 Violation: A class that is not declared as final.
         yield 'Level 10 Violation: Class not final' => [

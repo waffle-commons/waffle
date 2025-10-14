@@ -64,34 +64,14 @@ start_line = 11
 end_line = 11
 
 [[entries."src/Core/Container.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 12
-end_line = 145
-
-[[entries."src/Core/Container.php".issues]]
 code = "halstead"
-start_line = 30
-end_line = 68
-
-[[entries."src/Core/Container.php".issues]]
-code = "no-else-clause"
-start_line = 48
-end_line = 58
-
-[[entries."src/Core/Container.php".issues]]
-code = "no-else-clause"
-start_line = 86
-end_line = 88
+start_line = 40
+end_line = 69
 
 [[entries."src/Core/Request.php".issues]]
 code = "no-boolean-flag-parameter"
 start_line = 11
 end_line = 11
-
-[[entries."src/Factory/ContainerFactory.php".issues]]
-code = "no-else-clause"
-start_line = 64
-end_line = 66
 
 [[entries."src/Interface/CliInterface.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -106,22 +86,22 @@ end_line = 41
 [[entries."src/Router/Router.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 16
-end_line = 317
+end_line = 274
 
 [[entries."src/Router/Router.php".issues]]
 code = "excessive-nesting"
-start_line = 134
-end_line = 153
+start_line = 128
+end_line = 132
 
 [[entries."src/Router/Router.php".issues]]
 code = "halstead"
-start_line = 62
-end_line = 78
+start_line = 57
+end_line = 73
 
 [[entries."src/Router/Router.php".issues]]
 code = "kan-defect"
 start_line = 16
-end_line = 317
+end_line = 274
 
 [[entries."src/Trait/DotenvTrait.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -136,7 +116,7 @@ end_line = 102
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 13
-end_line = 330
+end_line = 337
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "halstead"
@@ -151,12 +131,12 @@ end_line = 93
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "kan-defect"
 start_line = 13
-end_line = 330
+end_line = 337
 
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "too-many-methods"
 start_line = 13
-end_line = 330
+end_line = 337
 
 [[entries."tests/src/Abstract/Helper/LoadEnvDisabledKernel.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -168,10 +148,20 @@ code = "no-boolean-flag-parameter"
 start_line = 25
 end_line = 25
 
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "assertion-style"
+start_line = 119
+end_line = 119
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "too-many-methods"
+start_line = 18
+end_line = 124
+
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "no-global"
-start_line = 116
-end_line = 116
+start_line = 124
+end_line = 124
 
 [[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -185,5 +175,5 @@ end_line = 90
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "return-type"
-start_line = 152
-end_line = 154
+start_line = 151
+end_line = 153

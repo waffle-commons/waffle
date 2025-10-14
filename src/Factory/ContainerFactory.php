@@ -5,33 +5,29 @@ declare(strict_types=1);
 namespace Waffle\Factory;
 
 use Waffle\Core\Constant;
-use Waffle\Core\Container;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Exception\Container\ContainerException;use Waffle\Interface\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
 
 final class ContainerFactory
 {
     use ReflectionTrait;
 
-    public function create(null|string $serviceDir = null): ContainerInterface
+    public function create(ContainerInterface $container, null|string $directory = null): void
     {
-        $container = new Container();
         $this->registerServices(
             container: $container,
-            serviceDir: $serviceDir,
+            directory: $directory,
         );
-
-        return $container;
     }
 
-    private function registerServices(ContainerInterface $container, null|string $serviceDir = null): void
+    private function registerServices(ContainerInterface $container, null|string $directory = null): void
     {
-        if (null !== $serviceDir) {
-            if (!is_dir($serviceDir)) {
+        if (null !== $directory) {
+            if (!is_dir($directory)) {
                 return;
             }
 
-            $files = $this->scanDirectory($serviceDir);
+            $files = $this->scanDirectory($directory);
 
             foreach ($files as $class) {
                 if ($container->has(id: $class)) {
@@ -46,6 +42,7 @@ final class ContainerFactory
 
     /**
      * @return string[]
+     * @throws ContainerException
      */
     private function scanDirectory(string $directory): array
     {
@@ -60,11 +57,11 @@ final class ContainerFactory
 
                 $file = $directory . DIRECTORY_SEPARATOR . $path;
 
-                if (is_dir($file)) {
-                    $files = array_merge($files, $this->scanDirectory($file));
-                } elseif (str_contains($path, Constant::PHPEXT)) {
-                    $files[] = $this->className($file);
-                }
+                match (true) {
+                    (is_dir($file)) => $files = array_merge($files, $this->scanDirectory($file)),
+                    (str_contains($path, Constant::PHPEXT)) => $files[] = $this->className($file),
+                    default => throw new ContainerException("Service or class \"{$file}\" not found.")
+                };
             }
         }
 

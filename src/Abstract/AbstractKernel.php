@@ -7,6 +7,7 @@ namespace Waffle\Abstract;
 use Throwable;
 use Waffle\Attribute\Configuration;
 use Waffle\Core\Cli;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
 use Waffle\Core\Security;
@@ -72,13 +73,24 @@ abstract class AbstractKernel implements KernelInterface
             className: $this->config,
             attribute: Configuration::class,
         );
-
-        $containerFactory = new ContainerFactory();
         /** @var Configuration $config */
         $config = $this->config;
-        $this->container = $containerFactory->create(serviceDir: $config->serviceDir);
 
-        $this->system = new System(security: new Security(cfg: $this->config))->boot(kernel: $this);
+        $security = new Security(cfg: $this->config);
+
+        $this->container = new Container(security: $security);
+
+        $containerFactory = new ContainerFactory();
+        $containerFactory->create(
+            container: $this->container,
+            directory: $config->serviceDir,
+        );
+        $containerFactory->create(
+            container: $this->container,
+            directory: $config->controllerDir,
+        );
+
+        $this->system = new System(security: $security)->boot(kernel: $this);
 
         return $this;
     }
@@ -105,6 +117,7 @@ abstract class AbstractKernel implements KernelInterface
                  */
                 foreach ($routes as $route) {
                     if ($router->match(
+                        container: $this->container,
                         req: $req,
                         route: $route,
                     )) {
@@ -137,8 +150,9 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): void
     {
-        $containerFactory = new ContainerFactory();
-        $this->container = $containerFactory->create();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $this->container = new Container($security);
         $handler = $this->isCli() ? new Cli(container: $this->container) : new Request(container: $this->container);
         $statusCode = 500;
         $data = [

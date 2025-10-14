@@ -132,6 +132,7 @@ trait SecurityTrait
                 );
             }
         }
+
         return true;
     }
 
@@ -147,8 +148,7 @@ trait SecurityTrait
         $class = get_class($object);
 
         foreach ($methods as $method) {
-            // Ignore constructor and magic methods
-            if (str_starts_with($method->getName(), '__')) {
+            if ($method->isConstructor() || str_starts_with($method->getName(), '__')) {
                 continue;
             }
 
@@ -158,8 +158,7 @@ trait SecurityTrait
                 $returnConditions = $returnType->getName() === Constant::TYPE_VOID;
                 if ($returnConditions && $method->getDeclaringClass()->getName() === $class) {
                     throw new SecurityException(
-                        message: "Level 3: Public method '{$method->getName()}' in {$class} "
-                        . "must not be of '{$returnType}' type.",
+                        message: "Level 3: Public method '{$method->getName()}' in {$class} must not return 'void'.",
                         code: 500,
                     );
                 }
@@ -181,8 +180,7 @@ trait SecurityTrait
         $class = get_class($object);
 
         foreach ($methods as $method) {
-            // Ignore constructor and magic methods
-            if (str_starts_with($method->getName(), '__')) {
+            if ($method->isConstructor() || str_starts_with($method->getName(), '__')) {
                 continue;
             }
 
@@ -193,6 +191,7 @@ trait SecurityTrait
                 );
             }
         }
+
         return true;
     }
 
@@ -215,6 +214,7 @@ trait SecurityTrait
                 );
             }
         }
+
         return true;
     }
 
@@ -237,6 +237,7 @@ trait SecurityTrait
                 );
             }
         }
+
         return true;
     }
 
@@ -272,6 +273,7 @@ trait SecurityTrait
                 }
             }
         }
+
         return true;
     }
 
@@ -290,6 +292,7 @@ trait SecurityTrait
                 code: 500,
             );
         }
+
         return true;
     }
 
@@ -300,15 +303,18 @@ trait SecurityTrait
      */
     private function checkLevel9(object $object): bool
     {
-        $reflection = new ReflectionObject(object: $object);
-        // Here, we check if the object is a DTO class (simulating a DTO with "Service" in the name).
-        // Note: The actual `isReadOnly()` method is available in PHP 8.2+.
-        if (!$reflection->isReadOnly() && str_contains($reflection->getName(), 'Service')) {
+        $reflection = new ReflectionObject($object);
+
+        $isFrameworkComponent = str_starts_with($reflection->getName(), 'Waffle\\');
+        $readonly = $reflection->isReadOnly();
+
+        if ($isFrameworkComponent && !$readonly && str_contains($reflection->getName(), 'Service')) {
             throw new SecurityException(
-                message: 'Level 9: Service classes must be declared readonly.',
+                message: 'Level 9: Internal framework service classes must be declared readonly.',
                 code: 500,
             );
         }
+
         return true;
     }
 
@@ -326,6 +332,7 @@ trait SecurityTrait
                 code: 500,
             );
         }
+
         return true;
     }
 }

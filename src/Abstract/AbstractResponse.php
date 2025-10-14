@@ -98,17 +98,17 @@ abstract class AbstractResponse implements ResponseInterface
             };
         }
         if ((!$cli || !$error) && null !== $path && null !== $name && is_string($className)) {
-            if (!$this->container->has(id: $className)) {
+            if (!$this->container?->has(id: $className)) {
                 // TODO(@supa-chayajin): Implements this correctly
                 throw new RenderingException();
             }
-            $class = $this->container->get(id: $className);
+            $class = $this->container?->get(id: $className);
             if (is_array($argTypes)) {
                 /** @var array<non-empty-string, string> $argTypes */
                 foreach ($argTypes as $keyType => $argType) {
                     $arg = null;
-                    if ($this->container->has(id: $argType)) {
-                        $arg = $this->container->get(id: $argType);
+                    if ($this->container?->has(id: $argType)) {
+                        $arg = $this->container?->get(id: $argType);
                     }
                     if (null === $arg) {
                         $arg = $this->getRouteArgument(

@@ -6,11 +6,13 @@ namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Waffle\Attribute\Configuration;
 use Waffle\Core\Cli;
 use Waffle\Core\Constant;
 use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use Waffle\Core\Security;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Core\Helper\DummyControllerWithService;
 use WaffleTests\Core\Helper\DummyService;
@@ -51,7 +53,9 @@ final class ResponseTest extends TestCase
     public function testRenderFromRequest(): void
     {
         // 1. Setup
-        $request = new Request(container: new Container());
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -85,7 +89,9 @@ final class ResponseTest extends TestCase
     public function testRenderFromCli(): void
     {
         // 1. Setup
-        $cli = new Cli(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $cli = new Cli(container: new Container(security: $security));
 
         // 2. Action
         ob_start();
@@ -109,7 +115,9 @@ final class ResponseTest extends TestCase
         // 1. Setup
         // We manipulate the superglobal BEFORE instantiating the Request object.
         $_SERVER[Constant::REQUEST_URI] = '/users/123';
-        $request = new Request(container: new Container());
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -151,7 +159,9 @@ final class ResponseTest extends TestCase
 
         // Manipulate the superglobal with the invalid URI.
         $_SERVER[Constant::REQUEST_URI] = '/users/abc';
-        $request = new Request(container: new Container());
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -174,7 +184,9 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $request = new Request(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -218,7 +230,9 @@ final class ResponseTest extends TestCase
     public function testRenderProducesNoOutputWhenAppEnvIsTest(): void
     {
         // 1. Setup
-        $request = new Request(container: new Container());
+        $config = new Configuration(securityLevel: 2);
+        $security = new Security(cfg: $config);
+        $request = new Request(container: new Container(security: $security));
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',

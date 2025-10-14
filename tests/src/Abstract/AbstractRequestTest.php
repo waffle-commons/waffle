@@ -9,8 +9,10 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
+use Waffle\Attribute\Configuration;
 use Waffle\Core\Container;
 use Waffle\Core\Response;
+use Waffle\Core\Security;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\Abstract\Helper\ConcreteTestRequest;
 use WaffleTests\Router\Dummy\DummyController;
@@ -27,7 +29,9 @@ final class AbstractRequestTest extends TestCase
     public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
         // Given: A request object configured for a web environment.
-        $container = new Container();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
         $request = new ConcreteTestRequest(container: $container);
         $request->configure(
             container: $container,
@@ -54,7 +58,9 @@ final class AbstractRequestTest extends TestCase
         $this->expectExceptionMessage('Route not found.');
 
         // Given: A request object for a web environment with no matching route.
-        $container = new Container();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
         $request = new ConcreteTestRequest(container: $container);
         $request->configure(
             container: $container,
@@ -73,7 +79,9 @@ final class AbstractRequestTest extends TestCase
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
         // Given: A request object configured for a CLI environment.
-        $container = new Container();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
         $request = new ConcreteTestRequest(container: $container);
         $request->configure(
             container: $container,
@@ -96,7 +104,9 @@ final class AbstractRequestTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new request object.
-        $request = new ConcreteTestRequest(container: new Container());
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $request = new ConcreteTestRequest(container: new Container(security: $security));
         /**
          * @var array{
          *       classname: string,
@@ -136,7 +146,9 @@ final class AbstractRequestTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new request object is created and configured.
-        $container = new Container();
+        $config = new Configuration();
+        $security = new Security(cfg: $config);
+        $container = new Container(security: $security);
         $request = new ConcreteTestRequest(container: $container);
         $request->configure(
             container: $container,

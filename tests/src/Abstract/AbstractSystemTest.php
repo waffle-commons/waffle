@@ -117,7 +117,6 @@ final class AbstractSystemTest extends TestCase
         $router = new Router(
             directory: false,
             system: $routerSystemMock,
-            container: new Container(),
         );
 
         // 2. Action
