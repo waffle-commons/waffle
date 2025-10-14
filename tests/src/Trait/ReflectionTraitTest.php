@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use Waffle\Trait\ReflectionTrait;
+use WaffleTests\TestCase;
 use WaffleTests\Trait\Helper\DummyAttribute;
 use WaffleTests\Trait\Helper\DummyClassWithAttribute;
 

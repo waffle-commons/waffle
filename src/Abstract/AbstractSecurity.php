@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
+use Waffle\Core\Config;
 use Waffle\Core\Constant;
 use Waffle\Exception\SecurityException;
 use Waffle\Interface\SecurityInterface;
@@ -16,6 +17,8 @@ abstract class AbstractSecurity implements SecurityInterface
     protected(set) int $level {
         set => $this->level = $value;
     }
+
+    abstract public function __construct(Config $cfg);
 
     /**
      * @param object $object

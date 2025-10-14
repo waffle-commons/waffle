@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Cli;
 use Waffle\Core\Constant;
-use Waffle\Core\Container;
-use Waffle\Core\Request;
 use Waffle\Core\Response;
-use Waffle\Core\Security;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Core\Helper\DummyControllerWithService;
 use WaffleTests\Core\Helper\DummyService;
 use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\TestCase;
 
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase
@@ -53,9 +48,7 @@ final class ResponseTest extends TestCase
     public function testRenderFromRequest(): void
     {
         // 1. Setup
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest(level: 2);
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -89,9 +82,7 @@ final class ResponseTest extends TestCase
     public function testRenderFromCli(): void
     {
         // 1. Setup
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $cli = new Cli(container: new Container(security: $security));
+        $cli = $this->createRealCli();
 
         // 2. Action
         ob_start();
@@ -115,9 +106,7 @@ final class ResponseTest extends TestCase
         // 1. Setup
         // We manipulate the superglobal BEFORE instantiating the Request object.
         $_SERVER[Constant::REQUEST_URI] = '/users/123';
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest(level: 2);
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -154,14 +143,12 @@ final class ResponseTest extends TestCase
     public function testRenderThrowsExceptionForMismatchedArgumentType(): void
     {
         // 1. Setup
-        $this->expectException(RenderingException::class);
-        $this->expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
+        static::expectException(RenderingException::class);
+        static::expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
 
         // Manipulate the superglobal with the invalid URI.
         $_SERVER[Constant::REQUEST_URI] = '/users/abc';
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest(level: 2);
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -184,9 +171,7 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest();
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -230,9 +215,7 @@ final class ResponseTest extends TestCase
     public function testRenderProducesNoOutputWhenAppEnvIsTest(): void
     {
         // 1. Setup
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest(level: 2);
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',

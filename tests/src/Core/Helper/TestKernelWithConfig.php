@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Core\Helper;
 
 use Waffle\Abstract\AbstractKernel;
-use Waffle\Attribute\Configuration;
+use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 
@@ -15,7 +15,7 @@ use Waffle\Core\Security;
  */
 final class TestKernelWithConfig extends AbstractKernel
 {
-    public function __construct(Configuration $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $security = new Security(cfg: $config);

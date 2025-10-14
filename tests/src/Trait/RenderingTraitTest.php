@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Trait;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Trait\RenderingTrait;
+use WaffleTests\TestCase;
 use WaffleTests\Trait\Helper\TraitObject;
 
 final class RenderingTraitTest extends TestCase

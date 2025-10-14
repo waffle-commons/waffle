@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Attribute;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Attribute\Argument;
+use WaffleTests\TestCase;
 
 final class ArgumentTest extends TestCase
 {

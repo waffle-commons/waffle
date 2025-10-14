@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use Waffle\Trait\RequestTrait;
+use WaffleTests\TestCase;
 
 final class RequestTraitTest extends TestCase
 {

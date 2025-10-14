@@ -4,28 +4,38 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract\Helper;
 
-/**
- * This is a test double for the ConcreteTestKernel.
- * Its purpose is to force the kernel to operate in a "web" context
- * and to disable the loadEnv() method, isolating the test from the
- * filesystem and the actual execution environment (CLI).
- */
-class WebKernel extends ConcreteTestKernel
-{
-    #[\Override]
-    public function boot(): self
-    {
-        // We override the boot method to inject a test-specific configuration.
-        // This new configuration object points the router to our dummy controller directory.
-        $this->config = new TestConfig();
+use Waffle\Core\Config;
+use Waffle\Kernel;
 
-        return $this;
+/**
+ * This is a test double for the concrete Kernel.
+ * Its purpose is to force the kernel to operate in a "web" context
+ * and to use a specific, temporary configuration directory for test isolation.
+ */
+class WebKernel extends Kernel
+{
+    private string $configDir;
+    private string $testEnvironment;
+
+    public function __construct(string $configDir, string $environment)
+    {
+        $this->configDir = $configDir;
+        $this->testEnvironment = $environment;
+
+        parent::__construct();
     }
 
     #[\Override]
-    public function loadEnv(bool $tests = false): void
+    public function configure(): self
     {
-        // This method is intentionally left empty for the test.
+        // Override the configure method to inject our test-specific configuration.
+        // This ensures the Kernel uses the temporary app.yaml we create in tests.
+        $this->config = new Config(
+            configDir: $this->configDir,
+            environment: $this->testEnvironment,
+        );
+
+        return parent::configure();
     }
 
     #[\Override]

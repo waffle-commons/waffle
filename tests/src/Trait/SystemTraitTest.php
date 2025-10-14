@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\TestCase;
 use Waffle\Trait\SystemTrait;
+use WaffleTests\TestCase;
 
 #[CoversTrait(SystemTrait::class)]
 final class SystemTraitTest extends TestCase

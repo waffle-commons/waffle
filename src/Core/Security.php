@@ -9,10 +9,8 @@ use Waffle\Attribute\Configuration;
 
 class Security extends AbstractSecurity
 {
-    public function __construct(object $cfg)
+    public function __construct(Config $cfg)
     {
-        if ($cfg instanceof Configuration) {
-            $this->level = $cfg->securityLevel;
-        }
+        $this->level = $cfg->get(key: 'waffle.security.level');
     }
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace WaffleTests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Kernel;
+use WaffleTests\TestCase;
 
 /**
  * This test class is dedicated to validating the concrete Kernel class.

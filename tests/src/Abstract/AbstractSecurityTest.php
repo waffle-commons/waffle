@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
-use PHPUnit\Framework\TestCase;
 use stdClass;
 use Waffle\Exception\SecurityException;
 use WaffleTests\Abstract\Helper\ConcreteTestSecurity;
+use WaffleTests\TestCase;
 
 final class AbstractSecurityTest extends TestCase
 {
@@ -33,8 +33,8 @@ final class AbstractSecurityTest extends TestCase
 
         // --- Assertions ---
         // We expect a SecurityException because the object is not a \DateTime instance.
-        $this->expectException(SecurityException::class);
-        $this->expectExceptionMessage('The object stdClass is not valid. It is not an instance of DateTime.');
+        static::expectException(SecurityException::class);
+        static::expectExceptionMessage('The object stdClass is not valid. It is not an instance of DateTime.');
 
         // --- Execution ---
         // This call should trigger the exception.

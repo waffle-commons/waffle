@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
-use Waffle\Attribute\Configuration;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
 use Waffle\Router\Router;
 use WaffleTests\Core\Helper\TestKernelWithConfig;
+use WaffleTests\TestCase;
 
 #[CoversClass(System::class)]
 final class SystemTest extends TestCase
@@ -30,8 +29,8 @@ final class SystemTest extends TestCase
         // once for the Kernel and once for the Configuration object.
         $securityMock->expects($this->exactly(2))->method('analyze');
 
-        // Create a dummy Configuration object.
-        $testConfig = new Configuration(controller: 'app/Controllers');
+        // Create a dummy Configuration object
+        $testConfig = $this->createAndGetConfig(securityLevel: 2);
         $testKernel = new TestKernelWithConfig($testConfig);
 
         // 2. Action
@@ -64,7 +63,7 @@ final class SystemTest extends TestCase
             ->will($this->throwException(new SecurityException('Security analysis failed.')));
 
         // Create a dummy Configuration and Kernel for the test.
-        $testConfig = new Configuration(controller: 'app/Controllers');
+        $testConfig = $this->createAndGetConfig();
         $testKernel = new TestKernelWithConfig($testConfig);
 
         // 2. Action

@@ -32,17 +32,16 @@ class System extends AbstractSystem
                     KernelInterface::class,
                 ],
             );
-            /** @var Configuration $config */
-            $config = $kernel->config;
             $this->security->analyze(
-                object: $config,
+                object: $kernel->config,
                 expectations: [
-                    Configuration::class,
+                    Config::class,
                 ],
             );
+            $controllers = $kernel->config->get(key: 'waffle.paths.controllers');
             $this->registerRouter(
                 router: new Router(
-                    directory: $config->controllerDir,
+                    directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
                     system: $this,
                 )
                     ->boot()

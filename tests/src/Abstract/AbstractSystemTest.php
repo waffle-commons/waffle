@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractSystem;
-use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Interface\KernelInterface;
 use Waffle\Router\Router;
+use WaffleTests\TestCase;
 
 /**
  * This test class is dedicated to validating the AbstractSystem class, which serves

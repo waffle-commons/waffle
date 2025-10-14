@@ -6,16 +6,13 @@ namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
-use Waffle\Core\Security;
 use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\TestCase;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase
@@ -27,9 +24,7 @@ final class RequestTest extends TestCase
     public function testCanBeInstantiated(): void
     {
         // When: A new Request object is created.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest();
 
         // Then: It should be an instance of both Request and AbstractRequest.
         static::assertInstanceOf(Request::class, $request);
@@ -43,9 +38,7 @@ final class RequestTest extends TestCase
     public function testProcessReturnsResponseWhenRouteIsSet(): void
     {
         // Given: A request object with a configured route.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest();
         /**
          * @var array{
          *       classname: string,
@@ -79,9 +72,7 @@ final class RequestTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new Request object.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $request = new Request(container: new Container(security: $security));
+        $request = $this->createRealRequest();
         /**
          * @var array{
          *       classname: string,
@@ -125,12 +116,9 @@ final class RequestTest extends TestCase
         $GLOBALS['_' . strtoupper($property)] = $superglobal;
 
         // When: A new Request object is created.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $container = new Container(security: $security);
-        $request = new Request(container: $container);
+        $request = $this->createRealRequest();
         $request->configure(
-            container: $container,
+            container: $request->container,
             cli: false,
         ); // Manually trigger configuration to load superglobals
 

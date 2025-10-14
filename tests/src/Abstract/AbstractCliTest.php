@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractCli;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Container;
 use Waffle\Core\Response;
-use Waffle\Core\Security;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
 use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\TestCase;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase
@@ -26,9 +23,7 @@ final class AbstractCliTest extends TestCase
     public function testProcessReturnsResponse(): void
     {
         // Given: A CLI object.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $cli = new ConcreteTestCli(container: new Container(security: $security));
+        $cli = new ConcreteTestCli(container: $this->createMockContainer());
 
         // When: The process() method is called.
         $response = $cli->process();
@@ -45,9 +40,7 @@ final class AbstractCliTest extends TestCase
     public function testSetCurrentRouteSetsPropertyAndReturnsSelf(): void
     {
         // Given: A new CLI object.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $cli = new ConcreteTestCli(container: new Container(security: $security));
+        $cli = new ConcreteTestCli(container: $this->createMockContainer());
         /**
          * @var array{
          *       classname: string,
@@ -86,9 +79,7 @@ final class AbstractCliTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new CLI object is created and configured.
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $cli = new ConcreteTestCli(container: new Container(security: $security));
+        $cli = new ConcreteTestCli(container: $this->createMockContainer());
 
         // Then: The public properties should accurately reflect the superglobal values.
         static::assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);

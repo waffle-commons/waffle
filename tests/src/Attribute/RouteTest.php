@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\Attribute;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Attribute\Argument;
 use Waffle\Attribute\Route;
+use WaffleTests\TestCase;
 
 final class RouteTest extends TestCase
 {

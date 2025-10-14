@@ -41,6 +41,7 @@ final class Constant
     public const string TYPE_INT = 'int';
     public const string TYPE_VOID = 'void';
     public const string TYPE_MIXED = 'mixed';
+    public const string DS_STORE = '.DS_Store';
 
     // Define security constants
     public const int SECURITY_LEVEL0 = 0;
