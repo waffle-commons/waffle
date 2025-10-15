@@ -177,6 +177,12 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): void
     {
+        if ($this->isCli()) {
+            // In CLI mode, we usually don't want JSON output for a not found route.
+            // We can log it or simply exit silently.
+            return;
+        }
+
         // Exception Handler Hardening:
         // Create a failsafe container if the main one doesn't exist yet.
         $failsafeContainer = $this->container;
@@ -190,14 +196,10 @@ abstract class AbstractKernel implements KernelInterface
             $failsafeContainer = new Container(security: $security);
         }
 
-        $handler = $this->isCli()
-            ? new Cli(
-                container: $failsafeContainer,
-                cli: true,
-            ) : new Request(
-                container: $failsafeContainer,
-                cli: false,
-            );
+        $handler = new Request(
+            container: $failsafeContainer,
+            cli: false,
+        );
         $statusCode = 500;
 
         $data = [

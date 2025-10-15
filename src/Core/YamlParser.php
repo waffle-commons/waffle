@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
+use Waffle\Interface\YamlParserInterface;
+
 /**
  * A very simple, native YAML file parser.
  * It supports basic key-value pairs, nesting, and lists.
  * It does not support advanced YAML features like anchors, aliases, or multi-line strings.
  */
-final class YamlParser
+final class YamlParser implements YamlParserInterface
 {
     /**
      * Parses a YAML file and returns its content as a PHP array.
@@ -116,7 +118,7 @@ final class YamlParser
         }
 
         // Handle null
-        if (strtolower($value) === 'null' || $value === '~' || $value === '') {
+        if ($value === '~' || strtolower($value) === 'null' || $value === '') {
             return null;
         }
 

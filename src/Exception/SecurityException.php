@@ -6,8 +6,8 @@ namespace Waffle\Exception;
 
 final class SecurityException extends WaffleException
 {
-    public function __construct(string $message = '', int $code = 0)
+    public function __construct(string $message = '', int $code = 0, null|\Throwable $previous = null)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, $code, $previous);
     }
 }

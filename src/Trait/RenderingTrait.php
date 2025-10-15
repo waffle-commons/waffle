@@ -20,22 +20,23 @@ trait RenderingTrait
                 echo $json;
             }
         } catch (JsonException $e) {
-            new RenderingException(
+            throw new RenderingException(
                 message: $e->getMessage(),
                 code: (int) $e->getCode(),
-            )->throw(view: new View(data: [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-                'previous' => $e->getPrevious(),
-            ]));
+                previous: $e->getPrevious(),
+            );
         }
     }
 
-    public function throw(View $view): void
+    public function throw(View $view, null|string $env = null): void
     {
+        $thrownEnv = match ($env) {
+            Constant::ENV_TEST => Constant::ENV_TEST,
+            default => Constant::ENV_EXCEPTION,
+        };
         $this->rendering(
             view: $view,
-            env: Constant::ENV_EXCEPTION,
+            env: $thrownEnv,
         );
     }
 }

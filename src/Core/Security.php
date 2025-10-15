@@ -11,6 +11,9 @@ class Security extends AbstractSecurity
 {
     public function __construct(Config $cfg)
     {
-        $this->level = $cfg->get(key: 'waffle.security.level');
+        $this->level = $cfg->get(
+            key: 'waffle.security.level',
+            default: 1,
+        );
     }
 }

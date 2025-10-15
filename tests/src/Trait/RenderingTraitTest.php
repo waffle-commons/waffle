@@ -6,7 +6,7 @@ namespace WaffleTests\Trait;
 
 use Waffle\Core\Constant;
 use Waffle\Core\View;
-use Waffle\Trait\RenderingTrait;
+use Waffle\Exception\RenderingException;
 use WaffleTests\TestCase;
 use WaffleTests\Trait\Helper\TraitObject;
 
@@ -35,10 +35,7 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // We call the rendering method, simulating a 'dev' environment.
         $this->traitObject->rendering($view, Constant::ENV_DEV);
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // --- Assertions ---
         // We assert that the output is a valid JSON string.
@@ -55,7 +52,7 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // We call the rendering method, simulating the 'test' environment.
         $this->traitObject->rendering($view, Constant::ENV_TEST);
-        $output = ob_get_clean();
+        $output = ob_get_clean() ?: '';
 
         // --- Assertions ---
         // We assert that nothing was echoed, as expected in a test environment.
@@ -71,13 +68,23 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // The throw() method should always render output, regardless of the environment.
         $this->traitObject->throw($view);
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // --- Assertions ---
         static::assertJson($output);
         static::assertStringContainsString('"error": "critical"', $output);
+    }
+
+    public function testRenderingThrowsRenderingExceptionOnJsonError(): void
+    {
+        // We expect our custom exception to be thrown.
+        static::expectException(RenderingException::class);
+
+        // Create a View with data that cannot be JSON encoded (a stream resource).
+        $problematicData = ['data' => fopen('php://memory', 'r')];
+        $view = new View(data: $problematicData);
+
+        // Execute the rendering method, which should trigger the error.
+        $this->traitObject->rendering($view, Constant::ENV_TEST);
     }
 }

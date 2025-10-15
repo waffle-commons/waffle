@@ -43,13 +43,16 @@ abstract class AbstractSecurity implements SecurityInterface
                 code: 500,
             );
         }
-        if (!$this->isSecure(
-            object: $object,
-            level: $this->level,
-        )) {
+        try {
+            $this->isSecure(
+                object: $object,
+                level: $this->level,
+            );
+        } catch (SecurityException $exception) {
             throw new SecurityException(
                 message: "The object {$className} is not secure.",
                 code: 500,
+                previous: $exception,
             );
         }
     }
