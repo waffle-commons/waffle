@@ -1,6 +1,6 @@
 {
     "name": "eightyfour/waffle",
-    "version": "dev-0.1.3",
+    "version": "dev-0.3.0",
     "description": "Base PHP Framework",
     "type": "library",
     "license": ["proprietary"],
