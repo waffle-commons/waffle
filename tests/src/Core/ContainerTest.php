@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use PHPUnit\Framework\TestCase;
-use Waffle\Attribute\Configuration;
+use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
@@ -15,6 +14,7 @@ use WaffleTests\Core\Helper\ServiceB;
 use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
+use WaffleTests\TestCase;
 
 final class ContainerTest extends TestCase
 {
@@ -24,9 +24,8 @@ final class ContainerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $this->container = new Container(security: $security);
+
+        $this->container = $this->createRealContainer();
     }
 
     public function testCanResolveClassWithoutDependencies(): void
@@ -61,16 +60,16 @@ final class ContainerTest extends TestCase
 
     public function testThrowsNotFoundExceptionForUnknownService(): void
     {
-        $this->expectException(NotFoundException::class);
-        $this->expectExceptionMessage('Service or class "NonExistentService" not found.');
+        static::expectException(NotFoundException::class);
+        static::expectExceptionMessage('Service or class "NonExistentService" not found.');
 
         $this->container->get('NonExistentService');
     }
 
     public function testThrowsExceptionForCircularDependencies(): void
     {
-        $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage(
+        static::expectException(ContainerException::class);
+        static::expectExceptionMessage(
             'Circular dependency detected while resolving service "WaffleTests\Core\Helper\ServiceD".',
         );
 
@@ -117,7 +116,7 @@ final class ContainerTest extends TestCase
     public function testSecurityCheckIsCalledOnResolve(): void
     {
         $securityMock = $this->createMock(Security::class);
-        $securityMock->expects($this->once())->method('analyze')->with($this->isInstanceOf(ServiceA::class));
+        $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
 
         $container = new Container($securityMock);
         $container->get(ServiceA::class);

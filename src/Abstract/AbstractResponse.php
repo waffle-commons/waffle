@@ -99,8 +99,10 @@ abstract class AbstractResponse implements ResponseInterface
         }
         if ((!$cli || !$error) && null !== $path && null !== $name && is_string($className)) {
             if (!$this->container?->has(id: $className)) {
-                // TODO(@supa-chayajin): Implements this correctly
-                throw new RenderingException();
+                $this->container?->set(
+                    id: $className,
+                    concrete: $className,
+                );
             }
             $class = $this->container?->get(id: $className);
             if (is_array($argTypes)) {

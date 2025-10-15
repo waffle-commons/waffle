@@ -1,6 +1,6 @@
 {
     "name": "eightyfour/waffle",
-    "version": "0.1.0",
+    "version": "dev-0.3.0",
     "description": "Base PHP Framework",
     "type": "library",
     "license": ["proprietary"],
@@ -17,8 +17,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.4.5",
-        "symfony/dotenv": "^7.2"
+        "php": "^8.4.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",

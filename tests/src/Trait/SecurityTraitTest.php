@@ -6,11 +6,11 @@ namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
+use WaffleTests\TestCase;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
 use WaffleTests\Trait\Helper\UninitializedPropertyClass;
@@ -63,8 +63,8 @@ final class SecurityTraitTest extends TestCase
         int $securityLevel,
         string $expectedExceptionMessage,
     ): void {
-        $this->expectException(SecurityException::class);
-        $this->expectExceptionMessageMatches($expectedExceptionMessage);
+        static::expectException(SecurityException::class);
+        static::expectExceptionMessageMatches($expectedExceptionMessage);
 
         $this->isSecure(
             object: $violatingObject,
@@ -101,11 +101,11 @@ final class SecurityTraitTest extends TestCase
      */
     public function testIsSecureThrowsExceptionForUninitializedPropertyLevel6(): void
     {
-        $this->expectException(SecurityException::class);
+        static::expectException(SecurityException::class);
         $msg6 =
             'Level 6: Property \'uninitializedProperty\' '
             . 'in WaffleTests\Trait\Helper\UninitializedPropertyClass is not initialized.';
-        $this->expectExceptionMessage($msg6);
+        static::expectExceptionMessage($msg6);
 
         // 1. Use Reflection to get the class blueprint.
         $reflectionClass = new ReflectionClass(UninitializedPropertyClass::class);

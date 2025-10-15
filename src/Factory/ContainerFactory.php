@@ -52,7 +52,10 @@ final class ContainerFactory
 
         if ($paths) {
             foreach ($paths as $path) {
-                if ($path === Constant::CURRENT_DIR || $path === Constant::PREVIOUS_DIR) {
+                $currentDir = $path === Constant::CURRENT_DIR;
+                $previousDir = $path === Constant::PREVIOUS_DIR;
+                $dsStore = str_contains($path, Constant::DS_STORE);
+                if ($currentDir || $previousDir || $dsStore) {
                     continue;
                 }
 

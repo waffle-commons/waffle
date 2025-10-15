@@ -23,6 +23,11 @@ code = "too-many-properties"
 start_line = 11
 end_line = 130
 
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "cyclomatic-complexity"
+start_line = 26
+end_line = 220
+
 [[entries."src/Abstract/AbstractRequest.php".issues]]
 code = "no-boolean-flag-parameter"
 start_line = 102
@@ -51,17 +56,32 @@ end_line = 147
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 17
-end_line = 182
+end_line = 184
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "kan-defect"
 start_line = 17
-end_line = 182
+end_line = 184
 
 [[entries."src/Core/Cli.php".issues]]
 code = "no-boolean-flag-parameter"
 start_line = 11
 end_line = 11
+
+[[entries."src/Core/Config.php".issues]]
+code = "no-boolean-flag-parameter"
+start_line = 10
+end_line = 10
+
+[[entries."src/Core/Config.php".issues]]
+code = "no-boolean-literal-comparison"
+start_line = 72
+end_line = 72
+
+[[entries."src/Core/Config.php".issues]]
+code = "no-else-clause"
+start_line = 70
+end_line = 73
 
 [[entries."src/Core/Container.php".issues]]
 code = "halstead"
@@ -72,6 +92,46 @@ end_line = 69
 code = "no-boolean-flag-parameter"
 start_line = 11
 end_line = 11
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "cyclomatic-complexity"
+start_line = 11
+end_line = 129
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "halstead"
+start_line = 37
+end_line = 95
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-boolean-literal-comparison"
+start_line = 26
+end_line = 26
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 62
+end_line = 67
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 68
+end_line = 73
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 81
+end_line = 92
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 89
+end_line = 91
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-empty"
+start_line = 87
+end_line = 87
 
 [[entries."src/Interface/CliInterface.php".issues]]
 code = "no-boolean-flag-parameter"
@@ -103,11 +163,6 @@ code = "kan-defect"
 start_line = 16
 end_line = 274
 
-[[entries."src/Trait/DotenvTrait.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 10
-end_line = 10
-
 [[entries."src/Trait/ReflectionTrait.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 11
@@ -138,40 +193,40 @@ code = "too-many-methods"
 start_line = 13
 end_line = 337
 
-[[entries."tests/src/Abstract/Helper/LoadEnvDisabledKernel.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 14
-end_line = 14
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "no-shorthand-ternary"
+start_line = 46
+end_line = 46
 
-[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 25
-end_line = 25
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "assertion-style"
-start_line = 119
-end_line = 119
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "no-shorthand-ternary"
+start_line = 62
+end_line = 62
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "too-many-methods"
 start_line = 18
-end_line = 124
+end_line = 123
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "no-global"
-start_line = 124
-end_line = 124
+start_line = 115
+end_line = 115
 
-[[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 62
-end_line = 62
+[[entries."tests/src/TestCase.php".issues]]
+code = "class-name"
+start_line = 16
+end_line = 16
 
-[[entries."tests/src/Trait/DotenvTraitTest.php".issues]]
+[[entries."tests/src/TestCase.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 90
-end_line = 90
+start_line = 108
+end_line = 108
+
+[[entries."tests/src/TestCase.php".issues]]
+code = "too-many-methods"
+start_line = 16
+end_line = 123
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "return-type"

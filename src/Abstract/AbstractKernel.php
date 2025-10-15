@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Throwable;
-use Waffle\Attribute\Configuration;
 use Waffle\Core\Cli;
+use Waffle\Core\Config;
+use Waffle\Core\Constant;
 use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
@@ -20,17 +21,20 @@ use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
-use Waffle\Trait\DotenvTrait;
 use Waffle\Trait\MicrokernelTrait;
 use Waffle\Trait\ReflectionTrait;
 
 abstract class AbstractKernel implements KernelInterface
 {
     use MicrokernelTrait;
-    use DotenvTrait;
     use ReflectionTrait;
 
-    public object $config {
+    private string $environment = Constant::ENV_PROD {
+        get => $this->environment;
+        set => $this->environment = $value;
+    }
+
+    public Config $config {
         get => $this->config;
         set => $this->config = $value;
     }
@@ -48,7 +52,7 @@ abstract class AbstractKernel implements KernelInterface
     public function handle(): void
     {
         try {
-            $this->boot()->configure()->loadEnv();
+            $this->boot()->configure();
 
             $handler = $this->isCli() ? $this->createCliFromRequest() : $this->createRequestFromGlobals();
 
@@ -61,7 +65,25 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function boot(): self
     {
-        $this->config = new Configuration();
+        /** @var string $root */
+        $root = APP_ROOT;
+        // The .env file is now only for environment variables, not framework config.
+        // In a real production setup, these would be set by the server environment.
+        if (file_exists($root . '/.env')) {
+            $lines = file($root . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            if ($lines) {
+                foreach ($lines as $line) {
+                    if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
+                        continue;
+                    }
+                    putenv($line);
+                    [$key, $value] = explode('=', $line, 2);
+                    $_ENV[$key] = $value;
+                    $_SERVER[$key] = $value;
+                }
+            }
+        }
+        $this->environment = $_ENV['APP_ENV'] ?? 'prod';
 
         return $this;
     }
@@ -69,26 +91,31 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function configure(): self
     {
-        $this->config = $this->newAttributeInstance(
-            className: $this->config,
-            attribute: Configuration::class,
+        $root = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
+        $this->config = new Config(
+            configDir: $root,
+            environment: $this->environment,
         );
-        /** @var Configuration $config */
-        $config = $this->config;
 
         $security = new Security(cfg: $this->config);
 
         $this->container = new Container(security: $security);
 
         $containerFactory = new ContainerFactory();
-        $containerFactory->create(
-            container: $this->container,
-            directory: $config->serviceDir,
-        );
-        $containerFactory->create(
-            container: $this->container,
-            directory: $config->controllerDir,
-        );
+        $services = $this->config->get(key: 'waffle.paths.services');
+        if (is_string($services)) {
+            $containerFactory->create(
+                container: $this->container,
+                directory: APP_ROOT . DIRECTORY_SEPARATOR . $services,
+            );
+        }
+        $controllers = $this->config->get(key: 'waffle.paths.controllers');
+        if (is_string($controllers)) {
+            $containerFactory->create(
+                container: $this->container,
+                directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
+            );
+        }
 
         $this->system = new System(security: $security)->boot(kernel: $this);
 
@@ -150,11 +177,29 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): void
     {
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $this->container = new Container($security);
-        $handler = $this->isCli() ? new Cli(container: $this->container) : new Request(container: $this->container);
+        // Exception Handler Hardening:
+        // Create a failsafe container if the main one doesn't exist yet.
+        $failsafeContainer = $this->container;
+        if (null === $failsafeContainer) {
+            $config = new Config(
+                configDir: APP_ROOT . '/app',
+                environment: 'prod',
+                failsafe: true,
+            );
+            $security = new Security(cfg: $config);
+            $failsafeContainer = new Container(security: $security);
+        }
+
+        $handler = $this->isCli()
+            ? new Cli(
+                container: $failsafeContainer,
+                cli: true,
+            ) : new Request(
+                container: $failsafeContainer,
+                cli: false,
+            );
         $statusCode = 500;
+
         $data = [
             'message' => 'An unexpected error occurred.',
             'error' => $e->getMessage(),

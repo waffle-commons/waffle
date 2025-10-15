@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Core\View;
+use WaffleTests\TestCase;
 
 final class ViewTest extends TestCase
 {

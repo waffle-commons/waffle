@@ -1,37 +1,102 @@
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 103
-end_line = 103
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 119
-end_line = 119
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 139
-end_line = 139
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "docblock-type-mismatch"
-start_line = 121
-end_line = 121
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "less-specific-nested-argument-type"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
 start_line = 104
 end_line = 104
 
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-assignment"
+start_line = 111
+end_line = 111
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 93
+end_line = 93
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 108
+end_line = 108
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 115
+end_line = 115
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 184
+end_line = 184
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 130
+end_line = 130
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 146
+end_line = 146
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 166
+end_line = 166
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "docblock-type-mismatch"
+start_line = 123
+end_line = 123
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 129
+end_line = 129
+
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
-start_line = 110
-end_line = 110
+start_line = 106
+end_line = 106
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-assignment"
+start_line = 112
+end_line = 112
+
+[[entries."src/Core/Config.php".issues]]
+code = "mixed-argument"
+start_line = 71
+end_line = 71
+
+[[entries."src/Core/Config.php".issues]]
+code = "mixed-array-access"
+start_line = 59
+end_line = 59
+
+[[entries."src/Core/Config.php".issues]]
+code = "mixed-array-access"
+start_line = 71
+end_line = 71
+
+[[entries."src/Core/Config.php".issues]]
+code = "mixed-assignment"
+start_line = 59
+end_line = 59
+
+[[entries."src/Core/Config.php".issues]]
+code = "mixed-assignment"
+start_line = 67
+end_line = 67
+
+[[entries."src/Core/Config.php".issues]]
+code = "reference-to-undefined-variable"
+start_line = 70
+end_line = 70
+
+[[entries."src/Core/Config.php".issues]]
+code = "undefined-variable"
+start_line = 71
+end_line = 71
 
 [[entries."src/Core/Container.php".issues]]
 code = "invalid-callable"
@@ -98,6 +163,71 @@ code = "unknown-class-instantiation"
 start_line = 98
 end_line = 98
 
+[[entries."src/Core/Security.php".issues]]
+code = "mixed-property-type-coercion"
+start_line = 13
+end_line = 13
+
+[[entries."src/Core/System.php".issues]]
+code = "mixed-assignment"
+start_line = 40
+end_line = 40
+
+[[entries."src/Core/System.php".issues]]
+code = "mixed-operand"
+start_line = 43
+end_line = 43
+
+[[entries."src/Core/System.php".issues]]
+code = "mixed-operand"
+start_line = 43
+end_line = 43
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-argument"
+start_line = 57
+end_line = 57
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-argument"
+start_line = 63
+end_line = 63
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-array-access"
+start_line = 65
+end_line = 65
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-array-assignment"
+start_line = 80
+end_line = 80
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-array-assignment"
+start_line = 88
+end_line = 88
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-array-assignment"
+start_line = 90
+end_line = 90
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-assignment"
+start_line = 53
+end_line = 53
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-assignment"
+start_line = 75
+end_line = 75
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-assignment"
+start_line = 79
+end_line = 79
+
 [[entries."src/Router/Router.php".issues]]
 code = "mixed-argument"
 start_line = 118
@@ -133,10 +263,60 @@ code = "non-existent-method"
 start_line = 130
 end_line = 130
 
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "non-existent-method"
+start_line = 45
+end_line = 45
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "non-existent-method"
+start_line = 61
+end_line = 61
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 31
+end_line = 31
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 31
+end_line = 31
+
+[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
+code = "less-specific-return-statement"
+start_line = 37
+end_line = 37
+
+[[entries."tests/src/Core/RequestTest.php".issues]]
+code = "possibly-null-argument"
+start_line = 120
+end_line = 120
+
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "string-member-selector"
-start_line = 137
-end_line = 137
+start_line = 125
+end_line = 125
+
+[[entries."tests/src/TestCase.php".issues]]
+code = "mixed-operand"
+start_line = 18
+end_line = 18
+
+[[entries."tests/src/TestCase.php".issues]]
+code = "mixed-operand"
+start_line = 40
+end_line = 40
+
+[[entries."tests/src/TestCase.php".issues]]
+code = "non-existent-property"
+start_line = 104
+end_line = 104
+
+[[entries."tests/src/TestCase.php".issues]]
+code = "possibly-false-argument"
+start_line = 52
+end_line = 52
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "possibly-invalid-argument"

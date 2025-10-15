@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Trait;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Trait\MicrokernelTrait;
+use WaffleTests\TestCase;
 
 final class MicrokernelTraitTest extends TestCase
 {

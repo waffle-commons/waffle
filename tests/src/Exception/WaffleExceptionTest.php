@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Exception;
 
-use PHPUnit\Framework\TestCase;
 use Waffle\Exception\WaffleException;
+use WaffleTests\TestCase;
 
 final class WaffleExceptionTest extends TestCase
 {

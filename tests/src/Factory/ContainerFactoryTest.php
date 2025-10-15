@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Factory;
 
-use PHPUnit\Framework\TestCase;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Container;
-use Waffle\Core\Security;
 use Waffle\Factory\ContainerFactory;
 use WaffleTests\Core\Helper\ServiceA;
 use WaffleTests\Core\Helper\ServiceB;
+use WaffleTests\TestCase;
 
 final class ContainerFactoryTest extends TestCase
 {
@@ -21,9 +18,7 @@ final class ContainerFactoryTest extends TestCase
         $helperDir = __DIR__ . '/../Core/Helper';
 
         // Action
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $container = new Container(security: $security);
+        $container = $this->createRealContainer();
         $factory = new ContainerFactory();
         $factory->create(
             container: $container,

@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Waffle\Abstract\AbstractResponse;
-use Waffle\Attribute\Configuration;
 use Waffle\Core\Constant;
-use Waffle\Core\Container;
-use Waffle\Core\Security;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Abstract\Helper\ConcreteTestResponse;
-use WaffleTests\Abstract\Helper\TestCli;
-use WaffleTests\Abstract\Helper\TestRequest;
 use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\TestCase;
 
 #[CoversClass(AbstractResponse::class)]
 final class AbstractResponseTest extends TestCase
@@ -28,9 +23,9 @@ final class AbstractResponseTest extends TestCase
     public function testRenderCallsControllerActionAndView(): void
     {
         // 1. Setup: Create a real test instance of our abstract class.
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $requestHandler = new TestRequest(container: new Container(security: $security));
+        $requestHandler = $this->createRealRequest(level: 2);
+        $container = $requestHandler->container;
+        $container?->set(DummyController::class, DummyController::class);
 
         // 2. Configure the object state using its public methods.
         $_ENV['APP_ENV'] = 'test';
@@ -63,14 +58,14 @@ final class AbstractResponseTest extends TestCase
      */
     public function testRenderThrowsExceptionForMismatchedArgumentType(): void
     {
-        $this->expectException(RenderingException::class);
-        $this->expectExceptionCode(400);
-        $this->expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
+        static::expectException(RenderingException::class);
+        static::expectExceptionCode(400);
+        static::expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
 
         // Setup
-        $config = new Configuration(securityLevel: 2);
-        $security = new Security(cfg: $config);
-        $requestHandler = new TestRequest(container: new Container(security: $security));
+        $requestHandler = $this->createRealRequest(level: 2);
+        $container = $requestHandler->container;
+        $container?->set(DummyController::class, DummyController::class);
         $_ENV['APP_ENV'] = 'test';
         $_SERVER['REQUEST_URI'] = '/users/abc';
         $requestHandler->setCurrentRoute(route: [
@@ -93,9 +88,7 @@ final class AbstractResponseTest extends TestCase
     public function testBuildFromCliHandler(): void
     {
         // Setup
-        $config = new Configuration();
-        $security = new Security(cfg: $config);
-        $cliHandler = new TestCli(container: new Container(security: $security));
+        $cliHandler = $this->createRealCli();
 
         // Action
         $response = new ConcreteTestResponse(handler: $cliHandler);

@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use PHPUnit\Framework\TestCase;
 use ReflectionObject;
-use Waffle\Attribute\Configuration;
-use Waffle\Core\Security;
+use WaffleTests\TestCase;
 
 final class SecurityTest extends TestCase
 {
     public function testConstructorSetsSecurityLevelFromConfiguration(): void
     {
-        // --- Test Condition ---
-        // We create a configuration object with a specific security level.
-        $config = new Configuration(securityLevel: 7);
-
         // --- Execution ---
         // We instantiate the Security class with our configuration.
-        $security = new Security(cfg: $config);
+        $security = $this->createAndGetSecurity(level: 7);
 
         // --- Assertions ---
         // We use Reflection to access the protected 'level' property and assert
