@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WaffleTests\Core;
 
 use Waffle\Core\System;
@@ -11,6 +13,7 @@ class ConfigTest extends TestCase
     private System $systemMock;
     private YamlParserInterface $yamlParserMock;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->systemMock = $this->createMock(System::class);
@@ -24,7 +27,7 @@ class ConfigTest extends TestCase
         $config = $this->createAndGetConfig(failsafe: true);
 
         // Assert
-        $this->assertNull($config->get('waffle.paths.services'));
+        static::assertNull($config->get('waffle.paths.services'));
     }
 
     public function testGetReturnsCorrectValueForExistingKey(): void
@@ -33,8 +36,8 @@ class ConfigTest extends TestCase
         $config = $this->createAndGetConfig();
 
         // Assert
-        $this->assertSame('tests/src/Helper', $config->get('waffle.paths.controllers'));
-        $this->assertSame('tests/src/Helper', $config->get('waffle.paths.services'));
+        static::assertSame('tests/src/Helper', $config->get('waffle.paths.controllers'));
+        static::assertSame('tests/src/Helper', $config->get('waffle.paths.services'));
     }
 
     public function testGetReturnsDefaultValueForNonexistentKey(): void
@@ -43,7 +46,7 @@ class ConfigTest extends TestCase
         $config = $this->createAndGetConfig();
 
         // Assert
-        $this->assertSame('default_value', $config->get('app.nonexistent', 'default_value'));
+        static::assertSame('default_value', $config->get('app.nonexistent', 'default_value'));
     }
 
     public function testGetReturnsNullForNonexistentKeyWhenNoDefaultIsProvided(): void
@@ -52,7 +55,7 @@ class ConfigTest extends TestCase
         $config = $this->createAndGetConfig();
 
         // Assert
-        $this->assertNull($config->get('app.nonexistent'));
+        static::assertNull($config->get('app.nonexistent'));
     }
 
     public function testLoadHandlesNonexistentConfigFileGracefully(): void
@@ -61,6 +64,6 @@ class ConfigTest extends TestCase
         $config = $this->createAndGetConfig();
 
         // Assert
-        $this->assertNull($config->get('anything'));
+        static::assertNull($config->get('anything'));
     }
 }

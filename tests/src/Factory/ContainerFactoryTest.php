@@ -14,6 +14,7 @@ final class ContainerFactoryTest extends TestCase
 {
     private null|string $tempDir = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,6 +23,7 @@ final class ContainerFactoryTest extends TestCase
         mkdir($this->tempDir, 0o777, true);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up the temporary directory

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WaffleTests\Core;
 
 use Waffle\Core\YamlParser;
@@ -9,6 +11,7 @@ class YamlParserTest extends TestCase
 {
     private null|string $tempFile = null;
 
+    #[\Override]
     protected function tearDown(): void
     {
         if ($this->tempFile && file_exists($this->tempFile)) {
@@ -44,7 +47,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function testParseFileWithCommentsAndEmptyLines(): void
@@ -69,7 +72,7 @@ class YamlParserTest extends TestCase
             ],
             'database' => [
                 'host' => '127.0.0.1',
-                'port' => '3306',
+                'port' => 3306,
             ],
         ];
 
@@ -77,7 +80,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function testParseFileReturnsEmptyArrayForNonexistentFile(): void
@@ -89,7 +92,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile('/non/existent/file.yaml');
 
         // Assert
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testParseFileWithDeeplyNestedStructure(): void
@@ -117,7 +120,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function testParseFileHandlesEmptyFileGracefully(): void
@@ -130,7 +133,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertSame([], $result);
+        static::assertSame([], $result);
     }
 
     public function testParseFileWithValueContainingSpecialCharacters(): void
@@ -145,7 +148,7 @@ class YamlParserTest extends TestCase
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function testParseFileIgnoresInvalidLines(): void
@@ -163,19 +166,19 @@ class YamlParserTest extends TestCase
         $parser = new YamlParser();
         $expected = [
             'valid_key' => 'valid_value',
-            'another_valid_key' => 'another_value',
             'list' => [
                 'just a list item 1',
                 'just a list item 2',
                 'just a list item 3',
             ],
+            'another_valid_key' => 'another_value',
         ];
 
         // Act
         $result = $parser->parseFile($this->tempFile);
 
         // Assert
-        $this->assertEquals($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     private function createTempFile(string $content): string

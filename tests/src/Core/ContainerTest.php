@@ -134,7 +134,7 @@ final class ContainerTest extends TestCase
     public function testThrowsExceptionForNonResolvablePrimitiveParameter(): void
     {
         static::expectException(ContainerException::class);
-        static::expectExceptionMessage('Cannot resolve primitive parameter "primitive".');
+        static::expectExceptionMessage('Cannot resolve primitive parameter "_primitive".');
 
         $this->container->get(WithPrimitive::class);
     }

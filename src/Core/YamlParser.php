@@ -19,6 +19,7 @@ final class YamlParser implements YamlParserInterface
      * @param string $path The path to the YAML file.
      * @return array<string, mixed> The parsed content.
      */
+    #[\Override]
     public function parseFile(string $path): array
     {
         if (!is_readable($path) || !is_file($path)) {
