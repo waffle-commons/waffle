@@ -22,7 +22,10 @@ class Level7Rule implements SecurityRuleInterface
      */
     public function check(object $object): void
     {
-        $methods = $this->getMethods(object: $object, filter: ReflectionMethod::IS_PUBLIC);
+        $methods = $this->getMethods(
+            object: $object,
+            filter: ReflectionMethod::IS_PUBLIC,
+        );
         $class = get_class($object);
 
         foreach ($methods as $method) {

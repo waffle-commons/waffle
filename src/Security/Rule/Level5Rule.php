@@ -20,7 +20,10 @@ class Level5Rule implements SecurityRuleInterface
      */
     public function check(object $object): void
     {
-        $properties = $this->getProperties(object: $object, filter: ReflectionProperty::IS_PRIVATE);
+        $properties = $this->getProperties(
+            object: $object,
+            filter: ReflectionProperty::IS_PRIVATE,
+        );
         $class = get_class($object);
 
         foreach ($properties as $property) {

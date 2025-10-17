@@ -116,7 +116,10 @@ final class Router
         foreach ($this->files as $file) {
             if ($container->has(id: $file)) {
                 $controller = $container->get(id: $file);
-                $classRoute = $this->newAttributeInstance(className: $controller, attribute: Route::class);
+                $classRoute = $this->newAttributeInstance(
+                    className: $controller,
+                    attribute: Route::class,
+                );
 
                 if ($classRoute instanceof Route) {
                     foreach ($this->getMethods(object: $controller) as $method) {

@@ -41,12 +41,12 @@ end_line = 131
 [[entries."src/Router/Router.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 16
-end_line = 278
+end_line = 281
 
 [[entries."src/Router/Router.php".issues]]
 code = "excessive-nesting"
-start_line = 128
-end_line = 132
+start_line = 131
+end_line = 135
 
 [[entries."src/Router/Router.php".issues]]
 code = "halstead"
@@ -56,12 +56,7 @@ end_line = 73
 [[entries."src/Router/Router.php".issues]]
 code = "kan-defect"
 start_line = 16
-end_line = 278
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 11
-end_line = 102
+end_line = 281
 
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"

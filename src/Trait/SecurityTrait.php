@@ -10,6 +10,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use Waffle\Core\Constant;
 use Waffle\Exception\SecurityException;
+use Waffle\Security\Rule\Level10Rule;
 use Waffle\Security\Rule\Level1Rule;
 use Waffle\Security\Rule\Level2Rule;
 use Waffle\Security\Rule\Level3Rule;
@@ -19,7 +20,6 @@ use Waffle\Security\Rule\Level6Rule;
 use Waffle\Security\Rule\Level7Rule;
 use Waffle\Security\Rule\Level8Rule;
 use Waffle\Security\Rule\Level9Rule;
-use Waffle\Security\Rule\Level10Rule;
 
 trait SecurityTrait
 {

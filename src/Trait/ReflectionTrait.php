@@ -17,37 +17,17 @@ trait ReflectionTrait
     {
         $content = file_get_contents($path);
         if (!$content) {
-            return ''; // Return empty string on file read error.
+            return Constant::EMPTY_STRING; // Return empty string on file read error.
         }
 
-        $tokens = token_get_all($content);
-        $namespace = '';
-        $class = '';
-        $tokensCount = count($tokens);
+        $namespace = Constant::EMPTY_STRING;
+        if (preg_match('~^namespace\s+([^;]+);~sm', $content, $matches)) {
+            $namespace = $matches[1];
+        }
 
-        for ($i = 0; $i < $tokensCount; $i++) {
-            if (T_NAMESPACE === $tokens[$i][0]) {
-                // Find the full namespace string.
-                for ($j = $i + 2; $j < $tokensCount; $j++) {
-                    $inArr = in_array($tokens[$j][0], [T_STRING, T_NAME_QUALIFIED, T_NS_SEPARATOR], true);
-                    if (is_array($tokens[$j]) && $inArr) {
-                        $namespace .= $tokens[$j][1];
-                    }
-                    if ('{' === $tokens[$j] || ';' === $tokens[$j]) {
-                        break;
-                    }
-                }
-            }
-
-            if (T_CLASS === $tokens[$i][0]) {
-                // Find the class name token.
-                for ($j = $i + 2; $j < $tokensCount; $j++) {
-                    if (T_STRING === $tokens[$j][0]) {
-                        $class = $tokens[$j][1];
-                        break 2; // Exit both loops once the class is found.
-                    }
-                }
-            }
+        $class = Constant::EMPTY_STRING;
+        if (preg_match('~\bclass\s+([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)~', $content, $matches)) {
+            $class = $matches[1];
         }
 
         if ('' === $class) {
@@ -93,6 +73,7 @@ trait ReflectionTrait
             yield $key => $value;
         }
     }
+
     /**
      * @param class-string[] $instances
      */

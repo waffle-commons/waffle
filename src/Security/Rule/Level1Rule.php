@@ -20,7 +20,10 @@ class Level1Rule implements SecurityRuleInterface
     public function check(object $object): void
     {
         $class = get_class($object);
-        if (!$this->isInstance(object: $object, instances: [$class])) {
+        if (!$this->isInstance(
+            object: $object,
+            instances: [$class],
+        )) {
             throw new SecurityException(
                 message: "Level 1: Object validation failed. Instance mismatch for {$class}.",
                 code: 500,

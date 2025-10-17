@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Security\Rule;
 
-use ReflectionObject;use Waffle\Exception\SecurityException;
+use ReflectionObject;
+use Waffle\Exception\SecurityException;
 use Waffle\Interface\SecurityRuleInterface;
 use Waffle\Trait\ReflectionTrait;
 

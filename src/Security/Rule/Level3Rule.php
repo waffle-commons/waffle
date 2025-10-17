@@ -22,7 +22,10 @@ class Level3Rule implements SecurityRuleInterface
      */
     public function check(object $object): void
     {
-        $methods = $this->getMethods(object: $object, filter: ReflectionMethod::IS_PUBLIC);
+        $methods = $this->getMethods(
+            object: $object,
+            filter: ReflectionMethod::IS_PUBLIC,
+        );
         $class = get_class($object);
 
         foreach ($methods as $method) {
@@ -34,9 +37,9 @@ class Level3Rule implements SecurityRuleInterface
             $returnType = $method->getReturnType();
 
             if (
-                null !== $returnType &&
-                $returnType->getName() === Constant::TYPE_VOID &&
-                $method->getDeclaringClass()->getName() === $class
+                null !== $returnType
+                && $returnType->getName() === Constant::TYPE_VOID
+                && $method->getDeclaringClass()->getName() === $class
             ) {
                 throw new SecurityException(
                     message: "Level 3: Public method '{$method->getName()}' in {$class} must not return 'void'.",
