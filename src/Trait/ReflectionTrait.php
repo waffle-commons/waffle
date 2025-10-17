@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Waffle\Trait;
 
 use Generator;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
+use ReflectionProperty;
 use Waffle\Core\Constant;
 
 trait ReflectionTrait
@@ -72,15 +74,6 @@ trait ReflectionTrait
     }
 
     /**
-     * @param object $className
-     * @return ReflectionMethod[]
-     */
-    public function getMethods(object $className): array
-    {
-        return new ReflectionObject(object: $className)->getMethods();
-    }
-
-    /**
      * @param array{
      *      classname: string,
      *      method: non-empty-string,
@@ -99,5 +92,43 @@ trait ReflectionTrait
         foreach ($route as $key => $value) {
             yield $key => $value;
         }
+    }
+    /**
+     * @param class-string[] $instances
+     */
+    private function isInstance(object $object, array $instances): bool
+    {
+        foreach ($instances as $instance) {
+            if ($object instanceof $instance) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isFinal(object $object): bool
+    {
+        return new ReflectionObject($object)->isFinal();
+    }
+
+    /**
+     * @param object $object
+     * @param int|null $filter
+     * @return ReflectionProperty[]
+     */
+    private function getProperties(object $object, null|int $filter = null): array
+    {
+        return new ReflectionObject($object)->getProperties(filter: $filter);
+    }
+
+    /**
+     * @param object $object
+     * @param int|null $filter
+     * @return ReflectionMethod[]
+     */
+    private function getMethods(object $object, null|int $filter = null): array
+    {
+        return new ReflectionObject($object)->getMethods(filter: $filter);
     }
 }

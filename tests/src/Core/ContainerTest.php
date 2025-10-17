@@ -120,7 +120,7 @@ final class ContainerTest extends TestCase
         $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
 
         $container = new Container($securityMock);
-        $container->get(ServiceA::class);
+        $container->get(id: ServiceA::class);
     }
 
     public function testThrowsExceptionForUninstantiableClass(): void

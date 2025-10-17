@@ -114,12 +114,12 @@ final class Router
 
         $routes = [];
         foreach ($this->files as $file) {
-            if ($container->has($file)) {
-                $controller = $container->get($file);
-                $classRoute = $this->newAttributeInstance($controller, Route::class);
+            if ($container->has(id: $file)) {
+                $controller = $container->get(id: $file);
+                $classRoute = $this->newAttributeInstance(className: $controller, attribute: Route::class);
 
                 if ($classRoute instanceof Route) {
-                    foreach ($this->getMethods($controller) as $method) {
+                    foreach ($this->getMethods(object: $controller) as $method) {
                         foreach ($method->getAttributes(Route::class) as $attribute) {
                             $route = $attribute->newInstance();
                             $path = $classRoute->path . $route->path;
@@ -209,8 +209,8 @@ final class Router
         }
 
         // Security check is done once a match is confirmed.
-        if ($container->has($route[Constant::CLASSNAME])) {
-            $controllerInstance = $container->get($route[Constant::CLASSNAME]);
+        if ($container->has(id: $route[Constant::CLASSNAME])) {
+            $controllerInstance = $container->get(id: $route[Constant::CLASSNAME]);
             $this->system->security->analyze($controllerInstance);
         }
 

@@ -63,26 +63,6 @@ code = "cyclomatic-complexity"
 start_line = 11
 end_line = 102
 
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 13
-end_line = 337
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "halstead"
-start_line = 29
-end_line = 91
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "kan-defect"
-start_line = 13
-end_line = 337
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "too-many-methods"
-start_line = 13
-end_line = 337
-
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
