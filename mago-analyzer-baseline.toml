@@ -64,19 +64,9 @@ start_line = 112
 end_line = 112
 
 [[entries."src/Core/Config.php".issues]]
-code = "mixed-argument"
-start_line = 71
-end_line = 71
-
-[[entries."src/Core/Config.php".issues]]
 code = "mixed-array-access"
 start_line = 59
 end_line = 59
-
-[[entries."src/Core/Config.php".issues]]
-code = "mixed-array-access"
-start_line = 71
-end_line = 71
 
 [[entries."src/Core/Config.php".issues]]
 code = "mixed-assignment"
@@ -92,11 +82,6 @@ end_line = 67
 code = "reference-to-undefined-variable"
 start_line = 70
 end_line = 70
-
-[[entries."src/Core/Config.php".issues]]
-code = "undefined-variable"
-start_line = 71
-end_line = 71
 
 [[entries."src/Core/Container.php".issues]]
 code = "invalid-callable"
@@ -184,16 +169,6 @@ start_line = 43
 end_line = 43
 
 [[entries."src/Core/YamlParser.php".issues]]
-code = "mismatched-array-index"
-start_line = 56
-end_line = 56
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "mismatched-array-index"
-start_line = 78
-end_line = 78
-
-[[entries."src/Core/YamlParser.php".issues]]
 code = "mixed-argument"
 start_line = 60
 end_line = 60
@@ -202,11 +177,6 @@ end_line = 60
 code = "mixed-argument"
 start_line = 66
 end_line = 66
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "mixed-array-access"
-start_line = 68
-end_line = 68
 
 [[entries."src/Core/YamlParser.php".issues]]
 code = "mixed-array-assignment"
@@ -272,36 +242,6 @@ end_line = 130
 code = "non-existent-method"
 start_line = 130
 end_line = 130
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 29
-end_line = 29
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 30
-end_line = 30
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 33
-end_line = 33
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 33
-end_line = 33
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 42
-end_line = 42
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "mismatched-array-index"
-start_line = 43
-end_line = 43
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-operand"
