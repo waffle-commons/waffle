@@ -1,9 +1,10 @@
+[![PHP Version Require](http://poser.pugx.org/eightyfour/waffle/require/php)](https://packagist.org/packages/eightyfour/waffle)
 [![PHP CI](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml/badge.svg)](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/eightyfourweb/waffle/graph/badge.svg?token=d74ac62a-7872-4035-8b8b-bcc3af1991e0)](https://codecov.io/gh/eightyfourweb/waffle)
-[![Latest Stable Version](https://img.shields.io/packagist/v/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+[![Latest Stable Version](http://poser.pugx.org/eightyfour/waffle/v)](https://packagist.org/packages/eightyfour/waffle)
+[![Latest Unstable Version](http://poser.pugx.org/eightyfour/waffle/v/unstable)](https://packagist.org/packages/eightyfour/waffle)
 [![Total Downloads](https://img.shields.io/packagist/dt/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
-[![PHP Version Require](https://img.shields.io/packagist/php-v/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
-[![License](https://img.shields.io/packagist/l/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+[![Packagist License](https://img.shields.io/packagist/l/eightyfour/waffle)](https://github.com/eightyfourweb/waffle/blob/main/LICENSE.md)
 
 # Waffle Framework
 
