@@ -27,7 +27,7 @@ trait SecurityTrait
      * Checks cumulative security rules based on the specified level.
      * @throws SecurityException
      */
-    public function isSecure(object $object, int $level = 10): bool
+    public function isSecure(object $object, int $level = 10): void
     {
         // Cumulative logic is handled here. We use a match expression for concise
         // comparisons, and chained function calls for cumulation.
@@ -89,8 +89,6 @@ trait SecurityTrait
             $level >= Constant::SECURITY_LEVEL1 => $this->checkLevel1(object: $object),
             default => true,
         };
-
-        return true;
     }
 
     // --- INDIVIDUAL SECURITY RULES (LEVELS 1-10) ---
@@ -306,9 +304,11 @@ trait SecurityTrait
         $reflection = new ReflectionObject($object);
 
         $isFrameworkComponent = str_starts_with($reflection->getName(), 'Waffle\\');
+        $isFrameworkTestComponent = str_starts_with($reflection->getName(), 'WaffleTests\\');
+        $isFramework = $isFrameworkComponent || $isFrameworkTestComponent;
         $readonly = $reflection->isReadOnly();
 
-        if ($isFrameworkComponent && !$readonly && str_contains($reflection->getName(), 'Service')) {
+        if ($isFramework && !$readonly && str_contains($reflection->getName(), 'Service')) {
             throw new SecurityException(
                 message: 'Level 9: Internal framework service classes must be declared readonly.',
                 code: 500,

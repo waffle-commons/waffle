@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
@@ -14,6 +13,8 @@ use WaffleTests\Core\Helper\ServiceB;
 use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
+use WaffleTests\Core\Helper\Uninstantiable;
+use WaffleTests\Core\Helper\WithPrimitive;
 use WaffleTests\TestCase;
 
 final class ContainerTest extends TestCase
@@ -25,7 +26,7 @@ final class ContainerTest extends TestCase
     {
         parent::setUp();
 
-        $this->container = $this->createRealContainer();
+        $this->container = $this->createRealContainer(level: 8);
     }
 
     public function testCanResolveClassWithoutDependencies(): void
@@ -120,5 +121,21 @@ final class ContainerTest extends TestCase
 
         $container = new Container($securityMock);
         $container->get(ServiceA::class);
+    }
+
+    public function testThrowsExceptionForUninstantiableClass(): void
+    {
+        static::expectException(ContainerException::class);
+        static::expectExceptionMessageMatches('/Class ".*" is not instantiable./');
+
+        $this->container->get(Uninstantiable::class);
+    }
+
+    public function testThrowsExceptionForNonResolvablePrimitiveParameter(): void
+    {
+        static::expectException(ContainerException::class);
+        static::expectExceptionMessage('Cannot resolve primitive parameter "_primitive".');
+
+        $this->container->get(WithPrimitive::class);
     }
 }

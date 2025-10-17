@@ -19,18 +19,21 @@ final class Constant
     public const string ENV_EXCEPTION = 'exception';
 
     // Define globals constants
-    public const string DIR_SEPARATOR = '/';
+    public const string FAILSAFE_DEFAULT = self::DISABLED;
+    public const string ENABLED = 'enabled';
+    public const string DISABLED = 'disabled';
     public const string EMPTY_STRING = '';
     public const string CURRENT_DIR = '.';
     public const string PREVIOUS_DIR = '..';
     public const string QUESTIONMARK = '?';
     public const string ARRAY_SEPARATOR_ALL = ' & ';
     public const array DEFAULT_DATA = [
-        'message' => 'Welcome to Eightyfour!',
+        'message' => 'Welcome to Waffle!',
     ];
     public const string DEFAULT = 'default';
     public const string PHPEXT = '.php';
     public const string CLASSNAME = 'classname';
+    public const string WEB = 'web';
     public const string CLI = 'cli';
     public const string METHOD = 'method';
     public const string ARGUMENTS = 'arguments';

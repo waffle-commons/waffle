@@ -21,7 +21,7 @@ trait RequestTrait
         );
 
         return explode(
-            separator: Constant::DIR_SEPARATOR,
+            separator: DIRECTORY_SEPARATOR,
             string: $url[0],
         );
     }
@@ -32,7 +32,7 @@ trait RequestTrait
     public function getPathUri(string $path): array
     {
         return explode(
-            separator: Constant::DIR_SEPARATOR,
+            separator: DIRECTORY_SEPARATOR,
             string: $path,
         );
     }

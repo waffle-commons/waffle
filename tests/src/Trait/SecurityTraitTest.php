@@ -10,6 +10,7 @@ use ReflectionClass;
 use stdClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
+use WaffleTests\Helper\NonReadOnlyService;
 use WaffleTests\TestCase;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
@@ -76,18 +77,17 @@ final class SecurityTraitTest extends TestCase
     {
         $validObject = new FinalReadOnlyClass();
 
-        static::assertTrue($this->isSecure(
+        $this->isSecure(
             object: $validObject,
             level: 1,
-        ));
-        static::assertTrue($this->isSecure(
+        );
+        $this->isSecure(
             object: $validObject,
             level: 5,
-        ));
-        static::assertTrue($this->isSecure(
-            object: $validObject,
-            level: 10,
-        ));
+        );
+        $this->isSecure(object: $validObject);
+
+        static::assertTrue(true);
     }
 
     /**
@@ -118,6 +118,20 @@ final class SecurityTraitTest extends TestCase
         $this->isSecure(
             object: $objectWithoutConstructor,
             level: 6,
+        );
+    }
+
+    public function testIsSecureThrowsExceptionForNonReadOnlyServiceLevel9(): void
+    {
+        static::expectException(SecurityException::class);
+        static::expectExceptionMessage('Level 9: Internal framework service classes must be declared readonly.');
+
+        // We create a dummy class that simulates a framework service that is not readonly.
+        $nonReadOnlyService = new NonReadOnlyService();
+
+        $this->isSecure(
+            object: $nonReadOnlyService,
+            level: 9,
         );
     }
 

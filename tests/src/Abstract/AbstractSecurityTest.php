@@ -8,13 +8,14 @@ use stdClass;
 use Waffle\Exception\SecurityException;
 use WaffleTests\Abstract\Helper\ConcreteTestSecurity;
 use WaffleTests\TestCase;
+use WaffleTests\Trait\Helper\NonFinalTestController;
 
 final class AbstractSecurityTest extends TestCase
 {
     public function testAnalyzeSucceedsWithValidObject(): void
     {
         // --- Test Condition ---
-        $config = new stdClass();
+        $config = $this->createAndGetConfig(securityLevel: 1);
         $security = new ConcreteTestSecurity($config);
         $validObject = new \DateTime(); // An object that meets the expectation.
 
@@ -27,7 +28,7 @@ final class AbstractSecurityTest extends TestCase
     public function testAnalyzeThrowsExceptionForInvalidObject(): void
     {
         // --- Test Condition ---
-        $config = new stdClass();
+        $config = $this->createAndGetConfig(securityLevel: 1);
         $security = new ConcreteTestSecurity($config);
         $invalidObject = new stdClass(); // This object does not meet the expectation.
 
@@ -39,5 +40,22 @@ final class AbstractSecurityTest extends TestCase
         // --- Execution ---
         // This call should trigger the exception.
         $security->analyze($invalidObject, [\DateTime::class]);
+    }
+
+    public function testAnalyzeThrowsExceptionForInsecureObject(): void
+    {
+        // --- Test Condition ---
+        // We set a high security level that will trigger a violation.
+        $config = $this->createAndGetConfig(securityLevel: 8);
+        $security = new ConcreteTestSecurity($config);
+        $insecureObject = new NonFinalTestController(); // This controller is not final, violating level 8.
+
+        // --- Assertions ---
+        static::expectException(SecurityException::class);
+        static::expectExceptionMessage('The object WaffleTests\Trait\Helper\NonFinalTestController is not secure.');
+
+        // --- Execution ---
+        // This call should trigger the security exception.
+        $security->analyze($insecureObject);
     }
 }

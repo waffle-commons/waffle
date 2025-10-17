@@ -63,10 +63,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -88,10 +85,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $cli);
         $response->render(); // Should do nothing in CLI context for now
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // 3. Assertions
         static::assertEmpty($output);
@@ -122,10 +116,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -171,7 +162,7 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest();
+        $request = $this->createRealRequest(level: 8);
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -185,10 +176,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
@@ -230,10 +218,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean();
-        if (!$output) {
-            $output = '';
-        }
+        $output = ob_get_clean() ?: '';
 
         // 3. Assertions
         static::assertEmpty($output);

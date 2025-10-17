@@ -72,15 +72,28 @@ abstract class TestCase extends BaseTestCase
             services: 'tests/src/Helper'
         YAML;
         file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
+
+        $yamlContentTest = <<<YAML
+        waffle:
+          test: %env(APP_DEBUG)%
+          security:
+            level: {$securityLevel}
+          paths:
+            # Point to the actual test helpers for controller/service resolution
+            controllers: 'tests/src/Helper'
+            services: 'tests/src/Helper'
+        YAML;
+        file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
     }
 
-    protected function createAndGetConfig(int $securityLevel = 10): Config
+    protected function createAndGetConfig(int $securityLevel = 10, $failsafe = false): Config
     {
         $this->createTestConfigFile(securityLevel: $securityLevel);
 
         return new Config(
             configDir: $this->testConfigDir,
             environment: 'dev',
+            failsafe: $failsafe,
         );
     }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d61aeb4929a91e3cc9747914bd9952d",
+    "content-hash": "c04ae648169b14d12a626a19d4a7f409",
     "packages": [],
     "packages-dev": [
         {
@@ -817,16 +817,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.0.0-beta.28",
+            "version": "1.0.0-beta.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "4fda6c12b126cf159d999fae36e87ecd2fd20957"
+                "reference": "acac89ca8c62b867f4dbcdefdf79d99da76d653b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/4fda6c12b126cf159d999fae36e87ecd2fd20957",
-                "reference": "4fda6c12b126cf159d999fae36e87ecd2fd20957",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/acac89ca8c62b867f4dbcdefdf79d99da76d653b",
+                "reference": "acac89ca8c62b867f4dbcdefdf79d99da76d653b",
                 "shasum": ""
             },
             "require": {
@@ -864,7 +864,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.0.0-beta.28"
+                "source": "https://github.com/carthage-software/mago/tree/1.0.0-beta.31"
             },
             "funding": [
                 {
@@ -872,7 +872,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-12T02:41:50+00:00"
+            "time": "2025-10-16T05:37:27+00:00"
         },
         {
             "name": "composer/pcre",
@@ -4932,7 +4932,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.4.5"
+        "php": "^8.4"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"

@@ -67,4 +67,47 @@ final class AbstractKernelTest extends TestCase
         static::assertStringContainsString('"message": "An unexpected error occurred."', $output);
         static::assertStringContainsString('"error": "Something went wrong"', $output);
     }
+
+    public function testHandleInCliMode(): void
+    {
+        // To isolate this test and ensure the CLI path is taken, we create a partial mock of the kernel.
+        // We will only mock the `isCli` method to force it to return `true`,
+        // while all other methods will retain their original implementation.
+        $kernel = $this->getMockBuilder(WebKernel::class)
+            ->setConstructorArgs([ // We must pass the original constructor arguments
+                'configDir' => $this->testConfigDir,
+                'environment' => 'test',
+            ])
+            ->onlyMethods(['isCli']) // We specify that only `isCli` will be a mock
+            ->getMock();
+
+        // We configure our mocked method to always return true for this test.
+        $kernel->method('isCli')->willReturn(true);
+
+        // Now, when we call handle(), it will be forced to take the CLI execution path.
+        ob_start();
+        $kernel->handle();
+        $output = ob_get_clean() ?: '';
+
+        // In the current implementation, the CLI path does nothing and produces no output.
+        static::assertEmpty($output);
+    }
+
+    public function testBootLoadsEnvironmentVariables(): void
+    {
+        // --- Test Condition ---
+        $envContent = "APP_ENV=test_boot\n# Add some comment\nANOTHER_VAR=waffle_test";
+        $envPath = APP_ROOT . '/.env';
+        file_put_contents($envPath, $envContent);
+
+        // --- Execution ---
+        $this->kernel?->boot();
+
+        // --- Delete .env temp file ---
+        unlink($envPath);
+
+        // --- Assertions ---
+        static::assertSame('test_boot', getenv('APP_ENV'));
+        static::assertSame('waffle_test', getenv('ANOTHER_VAR'));
+    }
 }
