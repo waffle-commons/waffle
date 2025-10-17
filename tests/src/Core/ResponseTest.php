@@ -110,7 +110,7 @@ final class ResponseTest extends TestCase
                 'files' => $_FILES ?? [],
                 'cookie' => $_COOKIE ?? [],
                 'session' => $_SESSION ?? [],
-                'request' => $_REQUEST ?? [],
+                'request' => $_GET ?? [],
                 'env' => $_ENV ?? [],
             ],
         );

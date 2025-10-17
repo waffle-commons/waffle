@@ -108,30 +108,10 @@ code = "cyclomatic-complexity"
 start_line = 15
 end_line = 258
 
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-request-variable"
-start_line = 112
-end_line = 112
-
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 21
 end_line = 257
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "no-request-variable"
-start_line = 116
-end_line = 116
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "no-request-variable"
-start_line = 149
-end_line = 149
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "no-request-variable"
-start_line = 195
-end_line = 195
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "return-type"

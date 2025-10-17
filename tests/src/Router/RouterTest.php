@@ -114,7 +114,7 @@ final class RouterTest extends TestCase
                 'files' => $_FILES ?? [],
                 'cookie' => $_COOKIE ?? [],
                 'session' => $_SESSION ?? [],
-                'request' => $_REQUEST ?? [],
+                'request' => $_GET ?? [],
                 'env' => $_ENV ?? [],
             ],
         );
@@ -147,7 +147,7 @@ final class RouterTest extends TestCase
                 'files' => $_FILES ?? [],
                 'cookie' => $_COOKIE ?? [],
                 'session' => $_SESSION ?? [],
-                'request' => $_REQUEST ?? [],
+                'request' => $_GET ?? [],
                 'env' => $_ENV ?? [],
             ],
         );
@@ -193,7 +193,7 @@ final class RouterTest extends TestCase
                 'files' => $_FILES ?? [],
                 'cookie' => $_COOKIE ?? [],
                 'session' => $_SESSION ?? [],
-                'request' => $_REQUEST ?? [],
+                'request' => $_GET ?? [],
                 'env' => $_ENV ?? [],
             ],
         );
