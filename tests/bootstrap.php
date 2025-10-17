@@ -7,12 +7,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 define('APP_ROOT', realpath(path: dirname(path: __DIR__)));
 const APP_CONFIG = 'temp_config';
 
-require_once __DIR__ . '/src/TestCase.php';
+require_once __DIR__ . '/src/AbstractTestCase.php';
 
 // The DummyController is a test helper, so we include it manually.
 require_once __DIR__ . '/src/Helper/TempService.php';
 require_once __DIR__ . '/src/Helper/TempController.php';
-require_once __DIR__ . '/src/Trait/Helper/Service.php';
+require_once __DIR__ . '/src/Trait/Helper/AbstractService.php';
 require_once __DIR__ . '/src/Helper/NonReadOnlyService.php';
 require_once __DIR__ . '/src/Abstract/Helper/TestRequest.php';
 require_once __DIR__ . '/src/Abstract/Helper/TestCli.php';
@@ -31,7 +31,7 @@ require_once __DIR__ . '/src/Core/Helper/ServiceB.php';
 require_once __DIR__ . '/src/Core/Helper/ServiceC.php';
 require_once __DIR__ . '/src/Core/Helper/ServiceD.php';
 require_once __DIR__ . '/src/Core/Helper/ServiceE.php';
-require_once __DIR__ . '/src/Core/Helper/Uninstantiable.php';
+require_once __DIR__ . '/src/Core/Helper/AbstractUninstantiable.php';
 require_once __DIR__ . '/src/Core/Helper/WithPrimitive.php';
 require_once __DIR__ . '/src/Core/Helper/TestKernelWithConfig.php';
 require_once __DIR__ . '/src/Router/Dummy/DummyController.php';

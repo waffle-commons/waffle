@@ -10,7 +10,7 @@ use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Interface\KernelInterface;
 use Waffle\Router\Router;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 /**
  * This test class is dedicated to validating the AbstractSystem class, which serves

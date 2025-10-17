@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Core\Constant;
 use Waffle\Core\Response;
 use Waffle\Exception\RenderingException;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\DummyControllerWithService;
 use WaffleTests\Core\Helper\DummyService;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase

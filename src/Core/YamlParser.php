@@ -101,8 +101,8 @@ final class YamlParser implements YamlParserInterface
     {
         // Handle quoted strings
         if (
-            (str_starts_with($value, '"') && str_ends_with($value, '"'))
-            || (str_starts_with($value, "'") && str_ends_with($value, "'"))
+            str_starts_with($value, '"') && str_ends_with($value, '"')
+            || str_starts_with($value, "'") && str_ends_with($value, "'")
         ) {
             return substr($value, 1, -1);
         }

@@ -16,7 +16,7 @@ use Waffle\Enum\Failsafe;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 
-abstract class TestCase extends BaseTestCase
+abstract class AbstractTestCase extends BaseTestCase
 {
     protected string $testConfigDir = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
 

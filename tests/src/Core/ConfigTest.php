@@ -7,7 +7,7 @@ namespace WaffleTests\Core;
 use Waffle\Core\System;
 use Waffle\Enum\Failsafe;
 use Waffle\Interface\YamlParserInterface;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 class ConfigTest extends TestCase
 {

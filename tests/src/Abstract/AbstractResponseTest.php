@@ -10,8 +10,8 @@ use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Abstract\Helper\ConcreteTestResponse;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(AbstractResponse::class)]
 final class AbstractResponseTest extends TestCase

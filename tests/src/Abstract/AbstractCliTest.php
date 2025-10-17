@@ -10,8 +10,8 @@ use ReflectionException;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Response;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase

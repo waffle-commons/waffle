@@ -7,7 +7,7 @@ namespace WaffleTests\Trait;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Trait\Helper\TraitObject;
 
 final class RenderingTraitTest extends TestCase

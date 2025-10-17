@@ -6,7 +6,7 @@ namespace WaffleTests\Trait;
 
 use PHPUnit\Framework\Attributes\CoversTrait;
 use Waffle\Trait\SystemTrait;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversTrait(SystemTrait::class)]
 final class SystemTraitTest extends TestCase

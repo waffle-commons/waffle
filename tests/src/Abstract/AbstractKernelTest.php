@@ -6,7 +6,7 @@ namespace WaffleTests\Abstract;
 
 use Waffle\Interface\KernelInterface;
 use WaffleTests\Abstract\Helper\WebKernel;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 final class AbstractKernelTest extends TestCase
 {

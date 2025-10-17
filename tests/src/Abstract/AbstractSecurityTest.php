@@ -7,7 +7,7 @@ namespace WaffleTests\Abstract;
 use stdClass;
 use Waffle\Exception\SecurityException;
 use WaffleTests\Abstract\Helper\ConcreteTestSecurity;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Trait\Helper\NonFinalTestController;
 
 final class AbstractSecurityTest extends TestCase

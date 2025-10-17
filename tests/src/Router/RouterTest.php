@@ -11,8 +11,8 @@ use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Enum\AppMode;
 use Waffle\Router\Router;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 /**
  * This test class provides comprehensive coverage for the Waffle\Router\Router class.

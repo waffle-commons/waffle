@@ -8,14 +8,14 @@ use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
+use WaffleTests\AbstractTestCase as TestCase;
+use WaffleTests\Core\Helper\AbstractUninstantiable;
 use WaffleTests\Core\Helper\ServiceA;
 use WaffleTests\Core\Helper\ServiceB;
 use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
-use WaffleTests\Core\Helper\Uninstantiable;
 use WaffleTests\Core\Helper\WithPrimitive;
-use WaffleTests\TestCase;
 
 final class ContainerTest extends TestCase
 {
@@ -128,7 +128,7 @@ final class ContainerTest extends TestCase
         static::expectException(ContainerException::class);
         static::expectExceptionMessageMatches('/Class ".*" is not instantiable./');
 
-        $this->container->get(Uninstantiable::class);
+        $this->container->get(AbstractUninstantiable::class);
     }
 
     public function testThrowsExceptionForNonResolvablePrimitiveParameter(): void

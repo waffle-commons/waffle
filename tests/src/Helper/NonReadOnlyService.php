@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Helper;
 
-use WaffleTests\Trait\Helper\Service;
+use WaffleTests\Trait\Helper\AbstractService;
 
-class NonReadOnlyService extends Service
+class NonReadOnlyService extends AbstractService
 {
 }

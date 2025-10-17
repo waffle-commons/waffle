@@ -11,8 +11,8 @@ use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
 use Waffle\Exception\RouteNotFoundException;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase

@@ -6,9 +6,9 @@ namespace WaffleTests\Factory;
 
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Factory\ContainerFactory;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\TempController;
 use WaffleTests\Helper\TempService;
-use WaffleTests\TestCase;
 
 final class ContainerFactoryTest extends TestCase
 {

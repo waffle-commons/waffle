@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Trait;
 
 use Waffle\Trait\MicrokernelTrait;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 final class MicrokernelTraitTest extends TestCase
 {

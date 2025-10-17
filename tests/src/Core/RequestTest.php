@@ -12,8 +12,8 @@ use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase

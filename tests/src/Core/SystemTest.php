@@ -9,8 +9,8 @@ use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
 use Waffle\Router\Router;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\TestKernelWithConfig;
-use WaffleTests\TestCase;
 
 #[CoversClass(System::class)]
 final class SystemTest extends TestCase

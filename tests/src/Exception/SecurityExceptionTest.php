@@ -7,7 +7,7 @@ namespace WaffleTests\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Exception\WaffleException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(SecurityException::class)]
 final class SecurityExceptionTest extends TestCase
