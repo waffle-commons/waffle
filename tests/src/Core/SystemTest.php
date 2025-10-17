@@ -75,7 +75,7 @@ final class SystemTest extends TestCase
         $system->boot($testKernel);
 
         // We retrieve the captured output and stop buffering.
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         // First, we assert that the router was NOT registered because the security check failed.

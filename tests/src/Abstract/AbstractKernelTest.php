@@ -58,7 +58,7 @@ final class AbstractKernelTest extends TestCase
         // Start the output buffer to capture the echoed JSON.
         ob_start();
         $this->kernel?->handle();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // Assert that the output is the expected JSON response.
         static::assertJson($output);
@@ -75,7 +75,7 @@ final class AbstractKernelTest extends TestCase
 
         ob_start();
         $this->kernel?->handle();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // Assert that the output contains the expected error message.
         static::assertJson($output);
@@ -102,7 +102,7 @@ final class AbstractKernelTest extends TestCase
         // Now, when we call handle(), it will be forced to take the CLI execution path.
         ob_start();
         $kernel->handle();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // In the current implementation, the CLI path does nothing and produces no output.
         static::assertEmpty($output);

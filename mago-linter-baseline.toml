@@ -83,21 +83,6 @@ code = "too-many-methods"
 start_line = 13
 end_line = 337
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 60
-end_line = 60
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 77
-end_line = 77
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 104
-end_line = 104
-
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
@@ -127,36 +112,6 @@ end_line = 258
 code = "no-request-variable"
 start_line = 112
 end_line = 112
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 65
-end_line = 65
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 87
-end_line = 87
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 129
-end_line = 129
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 200
-end_line = 200
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 253
-end_line = 253
-
-[[entries."tests/src/Core/SystemTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 77
-end_line = 77
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"
@@ -192,21 +147,6 @@ end_line = 163
 code = "class-name"
 start_line = 6
 end_line = 6
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "no-shorthand-ternary"
-start_line = 70
-end_line = 70
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "return-type"

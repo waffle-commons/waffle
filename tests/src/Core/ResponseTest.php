@@ -63,7 +63,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -85,7 +85,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $cli);
         $response->render(); // Should do nothing in CLI context for now
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertEmpty($output);
@@ -127,7 +127,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -198,7 +198,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
@@ -251,7 +251,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertEmpty($output);
