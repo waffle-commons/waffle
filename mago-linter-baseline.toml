@@ -38,26 +38,6 @@ code = "too-many-methods"
 start_line = 8
 end_line = 131
 
-[[entries."src/Router/Router.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 16
-end_line = 281
-
-[[entries."src/Router/Router.php".issues]]
-code = "excessive-nesting"
-start_line = 131
-end_line = 135
-
-[[entries."src/Router/Router.php".issues]]
-code = "halstead"
-start_line = 57
-end_line = 73
-
-[[entries."src/Router/Router.php".issues]]
-code = "kan-defect"
-start_line = 16
-end_line = 281
-
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
@@ -86,7 +66,7 @@ end_line = 258
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 21
-end_line = 257
+end_line = 260
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "return-type"

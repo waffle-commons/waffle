@@ -405,13 +405,18 @@ end_line = 40
 
 [[entries."src/Core/System.php".issues]]
 code = "mixed-operand"
-start_line = 43
-end_line = 43
+start_line = 42
+end_line = 42
 
 [[entries."src/Core/System.php".issues]]
 code = "mixed-operand"
-start_line = 43
-end_line = 43
+start_line = 42
+end_line = 42
+
+[[entries."src/Core/System.php".issues]]
+code = "possibly-null-argument"
+start_line = 44
+end_line = 44
 
 [[entries."src/Core/YamlParser.php".issues]]
 code = "less-specific-argument"
@@ -423,40 +428,50 @@ code = "mixed-assignment"
 start_line = 84
 end_line = 84
 
-[[entries."src/Router/Router.php".issues]]
+[[entries."src/Router/RouteDiscoverer.php".issues]]
+code = "invalid-return-statement"
+start_line = 46
+end_line = 46
+
+[[entries."src/Router/RouteParser.php".issues]]
+code = "less-specific-nested-return-statement"
+start_line = 101
+end_line = 101
+
+[[entries."src/Router/RouteParser.php".issues]]
 code = "mixed-argument"
-start_line = 119
-end_line = 119
+start_line = 35
+end_line = 35
+
+[[entries."src/Router/RouteParser.php".issues]]
+code = "mixed-argument"
+start_line = 44
+end_line = 44
+
+[[entries."src/Router/RouteParser.php".issues]]
+code = "mixed-assignment"
+start_line = 33
+end_line = 33
+
+[[entries."src/Router/RouteParser.php".issues]]
+code = "non-existent-method"
+start_line = 98
+end_line = 98
+
+[[entries."src/Router/RouteParser.php".issues]]
+code = "non-existent-method"
+start_line = 98
+end_line = 98
 
 [[entries."src/Router/Router.php".issues]]
 code = "mixed-argument"
-start_line = 124
-end_line = 124
-
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-argument"
-start_line = 216
-end_line = 216
+start_line = 130
+end_line = 130
 
 [[entries."src/Router/Router.php".issues]]
 code = "mixed-assignment"
-start_line = 117
-end_line = 117
-
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-assignment"
-start_line = 215
-end_line = 215
-
-[[entries."src/Router/Router.php".issues]]
-code = "non-existent-method"
-start_line = 133
-end_line = 133
-
-[[entries."src/Router/Router.php".issues]]
-code = "non-existent-method"
-start_line = 133
-end_line = 133
+start_line = 129
+end_line = 129
 
 [[entries."src/Security/Rule/Level10Rule.php".issues]]
 code = "missing-override-attribute"

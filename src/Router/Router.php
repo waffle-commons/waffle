@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
+use ReflectionMethod;
 use ReflectionNamedType;
 use Waffle\Attribute\Route;
+use Waffle\Cache\RouteCache;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
@@ -45,137 +47,49 @@ final class Router
         set => $this->routes = $value;
     }
 
-    private(set) System $system;
+    private readonly RouteCache $cache;
 
-    public function __construct(string|false $directory, System $system)
-    {
+    private readonly RouteDiscoverer $discoverer;
+
+    public function __construct(
+        string|false $directory,
+        private readonly System $system,
+    ) {
         $this->routes = [];
-        $this->directory = $directory;
         $this->files = false;
-        $this->system = $system;
+        $this->cache = new RouteCache();
+        $this->discoverer = new RouteDiscoverer(directory: $directory);
     }
 
-    public function boot(): self
+    public function boot(ContainerInterface $container): self
     {
-        // 1. Critical Performance: Try to load from cache
-        if ($this->loadRoutesFromCache()) {
+        $cachedRoutes = $this->cache->load();
+        if (null !== $cachedRoutes) {
+            /**
+             * @var array{}|non-empty-list<array{
+             *      classname: class-string,
+             *      method: string,
+             *      arguments: array<string, mixed>,
+             *      path: string,
+             *      name: non-falsy-string
+             *  }> $routesArray
+             */
+            $routesArray = $cachedRoutes;
+            $this->routes = $routesArray;
+
             return $this;
         }
 
-        $this->routes = [];
-        $this->files = [];
-        if (!$this->directory) {
-            return $this;
-        }
-
-        $this->files = $this->scan(directory: $this->directory);
+        $this->routes = $this->discoverer->discover($container);
+        $this->cache->save($this->routes);
 
         return $this;
-    }
-
-    /**
-     * @param string $directory
-     * @return array<array-key, string>
-     */
-    protected function scan(string $directory): array
-    {
-        $files = [];
-
-        // This prevents a fatal error if the configured controller directory is invalid.
-        if (!is_dir($directory)) {
-            return [];
-        }
-
-        $paths = scandir(directory: $directory);
-        if ($paths) {
-            foreach ($paths as $path) {
-                if ($path === Constant::CURRENT_DIR || $path === Constant::PREVIOUS_DIR) {
-                    continue;
-                }
-                $file = $directory . DIRECTORY_SEPARATOR . $path;
-                if (is_dir(filename: $file)) {
-                    // TODO(@supa-chayajin): Optimize `array_merge` method (maybe do it manually?)
-                    $files = array_merge($files, $this->scan(directory: $file));
-                }
-                if (str_contains($path, Constant::PHPEXT)) {
-                    $files[] = $this->className(path: $file);
-                }
-            }
-        }
-
-        return $files;
-    }
-
-    public function registerRoutes(null|ContainerInterface $container = null): self
-    {
-        if (null === $container || !$this->files) {
-            return $this;
-        }
-
-        $routes = [];
-        foreach ($this->files as $file) {
-            if ($container->has(id: $file)) {
-                $controller = $container->get(id: $file);
-                $classRoute = $this->newAttributeInstance(
-                    className: $controller,
-                    attribute: Route::class,
-                );
-
-                if ($classRoute instanceof Route) {
-                    foreach ($this->getMethods(object: $controller) as $method) {
-                        foreach ($method->getAttributes(Route::class) as $attribute) {
-                            $route = $attribute->newInstance();
-                            $path = $classRoute->path . $route->path;
-
-                            if (!$this->isRouteRegistered($path, $routes)) {
-                                $params = [];
-                                foreach ($method->getParameters() as $param) {
-                                    if ($param->getType() instanceof ReflectionNamedType) {
-                                        $params[$param->getName()] = $param->getType()?->getName();
-                                    }
-                                }
-                                $routes[] = [
-                                    Constant::CLASSNAME => $file,
-                                    Constant::METHOD => $method->getName(),
-                                    Constant::ARGUMENTS => $params,
-                                    Constant::PATH => $path,
-                                    Constant::NAME =>
-                                        ($classRoute->name ?? 'default') . '_' . ($route->name ?? 'default'),
-                                ];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $this->routes = $routes;
-
-        if ($this->isProduction()) {
-            $this->cacheRoutes();
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param string $path
-     * @param array{}|non-empty-list<array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, mixed>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }> $routes
-     * @return bool
-     */
-    private function isRouteRegistered(string $path, array $routes): bool
-    {
-        return array_any($routes, static fn(array $route): bool => $route[Constant::PATH] === $path);
     }
 
     /**
      * Matches the current request against a registered route path.
      *
+     * @param ContainerInterface $container
      * @param Request $req
      * @param array{
      *     classname: class-string,
@@ -218,52 +132,6 @@ final class Router
         }
 
         return true;
-    }
-
-    /**
-     * Attempts to load routes from the cache file.
-     * * @return bool True if routes were loaded successfully from cache, false otherwise.
-     */
-    private function loadRoutesFromCache(): bool
-    {
-        if ($this->isProduction()) {
-            $cacheFile = $this->getCacheFilePath();
-            if (file_exists(filename: $cacheFile)) {
-                // The cache file returns the routes array directly
-
-                /**
-                 * @var array{}|non-empty-list<array{
-                 *      classname: class-string,
-                 *      method: string,
-                 *      arguments: array<string, mixed>,
-                 *      path: string,
-                 *      name: non-falsy-string
-                 *   }> $routesArray
-                 */
-                $routesArray = require $cacheFile;
-                $this->routes = $routesArray;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function cacheRoutes(): void
-    {
-        $cacheFile = $this->getCacheFilePath();
-        $content = '<?php return ' . var_export($this->routes, true) . ';';
-        file_put_contents($cacheFile, $content, LOCK_EX);
-    }
-
-    private function isProduction(): bool
-    {
-        return getenv(Constant::APP_ENV) === Constant::ENV_DEFAULT;
-    }
-
-    private function getCacheFilePath(): string
-    {
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::CACHE_FILE;
     }
 
     /**

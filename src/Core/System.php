@@ -39,14 +39,10 @@ class System extends AbstractSystem
                 ],
             );
             $controllers = $kernel->config->get(key: 'waffle.paths.controllers');
-            $this->registerRouter(
-                router: new Router(
-                    directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
-                    system: $this,
-                )
-                    ->boot()
-                    ->registerRoutes(container: $kernel->container),
-            );
+            $this->registerRouter(router: new Router(
+                directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
+                system: $this,
+            )->boot(container: $kernel->container));
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));
         }
