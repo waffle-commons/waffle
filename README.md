@@ -99,7 +99,7 @@ make dev
 ```
 
 
-That's it! Visit http://localhost in your browser. You will get the following JSON response:
+That's it! Visit [http://localhost](http://localhost) in your browser. You will get the following JSON response:
 
 ```json
 {
@@ -124,4 +124,4 @@ Contributions are welcome! Please feel free to submit a pull request or create a
 
 ## License
 
-This project will be open after `version 1.0`.
+This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
