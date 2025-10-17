@@ -121,19 +121,44 @@ abstract class TestCase extends BaseTestCase
         return $kernel;
     }
 
-    protected function createRealRequest(int $level = 10, AppMode $isCli = AppMode::WEB): Request
+    /**
+     * @param int $level
+     * @param AppMode $isCli
+     * @param array{
+     *       server: array<mixed>,
+     *       get: array<mixed>,
+     *       post: array<mixed>,
+     *       files: array<mixed>,
+     *       cookie: array<mixed>,
+     *       session: array<mixed>,
+     *       request: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     * @return Request
+     */
+    protected function createRealRequest(int $level = 10, AppMode $isCli = AppMode::WEB, array $globals = []): Request
     {
         return new Request(
             container: $this->createRealContainer(level: $level),
             cli: $isCli,
+            globals: $globals,
         );
     }
 
-    protected function createRealCli(int $level = 10): Cli
+    /**
+     * @param int $level
+     * @param array{
+     *       server: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     * @return Cli
+     */
+    protected function createRealCli(int $level = 10, array $globals = []): Cli
     {
         return new Cli(
             container: $this->createRealContainer(level: $level),
             cli: AppMode::CLI,
+            globals: $globals,
         );
     }
 }

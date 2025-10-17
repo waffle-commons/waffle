@@ -38,6 +38,7 @@ final class AbstractKernelTest extends TestCase
     public function testHandleWithMatchingRouteRendersResponse(): void
     {
         // Simulate a web request to a valid URI.
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/users';
         $_ENV['APP_ENV'] = 'dev';
 
@@ -55,6 +56,7 @@ final class AbstractKernelTest extends TestCase
     public function testHandleCatchesAndRendersThrowable(): void
     {
         // Simulate a request to our new, unambiguous error route.
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/trigger-error';
         $_ENV['APP_ENV'] = 'dev';
 

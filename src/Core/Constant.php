@@ -36,6 +36,8 @@ final class Constant
     public const string WEB = 'web';
     public const string CLI = 'cli';
     public const string METHOD = 'method';
+    public const string METHOD_GET = 'GET';
+    public const string METHOD_POST = 'POST';
     public const string ARGUMENTS = 'arguments';
     public const string PATH = 'path';
     public const string NAME = 'name';

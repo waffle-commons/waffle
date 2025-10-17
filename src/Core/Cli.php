@@ -10,11 +10,20 @@ use Waffle\Interface\ContainerInterface;
 
 class Cli extends AbstractCli
 {
-    public function __construct(ContainerInterface $container, AppMode $cli = AppMode::CLI)
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     */
+    public function __construct(ContainerInterface $container, AppMode $cli = AppMode::CLI, array $globals = [])
     {
         $this->configure(
             container: $container,
             cli: $cli,
+            globals: $globals,
         );
     }
 }

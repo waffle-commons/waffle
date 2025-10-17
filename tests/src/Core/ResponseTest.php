@@ -100,7 +100,20 @@ final class ResponseTest extends TestCase
         // 1. Setup
         // We manipulate the superglobal BEFORE instantiating the Request object.
         $_SERVER[Constant::REQUEST_URI] = '/users/123';
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_REQUEST ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -109,8 +122,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/users/{id}',
             Constant::NAME => 'user_show',
         ]);
-
-        $_ENV[Constant::APP_ENV] = 'dev';
 
         // 2. Action
         ob_start();
@@ -139,7 +150,20 @@ final class ResponseTest extends TestCase
 
         // Manipulate the superglobal with the invalid URI.
         $_SERVER[Constant::REQUEST_URI] = '/users/abc';
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -148,8 +172,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/users/{id}',
             Constant::NAME => 'user_show',
         ]);
-
-        $_ENV[Constant::APP_ENV] = 'dev';
 
         // 2. Action
         $response = new Response(handler: $request);
@@ -203,7 +225,20 @@ final class ResponseTest extends TestCase
     public function testRenderProducesNoOutputWhenAppEnvIsTest(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'test'; // Explicitly set the environment to 'test'
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -211,8 +246,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/users',
             Constant::NAME => 'user_list',
         ]);
-
-        $_ENV[Constant::APP_ENV] = 'test'; // Explicitly set the environment to 'test'
 
         // 2. Action
         ob_start();

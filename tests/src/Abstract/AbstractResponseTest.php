@@ -23,13 +23,25 @@ final class AbstractResponseTest extends TestCase
     public function testRenderCallsControllerActionAndView(): void
     {
         // 1. Setup: Create a real test instance of our abstract class.
-        $requestHandler = $this->createRealRequest(level: 2);
+        $_ENV['APP_ENV'] = 'test';
+        $_SERVER['REQUEST_URI'] = '/users';
+        $requestHandler = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $container = $requestHandler->container;
         $container?->set(DummyController::class, DummyController::class);
 
         // 2. Configure the object state using its public methods.
-        $_ENV['APP_ENV'] = 'test';
-        $_SERVER['REQUEST_URI'] = '/users';
         $requestHandler->setCurrentRoute(route: [
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -63,11 +75,23 @@ final class AbstractResponseTest extends TestCase
         static::expectExceptionMessage('URL parameter "id" expects type int, got invalid value: "abc".');
 
         // Setup
-        $requestHandler = $this->createRealRequest(level: 2);
-        $container = $requestHandler->container;
-        $container?->set(DummyController::class, DummyController::class);
         $_ENV['APP_ENV'] = 'test';
         $_SERVER['REQUEST_URI'] = '/users/abc';
+        $requestHandler = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
+        $container = $requestHandler->container;
+        $container?->set(DummyController::class, DummyController::class);
         $requestHandler->setCurrentRoute(route: [
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'show',

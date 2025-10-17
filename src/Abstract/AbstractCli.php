@@ -12,68 +12,11 @@ use Waffle\Interface\ResponseInterface;
 
 abstract class AbstractCli implements CliInterface
 {
-    /**
-     * @var array<mixed>
-     */
-    public array $globals {
-        get => $GLOBALS;
-    }
+    /** @var array<mixed> */
+    public readonly array $server;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $server {
-        get => $_SERVER;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $get {
-        get => $_GET;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $post {
-        get => $_POST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $files {
-        get => $_FILES;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $cookie {
-        get => $_COOKIE;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $session {
-        get => $_SESSION;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $request {
-        get => $_REQUEST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $env {
-        get => $_ENV;
-    }
+    /** @var array<mixed> */
+    public readonly array $env;
 
     public AppMode $cli = AppMode::CLI {
         set => $this->cli = $value;
@@ -97,13 +40,33 @@ abstract class AbstractCli implements CliInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, AppMode $cli);
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     */
+    abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
 
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     * @return void
+     */
     #[\Override]
-    public function configure(ContainerInterface $container, AppMode $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void
     {
         $this->container = $container;
         $this->cli = $cli;
+        foreach ($globals as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
 
     #[\Override]

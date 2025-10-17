@@ -103,7 +103,16 @@ final class AbstractRequestTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_ENV['APP_ENV'] = 'test';
 
-        $request = $this->createRealRequest();
+        $request = $this->createRealRequest(globals: [
+            'server' => $_SERVER ?? [],
+            'get' => $_GET ?? [],
+            'post' => $_POST ?? [],
+            'files' => $_FILES ?? [],
+            'cookie' => $_COOKIE ?? [],
+            'session' => $_SESSION ?? [],
+            'request' => $_GET ?? [],
+            'env' => $_ENV ?? [],
+        ]);
 
         static::assertSame('GET', $request->server['REQUEST_METHOD']);
         static::assertSame('test', $request->env['APP_ENV']);

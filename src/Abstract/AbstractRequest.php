@@ -16,68 +16,29 @@ abstract class AbstractRequest implements RequestInterface
 {
     use RequestTrait;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $globals {
-        get => $GLOBALS;
-    }
+    /** @var array<mixed> */
+    public readonly array $server;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $server {
-        get => $_SERVER;
-    }
+    /** @var array<mixed> */
+    public readonly array $get;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $get {
-        get => $_GET;
-    }
+    /** @var array<mixed> */
+    public readonly array $post;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $post {
-        get => $_POST;
-    }
+    /** @var array<mixed> */
+    public readonly array $files;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $files {
-        get => $_FILES;
-    }
+    /** @var array<mixed> */
+    public readonly array $cookie;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $cookie {
-        get => $_COOKIE;
-    }
+    /** @var array<mixed> */
+    public readonly array $session;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $session {
-        get => $_SESSION;
-    }
+    /** @var array<mixed> */
+    public readonly array $request;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $request {
-        get => $_REQUEST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $env {
-        get => $_ENV;
-    }
+    /** @var array<mixed> */
+    public readonly array $env;
 
     public AppMode $cli = AppMode::WEB {
         set => $this->cli = $value;
@@ -101,13 +62,45 @@ abstract class AbstractRequest implements RequestInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, AppMode $cli);
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       get: array<mixed>,
+     *       post: array<mixed>,
+     *       files: array<mixed>,
+     *       cookie: array<mixed>,
+     *       session: array<mixed>,
+     *       request: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     */
+    abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
 
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       get: array<mixed>,
+     *       post: array<mixed>,
+     *       files: array<mixed>,
+     *       cookie: array<mixed>,
+     *       session: array<mixed>,
+     *       request: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     * @return void
+     */
     #[\Override]
-    public function configure(ContainerInterface $container, AppMode $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void
     {
         $this->container = $container;
         $this->cli = $cli;
+        foreach ($globals as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
 
     /**

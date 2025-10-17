@@ -79,7 +79,13 @@ final class AbstractCliTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new CLI object is created and configured.
-        $cli = new ConcreteTestCli(container: $this->createMockContainer());
+        $cli = new ConcreteTestCli(
+            container: $this->createMockContainer(),
+            globals: [
+                'server' => $_SERVER,
+                'env' => $_ENV,
+            ],
+        );
 
         // Then: The public properties should accurately reflect the superglobal values.
         static::assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);

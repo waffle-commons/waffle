@@ -10,11 +10,9 @@ interface RequestInterface
 {
     public array $server {
         get;
-        set;
     }
     public array $env {
         get;
-        set;
     }
 
     public AppMode $cli {
@@ -41,7 +39,22 @@ interface RequestInterface
         set;
     }
 
-    public function configure(ContainerInterface $container, AppMode $cli): void;
+    /**
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: array<mixed>,
+     *       get: array<mixed>,
+     *       post: array<mixed>,
+     *       files: array<mixed>,
+     *       cookie: array<mixed>,
+     *       session: array<mixed>,
+     *       request: array<mixed>,
+     *       env: array<mixed>
+     *   } $globals
+     * @return void
+     */
+    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void;
 
     public function process(): ResponseInterface;
 

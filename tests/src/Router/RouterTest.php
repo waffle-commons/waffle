@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
 use Waffle\Core\System;
+use Waffle\Enum\AppMode;
 use Waffle\Router\Router;
 use WaffleTests\Router\Dummy\DummyController;
 use WaffleTests\TestCase;
@@ -103,7 +104,20 @@ final class RouterTest extends TestCase
         $container = $this->createRealContainer(level: 2);
         $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = '/users';
-        $request = new Request(container: $container);
+        $request = new Request(
+            container: $container,
+            cli: AppMode::WEB,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_REQUEST ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
@@ -123,7 +137,20 @@ final class RouterTest extends TestCase
         $container = $this->createRealContainer(level: 2);
         $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = $url;
-        $request = new Request(container: $container);
+        $request = new Request(
+            container: $container,
+            cli: AppMode::WEB,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_REQUEST ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {
@@ -156,7 +183,20 @@ final class RouterTest extends TestCase
         $container = $this->createRealContainer(level: 2);
         $this->router->boot()->registerRoutes(container: $container);
         $_SERVER['REQUEST_URI'] = '/non-existent-route';
-        $request = new Request(container: $container);
+        $request = new Request(
+            container: $container,
+            cli: AppMode::WEB,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_REQUEST ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $matchingRoute = null;
         foreach ($this->router->routes as $route) {

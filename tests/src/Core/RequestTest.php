@@ -117,7 +117,16 @@ final class RequestTest extends TestCase
         $GLOBALS['_' . strtoupper($property)] = $superglobal;
 
         // When: A new Request object is created.
-        $request = $this->createRealRequest();
+        $request = $this->createRealRequest(globals: [
+            'server' => $superglobal,
+            'get' => $superglobal,
+            'post' => $superglobal,
+            'files' => $superglobal,
+            'cookie' => $superglobal,
+            'session' => $superglobal,
+            'request' => $superglobal,
+            'env' => $superglobal,
+        ]);
         $request->configure(
             container: $request->container,
             cli: AppMode::WEB,
