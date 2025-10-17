@@ -6,6 +6,7 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Constant;
 use Waffle\Core\View;
+use Waffle\Enum\AppMode;
 use Waffle\Exception\RenderingException;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
@@ -28,7 +29,7 @@ abstract class AbstractResponse implements ResponseInterface
         set => $this->view = $value;
     }
 
-    private(set) bool $cli {
+    private(set) AppMode $cli {
         set => $this->cli = $value;
     }
 

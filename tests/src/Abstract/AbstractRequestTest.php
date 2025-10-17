@@ -9,6 +9,7 @@ use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\Router\Dummy\DummyController;
 use WaffleTests\TestCase;
@@ -53,7 +54,7 @@ final class AbstractRequestTest extends TestCase
      */
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
-        $request = $this->createRealRequest(isCli: true);
+        $request = $this->createRealRequest(isCli: AppMode::CLI);
 
         $response = $request->process();
         static::assertInstanceOf(Response::class, $response);

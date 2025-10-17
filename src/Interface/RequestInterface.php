@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Interface;
 
+use Waffle\Enum\AppMode;
+
 interface RequestInterface
 {
     public array $server {
@@ -15,7 +17,7 @@ interface RequestInterface
         set;
     }
 
-    public bool $cli {
+    public AppMode $cli {
         get;
         set;
     }
@@ -39,7 +41,7 @@ interface RequestInterface
         set;
     }
 
-    public function configure(ContainerInterface $container, bool $cli): void;
+    public function configure(ContainerInterface $container, AppMode $cli): void;
 
     public function process(): ResponseInterface;
 

@@ -1,87 +1,92 @@
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-assignment"
-start_line = 104
-end_line = 104
+code = "false-argument"
+start_line = 169
+end_line = 169
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-assignment"
-start_line = 111
-end_line = 111
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 93
-end_line = 93
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 108
-end_line = 108
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 115
-end_line = 115
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 190
-end_line = 190
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 130
-end_line = 130
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 146
-end_line = 146
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 166
-end_line = 166
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "docblock-type-mismatch"
-start_line = 123
-end_line = 123
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "less-specific-nested-argument-type"
-start_line = 129
-end_line = 129
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
 start_line = 106
 end_line = 106
 
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-assignment"
+start_line = 113
+end_line = 113
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 95
+end_line = 95
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 110
+end_line = 110
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 117
+end_line = 117
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-operand"
+start_line = 192
+end_line = 192
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 132
+end_line = 132
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 148
+end_line = 148
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 168
+end_line = 168
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "docblock-type-mismatch"
+start_line = 124
+end_line = 124
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 130
+end_line = 130
+
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
-start_line = 112
-end_line = 112
+start_line = 107
+end_line = 107
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-assignment"
+start_line = 113
+end_line = 113
 
 [[entries."src/Core/Config.php".issues]]
 code = "mixed-array-access"
-start_line = 59
-end_line = 59
+start_line = 61
+end_line = 61
 
 [[entries."src/Core/Config.php".issues]]
 code = "mixed-assignment"
-start_line = 59
-end_line = 59
+start_line = 61
+end_line = 61
 
 [[entries."src/Core/Config.php".issues]]
 code = "mixed-assignment"
-start_line = 67
-end_line = 67
+start_line = 69
+end_line = 69
 
 [[entries."src/Core/Config.php".issues]]
 code = "reference-to-undefined-variable"
-start_line = 70
-end_line = 70
+start_line = 72
+end_line = 72
 
 [[entries."src/Core/Container.php".issues]]
 code = "invalid-callable"
@@ -280,13 +285,13 @@ end_line = 37
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "possibly-null-argument"
-start_line = 120
-end_line = 120
+start_line = 121
+end_line = 121
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "string-member-selector"
-start_line = 125
-end_line = 125
+start_line = 126
+end_line = 126
 
 [[entries."tests/src/Core/YamlParserTest.php".issues]]
 code = "invalid-property-assignment-value"
@@ -334,29 +339,24 @@ start_line = 90
 end_line = 90
 
 [[entries."tests/src/TestCase.php".issues]]
-code = "mixed-argument"
-start_line = 95
-end_line = 95
+code = "mixed-operand"
+start_line = 20
+end_line = 20
 
 [[entries."tests/src/TestCase.php".issues]]
 code = "mixed-operand"
-start_line = 18
-end_line = 18
-
-[[entries."tests/src/TestCase.php".issues]]
-code = "mixed-operand"
-start_line = 40
-end_line = 40
+start_line = 42
+end_line = 42
 
 [[entries."tests/src/TestCase.php".issues]]
 code = "non-existent-property"
-start_line = 117
-end_line = 117
+start_line = 119
+end_line = 119
 
 [[entries."tests/src/TestCase.php".issues]]
 code = "possibly-false-argument"
-start_line = 52
-end_line = 52
+start_line = 54
+end_line = 54
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "possibly-invalid-argument"

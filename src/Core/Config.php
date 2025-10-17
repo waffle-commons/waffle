@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
+use Waffle\Enum\Failsafe;
+
 class Config
 {
     private array $parameters = [];
 
-    public function __construct(string $configDir, string $environment, bool $failsafe = false)
+    public function __construct(string $configDir, string $environment, Failsafe $failsafe = Failsafe::DISABLED)
     {
-        if ($failsafe) {
+        if ($failsafe === Failsafe::ENABLED) {
             $this->loadFailsafeDefaults();
             return;
         }

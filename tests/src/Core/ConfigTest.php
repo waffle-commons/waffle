@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Core;
 
 use Waffle\Core\System;
+use Waffle\Enum\Failsafe;
 use Waffle\Interface\YamlParserInterface;
 use WaffleTests\TestCase;
 
@@ -24,7 +25,7 @@ class ConfigTest extends TestCase
     public function testFailsafeConfigIsLoaded(): void
     {
         // Act
-        $config = $this->createAndGetConfig(failsafe: true);
+        $config = $this->createAndGetConfig(failsafe: Failsafe::ENABLED);
 
         // Assert
         static::assertNull($config->get('waffle.paths.services'));

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
@@ -78,7 +79,7 @@ abstract class AbstractRequest implements RequestInterface
         get => $_ENV;
     }
 
-    public bool $cli = false {
+    public AppMode $cli = AppMode::WEB {
         set => $this->cli = $value;
     }
 
@@ -100,10 +101,10 @@ abstract class AbstractRequest implements RequestInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, bool $cli);
+    abstract public function __construct(ContainerInterface $container, AppMode $cli);
 
     #[\Override]
-    public function configure(ContainerInterface $container, bool $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli): void
     {
         $this->container = $container;
         $this->cli = $cli;
@@ -115,7 +116,7 @@ abstract class AbstractRequest implements RequestInterface
     #[\Override]
     public function process(): ResponseInterface
     {
-        if (null === $this->currentRoute && !$this->isCli()) {
+        if (null === $this->currentRoute && AppMode::WEB === $this->cli) {
             // Instead of exiting, we now throw a specific exception.
             throw new RouteNotFoundException();
         }
@@ -143,6 +144,6 @@ abstract class AbstractRequest implements RequestInterface
 
     public function isCli(): bool
     {
-        return $this->cli;
+        return $this->cli === AppMode::CLI;
     }
 }

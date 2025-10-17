@@ -11,6 +11,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
 use WaffleTests\Router\Dummy\DummyController;
 use WaffleTests\TestCase;
 
@@ -119,7 +120,7 @@ final class RequestTest extends TestCase
         $request = $this->createRealRequest();
         $request->configure(
             container: $request->container,
-            cli: false,
+            cli: AppMode::WEB,
         ); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.

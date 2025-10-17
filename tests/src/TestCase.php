@@ -11,6 +11,8 @@ use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\Failsafe;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 
@@ -86,7 +88,7 @@ abstract class TestCase extends BaseTestCase
         file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
     }
 
-    protected function createAndGetConfig(int $securityLevel = 10, $failsafe = false): Config
+    protected function createAndGetConfig(int $securityLevel = 10, Failsafe $failsafe = Failsafe::DISABLED): Config
     {
         $this->createTestConfigFile(securityLevel: $securityLevel);
 
@@ -119,7 +121,7 @@ abstract class TestCase extends BaseTestCase
         return $kernel;
     }
 
-    protected function createRealRequest(int $level = 10, bool $isCli = false): Request
+    protected function createRealRequest(int $level = 10, AppMode $isCli = AppMode::WEB): Request
     {
         return new Request(
             container: $this->createRealContainer(level: $level),
@@ -131,7 +133,7 @@ abstract class TestCase extends BaseTestCase
     {
         return new Cli(
             container: $this->createRealContainer(level: $level),
-            cli: true,
+            cli: AppMode::CLI,
         );
     }
 }

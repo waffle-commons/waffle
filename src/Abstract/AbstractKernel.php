@@ -14,6 +14,8 @@ use Waffle\Core\Response;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Core\View;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\Failsafe;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Exception\SecurityException;
 use Waffle\Factory\ContainerFactory;
@@ -190,7 +192,7 @@ abstract class AbstractKernel implements KernelInterface
             $config = new Config(
                 configDir: APP_ROOT . '/app',
                 environment: 'prod',
-                failsafe: true,
+                failsafe: Failsafe::ENABLED,
             );
             $security = new Security(cfg: $config);
             $failsafeContainer = new Container(security: $security);
@@ -198,7 +200,7 @@ abstract class AbstractKernel implements KernelInterface
 
         $handler = new Request(
             container: $failsafeContainer,
-            cli: false,
+            cli: AppMode::WEB,
         );
         $statusCode = 500;
 

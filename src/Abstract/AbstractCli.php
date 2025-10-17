@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\ResponseInterface;
@@ -74,7 +75,7 @@ abstract class AbstractCli implements CliInterface
         get => $_ENV;
     }
 
-    public bool $cli = true {
+    public AppMode $cli = AppMode::CLI {
         set => $this->cli = $value;
     }
 
@@ -96,10 +97,10 @@ abstract class AbstractCli implements CliInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, bool $cli);
+    abstract public function __construct(ContainerInterface $container, AppMode $cli);
 
     #[\Override]
-    public function configure(ContainerInterface $container, bool $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli): void
     {
         $this->container = $container;
         $this->cli = $cli;
@@ -127,5 +128,10 @@ abstract class AbstractCli implements CliInterface
         $this->currentRoute = $route;
 
         return $this;
+    }
+
+    public function isCli(): bool
+    {
+        return $this->cli === AppMode::CLI;
     }
 }
