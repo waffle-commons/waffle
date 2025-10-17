@@ -1,3 +1,10 @@
+[![PHP CI](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml/badge.svg)](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/eightyfourweb/waffle/graph/badge.svg?token=d74ac62a-7872-4035-8b8b-bcc3af1991e0)](https://codecov.io/gh/eightyfourweb/waffle)
+[![Latest Stable Version](https://img.shields.io/packagist/v/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+[![Total Downloads](https://img.shields.io/packagist/dt/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+[![PHP Version Require](https://img.shields.io/packagist/php-v/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+[![License](https://img.shields.io/packagist/l/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
+
 # Waffle Framework
 
 A modern, minimalist, and security-focused PHP micro-framework designed for building fast and reliable JSON APIs. Waffle is built with the latest PHP features and a strong emphasis on a clean, robust, and fully-tested codebase.
