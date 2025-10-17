@@ -187,7 +187,11 @@ final class Router
     public function match(ContainerInterface $container, Request $req, array $route): bool
     {
         $pathSegments = $this->getPathUri($route[Constant::PATH]);
-        $urlSegments = $this->getRequestUri($req->server[Constant::REQUEST_URI] ?? '');
+        $serverUri = $req->server(
+            key: Constant::REQUEST_URI,
+            default: Constant::EMPTY_STRING,
+        );
+        $urlSegments = $this->getRequestUri(uri: $serverUri);
 
         if (count($pathSegments) !== count($urlSegments)) {
             return false;

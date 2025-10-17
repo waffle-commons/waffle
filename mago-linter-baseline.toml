@@ -4,19 +4,24 @@ start_line = 28
 end_line = 247
 
 [[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "too-many-methods"
+start_line = 14
+end_line = 255
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
 code = "too-many-properties"
 start_line = 14
-end_line = 141
+end_line = 255
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 18
-end_line = 185
+end_line = 192
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "kan-defect"
 start_line = 18
-end_line = 185
+end_line = 192
 
 [[entries."src/Core/Config.php".issues]]
 code = "no-boolean-literal-comparison"
@@ -73,10 +78,15 @@ code = "no-empty"
 start_line = 90
 end_line = 90
 
+[[entries."src/Interface/RequestInterface.php".issues]]
+code = "too-many-methods"
+start_line = 8
+end_line = 131
+
 [[entries."src/Router/Router.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 16
-end_line = 274
+end_line = 278
 
 [[entries."src/Router/Router.php".issues]]
 code = "excessive-nesting"
@@ -91,7 +101,7 @@ end_line = 73
 [[entries."src/Router/Router.php".issues]]
 code = "kan-defect"
 start_line = 16
-end_line = 274
+end_line = 278
 
 [[entries."src/Trait/ReflectionTrait.php".issues]]
 code = "cyclomatic-complexity"
@@ -120,18 +130,18 @@ end_line = 337
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-shorthand-ternary"
-start_line = 47
-end_line = 47
+start_line = 60
+end_line = 60
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-shorthand-ternary"
-start_line = 64
-end_line = 64
+start_line = 77
+end_line = 77
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-shorthand-ternary"
-start_line = 91
-end_line = 91
+start_line = 104
+end_line = 104
 
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"

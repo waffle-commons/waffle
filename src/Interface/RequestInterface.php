@@ -8,13 +8,6 @@ use Waffle\Enum\AppMode;
 
 interface RequestInterface
 {
-    public array $server {
-        get;
-    }
-    public array $env {
-        get;
-    }
-
     public AppMode $cli {
         get;
         set;
@@ -40,17 +33,18 @@ interface RequestInterface
     }
 
     /**
+     * @template T
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: array<mixed>,
-     *       get: array<mixed>,
-     *       post: array<mixed>,
-     *       files: array<mixed>,
-     *       cookie: array<mixed>,
-     *       session: array<mixed>,
-     *       request: array<mixed>,
-     *       env: array<mixed>
+     *       server: T|string|array<mixed>,
+     *       get: T|string|array<mixed>,
+     *       post: T|string|array<mixed>,
+     *       files: T|string|array<mixed>,
+     *       cookie: T|string|array<mixed>,
+     *       session: T|string|array<mixed>,
+     *       request: T|string|array<mixed>,
+     *       env: T|string|array<mixed>
      *   } $globals
      * @return void
      */
@@ -69,4 +63,70 @@ interface RequestInterface
      * @return $this
      */
     public function setCurrentRoute(null|array $route = null): self;
+
+    public function isCli(): bool;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function server(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function get(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function post(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function files(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function cookie(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function session(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function request(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function env(string $key, mixed $default = null): mixed;
 }

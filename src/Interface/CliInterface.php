@@ -8,13 +8,6 @@ use Waffle\Enum\AppMode;
 
 interface CliInterface
 {
-    public array $server {
-        get;
-    }
-    public array $env {
-        get;
-    }
-
     public AppMode $cli {
         get;
         set;
@@ -40,11 +33,12 @@ interface CliInterface
     }
 
     /**
+     * @template T
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: array<mixed>,
-     *       env: array<mixed>
+     *       server: T|string|array<mixed>,
+     *       env: T|string|array<mixed>
      *   } $globals
      * @return void
      */
@@ -63,4 +57,22 @@ interface CliInterface
      * @return $this
      */
     public function setCurrentRoute(null|array $route = null): self;
+
+    public function isCli(): bool;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function server(string $key, mixed $default = null): mixed;
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function env(string $key, mixed $default = null): mixed;
 }

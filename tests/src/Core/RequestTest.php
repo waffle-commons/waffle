@@ -133,7 +133,9 @@ final class RequestTest extends TestCase
         ); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.
-        static::assertSame($superglobal, $request->{$property});
+        foreach ($superglobal as $key => $value) {
+            static::assertSame($value, $request->{$property}(key: $key));
+        }
     }
 
     /**

@@ -12,11 +12,17 @@ use Waffle\Interface\ResponseInterface;
 
 abstract class AbstractCli implements CliInterface
 {
-    /** @var array<mixed> */
-    public readonly array $server;
+    /**
+     * @template T
+     * @var T|string|array<mixed>
+     */
+    private array $server;
 
-    /** @var array<mixed> */
-    public readonly array $env;
+    /**
+     * @template T
+     * @var T|string|array<mixed>
+     */
+    private array $env;
 
     public AppMode $cli = AppMode::CLI {
         set => $this->cli = $value;
@@ -41,21 +47,23 @@ abstract class AbstractCli implements CliInterface
     }
 
     /**
+     * @template T
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: array<mixed>,
-     *       env: array<mixed>
+     *       server: T|string|array<mixed>,
+     *       env: T|string|array<mixed>
      *   } $globals
      */
     abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
 
     /**
+     * @template T
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: array<mixed>,
-     *       env: array<mixed>
+     *       server: T|string|array<mixed>,
+     *       env: T|string|array<mixed>
      *   } $globals
      * @return void
      */
@@ -96,5 +104,27 @@ abstract class AbstractCli implements CliInterface
     public function isCli(): bool
     {
         return $this->cli === AppMode::CLI;
+    }
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function server(string $key, mixed $default = null): mixed
+    {
+        return $this->server[$key] ?? $default;
+    }
+
+    /**
+     * @template T
+     * @param string $key
+     * @param T $default
+     * @return T|string|array<mixed>
+     */
+    public function env(string $key, mixed $default = null): mixed
+    {
+        return $this->env[$key] ?? $default;
     }
 }

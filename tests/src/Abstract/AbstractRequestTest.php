@@ -114,8 +114,8 @@ final class AbstractRequestTest extends TestCase
             'env' => $_ENV ?? [],
         ]);
 
-        static::assertSame('GET', $request->server['REQUEST_METHOD']);
-        static::assertSame('test', $request->env['APP_ENV']);
+        static::assertSame('GET', $request->server(key: 'REQUEST_METHOD'));
+        static::assertSame('test', $request->env(key: 'APP_ENV'));
 
         unset($_SERVER['REQUEST_METHOD'], $_ENV['APP_ENV']);
     }

@@ -61,7 +61,10 @@ abstract class AbstractResponse implements ResponseInterface
 
         if (null !== $view) {
             /** @var string $env */
-            $env = $this->handler->env[Constant::APP_ENV] ?? Constant::ENV_PROD;
+            $env = $this->handler->env(
+                key: Constant::APP_ENV,
+                default: Constant::ENV_PROD,
+            );
             $this->rendering(
                 view: $view,
                 env: $env,
@@ -148,7 +151,11 @@ abstract class AbstractResponse implements ResponseInterface
         if (null !== $this->handler->currentRoute) {
             $arguments = $this->handler->currentRoute[Constant::ARGUMENTS];
             $path = $this->getPathUri(path: $this->handler->currentRoute[Constant::PATH]);
-            $url = $this->getRequestUri(uri: $this->handler->server[Constant::REQUEST_URI]);
+            $serverUri = $this->handler->server(
+                key: Constant::REQUEST_URI,
+                default: Constant::EMPTY_STRING,
+            );
+            $url = $this->getRequestUri(uri: $serverUri);
             foreach ($arguments as $key => $_) {
                 if ($name === $key) {
                     for ($i = 0, $iMax = count(value: $path); $i < $iMax; $i++) {

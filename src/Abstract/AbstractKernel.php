@@ -131,8 +131,8 @@ abstract class AbstractKernel implements KernelInterface
     public function createRequestFromGlobals(): RequestInterface
     {
         $reqMethod = match ($_SERVER['REQUEST_METHOD']) {
-            Constant::METHOD_POST => $_POST,
-            default => $_GET,
+            Constant::METHOD_POST => $_POST ?? [],
+            default => $_GET ?? [],
         };
         $globals = [
             'server' => $_SERVER ?? [],
