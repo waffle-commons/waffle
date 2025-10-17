@@ -23,16 +23,6 @@ code = "kan-defect"
 start_line = 18
 end_line = 192
 
-[[entries."src/Core/Config.php".issues]]
-code = "no-boolean-literal-comparison"
-start_line = 74
-end_line = 74
-
-[[entries."src/Core/Config.php".issues]]
-code = "no-else-clause"
-start_line = 72
-end_line = 75
-
 [[entries."src/Core/Container.php".issues]]
 code = "halstead"
 start_line = 40
@@ -41,42 +31,7 @@ end_line = 69
 [[entries."src/Core/YamlParser.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 13
-end_line = 132
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "halstead"
-start_line = 40
-end_line = 98
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-boolean-literal-comparison"
-start_line = 29
-end_line = 29
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 65
-end_line = 70
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 71
-end_line = 76
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 84
-end_line = 95
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 92
-end_line = 94
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-empty"
-start_line = 90
-end_line = 90
+end_line = 131
 
 [[entries."src/Interface/RequestInterface.php".issues]]
 code = "too-many-methods"

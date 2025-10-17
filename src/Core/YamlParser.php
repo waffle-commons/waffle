@@ -27,7 +27,7 @@ final class YamlParser implements YamlParserInterface
         }
 
         $lines = file($path, FILE_IGNORE_NEW_LINES);
-        if ($lines === false) {
+        if (!$lines) {
             return [];
         }
 
@@ -63,13 +63,15 @@ final class YamlParser implements YamlParserInterface
                     if (isset($parent[$lastKey]) && is_array($parent[$lastKey])) {
                         $stack[] = &$parent[$lastKey];
                     }
-                } else { // context === 'list'
+                }
+                if ($context === 'list') {
                     $lastIndex = count($parent) - 1;
                     if (isset($parent[$lastIndex]) && is_array($parent[$lastIndex])) {
                         $stack[] = &$parent[$lastIndex];
                     }
                 }
-            } elseif ($indent < $lastIndent) {
+            }
+            if ($indent < $lastIndent) {
                 $levelsToPop = ($lastIndent - $indent) / 2;
                 for ($i = 0; $i < $levelsToPop; $i++) {
                     array_pop($stack);
@@ -82,17 +84,14 @@ final class YamlParser implements YamlParserInterface
                 $context = 'list';
                 $value = $this->parseValue(substr($line, 2));
                 $currentLevel[] = $value;
-            } elseif (str_contains($line, ':')) {
+            }
+            if (str_contains($line, ':')) {
                 $context = 'key';
                 [$key, $value] = explode(':', $line, 2);
                 $key = trim($key);
                 $trimmedValue = trim($value);
 
-                if (empty($trimmedValue)) {
-                    $currentLevel[$key] = [];
-                } else {
-                    $currentLevel[$key] = $this->parseValue($trimmedValue);
-                }
+                $currentLevel[$key] = $trimmedValue === Constant::EMPTY_STRING ? [] : $this->parseValue($trimmedValue);
             }
         }
         return $config;
@@ -102,8 +101,8 @@ final class YamlParser implements YamlParserInterface
     {
         // Handle quoted strings
         if (
-            str_starts_with($value, '"') && str_ends_with($value, '"')
-            || str_starts_with($value, "'") && str_ends_with($value, "'")
+            (str_starts_with($value, '"') && str_ends_with($value, '"'))
+            || (str_starts_with($value, "'") && str_ends_with($value, "'"))
         ) {
             return substr($value, 1, -1);
         }

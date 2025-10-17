@@ -70,9 +70,10 @@ class Config
         foreach ($config as &$value) {
             if (is_array($value)) {
                 $this->resolveEnvPlaceholders($value);
-            } elseif (is_string($value) && preg_match('/^%env\((.*)\)%$/', $value, $matches)) {
+            }
+            if (is_string($value) && preg_match('/^%env\((.*)\)%$/', $value, $matches)) {
                 $envVar = getenv($matches[1]);
-                $value = $envVar !== false ? $envVar : null;
+                $value = $envVar ?? null;
             }
         }
     }
