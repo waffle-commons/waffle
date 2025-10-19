@@ -6,8 +6,13 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Waffle\\": "src/",
-            "WaffleTests\\": "tests/"
+            "Waffle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WaffleTests\\": "tests/src/",
+            "App\\": "public/app"
         }
     },
     "authors": [

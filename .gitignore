@@ -6,13 +6,6 @@
 /.vscode
 /.idx
 
-# Docker
-.dockerignore
-docker-compose.yml
-docker-compose.*.yml
-Dockerfile
-Makefile
-
 # Vendors
 /vendor
 
