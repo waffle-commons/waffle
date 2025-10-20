@@ -5,19 +5,14 @@ declare(strict_types=1);
 namespace WaffleTests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Waffle\Abstract\AbstractKernel;
-use Waffle\Core\Cli;
-use Waffle\Core\Config;
-use Waffle\Core\Container;
-use Waffle\Core\Request;
-use Waffle\Core\Security;
-use Waffle\Enum\AppMode;
-use Waffle\Enum\Failsafe;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
+use WaffleTests\TestsTrait\HttpFactoryTrait;
+use WaffleTests\TestsTrait\KernelFactoryTrait;
 
 abstract class AbstractTestCase extends BaseTestCase
 {
+    use KernelFactoryTrait;
+    use HttpFactoryTrait;
+
     protected string $testConfigDir = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
 
     #[\Override]
@@ -60,105 +55,5 @@ abstract class AbstractTestCase extends BaseTestCase
         }
 
         rmdir($dir);
-    }
-
-    protected function createTestConfigFile(int $securityLevel = 10): void
-    {
-        $yamlContent = <<<YAML
-        waffle:
-          security:
-            level: {$securityLevel}
-          paths:
-            # Point to the actual test helpers for controller/service resolution
-            controllers: 'tests/src/Helper'
-            services: 'tests/src/Helper'
-        YAML;
-        file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
-
-        $yamlContentTest = <<<YAML
-        waffle:
-          test: %env(APP_DEBUG)%
-          security:
-            level: {$securityLevel}
-          paths:
-            # Point to the actual test helpers for controller/service resolution
-            controllers: 'tests/src/Helper'
-            services: 'tests/src/Helper'
-        YAML;
-        file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
-    }
-
-    protected function createAndGetConfig(int $securityLevel = 10, Failsafe $failsafe = Failsafe::DISABLED): Config
-    {
-        $this->createTestConfigFile(securityLevel: $securityLevel);
-
-        return new Config(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-            failsafe: $failsafe,
-        );
-    }
-
-    protected function createAndGetSecurity(int $level = 10, null|Config $config = null): Security
-    {
-        return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
-    }
-
-    protected function createRealContainer(int $level = 10): Container
-    {
-        return new Container(security: $this->createAndGetSecurity(level: $level));
-    }
-
-    protected function createMockContainer(): ContainerInterface
-    {
-        return $this->createMock(ContainerInterface::class);
-    }
-
-    protected function createMockKernel(null|ContainerInterface $container = null): KernelInterface
-    {
-        $kernel = $this->createMock(AbstractKernel::class);
-        $kernel->container = $container ?? $this->createMockContainer();
-        return $kernel;
-    }
-
-    /**
-     * @param int $level
-     * @param AppMode $isCli
-     * @param array{
-     *       server: array<mixed>,
-     *       get: array<mixed>,
-     *       post: array<mixed>,
-     *       files: array<mixed>,
-     *       cookie: array<mixed>,
-     *       session: array<mixed>,
-     *       request: array<mixed>,
-     *       env: array<mixed>
-     *   } $globals
-     * @return Request
-     */
-    protected function createRealRequest(int $level = 10, AppMode $isCli = AppMode::WEB, array $globals = []): Request
-    {
-        return new Request(
-            container: $this->createRealContainer(level: $level),
-            cli: $isCli,
-            globals: $globals,
-        );
-    }
-
-    /**
-     * @param int $level
-     * @param array{
-     *       server: array<mixed>,
-     *       env: array<mixed>
-     *   } $globals
-     * @return Cli
-     */
-    protected function createRealCli(int $level = 10, array $globals = []): Cli
-    {
-        return new Cli(
-            container: $this->createRealContainer(level: $level),
-            cli: AppMode::CLI,
-            globals: $globals,
-        );
     }
 }

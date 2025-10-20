@@ -19,7 +19,7 @@ use WaffleTests\Core\Helper\WithPrimitive;
 
 final class ContainerTest extends TestCase
 {
-    private Container $container;
+    private null|Container $container = null;
 
     #[\Override]
     protected function setUp(): void

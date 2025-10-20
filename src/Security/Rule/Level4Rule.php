@@ -18,6 +18,7 @@ class Level4Rule implements SecurityRuleInterface
      * [Rule 4]: Ensures all public methods have an explicit return type (non-null).
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $methods = $this->getMethods(

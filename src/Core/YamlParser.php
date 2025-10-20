@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Core;
 
 use Waffle\Interface\YamlParserInterface;
+use Waffle\Trait\ParserTrait;
 
 /**
  * A very simple, native YAML file parser.
@@ -13,6 +14,8 @@ use Waffle\Interface\YamlParserInterface;
  */
 final class YamlParser implements YamlParserInterface
 {
+    use ParserTrait;
+
     /**
      * Parses a YAML file and returns its content as a PHP array.
      *
@@ -51,82 +54,57 @@ final class YamlParser implements YamlParserInterface
             }
 
             $indent = strlen($line) - strlen(ltrim($line));
-            $line = trim($line);
+            $trimmedLine = trim($line);
 
-            if ($indent > $lastIndent) {
-                $parent = &$stack[count($stack) - 1];
-
-                // Get the last key inserted in the parent
-                if ($context === 'key') {
-                    end($parent);
-                    $lastKey = key($parent);
-                    if (isset($parent[$lastKey]) && is_array($parent[$lastKey])) {
-                        $stack[] = &$parent[$lastKey];
-                    }
-                }
-                if ($context === 'list') {
-                    $lastIndex = count($parent) - 1;
-                    if (isset($parent[$lastIndex]) && is_array($parent[$lastIndex])) {
-                        $stack[] = &$parent[$lastIndex];
-                    }
-                }
-            }
-            if ($indent < $lastIndent) {
-                $levelsToPop = ($lastIndent - $indent) / 2;
-                for ($i = 0; $i < $levelsToPop; $i++) {
-                    array_pop($stack);
-                }
-            }
+            $this->handleIndentation($indent, $lastIndent, $stack);
             $lastIndent = $indent;
+
             $currentLevel = &$stack[count($stack) - 1];
-
-            if (str_starts_with($line, '- ')) {
-                $context = 'list';
-                $value = $this->parseValue(substr($line, 2));
-                $currentLevel[] = $value;
-            }
-            if (str_contains($line, ':')) {
-                $context = 'key';
-                [$key, $value] = explode(':', $line, 2);
-                $key = trim($key);
-                $trimmedValue = trim($value);
-
-                $currentLevel[$key] = $trimmedValue === Constant::EMPTY_STRING ? [] : $this->parseValue($trimmedValue);
-            }
+            $this->parseLineContent($trimmedLine, $currentLevel, $context);
         }
         return $config;
     }
 
-    private function parseValue(string $value): mixed
+    /**
+     * Manages the stack based on indentation changes.
+     * @param array<int, mixed> $stack
+     */
+    private function handleIndentation(int $indent, int $lastIndent, array &$stack): void
     {
-        // Handle quoted strings
-        if (
-            str_starts_with($value, '"') && str_ends_with($value, '"')
-            || str_starts_with($value, "'") && str_ends_with($value, "'")
-        ) {
-            return substr($value, 1, -1);
+        if ($indent > $lastIndent) {
+            $parent = &$stack[count($stack) - 1];
+            end($parent);
+            $lastKey = key($parent);
+            if (is_array($parent[$lastKey] ?? null)) {
+                $stack[] = &$parent[$lastKey];
+            }
         }
-
-        // Handle boolean true
-        if (strtolower($value) === 'true') {
-            return true;
+        if ($indent < $lastIndent) {
+            $levelsToPop = ($lastIndent - $indent) / 2;
+            for ($i = 0; $i < $levelsToPop; $i++) {
+                array_pop($stack);
+            }
         }
+    }
 
-        // Handle boolean false
-        if (strtolower($value) === 'false') {
-            return false;
+    /**
+     * Parses the content of a single line.
+     * @param array<mixed> $currentLevel
+     */
+    private function parseLineContent(string $line, array &$currentLevel, string &$context): void
+    {
+        if (str_starts_with($line, '- ')) {
+            $context = 'list';
+            $value = $this->parseValue(substr($line, 2));
+            $currentLevel[] = $value;
         }
+        if (str_contains($line, ':')) {
+            $context = 'key';
+            [$key, $value] = explode(':', $line, 2);
+            $key = trim($key);
+            $trimmedValue = trim($value);
 
-        // Handle null
-        if ($value === '~' || strtolower($value) === 'null' || $value === '') {
-            return null;
+            $currentLevel[$key] = $trimmedValue === Constant::EMPTY_STRING ? [] : $this->parseValue($trimmedValue);
         }
-
-        // Handle numbers
-        if (is_numeric($value)) {
-            return str_contains($value, '.') ? (float) $value : (int) $value;
-        }
-
-        return $value;
     }
 }

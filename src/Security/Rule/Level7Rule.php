@@ -20,6 +20,7 @@ class Level7Rule implements SecurityRuleInterface
      * [Rule 7]: Ensures all public method arguments are typed.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $methods = $this->getMethods(

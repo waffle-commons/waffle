@@ -1,287 +1,172 @@
 [[entries."src/Abstract/AbstractCli.php".issues]]
-code = "missing-override-attribute"
-start_line = 103
-end_line = 103
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "missing-override-attribute"
-start_line = 114
-end_line = 114
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "missing-override-attribute"
-start_line = 125
-end_line = 125
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 75
-end_line = 75
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 75
-end_line = 75
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "mixed-return-statement"
-start_line = 116
-end_line = 116
-
-[[entries."src/Abstract/AbstractCli.php".issues]]
-code = "mixed-return-statement"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "less-specific-nested-argument-type"
-start_line = 149
-end_line = 149
+start_line = 66
+end_line = 66
+
+[[entries."src/Abstract/AbstractCli.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 67
+end_line = 67
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "mixed-assignment"
-start_line = 106
-end_line = 106
+start_line = 130
+end_line = 130
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "mixed-assignment"
-start_line = 113
-end_line = 113
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 95
-end_line = 95
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 110
-end_line = 110
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 117
-end_line = 117
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-operand"
-start_line = 215
-end_line = 215
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 147
-end_line = 147
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 166
-end_line = 166
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 190
-end_line = 190
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-undefined-string-array-index"
-start_line = 132
-end_line = 132
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 133
-end_line = 133
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 134
-end_line = 134
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
 start_line = 137
 end_line = 137
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 138
-end_line = 138
+code = "mixed-operand"
+start_line = 118
+end_line = 118
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 139
-end_line = 139
+code = "mixed-operand"
+start_line = 134
+end_line = 134
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 140
-end_line = 140
+code = "mixed-operand"
+start_line = 141
+end_line = 141
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 142
-end_line = 142
+code = "mixed-operand"
+start_line = 204
+end_line = 204
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 144
-end_line = 144
+code = "possibly-null-argument"
+start_line = 63
+end_line = 63
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 185
-end_line = 185
+code = "possibly-null-argument"
+start_line = 65
+end_line = 65
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 186
-end_line = 186
+code = "possibly-null-argument"
+start_line = 66
+end_line = 66
 
 [[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 163
-end_line = 163
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 174
-end_line = 174
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 185
-end_line = 185
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 196
-end_line = 196
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 207
-end_line = 207
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 218
-end_line = 218
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 229
-end_line = 229
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 240
-end_line = 240
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "missing-override-attribute"
-start_line = 251
-end_line = 251
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 176
-end_line = 176
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 187
-end_line = 187
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 198
-end_line = 198
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 209
-end_line = 209
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 220
-end_line = 220
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 231
-end_line = 231
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 242
-end_line = 242
-
-[[entries."src/Abstract/AbstractRequest.php".issues]]
-code = "mixed-return-statement"
-start_line = 253
-end_line = 253
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
-code = "docblock-type-mismatch"
-start_line = 127
-end_line = 127
-
-[[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "less-specific-nested-argument-type"
-start_line = 133
-end_line = 133
+start_line = 88
+end_line = 88
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 89
+end_line = 89
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 90
+end_line = 90
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 91
+end_line = 91
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 92
+end_line = 92
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 93
+end_line = 93
+
+[[entries."src/Abstract/AbstractRequest.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 94
+end_line = 94
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-argument"
+start_line = 122
+end_line = 122
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-argument"
+start_line = 130
+end_line = 130
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-argument"
+start_line = 131
+end_line = 131
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
-start_line = 110
-end_line = 110
+start_line = 49
+end_line = 49
 
 [[entries."src/Abstract/AbstractResponse.php".issues]]
 code = "mixed-assignment"
-start_line = 116
-end_line = 116
+start_line = 83
+end_line = 83
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-assignment"
+start_line = 118
+end_line = 118
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-assignment"
+start_line = 172
+end_line = 172
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-assignment"
+start_line = 173
+end_line = 173
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-method-access"
+start_line = 51
+end_line = 51
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "mixed-method-access"
+start_line = 173
+end_line = 173
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "non-existent-method"
+start_line = 49
+end_line = 49
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "non-existent-method"
+start_line = 118
+end_line = 118
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "non-existent-method"
+start_line = 118
+end_line = 118
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "non-existent-method"
+start_line = 172
+end_line = 172
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "possibly-invalid-argument"
+start_line = 123
+end_line = 123
+
+[[entries."src/Abstract/AbstractResponse.php".issues]]
+code = "reference-to-undefined-variable"
+start_line = 180
+end_line = 180
 
 [[entries."src/Core/Cli.php".issues]]
 code = "less-specific-nested-argument-type"
@@ -324,69 +209,49 @@ start_line = 73
 end_line = 73
 
 [[entries."src/Core/Container.php".issues]]
-code = "invalid-callable"
-start_line = 56
-end_line = 56
-
-[[entries."src/Core/Container.php".issues]]
 code = "invalid-property-assignment-value"
-start_line = 80
-end_line = 80
+start_line = 72
+end_line = 72
 
 [[entries."src/Core/Container.php".issues]]
 code = "invalid-return-statement"
-start_line = 103
-end_line = 103
-
-[[entries."src/Core/Container.php".issues]]
-code = "less-specific-nested-return-statement"
-start_line = 130
-end_line = 130
+start_line = 115
+end_line = 115
 
 [[entries."src/Core/Container.php".issues]]
 code = "mixed-argument"
-start_line = 61
-end_line = 61
+start_line = 90
+end_line = 90
 
 [[entries."src/Core/Container.php".issues]]
 code = "mixed-argument"
-start_line = 127
-end_line = 127
+start_line = 139
+end_line = 139
 
 [[entries."src/Core/Container.php".issues]]
 code = "mixed-assignment"
+start_line = 84
+end_line = 84
+
+[[entries."src/Core/Container.php".issues]]
+code = "mixed-return-statement"
+start_line = 92
+end_line = 92
+
+[[entries."src/Core/Container.php".issues]]
+code = "nullable-return-statement"
+start_line = 115
+end_line = 115
+
+[[entries."src/Core/Container.php".issues]]
+code = "unevaluated-code"
 start_line = 55
 end_line = 55
 
 [[entries."src/Core/Container.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 63
-end_line = 63
-
-[[entries."src/Core/Container.php".issues]]
-code = "mixed-return-statement"
-start_line = 65
-end_line = 65
-
-[[entries."src/Core/Container.php".issues]]
-code = "nullable-return-statement"
-start_line = 103
-end_line = 103
-
-[[entries."src/Core/Container.php".issues]]
-code = "too-many-arguments"
-start_line = 88
-end_line = 88
-
-[[entries."src/Core/Container.php".issues]]
-code = "unevaluated-code"
-start_line = 67
-end_line = 67
-
-[[entries."src/Core/Container.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 98
-end_line = 98
+start_line = 110
+end_line = 110
 
 [[entries."src/Core/Request.php".issues]]
 code = "less-specific-nested-argument-type"
@@ -414,19 +279,114 @@ start_line = 42
 end_line = 42
 
 [[entries."src/Core/System.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 40
+end_line = 40
+
+[[entries."src/Core/System.php".issues]]
+code = "possibly-null-argument"
+start_line = 35
+end_line = 35
+
+[[entries."src/Core/System.php".issues]]
 code = "possibly-null-argument"
 start_line = 44
 end_line = 44
 
 [[entries."src/Core/YamlParser.php".issues]]
-code = "less-specific-argument"
-start_line = 67
-end_line = 67
+code = "mixed-argument"
+start_line = 62
+end_line = 62
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-argument"
+start_line = 75
+end_line = 75
 
 [[entries."src/Core/YamlParser.php".issues]]
 code = "mixed-assignment"
-start_line = 84
-end_line = 84
+start_line = 61
+end_line = 61
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-assignment"
+start_line = 74
+end_line = 74
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "mixed-assignment"
+start_line = 97
+end_line = 97
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "possibly-null-array-index"
+start_line = 78
+end_line = 78
+
+[[entries."src/Factory/CliFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 24
+end_line = 24
+
+[[entries."src/Factory/CliFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 25
+end_line = 25
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "less-specific-nested-argument-type"
+start_line = 41
+end_line = 41
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "possibly-undefined-string-array-index"
+start_line = 24
+end_line = 24
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 25
+end_line = 25
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 26
+end_line = 26
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 29
+end_line = 29
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 30
+end_line = 30
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 31
+end_line = 31
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 32
+end_line = 32
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 34
+end_line = 34
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 36
+end_line = 36
+
+[[entries."src/Http/ParameterBag.php".issues]]
+code = "mixed-return-statement"
+start_line = 38
+end_line = 38
 
 [[entries."src/Router/RouteDiscoverer.php".issues]]
 code = "invalid-return-statement"
@@ -465,148 +425,73 @@ end_line = 98
 
 [[entries."src/Router/Router.php".issues]]
 code = "mixed-argument"
-start_line = 130
-end_line = 130
-
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-assignment"
 start_line = 129
 end_line = 129
 
-[[entries."src/Security/Rule/Level10Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 19
-end_line = 19
-
-[[entries."src/Security/Rule/Level1Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 19
-end_line = 19
-
-[[entries."src/Security/Rule/Level2Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 20
-end_line = 20
-
-[[entries."src/Security/Rule/Level3Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 22
-end_line = 22
-
-[[entries."src/Security/Rule/Level4Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 20
-end_line = 20
-
-[[entries."src/Security/Rule/Level5Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 20
-end_line = 20
-
-[[entries."src/Security/Rule/Level6Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 19
-end_line = 19
-
-[[entries."src/Security/Rule/Level7Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 22
-end_line = 22
-
-[[entries."src/Security/Rule/Level8Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 20
-end_line = 20
-
-[[entries."src/Security/Rule/Level9Rule.php".issues]]
-code = "missing-override-attribute"
-start_line = 20
-end_line = 20
+[[entries."src/Router/Router.php".issues]]
+code = "mixed-assignment"
+start_line = 128
+end_line = 128
 
 [[entries."src/Trait/ReflectionTrait.php".issues]]
 code = "reference-to-undefined-variable"
 start_line = 23
 end_line = 23
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "less-specific-nested-argument-type"
-start_line = 45
-end_line = 54
+[[entries."src/Trait/UriParserTrait.php".issues]]
+code = "possibly-false-argument"
+start_line = 22
+end_line = 22
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-operand"
-start_line = 114
-end_line = 114
+start_line = 107
+end_line = 107
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "non-existent-method"
-start_line = 59
-end_line = 59
+code = "possible-method-access-on-null"
+start_line = 48
+end_line = 48
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "non-existent-method"
+code = "possible-method-access-on-null"
+start_line = 68
+end_line = 68
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-false-argument"
+start_line = 55
+end_line = 55
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-false-argument"
+start_line = 57
+end_line = 57
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-false-argument"
+start_line = 75
+end_line = 75
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-false-argument"
 start_line = 76
 end_line = 76
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "possibly-false-argument"
-start_line = 63
-end_line = 63
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 65
-end_line = 65
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 80
-end_line = 80
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 81
-end_line = 81
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 82
-end_line = 82
+start_line = 77
+end_line = 77
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "possibly-undefined-string-array-index"
-start_line = 31
-end_line = 31
+start_line = 34
+end_line = 34
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "possibly-undefined-string-array-index"
-start_line = 31
-end_line = 31
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 46
-end_line = 46
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 47
-end_line = 47
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 48
-end_line = 48
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 49
-end_line = 49
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 51
-end_line = 51
+start_line = 34
+end_line = 34
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "redundant-null-coalesce"
@@ -615,33 +500,18 @@ end_line = 52
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "redundant-null-coalesce"
-start_line = 53
-end_line = 53
+start_line = 72
+end_line = 72
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "redundant-null-coalesce"
-start_line = 60
-end_line = 60
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 77
-end_line = 77
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 104
-end_line = 104
+start_line = 97
+end_line = 97
 
 [[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
 code = "less-specific-nested-argument-type"
-start_line = 105
-end_line = 114
-
-[[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
-code = "redundant-null-coalesce"
 start_line = 106
-end_line = 106
+end_line = 115
 
 [[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
 code = "redundant-null-coalesce"
@@ -660,8 +530,8 @@ end_line = 109
 
 [[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
 code = "redundant-null-coalesce"
-start_line = 111
-end_line = 111
+start_line = 110
+end_line = 110
 
 [[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
 code = "redundant-null-coalesce"
@@ -672,6 +542,11 @@ end_line = 112
 code = "redundant-null-coalesce"
 start_line = 113
 end_line = 113
+
+[[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 114
+end_line = 114
 
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "less-specific-nested-argument-type"
@@ -760,38 +635,178 @@ end_line = 20
 
 [[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
 code = "less-specific-return-statement"
+start_line = 41
+end_line = 41
+
+[[entries."tests/src/AbstractTestCase.php".issues]]
+code = "mixed-operand"
+start_line = 15
+end_line = 15
+
+[[entries."tests/src/AbstractTestCase.php".issues]]
+code = "mixed-operand"
 start_line = 37
 end_line = 37
 
 [[entries."tests/src/AbstractTestCase.php".issues]]
-code = "mixed-operand"
-start_line = 20
-end_line = 20
+code = "possibly-false-argument"
+start_line = 49
+end_line = 49
 
-[[entries."tests/src/AbstractTestCase.php".issues]]
-code = "mixed-operand"
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 35
+end_line = 35
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 45
+end_line = 45
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 55
+end_line = 55
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 56
+end_line = 56
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 98
+end_line = 98
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "mixed-assignment"
+start_line = 109
+end_line = 109
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 33
+end_line = 33
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 35
+end_line = 35
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
 start_line = 42
 end_line = 42
 
-[[entries."tests/src/AbstractTestCase.php".issues]]
-code = "non-existent-property"
-start_line = 119
-end_line = 119
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 43
+end_line = 43
 
-[[entries."tests/src/AbstractTestCase.php".issues]]
-code = "possibly-false-argument"
-start_line = 54
-end_line = 54
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 45
+end_line = 45
 
-[[entries."tests/src/Core/RequestTest.php".issues]]
-code = "possibly-null-argument"
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 53
+end_line = 53
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 55
+end_line = 55
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 56
+end_line = 56
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 66
+end_line = 66
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 76
+end_line = 76
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 77
+end_line = 77
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 80
+end_line = 80
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 85
+end_line = 85
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 86
+end_line = 86
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 91
+end_line = 91
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 96
+end_line = 96
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 98
+end_line = 98
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 105
+end_line = 105
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 106
+end_line = 106
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 107
+end_line = 107
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 109
+end_line = 109
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
 start_line = 130
 end_line = 130
 
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 138
+end_line = 138
+
 [[entries."tests/src/Core/RequestTest.php".issues]]
-code = "string-member-selector"
-start_line = 136
-end_line = 136
+code = "invalid-return-statement"
+start_line = 159
+end_line = 165
+
+[[entries."tests/src/Core/RequestTest.php".issues]]
+code = "possibly-null-argument"
+start_line = 141
+end_line = 141
 
 [[entries."tests/src/Core/ResponseTest.php".issues]]
 code = "less-specific-nested-argument-type"
@@ -1147,6 +1162,61 @@ end_line = 195
 code = "redundant-null-coalesce"
 start_line = 196
 end_line = 196
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-argument"
+start_line = 42
+end_line = 42
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-assignment"
+start_line = 79
+end_line = 79
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-operand"
+start_line = 27
+end_line = 27
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-operand"
+start_line = 34
+end_line = 34
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-property-access"
+start_line = 80
+end_line = 80
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-return-statement"
+start_line = 74
+end_line = 74
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-return-statement"
+start_line = 81
+end_line = 81
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "non-existent-method"
+start_line = 74
+end_line = 74
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "non-existent-method"
+start_line = 79
+end_line = 79
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "non-existent-property"
+start_line = 27
+end_line = 27
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "non-existent-property"
+start_line = 42
+end_line = 42
 
 [[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
 code = "possibly-false-argument"

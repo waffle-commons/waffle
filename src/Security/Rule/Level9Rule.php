@@ -18,6 +18,7 @@ class Level9Rule implements SecurityRuleInterface
      * [Rule 9]: Ensures classes are read-only (simulating the PHP 8.2+ `readonly` attribute for services/DTOs).
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $reflection = new ReflectionObject($object);

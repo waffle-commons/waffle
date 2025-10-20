@@ -30,7 +30,7 @@ interface ContainerInterface
      * Manually registers a service or a factory in the container.
      *
      * @param string $id The service identifier.
-     * @param string|callable $concrete The service instance or a callable factory.
+     * @param string|callable|object $concrete The service instance or a callable factory.
      */
-    public function set(string $id, callable|string $concrete): void;
+    public function set(string $id, object|callable|string $concrete): void;
 }

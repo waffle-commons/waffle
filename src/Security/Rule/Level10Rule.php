@@ -17,6 +17,7 @@ class Level10Rule implements SecurityRuleInterface
      * [Rule 10]: Ensures all classes are final.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         if (!$this->isFinal(object: $object)) {

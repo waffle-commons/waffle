@@ -20,6 +20,7 @@ class Level3Rule implements SecurityRuleInterface
      * [Rule 3]: Ensures all public methods are not 'void' if they return something.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $methods = $this->getMethods(

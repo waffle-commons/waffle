@@ -18,6 +18,7 @@ class Level2Rule implements SecurityRuleInterface
      * [Rule 2]: Ensures there are no untyped public properties (encourages private/protected properties).
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $properties = $this->getProperties(

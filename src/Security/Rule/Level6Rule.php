@@ -17,6 +17,7 @@ class Level6Rule implements SecurityRuleInterface
      * [Rule 6]: Ensures all declared properties are initialized (including protected/private).
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $properties = $this->getProperties(object: $object);

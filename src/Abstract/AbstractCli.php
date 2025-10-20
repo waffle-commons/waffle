@@ -6,23 +6,15 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
+use Waffle\Http\ParameterBag;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\ResponseInterface;
 
 abstract class AbstractCli implements CliInterface
 {
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $server;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $env;
+    public ParameterBag $server; // For $_SERVER
+    public ParameterBag $env; // For $_ENV
 
     public AppMode $cli = AppMode::CLI {
         set => $this->cli = $value;
@@ -72,9 +64,8 @@ abstract class AbstractCli implements CliInterface
     {
         $this->container = $container;
         $this->cli = $cli;
-        foreach ($globals as $key => $value) {
-            $this->{$key} = $value;
-        }
+        $this->server = new ParameterBag(parameters: $globals['server'] ?? []);
+        $this->env = new ParameterBag(parameters: $globals['env'] ?? []);
     }
 
     #[\Override]
@@ -101,30 +92,21 @@ abstract class AbstractCli implements CliInterface
         return $this;
     }
 
+    #[\Override]
     public function isCli(): bool
     {
         return $this->cli === AppMode::CLI;
     }
 
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function server(string $key, mixed $default = null): mixed
+    #[\Override]
+    public function getServer(): ParameterBag
     {
-        return $this->server[$key] ?? $default;
+        return $this->server;
     }
 
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function env(string $key, mixed $default = null): mixed
+    #[\Override]
+    public function getEnv(): ParameterBag
     {
-        return $this->env[$key] ?? $default;
+        return $this->env;
     }
 }

@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
-use Waffle\Interface\KernelInterface;
+use Waffle\Interface\ContainerInterface;
+use WaffleTests\Abstract\Helper\CliKernel;
 use WaffleTests\Abstract\Helper\WebKernel;
 use WaffleTests\AbstractTestCase as TestCase;
 
 final class AbstractKernelTest extends TestCase
 {
-    private KernelInterface|null $kernel = null;
+    private null|ContainerInterface $container = null;
+    private null|WebKernel $kernel = null;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createTestConfigFile(securityLevel: 2);
+        $this->container = $this->createRealContainer(level: 2);
 
-        // We instantiate our test-specific WebKernel
+        // Instantiate our test-specific WebKernel but do not boot it yet.
         $this->kernel = new WebKernel(
             configDir: $this->testConfigDir,
-            environment: 'test',
+            environment: 'dev',
+            container: $this->container,
         );
     }
 
@@ -37,30 +40,19 @@ final class AbstractKernelTest extends TestCase
 
     public function testHandleWithMatchingRouteRendersResponse(): void
     {
-        // Simulate a web request to a valid URI.
+        // Arrange
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/users';
         $_ENV['APP_ENV'] = 'dev';
-        $this->createRealRequest(
-            level: 2,
-            globals: [
-                'server' => $_SERVER ?? [],
-                'get' => $_GET ?? [],
-                'post' => $_POST ?? [],
-                'files' => $_FILES ?? [],
-                'cookie' => $_COOKIE ?? [],
-                'session' => $_SESSION ?? [],
-                'request' => $_GET ?? [],
-                'env' => $_ENV ?? [],
-            ],
-        );
 
-        // Start the output buffer to capture the echoed JSON.
+        // Act: Boot the kernel now that the environment is ready.
+        $this->kernel?->boot()->configure();
+
         ob_start();
         $this->kernel?->handle();
         $output = ob_get_clean() ?? '';
 
-        // Assert that the output is the expected JSON response.
+        // Assert
         static::assertJson($output);
         $expectedJson = '{"data":{"id":1,"name":"John Doe"}}';
         static::assertJsonStringEqualsJsonString($expectedJson, $output);
@@ -68,16 +60,19 @@ final class AbstractKernelTest extends TestCase
 
     public function testHandleCatchesAndRendersThrowable(): void
     {
-        // Simulate a request to our new, unambiguous error route.
+        // Arrange
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/trigger-error';
         $_ENV['APP_ENV'] = 'dev';
+
+        // Act: Boot the kernel.
+        $this->kernel?->boot()->configure();
 
         ob_start();
         $this->kernel?->handle();
         $output = ob_get_clean() ?? '';
 
-        // Assert that the output contains the expected error message.
+        // Assert
         static::assertJson($output);
         static::assertStringContainsString('"message": "An unexpected error occurred."', $output);
         static::assertStringContainsString('"error": "Something went wrong"', $output);
@@ -85,43 +80,41 @@ final class AbstractKernelTest extends TestCase
 
     public function testHandleInCliMode(): void
     {
-        // To isolate this test and ensure the CLI path is taken, we create a partial mock of the kernel.
-        // We will only mock the `isCli` method to force it to return `true`,
-        // while all other methods will retain their original implementation.
-        $kernel = $this->getMockBuilder(WebKernel::class)
-            ->setConstructorArgs([ // We must pass the original constructor arguments
-                'configDir' => $this->testConfigDir,
-                'environment' => 'test',
-            ])
-            ->onlyMethods(['isCli']) // We specify that only `isCli` will be a mock
-            ->getMock();
+        // Arrange: Create a partial mock of the kernel.
+        $_ENV['APP_ENV'] = 'test';
 
-        // We configure our mocked method to always return true for this test.
-        $kernel->method('isCli')->willReturn(true);
+        // Instantiate our test-specific WebKernel but do not boot it yet.
+        $kernel = new CliKernel(
+            configDir: $this->testConfigDir,
+            environment: 'dev',
+            container: $this->container,
+        );
 
-        // Now, when we call handle(), it will be forced to take the CLI execution path.
+        // Act: Manually boot and configure the kernel now that the mock is set up.
+        $kernel->boot()->configure();
+
         ob_start();
         $kernel->handle();
         $output = ob_get_clean() ?? '';
 
-        // In the current implementation, the CLI path does nothing and produces no output.
+        // Assert
         static::assertEmpty($output);
     }
 
     public function testBootLoadsEnvironmentVariables(): void
     {
-        // --- Test Condition ---
-        $envContent = "APP_ENV=test_boot\n# Add some comment\nANOTHER_VAR=waffle_test";
+        // Arrange
+        $envContent = "APP_ENV=test_boot\nANOTHER_VAR=waffle_test";
         $envPath = APP_ROOT . '/.env';
         file_put_contents($envPath, $envContent);
 
-        // --- Execution ---
+        // Act
         $this->kernel?->boot();
 
-        // --- Delete .env temp file ---
+        // Teardown
         unlink($envPath);
 
-        // --- Assertions ---
+        // Assert
         static::assertSame('test_boot', getenv('APP_ENV'));
         static::assertSame('waffle_test', getenv('ANOTHER_VAR'));
     }

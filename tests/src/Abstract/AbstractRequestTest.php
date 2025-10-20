@@ -10,6 +10,7 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
@@ -114,8 +115,8 @@ final class AbstractRequestTest extends TestCase
             'env' => $_ENV ?? [],
         ]);
 
-        static::assertSame('GET', $request->server(key: 'REQUEST_METHOD'));
-        static::assertSame('test', $request->env(key: 'APP_ENV'));
+        static::assertSame('GET', $request->bag(key: HttpBag::SERVER)->get(key: 'REQUEST_METHOD'));
+        static::assertSame('test', $request->bag(key: HttpBag::ENV)->get(key: 'APP_ENV'));
 
         unset($_SERVER['REQUEST_METHOD'], $_ENV['APP_ENV']);
     }

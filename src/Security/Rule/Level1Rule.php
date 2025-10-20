@@ -17,6 +17,7 @@ class Level1Rule implements SecurityRuleInterface
      * [Rule 1]: Ensures the object is an instance of its own class.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $class = get_class($object);

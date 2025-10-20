@@ -18,6 +18,7 @@ class Level8Rule implements SecurityRuleInterface
      * [Rule 8]: Ensures important classes (e.g., Controllers) are declared final.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         // We check if the class name contains 'Controller' and if it is not final.

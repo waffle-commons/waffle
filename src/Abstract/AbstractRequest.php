@@ -6,7 +6,9 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
+use Waffle\Http\ParameterBag;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
@@ -16,53 +18,13 @@ abstract class AbstractRequest implements RequestInterface
 {
     use RequestTrait;
 
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $server;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $get;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $post;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $files;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $cookie;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $session;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $request;
-
-    /**
-     * @template T
-     * @var T|string|array<mixed>
-     */
-    private array $env;
+    public ParameterBag $query; // For $_GET
+    public ParameterBag $request; // For $_POST
+    public ParameterBag $server; // For $_SERVER
+    public ParameterBag $files; // For $_FILES
+    public ParameterBag $cookies; // For $_COOKIE
+    public ParameterBag $session; // For $_SESSION
+    public ParameterBag $env; // For $_ENV
 
     public AppMode $cli = AppMode::WEB {
         set => $this->cli = $value;
@@ -124,9 +86,13 @@ abstract class AbstractRequest implements RequestInterface
     {
         $this->container = $container;
         $this->cli = $cli;
-        foreach ($globals as $key => $value) {
-            $this->{$key} = $value;
-        }
+        $this->query = new ParameterBag(parameters: $globals['get'] ?? []);
+        $this->request = new ParameterBag(parameters: $globals['post'] ?? []);
+        $this->server = new ParameterBag(parameters: $globals['server'] ?? []);
+        $this->files = new ParameterBag(parameters: $globals['files'] ?? []);
+        $this->cookies = new ParameterBag(parameters: $globals['cookie'] ?? []);
+        $this->session = new ParameterBag(parameters: $globals['session'] ?? []);
+        $this->env = new ParameterBag(parameters: $globals['env'] ?? []);
     }
 
     /**
@@ -161,96 +127,23 @@ abstract class AbstractRequest implements RequestInterface
         return $this;
     }
 
+    #[\Override]
     public function isCli(): bool
     {
         return $this->cli === AppMode::CLI;
     }
 
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function server(string $key, mixed $default = null): mixed
+    #[\Override]
+    public function bag(HttpBag $key): ParameterBag
     {
-        return $this->server[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function get(string $key, mixed $default = null): mixed
-    {
-        return $this->get[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function post(string $key, mixed $default = null): mixed
-    {
-        return $this->post[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function files(string $key, mixed $default = null): mixed
-    {
-        return $this->files[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function cookie(string $key, mixed $default = null): mixed
-    {
-        return $this->cookie[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function session(string $key, mixed $default = null): mixed
-    {
-        return $this->session[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function request(string $key, mixed $default = null): mixed
-    {
-        return $this->request[$key] ?? $default;
-    }
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function env(string $key, mixed $default = null): mixed
-    {
-        return $this->env[$key] ?? $default;
+        return match ($key) {
+            HttpBag::QUERY => $this->query,
+            HttpBag::REQUEST => $this->request,
+            HttpBag::SERVER => $this->server,
+            HttpBag::FILES => $this->files,
+            HttpBag::COOKIES => $this->cookies,
+            HttpBag::SESSION => $this->session,
+            HttpBag::ENV => $this->env,
+        };
     }
 }

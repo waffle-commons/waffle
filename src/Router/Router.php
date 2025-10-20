@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
-use ReflectionMethod;
-use ReflectionNamedType;
-use Waffle\Attribute\Route;
 use Waffle\Cache\RouteCache;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
+use Waffle\Enum\HttpBag;
 use Waffle\Exception\SecurityException;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
@@ -104,7 +102,8 @@ final class Router
     public function match(ContainerInterface $container, Request $req, array $route): bool
     {
         $pathSegments = $this->getPathUri($route[Constant::PATH]);
-        $serverUri = $req->server(
+        $server = $req->bag(key: HttpBag::SERVER);
+        $serverUri = $server->get(
             key: Constant::REQUEST_URI,
             default: Constant::EMPTY_STRING,
         );

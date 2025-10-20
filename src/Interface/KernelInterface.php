@@ -10,9 +10,5 @@ interface KernelInterface
 
     public function configure(): self;
 
-    public function createRequestFromGlobals(): RequestInterface;
-
-    public function createCliFromRequest(): CliInterface;
-
     public function run(CliInterface|RequestInterface $handler): void;
 }

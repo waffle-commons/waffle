@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Waffle\Interface;
 
 use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
+use Waffle\Http\ParameterBag;
 
 interface RequestInterface
 {
@@ -66,67 +68,5 @@ interface RequestInterface
 
     public function isCli(): bool;
 
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function server(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function get(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function post(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function files(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function cookie(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function session(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function request(string $key, mixed $default = null): mixed;
-
-    /**
-     * @template T
-     * @param string $key
-     * @param T $default
-     * @return T|string|array<mixed>
-     */
-    public function env(string $key, mixed $default = null): mixed;
+    public function bag(HttpBag $key): ParameterBag;
 }

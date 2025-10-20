@@ -18,6 +18,7 @@ class Level5Rule implements SecurityRuleInterface
      * [Rule 5]: For example, ensures *private* properties are typed.
      * @throws SecurityException
      */
+    #[\Override]
     public function check(object $object): void
     {
         $properties = $this->getProperties(

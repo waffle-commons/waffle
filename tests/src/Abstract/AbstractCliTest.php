@@ -88,8 +88,8 @@ final class AbstractCliTest extends TestCase
         );
 
         // Then: The public properties should accurately reflect the superglobal values.
-        static::assertSame('vendor/bin/phpunit', $cli->server(key: 'PHP_SELF'));
-        static::assertSame('test', $cli->env(key: 'APP_ENV'));
+        static::assertSame('vendor/bin/phpunit', $cli->getServer()->get(key: 'PHP_SELF'));
+        static::assertSame('test', $cli->getEnv()->get(key: 'APP_ENV'));
 
         // Cleanup
         unset($_SERVER['PHP_SELF'], $_ENV['APP_ENV']);
