@@ -104,7 +104,7 @@ final class AbstractKernelTest extends TestCase
     public function testBootLoadsEnvironmentVariables(): void
     {
         // Arrange
-        $envContent = "APP_ENV=test_boot\nANOTHER_VAR=waffle_test";
+        $envContent = "APP_TEST=test_boot\nANOTHER_VAR=waffle_test";
         $envPath = APP_ROOT . '/.env';
         file_put_contents($envPath, $envContent);
 
@@ -115,7 +115,7 @@ final class AbstractKernelTest extends TestCase
         unlink($envPath);
 
         // Assert
-        static::assertSame('test_boot', getenv('APP_ENV'));
+        static::assertSame('test_boot', getenv('APP_TEST'));
         static::assertSame('waffle_test', getenv('ANOTHER_VAR'));
     }
 }

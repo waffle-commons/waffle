@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Core;
 
 use Waffle\Enum\Failsafe;
+use Waffle\Exception\InvalidConfigurationException;
 
 class Config
 {
@@ -50,15 +51,109 @@ class Config
         $this->resolveEnvPlaceholders($this->parameters);
     }
 
-    public function get(string $key, mixed $default = null): mixed
+    /**
+     * @throws InvalidConfigurationException
+     */
+    public function getInt(string $key, null|int $default = null): null|int
+    {
+        /** @var array|string|int|bool|null $value */
+        $value = $this->get(key: $key);
+
+        if (null === $value) {
+            return $default;
+        }
+
+        if (!is_int($value)) {
+            throw new InvalidConfigurationException(sprintf(
+                'Configuration key "%s" expects type "int", but got "%s".',
+                $key,
+                gettype($value),
+            ));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    public function getString(string $key, null|string $default = null): null|string
+    {
+        /** @var array|string|int|bool|null $value */
+        $value = $this->get(key: $key);
+
+        if (null === $value) {
+            return $default;
+        }
+
+        if (!is_string($value)) {
+            throw new InvalidConfigurationException(sprintf(
+                'Configuration key "%s" expects type "string", but got "%s".',
+                $key,
+                gettype($value),
+            ));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    public function getArray(string $key, null|array $default = null): null|array
+    {
+        /** @var array|string|int|bool|null $value */
+        $value = $this->get(key: $key);
+
+        if (null === $value) {
+            return $default;
+        }
+
+        if (!is_array($value)) {
+            throw new InvalidConfigurationException(sprintf(
+                'Configuration key "%s" expects type "array", but got "%s".',
+                $key,
+                gettype($value),
+            ));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws InvalidConfigurationException
+     */
+    public function getBool(string $key, bool $default = false): bool
+    {
+        /** @var array|string|int|bool|null $value */
+        $value = $this->get(key: $key);
+
+        if (null === $value) {
+            return $default;
+        }
+
+        if (!is_bool($value)) {
+            throw new InvalidConfigurationException(sprintf(
+                'Configuration key "%s" expects type "array", but got "%s".',
+                $key,
+                gettype($value),
+            ));
+        }
+
+        return $value;
+    }
+
+    private function get(string $key): mixed
     {
         $keys = explode('.', $key);
         $value = $this->parameters;
 
         foreach ($keys as $k) {
-            if (!isset($value[$k])) {
-                return $default;
+            // FIX: Add a guard clause to ensure we only traverse arrays.
+            if (!is_array($value) || !array_key_exists($k, $value)) {
+                return null;
             }
+            /** @var array|string|int|bool $value */
             $value = $value[$k];
         }
 
@@ -67,13 +162,19 @@ class Config
 
     private function resolveEnvPlaceholders(array &$config): void
     {
+        /** @var array|string|int|bool $value */
         foreach ($config as &$value) {
             if (is_array($value)) {
                 $this->resolveEnvPlaceholders($value);
-            }
-            if (is_string($value) && preg_match('/^%env\((.*)\)%$/', $value, $matches)) {
-                $envVar = getenv($matches[1]);
-                $value = $envVar ?? null;
+                // Continue to the next item after recursion to avoid processing an array as a string.
+                continue;
+            } elseif (is_string($value)) {
+                $matches = [];
+                if (preg_match('/^%env\((.*)\)%$/', $value, $matches)) {
+                    $envVar = getenv($matches[1]);
+                    // Ensure we only assign string or null, not false from getenv().
+                    $value = is_string($envVar) ? $envVar : null;
+                }
             }
         }
     }

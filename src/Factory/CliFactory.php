@@ -22,8 +22,8 @@ class CliFactory
     {
         // TODO(@supa-chayajin): Handle CLI command from request
         $globals = [
-            'server' => $_SERVER ?? [],
-            'env' => $_ENV ?? [],
+            'server' => $_SERVER,
+            'env' => $_ENV,
         ];
 
         return new Cli(

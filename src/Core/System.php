@@ -6,8 +6,9 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
-use Waffle\Attribute\Configuration;
+use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\SecurityException;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
@@ -19,6 +20,9 @@ class System extends AbstractSystem
         $this->security = $security;
     }
 
+    /**
+     * @throws InvalidConfigurationException
+     */
     #[\Override]
     public function boot(KernelInterface $kernel): self
     {
@@ -32,17 +36,31 @@ class System extends AbstractSystem
                     KernelInterface::class,
                 ],
             );
+            /** @var Config $config */
+            $config = $kernel->config;
             $this->security->analyze(
-                object: $kernel->config,
+                object: $config,
                 expectations: [
                     Config::class,
                 ],
             );
-            $controllers = $kernel->config->get(key: 'waffle.paths.controllers');
+            /** @var Container $container */
+            $container = $kernel->container;
+            $this->security->analyze(
+                object: $container,
+                expectations: [
+                    Container::class,
+                    ContainerInterface::class,
+                ],
+            );
+            /** @var string $controllers */
+            $controllers = $config->getString(key: 'waffle.paths.controllers');
+            /** @var string $root */
+            $root = APP_ROOT;
             $this->registerRouter(router: new Router(
-                directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
+                directory: $root . DIRECTORY_SEPARATOR . $controllers,
                 system: $this,
-            )->boot(container: $kernel->container));
+            )->boot(container: $container));
         } catch (SecurityException $e) {
             $e->throw(view: new View(data: $e->serialize()));
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use ReflectionMethod;
+use ReflectionNamedType;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Enum\AppMode;
@@ -81,8 +82,9 @@ abstract class AbstractResponse implements ResponseInterface
             );
         }
 
+        /** @var object $controller */
         $controller = $this->container?->get(id: $className);
-        if (!is_object($controller) || !method_exists($controller, $methodName)) {
+        if (!method_exists($controller, $methodName)) {
             return null;
         }
 
@@ -100,11 +102,11 @@ abstract class AbstractResponse implements ResponseInterface
 
     /**
      * @param array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, string>,
-     *      path: string,
-     *      name: string
+     *       classname: class-string,
+     *       method: string,
+     *       arguments: array<string, mixed>,
+     *       path: string,
+     *       name: non-falsy-string
      *  } $route
      * @return array<int, mixed>
      * @throws RenderingException
@@ -116,7 +118,10 @@ abstract class AbstractResponse implements ResponseInterface
 
         foreach ($parameters as $parameter) {
             $name = $parameter->getName();
-            $type = $parameter->getType()?->getName() ?? 'string';
+            /** @var ReflectionNamedType $paramType */
+            $paramType = $parameter->getType();
+            /** @var string $type */
+            $type = $paramType?->getName() ?? 'string';
 
             $argValue = $this->getRouteArgument(
                 name: $name,
@@ -137,10 +142,16 @@ abstract class AbstractResponse implements ResponseInterface
     }
 
     /**
+     * @param string $name
+     * @param string $type
      * @param array{
-     *      path: string,
-     *      arguments: array<string, string>
+     *        classname: class-string,
+     *        method: string,
+     *        arguments: array<string, mixed>,
+     *        path: string,
+     *        name: non-falsy-string
      *  } $route
+     * @return string|int|null
      * @throws RenderingException
      */
     private function getRouteArgument(string $name, string $type, array $route): string|int|null
@@ -162,10 +173,15 @@ abstract class AbstractResponse implements ResponseInterface
     }
 
     /**
+     * @param string $name
      * @param array{
-     *      path: string,
-     *      arguments: array<string, string>
+     *         classname: class-string,
+     *         method: string,
+     *         arguments: array<string, mixed>,
+     *         path: string,
+     *         name: non-falsy-string
      *  } $route
+     * @return string|null
      */
     private function extractArgumentFromUri(string $name, array $route): null|string
     {
@@ -178,6 +194,7 @@ abstract class AbstractResponse implements ResponseInterface
         $urlSegments = $this->getRequestUri(uri: $serverUri);
 
         foreach ($pathSegments as $i => $pathSegment) {
+            $matches = [];
             if (preg_match('/^\{(.+)}$/', $pathSegment, $matches) && $matches[1] === $name) {
                 return $urlSegments[$i] ?? null;
             }

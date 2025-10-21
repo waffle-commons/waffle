@@ -6,6 +6,8 @@ namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
+use Waffle\Exception\Container\NotFoundException;
 use Waffle\Http\ParameterBag;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
@@ -43,8 +45,8 @@ abstract class AbstractCli implements CliInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      */
     abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
@@ -54,8 +56,8 @@ abstract class AbstractCli implements CliInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      * @return void
      */
@@ -64,8 +66,12 @@ abstract class AbstractCli implements CliInterface
     {
         $this->container = $container;
         $this->cli = $cli;
-        $this->server = new ParameterBag(parameters: $globals['server'] ?? []);
-        $this->env = new ParameterBag(parameters: $globals['env'] ?? []);
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        $this->server = new ParameterBag(parameters: $serverGlobals);
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $this->env = new ParameterBag(parameters: $envGlobals);
     }
 
     #[\Override]
@@ -98,15 +104,16 @@ abstract class AbstractCli implements CliInterface
         return $this->cli === AppMode::CLI;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     #[\Override]
-    public function getServer(): ParameterBag
+    public function bag(HttpBag $key): ParameterBag
     {
-        return $this->server;
-    }
-
-    #[\Override]
-    public function getEnv(): ParameterBag
-    {
-        return $this->env;
+        return match ($key) {
+            HttpBag::SERVER => $this->server,
+            HttpBag::ENV => $this->env,
+            default => throw new NotFoundException(),
+        };
     }
 }

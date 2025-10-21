@@ -9,6 +9,7 @@ use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Response;
+use Waffle\Enum\HttpBag;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
@@ -88,8 +89,8 @@ final class AbstractCliTest extends TestCase
         );
 
         // Then: The public properties should accurately reflect the superglobal values.
-        static::assertSame('vendor/bin/phpunit', $cli->getServer()->get(key: 'PHP_SELF'));
-        static::assertSame('test', $cli->getEnv()->get(key: 'APP_ENV'));
+        static::assertSame('vendor/bin/phpunit', $cli->bag(key: HttpBag::SERVER)->get(key: 'PHP_SELF'));
+        static::assertSame('test', $cli->bag(key: HttpBag::ENV)->get(key: 'APP_ENV'));
 
         // Cleanup
         unset($_SERVER['PHP_SELF'], $_ENV['APP_ENV']);

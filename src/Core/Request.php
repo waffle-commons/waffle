@@ -27,10 +27,34 @@ class Request extends AbstractRequest
      */
     public function __construct(ContainerInterface $container, AppMode $cli, array $globals = [])
     {
+        /** @var array<string, mixed> $getGlobals */
+        $getGlobals = $globals['get'] ?? [];
+        /** @var array<string, mixed> $postGlobals */
+        $postGlobals = $globals['post'] ?? [];
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        /** @var array<string, mixed> $filesGlobals */
+        $filesGlobals = $globals['files'] ?? [];
+        /** @var array<string, mixed> $cookieGlobals */
+        $cookieGlobals = $globals['cookie'] ?? [];
+        /** @var array<string, mixed> $sessionGlobals */
+        $sessionGlobals = $globals['session'] ?? [];
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $newGlobals = [
+            'server' => $serverGlobals,
+            'get' => $getGlobals,
+            'post' => $postGlobals,
+            'files' => $filesGlobals,
+            'cookie' => $cookieGlobals,
+            'session' => $sessionGlobals,
+            'request' => $getGlobals,
+            'env' => $envGlobals,
+        ];
         $this->configure(
             container: $container,
             cli: $cli,
-            globals: $globals,
+            globals: $newGlobals,
         );
     }
 }

@@ -17,7 +17,7 @@ class RouteParser
 
     /**
      * @param class-string $controllerClass
-     * @return array{}|non-empty-list<array{
+     * @return array<array-key, array{
      *      classname: class-string,
      *      method: string,
      *      arguments: array<string, mixed>,
@@ -31,6 +31,7 @@ class RouteParser
             return [];
         }
 
+        /** @var object $controller */
         $controller = $container->get(id: $controllerClass);
         $classRoute = $this->newAttributeInstance(
             className: $controller,
@@ -54,7 +55,7 @@ class RouteParser
 
     /**
      * @param class-string $file
-     * @param array{}|non-empty-list<array{
+     * @param array<array-key, array{
      *      classname: class-string,
      *      method: string,
      *      arguments: array<string, mixed>,
@@ -89,14 +90,16 @@ class RouteParser
     }
 
     /**
-     * @return array<string, string|null>
+     * @return array<string, mixed|string|null>
      */
     private function extractParameters(ReflectionMethod $method): array
     {
         $params = [];
         foreach ($method->getParameters() as $param) {
             if ($param->getType() instanceof ReflectionNamedType) {
-                $params[$param->getName()] = $param->getType()?->getName();
+                /** @var ReflectionNamedType $paramType */
+                $paramType = $param->getType();
+                $params[$param->getName()] = $paramType?->getName();
             }
         }
         return $params;
@@ -104,7 +107,7 @@ class RouteParser
 
     /**
      * @param string $path
-     * @param array{}|non-empty-list<array{
+     * @param array<array-key, array{
      *      classname: class-string,
      *      method: string,
      *      arguments: array<string, mixed>,

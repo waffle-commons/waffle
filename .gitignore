@@ -6,6 +6,9 @@
 /.vscode
 /.idx
 
+# Framework dev specific
+/.env.local
+
 # Vendors
 /vendor
 

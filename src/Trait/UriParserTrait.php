@@ -19,6 +19,7 @@ trait UriParserTrait
      */
     protected function getRequestUri(string $uri): array
     {
+        /** @var string $uri */
         $uri = strtok($uri, '?');
         return explode('/', trim($uri, '/'));
     }

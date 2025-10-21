@@ -1,3 +1,38 @@
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "cyclomatic-complexity"
+start_line = 32
+end_line = 235
+
+[[entries."src/Core/Config.php".issues]]
+code = "cyclomatic-complexity"
+start_line = 9
+end_line = 180
+
+[[entries."src/Core/Config.php".issues]]
+code = "no-boolean-flag-parameter"
+start_line = 125
+end_line = 125
+
+[[entries."src/Core/Config.php".issues]]
+code = "no-else-clause"
+start_line = 170
+end_line = 177
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "cyclomatic-complexity"
+start_line = 12
+end_line = 127
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 81
+end_line = 88
+
+[[entries."src/Core/YamlParser.php".issues]]
+code = "no-else-clause"
+start_line = 102
+end_line = 109
+
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
@@ -16,7 +51,7 @@ end_line = 126
 [[entries."tests/src/Core/ResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
-end_line = 258
+end_line = 282
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"

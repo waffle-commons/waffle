@@ -36,7 +36,10 @@ class ParameterBag
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        return $this->parameters[$key] ?? $default;
+        /** @var T|string|array<mixed> $parameter */
+        $parameter = $this->parameters[$key];
+
+        return $parameter ?? $default;
     }
 
     /**

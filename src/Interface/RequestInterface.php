@@ -39,14 +39,14 @@ interface RequestInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       get: T|string|array<mixed>,
-     *       post: T|string|array<mixed>,
-     *       files: T|string|array<mixed>,
-     *       cookie: T|string|array<mixed>,
-     *       session: T|string|array<mixed>,
-     *       request: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       get: T|string|array<string, mixed>,
+     *       post: T|string|array<string, mixed>,
+     *       files: T|string|array<string, mixed>,
+     *       cookie: T|string|array<string, mixed>,
+     *       session: T|string|array<string, mixed>,
+     *       request: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      * @return void
      */

@@ -15,6 +15,9 @@ use Waffle\Core\System;
 use Waffle\Core\View;
 use Waffle\Enum\AppMode;
 use Waffle\Enum\Failsafe;
+use Waffle\Exception\Container\ContainerException;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\RenderingException;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Factory\CliFactory;
@@ -59,6 +62,14 @@ abstract class AbstractKernel implements KernelInterface
     {
         try {
             $this->boot()->configure();
+
+            if ($this->container === null) {
+                throw new ContainerException();
+            }
+
+            if ($this->system === null) {
+                throw new NotFoundException();
+            }
 
             $handler = $this->isCli()
                 ? new CliFactory()->createFromGlobals(container: $this->container)
@@ -107,18 +118,28 @@ abstract class AbstractKernel implements KernelInterface
             }
         }
 
-        $this->environment = $_ENV['APP_ENV'] ?? 'prod';
+        // Fallback on 'prod' environment if not set.
+        $appEnv = $_ENV['APP_ENV'] ?? 'prod';
+        if (!isset($_ENV[Constant::APP_ENV])) {
+            $_ENV[Constant::APP_ENV] = $appEnv;
+        }
+        $this->environment = $appEnv;
 
         return $this;
     }
 
+    /**
+     * @throws InvalidConfigurationException
+     */
     #[\Override]
     public function configure(): self
     {
+        /** @var string $root */
+        $root = APP_ROOT;
         if ($this->config === null) {
-            $root = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
+            $rootConfig = $root . DIRECTORY_SEPARATOR . APP_CONFIG;
             $this->config = new Config(
-                configDir: $root,
+                configDir: $rootConfig,
                 environment: $this->environment,
             );
         }
@@ -128,18 +149,18 @@ abstract class AbstractKernel implements KernelInterface
         $this->container = new Container(security: $security);
 
         $containerFactory = new ContainerFactory();
-        $services = $this->config->get(key: 'waffle.paths.services');
+        $services = $this->config->getString(key: 'waffle.paths.services');
         if (is_string($services)) {
             $containerFactory->create(
                 container: $this->container,
-                directory: APP_ROOT . DIRECTORY_SEPARATOR . $services,
+                directory: $root . DIRECTORY_SEPARATOR . $services,
             );
         }
-        $controllers = $this->config->get(key: 'waffle.paths.controllers');
+        $controllers = $this->config->getString(key: 'waffle.paths.controllers');
         if (is_string($controllers)) {
             $containerFactory->create(
                 container: $this->container,
-                directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
+                directory: $root . DIRECTORY_SEPARATOR . $controllers,
             );
         }
 
@@ -200,9 +221,11 @@ abstract class AbstractKernel implements KernelInterface
 
     private function createFailsafeContainer(): ContainerInterface
     {
+        /** @var string $root */
+        $root = APP_ROOT;
         // Create a failsafe container if the main one doesn't exist yet.
         $config = new Config(
-            configDir: APP_ROOT . '/app',
+            configDir: $root . '/app',
             environment: 'prod',
             failsafe: Failsafe::ENABLED,
         );

@@ -47,7 +47,11 @@ abstract class AbstractTestCase extends BaseTestCase
             return;
         }
 
-        $items = array_diff(scandir($dir), ['.', '..']);
+        $scanDir = scandir($dir);
+        if (!$scanDir) {
+            return;
+        }
+        $items = array_diff($scanDir, ['.', '..']);
 
         foreach ($items as $item) {
             $path = $dir . DIRECTORY_SEPARATOR . $item;

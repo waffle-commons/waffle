@@ -33,7 +33,7 @@ final class Router
     }
 
     /**
-     * @var array{}|non-empty-list<array{
+     * @var array<array-key, array{
      *      classname: class-string,
      *      method: string,
      *      arguments: array<string, mixed>,
@@ -64,7 +64,7 @@ final class Router
         $cachedRoutes = $this->cache->load();
         if (null !== $cachedRoutes) {
             /**
-             * @var array{}|non-empty-list<array{
+             * @var array<array-key, array{
              *      classname: class-string,
              *      method: string,
              *      arguments: array<string, mixed>,
@@ -126,6 +126,7 @@ final class Router
 
         // Security check is done once a match is confirmed.
         if ($container->has(id: $route[Constant::CLASSNAME])) {
+            /** @var object $controllerInstance */
             $controllerInstance = $container->get(id: $route[Constant::CLASSNAME]);
             $this->system->security->analyze($controllerInstance);
         }
@@ -134,7 +135,7 @@ final class Router
     }
 
     /**
-     * @return array{}|non-empty-list<array{
+     * @return array<array-key, array{
      *       classname: class-string,
      *       method: string,
      *       arguments: array<string, mixed>,

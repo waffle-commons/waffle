@@ -21,10 +21,18 @@ class Cli extends AbstractCli
      */
     public function __construct(ContainerInterface $container, AppMode $cli = AppMode::CLI, array $globals = [])
     {
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $newGlobals = [
+            'server' => $serverGlobals,
+            'env' => $envGlobals,
+        ];
         $this->configure(
             container: $container,
             cli: $cli,
-            globals: $globals,
+            globals: $newGlobals,
         );
     }
 }

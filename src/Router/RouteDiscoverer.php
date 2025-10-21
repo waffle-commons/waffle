@@ -22,7 +22,7 @@ class RouteDiscoverer
     }
 
     /**
-     * @return array{}|non-empty-list<array{
+     * @return array<array-key, array{
      *      classname: class-string,
      *      method: string,
      *      arguments: array<string, mixed>,

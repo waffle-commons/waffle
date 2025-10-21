@@ -46,41 +46,50 @@ cd waffle
 git checkout -b feature/my-new-feature
 # For a bug fix
 git checkout -b bugfix/fix-for-that-bug
+# Create a local environment file
+touch .env.local
+```
+
+5. **Fill** your `.env.local` file:
+```dotenv
+# App
+APP_ENV=dev
+APP_DEBUG=true
 ```
 
 
-5. **Install dependencies** using Composer:
+6. **Install dependencies** using Composer:
 
 ```shell
 composer install
 ```
 
 
-6. **Make your changes** to the code.
+7. **Make your changes** to the code.
 
-7. **Run static analysis** to ensure your code meets our quality standards:
+8. **Run static analysis** to ensure your code meets our quality standards:
 
 ```shell
 composer mago
 ```
 
 
-8. **Run the test suite** to ensure everything is still working correctly:
+9.**Run the test suite** to ensure everything is still working correctly:
 
 ```shell
 composer tests
 ```
 
 
-9. **Commit your changes** with a clear and concise commit message following conventional commit standards.
+10. **Commit your changes** with a clear and concise commit message following conventional commit standards.
 
-10. **Push your branch** to your fork:
+11. **Push your branch** to your fork:
 
 ```shell
 git push origin feature/my-new-feature
 ```
 
 
-11. **Open a Pull Request** against the `main` branch of the `waffle-commons/waffle` repository. Please fill out the PR template to help us understand your changes.
+12. **Open a Pull Request** against the `main` branch of the `waffle-commons/waffle` repository. Please fill out the PR template to help us understand your changes.
 
 Thank you again for your contribution!

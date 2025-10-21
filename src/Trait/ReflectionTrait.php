@@ -15,6 +15,7 @@ trait ReflectionTrait
 {
     public function className(string $path): string
     {
+        $matches = [];
         $content = file_get_contents($path);
         if (!$content) {
             return Constant::EMPTY_STRING; // Return empty string on file read error.

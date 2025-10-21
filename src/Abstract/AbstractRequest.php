@@ -53,14 +53,14 @@ abstract class AbstractRequest implements RequestInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       get: T|string|array<mixed>,
-     *       post: T|string|array<mixed>,
-     *       files: T|string|array<mixed>,
-     *       cookie: T|string|array<mixed>,
-     *       session: T|string|array<mixed>,
-     *       request: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       get: T|string|array<string, mixed>,
+     *       post: T|string|array<string, mixed>,
+     *       files: T|string|array<string, mixed>,
+     *       cookie: T|string|array<string, mixed>,
+     *       session: T|string|array<string, mixed>,
+     *       request: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      */
     abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
@@ -70,14 +70,14 @@ abstract class AbstractRequest implements RequestInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       get: T|string|array<mixed>,
-     *       post: T|string|array<mixed>,
-     *       files: T|string|array<mixed>,
-     *       cookie: T|string|array<mixed>,
-     *       session: T|string|array<mixed>,
-     *       request: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       get: T|string|array<string, mixed>,
+     *       post: T|string|array<string, mixed>,
+     *       files: T|string|array<string, mixed>,
+     *       cookie: T|string|array<string, mixed>,
+     *       session: T|string|array<string, mixed>,
+     *       request: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      * @return void
      */
@@ -86,13 +86,27 @@ abstract class AbstractRequest implements RequestInterface
     {
         $this->container = $container;
         $this->cli = $cli;
-        $this->query = new ParameterBag(parameters: $globals['get'] ?? []);
-        $this->request = new ParameterBag(parameters: $globals['post'] ?? []);
-        $this->server = new ParameterBag(parameters: $globals['server'] ?? []);
-        $this->files = new ParameterBag(parameters: $globals['files'] ?? []);
-        $this->cookies = new ParameterBag(parameters: $globals['cookie'] ?? []);
-        $this->session = new ParameterBag(parameters: $globals['session'] ?? []);
-        $this->env = new ParameterBag(parameters: $globals['env'] ?? []);
+        /** @var array<string, mixed> $getGlobals */
+        $getGlobals = $globals['get'] ?? [];
+        $this->query = new ParameterBag(parameters: $getGlobals);
+        /** @var array<string, mixed> $postGlobals */
+        $postGlobals = $globals['post'] ?? [];
+        $this->request = new ParameterBag(parameters: $postGlobals);
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        $this->server = new ParameterBag(parameters: $serverGlobals);
+        /** @var array<string, mixed> $filesGlobals */
+        $filesGlobals = $globals['files'] ?? [];
+        $this->files = new ParameterBag(parameters: $filesGlobals);
+        /** @var array<string, mixed> $cookieGlobals */
+        $cookieGlobals = $globals['cookie'] ?? [];
+        $this->cookies = new ParameterBag(parameters: $cookieGlobals);
+        /** @var array<string, mixed> $sessionGlobals */
+        $sessionGlobals = $globals['session'] ?? [];
+        $this->session = new ParameterBag(parameters: $sessionGlobals);
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $this->env = new ParameterBag(parameters: $envGlobals);
     }
 
     /**

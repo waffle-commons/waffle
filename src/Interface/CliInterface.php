@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Interface;
 
 use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
 use Waffle\Http\ParameterBag;
 
 interface CliInterface
@@ -38,8 +39,8 @@ interface CliInterface
      * @param ContainerInterface $container
      * @param AppMode $cli
      * @param array{
-     *       server: T|string|array<mixed>,
-     *       env: T|string|array<mixed>
+     *       server: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
      *   } $globals
      * @return void
      */
@@ -61,7 +62,5 @@ interface CliInterface
 
     public function isCli(): bool;
 
-    public function getServer(): ParameterBag;
-
-    public function getEnv(): ParameterBag;
+    public function bag(HttpBag $key): ParameterBag;
 }

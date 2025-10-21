@@ -48,7 +48,20 @@ final class ResponseTest extends TestCase
     public function testRenderFromRequest(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev'; // Explicitly set the environment to 'dev'
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -56,8 +69,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/users',
             Constant::NAME => 'user_list',
         ]);
-
-        $_ENV[Constant::APP_ENV] = 'dev'; // Ensure output is echoed
 
         // 2. Action
         ob_start();
@@ -184,7 +195,21 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 8);
+        $_ENV[Constant::APP_ENV] = 'dev'; // Explicitly set the environment to 'dev'
+        $_SERVER['REQUEST_URI'] = '/service-test'; // Explicitly set the request uri
+        $request = $this->createRealRequest(
+            level: 8,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -192,7 +217,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/service-test',
             Constant::NAME => 'service_test',
         ]);
-        $_ENV[Constant::APP_ENV] = 'dev';
 
         // 2. Action
         ob_start();

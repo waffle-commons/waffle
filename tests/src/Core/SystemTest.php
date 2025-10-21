@@ -27,7 +27,7 @@ final class SystemTest extends TestCase
 
         // We expect the 'analyze' method to be called twice during the boot process:
         // once for the Kernel and once for the Configuration object.
-        $securityMock->expects($this->exactly(2))->method('analyze');
+        $securityMock->expects($this->exactly(3))->method('analyze');
 
         // Create a dummy Configuration object
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
