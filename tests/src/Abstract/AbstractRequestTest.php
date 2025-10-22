@@ -13,7 +13,7 @@ use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase
@@ -81,7 +81,7 @@ final class AbstractRequestTest extends TestCase
          *   }|null $routeData
          */
         $routeData = [
-            'classname' => DummyController::class,
+            'classname' => TempController::class,
             'method' => 'list',
             'arguments' => [],
             'path' => '/home',

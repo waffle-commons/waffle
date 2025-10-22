@@ -11,7 +11,7 @@ class TraitParser
     use ParserTrait;
 
     // Expose the trait method publicly for testing
-    public function testParseValue(string $value): mixed
+    public function callParseValue(string $value): mixed
     {
         return $this->parseValue($value);
     }

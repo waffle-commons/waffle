@@ -6,13 +6,16 @@ namespace WaffleTests\Router;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Waffle\Core\Config;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Enum\AppMode;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 /**
  * This test class provides comprehensive coverage for the Waffle\Router\Router class.
@@ -23,10 +26,10 @@ use WaffleTests\Router\Dummy\DummyController;
 final class RouterTest extends TestCase
 {
     private Router $router;
-    private string $dummyControllerDir;
 
     private array $serverBackup;
     private System $system;
+    private ContainerInterface $container;
 
     /**
      * This setup method is executed before each test. It prepares a clean and consistent
@@ -40,20 +43,24 @@ final class RouterTest extends TestCase
 
         // Backup the global state to ensure test isolation.
         $this->serverBackup = $_SERVER;
-        $this->dummyControllerDir = __DIR__ . '/Dummy';
 
-        // 1. Mock the deepest dependency: Security.
-        // The `analyze` method has a `void` return type, so we don't use `willReturn`.
-        $securityMock = $this->createMock(Security::class);
-        $securityMock->method('analyze');
+        // 1. Create a specific Config for this test pointing ONLY to Dummy controllers
+        $testConfig = $this->createAndGetConfig(securityLevel: 2);
 
-        // 2. Create a REAL System instance, injecting the security mock.
-        // This ensures the System object is correctly constructed and its properties are initialized.
-        $this->system = new System($securityMock);
+        // 2. Create Security and Container using THIS specific config
+        $security = new Security($testConfig);
+        $this->container = new Container($security);
+        // Pre-populate container if needed
+        $this->container->set(Config::class, $testConfig);
+        $this->container->set(Security::class, $security);
+        // IMPORTANT: Manually register TempController if auto-discovery might fail now
+        $this->container->set(TempController::class, TempController::class);
+
+        $this->system = new System($security);
 
         // 3. Instantiate the Router with its dependencies.
         $this->router = new Router(
-            directory: $this->dummyControllerDir,
+            directory: 'tests/src/Helper/Controller',
             system: $this->system,
         );
     }
@@ -76,6 +83,7 @@ final class RouterTest extends TestCase
     public function testRegisterRoutesDiscoversAndBuildsRoutes(): void
     {
         // Action: Execute the boot and registration process.
+        $this->createTestConfigFile(securityLevel: 2);
         $container = $this->createRealContainer(level: 2);
         $this->router->boot(container: $container);
 
@@ -87,7 +95,7 @@ final class RouterTest extends TestCase
         foreach ($this->router->routes as $route) {
             if ('user_users_list' === $route['name']) {
                 $foundRoute = true;
-                static::assertSame(DummyController::class, $route['classname']);
+                static::assertSame(TempController::class, $route['classname']);
                 static::assertSame('/users', $route['path']);
                 static::assertSame('list', $route['method']);
                 break;

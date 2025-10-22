@@ -11,12 +11,12 @@ class TraitUri
     use UriParserTrait;
 
     // Expose protected methods publicly for testing
-    public function testGetPathUri(string $path): array
+    public function callGetPathUri(string $path): array
     {
         return $this->getPathUri($path);
     }
 
-    public function testGetRequestUri(string $uri): array
+    public function callGetRequestUri(string $uri): array
     {
         return $this->getRequestUri($uri);
     }

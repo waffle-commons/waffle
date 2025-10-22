@@ -77,11 +77,11 @@ class RouteParser
 
             // --- Improved Path Concatenation ---
             $basePath = rtrim($classRoute->path, '/'); // Examples: '' (for '/'), '/admin'
-            $methodPath = ltrim($route->path, '/');   // Examples: '', 'users', 'users/{id}'
+            $methodPath = ltrim($route->path, '/'); // Examples: '', 'users', 'users/{id}'
 
             // If the method path is empty, use the base path directly. If base was '/', ensure path is '/'.
             if ($methodPath === '') {
-                $path = ($basePath === '') ? '/' : $basePath;
+                $path = $basePath === '' ? '/' : $basePath;
             }
             // If the base path is empty (was '/'), just use the method path prefixed with '/'
             elseif ($basePath === '') {
@@ -92,7 +92,6 @@ class RouteParser
                 $path = $basePath . '/' . $methodPath;
             }
             // --- End Improved Path Concatenation ---
-
 
             if (!$this->isRouteRegistered($path, $routes)) {
                 return [

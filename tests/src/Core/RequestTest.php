@@ -14,7 +14,7 @@ use Waffle\Core\Response;
 use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase
@@ -51,7 +51,7 @@ final class RequestTest extends TestCase
          *   }|null $routeData
          */
         $routeData = [
-            'classname' => DummyController::class,
+            'classname' => TempController::class,
             'method' => 'test_route',
             'arguments' => ['123'],
             'path' => '/test',
@@ -85,7 +85,7 @@ final class RequestTest extends TestCase
          *   }|null $routeData
          */
         $routeData = [
-            'classname' => DummyController::class,
+            'classname' => TempController::class,
             'method' => 'list',
             'arguments' => ['123'],
             'path' => '/users',

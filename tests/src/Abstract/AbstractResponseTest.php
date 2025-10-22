@@ -11,7 +11,7 @@ use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use WaffleTests\Abstract\Helper\ConcreteTestResponse;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(AbstractResponse::class)]
 final class AbstractResponseTest extends TestCase
@@ -39,11 +39,11 @@ final class AbstractResponseTest extends TestCase
             ],
         );
         $container = $requestHandler->container;
-        $container?->set(DummyController::class, DummyController::class);
+        $container?->set(TempController::class, TempController::class);
 
         // 2. Configure the object state using its public methods.
         $requestHandler->setCurrentRoute(route: [
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'list',
             Constant::ARGUMENTS => [],
             Constant::PATH => '/users',
@@ -91,9 +91,9 @@ final class AbstractResponseTest extends TestCase
             ],
         );
         $container = $requestHandler->container;
-        $container?->set(DummyController::class, DummyController::class);
+        $container?->set(TempController::class, TempController::class);
         $requestHandler->setCurrentRoute(route: [
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'show',
             Constant::ARGUMENTS => ['id' => 'int'],
             Constant::PATH => '/users/{id}',

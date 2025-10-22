@@ -37,14 +37,14 @@ trait UriParserTrait
 
         // If the result is an empty array (e.g., path was '///'), return ['']
         // This covers cases where the path contained only slashes but wasn't exactly '/'
-        if (empty($segments) && preg_match('#^/+$#', $path)) {
+        $issetSegArray = isset($segments);
+        $emptySegArray = $segments === [] || $segments === [''];
+        if ($issetSegArray && $emptySegArray && preg_match('#^/+$#', $path)) {
             return [''];
         }
 
         // Otherwise, return the segments found, or an empty array if none were found (shouldn't happen with above checks)
         return $segments;
-
-
     }
 
     /**
@@ -53,17 +53,16 @@ trait UriParserTrait
      */
     protected function getRequestUri(string $uri): array
     {
-        // Extract path before query string
+        // Handle query string only case first
+        if (str_starts_with($uri, '?')) {
+            return ['']; // No path, effectively root
+        }
+
+        // Remove query string if present
         $path = strtok($uri, '?');
 
-        // Handle cases where strtok returns false (e.g., empty string "")
-        // or if the path part itself is empty (e.g., URI was "?query")
+        // If strtok returns false (e.g., for an empty input string), treat as root.
         if ($path === false || $path === '') {
-            // Check if the original URI was just a query string or empty
-            if ($uri === '' || str_starts_with($uri, '?')) {
-                return ['']; // Represents root/empty path
-            }
-            // If strtok resulted in empty for other reasons (unlikely), treat as root
             return [''];
         }
 
@@ -78,7 +77,9 @@ trait UriParserTrait
             return ['']; // Fallback
         }
 
-        if (empty($segments) && preg_match('#^/+$#', $path)) {
+        $issetSegArray = isset($segments);
+        $emptySegArray = $segments === [] || $segments === [''];
+        if ($issetSegArray && $emptySegArray && preg_match('#^/+$#', $path)) {
             return [''];
         }
 

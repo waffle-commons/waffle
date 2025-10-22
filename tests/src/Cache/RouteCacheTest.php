@@ -16,6 +16,7 @@ final class RouteCacheTest extends AbstractTestCase
     private string $cacheFilePath;
     private mixed $originalAppEnv;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,6 +37,7 @@ final class RouteCacheTest extends AbstractTestCase
         $this->originalAppEnv = getenv(Constant::APP_ENV);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up cache file after each test
@@ -62,7 +64,7 @@ final class RouteCacheTest extends AbstractTestCase
         $result = $this->routeCache->load();
 
         // Assert
-        $this->assertNull($result);
+        static::assertNull($result);
     }
 
     public function testLoadReturnsNullWhenInProductionButCacheFileDoesNotExist(): void
@@ -78,7 +80,7 @@ final class RouteCacheTest extends AbstractTestCase
         $result = $this->routeCache->load();
 
         // Assert
-        $this->assertNull($result);
+        static::assertNull($result);
     }
 
     public function testLoadReturnsRoutesWhenInProductionAndCacheExists(): void
@@ -96,7 +98,7 @@ final class RouteCacheTest extends AbstractTestCase
         $result = $this->routeCache->load();
 
         // Assert
-        $this->assertSame($expectedRoutes, $result);
+        static::assertSame($expectedRoutes, $result);
     }
 
     public function testSaveDoesNothingWhenNotInProduction(): void
@@ -109,7 +111,7 @@ final class RouteCacheTest extends AbstractTestCase
         $this->routeCache->save($routesToSave);
 
         // Assert
-        $this->assertFileDoesNotExist($this->cacheFilePath);
+        static::assertFileDoesNotExist($this->cacheFilePath);
     }
 
     public function testSaveWritesCacheFileWhenInProduction(): void
@@ -124,10 +126,10 @@ final class RouteCacheTest extends AbstractTestCase
         $this->routeCache->save($routesToSave);
 
         // Assert
-        $this->assertFileExists($this->cacheFilePath);
+        static::assertFileExists($this->cacheFilePath);
         /** @var array<array<string, string>> $loadedRoutes */
         $loadedRoutes = require $this->cacheFilePath;
-        $this->assertSame($routesToSave, $loadedRoutes);
+        static::assertSame($routesToSave, $loadedRoutes);
     }
 
     public function testIsProductionHelper(): void
@@ -138,17 +140,19 @@ final class RouteCacheTest extends AbstractTestCase
         // $method->setAccessible(true); // Not needed PHP 8.1+
 
         putenv(Constant::APP_ENV . '=' . Constant::ENV_PROD);
-        $this->assertTrue($method->invoke($this->routeCache), 'isProduction should be true for prod env');
+        static::assertTrue($method->invoke($this->routeCache), 'isProduction should be true for prod env');
 
         putenv(Constant::APP_ENV . '=' . Constant::ENV_DEV);
-        $this->assertFalse($method->invoke($this->routeCache), 'isProduction should be false for dev env');
+        static::assertFalse($method->invoke($this->routeCache), 'isProduction should be false for dev env');
 
         putenv(Constant::APP_ENV . '=' . Constant::ENV_TEST);
-        $this->assertFalse($method->invoke($this->routeCache), 'isProduction should be false for test env');
+        static::assertFalse($method->invoke($this->routeCache), 'isProduction should be false for test env');
 
         // Test default case (should be prod if not set)
         putenv(Constant::APP_ENV); // Unset
-        $this->assertTrue($method->invoke($this->routeCache), 'isProduction should default to true if env var is not set');
-
+        static::assertTrue(
+            $method->invoke($this->routeCache),
+            'isProduction should default to true if env var is not set',
+        );
     }
 }

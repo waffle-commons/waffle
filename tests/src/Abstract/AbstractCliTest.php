@@ -12,7 +12,7 @@ use Waffle\Core\Response;
 use Waffle\Enum\HttpBag;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase
@@ -52,7 +52,7 @@ final class AbstractCliTest extends TestCase
          *   }|null $routeData
          */
         $routeData = [
-            'classname' => DummyController::class,
+            'classname' => TempController::class,
             'method' => 'show',
             'arguments' => ['123'],
             'path' => 'app:command',
@@ -76,24 +76,33 @@ final class AbstractCliTest extends TestCase
     public function testSuperglobalPropertiesAreCorrectlyExposed(): void
     {
         // Given: We simulate a specific server environment for the CLI.
-        $_SERVER['PHP_SELF'] = 'vendor/bin/phpunit';
-        $_ENV['APP_ENV'] = 'test';
+        $serverGlobals = ['PHP_SELF' => 'vendor/bin/phpunit'];
+        $envGlobals = ['APP_ENV' => 'test'];
 
         // When: A new CLI object is created and configured.
         $cli = new ConcreteTestCli(
             container: $this->createMockContainer(),
             globals: [
-                'server' => $_SERVER,
-                'env' => $_ENV,
+                'server' => $serverGlobals,
+                'env' => $envGlobals,
             ],
         );
 
         // Then: The public properties should accurately reflect the superglobal values.
         static::assertSame('vendor/bin/phpunit', $cli->bag(key: HttpBag::SERVER)->get(key: 'PHP_SELF'));
         static::assertSame('test', $cli->bag(key: HttpBag::ENV)->get(key: 'APP_ENV'));
+    }
 
-        // Cleanup
-        unset($_SERVER['PHP_SELF'], $_ENV['APP_ENV']);
+    /**
+     * Tests the isCli() method.
+     */
+    public function testIsCliReturnsTrue(): void
+    {
+        // Given: A CLI object (implicitly in CLI mode by using ConcreteTestCli helper).
+        $cli = $this->createRealCli(); // Uses the HttpFactoryTrait helper
+
+        // Then: isCli() should return true.
+        static::assertTrue($cli->isCli());
     }
 
     /**

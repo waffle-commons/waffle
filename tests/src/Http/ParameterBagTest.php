@@ -20,7 +20,7 @@ final class ParameterBagTest extends AbstractTestCase
         array $initialData,
         string $_keyToGet,
         mixed $_expectedValue,
-        bool $_expectedResult
+        bool $_expectedResult,
     ): void {
         // Arrange
         $bag = new ParameterBag($initialData);
@@ -29,7 +29,7 @@ final class ParameterBagTest extends AbstractTestCase
         $all = $bag->all();
 
         // Assert
-        $this->assertSame($initialData, $all);
+        static::assertSame($initialData, $all);
     }
 
     /**
@@ -43,7 +43,7 @@ final class ParameterBagTest extends AbstractTestCase
         array $initialData,
         string $keyToGet,
         mixed $expectedValue,
-        bool $_expectedResult
+        bool $_expectedResult,
     ): void {
         // Arrange
         $bag = new ParameterBag($initialData);
@@ -52,7 +52,7 @@ final class ParameterBagTest extends AbstractTestCase
         $value = $bag->get($keyToGet);
 
         // Assert
-        $this->assertSame($expectedValue, $value);
+        static::assertSame($expectedValue, $value);
     }
 
     /**
@@ -63,7 +63,7 @@ final class ParameterBagTest extends AbstractTestCase
         array $initialData,
         string $_keyToGet,
         mixed $_expectedValue,
-        bool $_expectedResult
+        bool $_expectedResult,
     ): void {
         // Arrange
         $bag = new ParameterBag($initialData);
@@ -73,7 +73,7 @@ final class ParameterBagTest extends AbstractTestCase
         $value = $bag->get('non_existent_key', $defaultValue);
 
         // Assert
-        $this->assertSame($defaultValue, $value);
+        static::assertSame($defaultValue, $value);
     }
 
     /**
@@ -84,7 +84,7 @@ final class ParameterBagTest extends AbstractTestCase
         array $initialData,
         string $_keyToGet,
         mixed $_expectedValue,
-        bool $_expectedResult
+        bool $_expectedResult,
     ): void {
         // Arrange
         $bag = new ParameterBag($initialData);
@@ -93,7 +93,7 @@ final class ParameterBagTest extends AbstractTestCase
         $value = $bag->get('another_non_existent_key');
 
         // Assert
-        $this->assertNull($value);
+        static::assertNull($value);
     }
 
     /**
@@ -107,7 +107,7 @@ final class ParameterBagTest extends AbstractTestCase
         array $initialData,
         string $keyToCheck,
         mixed $_expectedValue,
-        bool $expectedResult
+        bool $expectedResult,
     ): void {
         // Arrange
         $bag = new ParameterBag($initialData);
@@ -117,8 +117,8 @@ final class ParameterBagTest extends AbstractTestCase
         $hasNonExistent = $bag->has('key_that_does_not_exist');
 
         // Assert
-        $this->assertSame($expectedResult, $hasKey);
-        $this->assertFalse($hasNonExistent);
+        static::assertSame($expectedResult, $hasKey);
+        static::assertFalse($hasNonExistent);
     }
 
     /**
@@ -132,25 +132,25 @@ final class ParameterBagTest extends AbstractTestCase
                 ['name' => 'Waffle', 'version' => 1.0, 'active' => true],
                 'name', // keyToGet / keyToCheck
                 'Waffle', // expectedValue
-                true // expectedResult for has()
+                true, // expectedResult for has()
             ],
             'Empty Data' => [
                 [],
                 'any_key', // keyToGet / keyToCheck (will use default or null)
                 null, // expectedValue (will use default or null)
-                false // expectedResult for has()
+                false, // expectedResult for has()
             ],
             'Numeric Key' => [ // Although less common for HTTP params, test it
                 ['key1' => 'value1'],
                 'key1', // keyToGet / keyToCheck
                 'value1', // expectedValue
-                true // expectedResult for has()
+                true, // expectedResult for has()
             ],
             'Null Value' => [
                 ['nullable_key' => null],
                 'nullable_key', // keyToGet / keyToCheck
                 null, // expectedValue
-                true // expectedResult for has() - key exists even if value is null
+                true, // expectedResult for has() - key exists even if value is null
             ],
         ];
     }

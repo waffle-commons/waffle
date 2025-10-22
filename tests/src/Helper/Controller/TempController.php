@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WaffleTests\Helper;
+namespace WaffleTests\Helper\Controller;
 
 use Exception;
 use Waffle\Attribute\Route;

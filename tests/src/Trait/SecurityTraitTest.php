@@ -11,7 +11,7 @@ use stdClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Helper\NonReadOnlyService;
+use WaffleTests\Helper\Service\NonReadOnlyService;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
 use WaffleTests\Trait\Helper\UninitializedPropertyClass;
