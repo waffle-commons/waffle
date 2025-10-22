@@ -18,12 +18,12 @@ class RouteParser
     /**
      * @param class-string $controllerClass
      * @return array<array-key, array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, mixed>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }>
+     * classname: class-string,
+     * method: string,
+     * arguments: array<string, mixed>,
+     * path: string,
+     * name: non-falsy-string
+     * }>
      */
     public function parse(ContainerInterface $container, string $controllerClass): array
     {
@@ -56,32 +56,50 @@ class RouteParser
     /**
      * @param class-string $file
      * @param array<array-key, array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, mixed>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }> $routes
+     * classname: class-string,
+     * method: string,
+     * arguments: array<string, mixed>,
+     * path: string,
+     * name: non-falsy-string
+     * }> $routes
      * @return array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, mixed>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }|null
+     * classname: class-string,
+     * method: string,
+     * arguments: array<string, mixed>,
+     * path: string,
+     * name: non-falsy-string
+     * }|null
      */
     private function createRoute(string $file, Route $classRoute, ReflectionMethod $method, array $routes): null|array
     {
         foreach ($method->getAttributes(Route::class) as $attribute) {
             $route = $attribute->newInstance();
-            $path = $classRoute->path . $route->path;
+
+            // --- Improved Path Concatenation ---
+            $basePath = rtrim($classRoute->path, '/'); // Examples: '' (for '/'), '/admin'
+            $methodPath = ltrim($route->path, '/');   // Examples: '', 'users', 'users/{id}'
+
+            // If the method path is empty, use the base path directly. If base was '/', ensure path is '/'.
+            if ($methodPath === '') {
+                $path = ($basePath === '') ? '/' : $basePath;
+            }
+            // If the base path is empty (was '/'), just use the method path prefixed with '/'
+            elseif ($basePath === '') {
+                $path = '/' . $methodPath;
+            }
+            // Otherwise, join them with a single slash
+            else {
+                $path = $basePath . '/' . $methodPath;
+            }
+            // --- End Improved Path Concatenation ---
+
 
             if (!$this->isRouteRegistered($path, $routes)) {
                 return [
                     Constant::CLASSNAME => $file,
                     Constant::METHOD => $method->getName(),
                     Constant::ARGUMENTS => $this->extractParameters($method),
-                    Constant::PATH => $path,
+                    Constant::PATH => $path, // Use the cleaned path
                     Constant::NAME => ($classRoute->name ?? 'default') . '_' . ($route->name ?? 'default'),
                 ];
             }
@@ -108,12 +126,12 @@ class RouteParser
     /**
      * @param string $path
      * @param array<array-key, array{
-     *      classname: class-string,
-     *      method: string,
-     *      arguments: array<string, mixed>,
-     *      path: string,
-     *      name: non-falsy-string
-     *  }> $routes
+     * classname: class-string,
+     * method: string,
+     * arguments: array<string, mixed>,
+     * path: string,
+     * name: non-falsy-string
+     * }> $routes
      * @return bool
      */
     private function isRouteRegistered(string $path, array $routes): bool

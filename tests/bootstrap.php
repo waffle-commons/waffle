@@ -40,4 +40,6 @@ require_once __DIR__ . '/src/Trait/Helper/DummyClassWithAttribute.php';
 require_once __DIR__ . '/src/Trait/Helper/FinalReadOnlyClass.php';
 require_once __DIR__ . '/src/Trait/Helper/NonFinalTestController.php';
 require_once __DIR__ . '/src/Trait/Helper/TraitObject.php';
+require_once __DIR__ . '/src/Trait/Helper/TraitParser.php';
+require_once __DIR__ . '/src/Trait/Helper/TraitUri.php';
 require_once __DIR__ . '/src/Trait/Helper/UninitializedPropertyClass.php';
