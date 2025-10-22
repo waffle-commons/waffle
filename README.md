@@ -1,10 +1,10 @@
-[![PHP Version Require](http://poser.pugx.org/eightyfour/waffle/require/php)](https://packagist.org/packages/eightyfour/waffle)
-[![PHP CI](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml/badge.svg)](https://github.com/eightyfourweb/waffle/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/eightyfourweb/waffle/graph/badge.svg?token=d74ac62a-7872-4035-8b8b-bcc3af1991e0)](https://codecov.io/gh/eightyfourweb/waffle)
-[![Latest Stable Version](http://poser.pugx.org/eightyfour/waffle/v)](https://packagist.org/packages/eightyfour/waffle)
-[![Latest Unstable Version](http://poser.pugx.org/eightyfour/waffle/v/unstable)](https://packagist.org/packages/eightyfour/waffle)
-[![Total Downloads](https://img.shields.io/packagist/dt/eightyfour/waffle.svg)](https://packagist.org/packages/eightyfour/waffle)
-[![Packagist License](https://img.shields.io/packagist/l/eightyfour/waffle)](https://github.com/eightyfourweb/waffle/blob/main/LICENSE.md)
+[![PHP Version Require](http://poser.pugx.org/waffle-commons/waffle/require/php)](https://packagist.org/packages/waffle-commons/waffle)
+[![PHP CI](https://github.com/waffle-commons/waffle/actions/workflows/main.yml/badge.svg)](https://github.com/waffle-commons/waffle/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/waffle-commons/waffle/graph/badge.svg?token=d74ac62a-7872-4035-8b8b-bcc3af1991e0)](https://codecov.io/gh/waffle-commons/waffle)
+[![Latest Stable Version](http://poser.pugx.org/waffle-commons/waffle/v)](https://packagist.org/packages/waffle-commons/waffle)
+[![Latest Unstable Version](http://poser.pugx.org/waffle-commons/waffle/v/unstable)](https://packagist.org/packages/waffle-commons/waffle)
+[![Total Downloads](https://img.shields.io/packagist/dt/waffle-commons/waffle.svg)](https://packagist.org/packages/waffle-commons/waffle)
+[![Packagist License](https://img.shields.io/packagist/l/waffle-commons/waffle)](https://github.com/waffle-commons/waffle/blob/main/LICENSE.md)
 
 # Waffle Framework
 

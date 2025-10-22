@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Throwable;
-use Waffle\Core\Cli;
 use Waffle\Core\Config;
 use Waffle\Core\Constant;
 use Waffle\Core\Container;
@@ -14,9 +13,16 @@ use Waffle\Core\Response;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Core\View;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\Failsafe;
+use Waffle\Exception\Container\ContainerException;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Exception\RenderingException;
 use Waffle\Exception\RouteNotFoundException;
-use Waffle\Exception\SecurityException;
+use Waffle\Factory\CliFactory;
 use Waffle\Factory\ContainerFactory;
+use Waffle\Factory\RequestFactory;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
@@ -34,7 +40,7 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->environment = $value;
     }
 
-    public Config $config {
+    public null|Config $config = null {
         get => $this->config;
         set => $this->config = $value;
     }
@@ -49,12 +55,28 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
+    /**
+     * @throws RenderingException
+     */
     public function handle(): void
     {
         try {
             $this->boot()->configure();
 
-            $handler = $this->isCli() ? $this->createCliFromRequest() : $this->createRequestFromGlobals();
+            if ($this->container === null) {
+                throw new ContainerException();
+            }
+
+            if ($this->system === null) {
+                throw new NotFoundException();
+            }
+
+            $handler = $this->isCli()
+                ? new CliFactory()->createFromGlobals(container: $this->container)
+                : new RequestFactory()->createFromGlobals(
+                    container: $this->container,
+                    system: $this->system,
+                );
 
             $this->run(handler: $handler);
         } catch (Throwable $e) {
@@ -67,15 +89,27 @@ abstract class AbstractKernel implements KernelInterface
     {
         /** @var string $root */
         $root = APP_ROOT;
-        // The .env file is now only for environment variables, not framework config.
-        // In a real production setup, these would be set by the server environment.
-        if (file_exists($root . '/.env')) {
-            $lines = file($root . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        // Define the environment files in order of precedence.
+        // Files loaded later will override earlier ones.
+        $envFiles = [
+            $root . '/.env',
+            $root . '/.env.local',
+        ];
+
+        foreach ($envFiles as $file) {
+            if (!file_exists($file)) {
+                continue;
+            }
+
+            $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             if ($lines) {
                 foreach ($lines as $line) {
+                    // Skip comments and invalid lines
                     if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
                         continue;
                     }
+                    // Load into all relevant superglobals
                     putenv($line);
                     [$key, $value] = explode('=', $line, 2);
                     $_ENV[$key] = $value;
@@ -83,37 +117,50 @@ abstract class AbstractKernel implements KernelInterface
                 }
             }
         }
-        $this->environment = $_ENV['APP_ENV'] ?? 'prod';
+
+        // Fallback on 'prod' environment if not set.
+        $appEnv = $_ENV['APP_ENV'] ?? 'prod';
+        if (!isset($_ENV[Constant::APP_ENV])) {
+            $_ENV[Constant::APP_ENV] = $appEnv;
+        }
+        $this->environment = $appEnv;
 
         return $this;
     }
 
+    /**
+     * @throws InvalidConfigurationException
+     */
     #[\Override]
     public function configure(): self
     {
-        $root = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
-        $this->config = new Config(
-            configDir: $root,
-            environment: $this->environment,
-        );
+        /** @var string $root */
+        $root = APP_ROOT;
+        if ($this->config === null) {
+            $rootConfig = $root . DIRECTORY_SEPARATOR . APP_CONFIG;
+            $this->config = new Config(
+                configDir: $rootConfig,
+                environment: $this->environment,
+            );
+        }
 
         $security = new Security(cfg: $this->config);
 
         $this->container = new Container(security: $security);
 
         $containerFactory = new ContainerFactory();
-        $services = $this->config->get(key: 'waffle.paths.services');
+        $services = $this->config->getString(key: 'waffle.paths.services');
         if (is_string($services)) {
             $containerFactory->create(
                 container: $this->container,
-                directory: APP_ROOT . DIRECTORY_SEPARATOR . $services,
+                directory: $root . DIRECTORY_SEPARATOR . $services,
             );
         }
-        $controllers = $this->config->get(key: 'waffle.paths.controllers');
+        $controllers = $this->config->getString(key: 'waffle.paths.controllers');
         if (is_string($controllers)) {
             $containerFactory->create(
                 container: $this->container,
-                directory: APP_ROOT . DIRECTORY_SEPARATOR . $controllers,
+                directory: $root . DIRECTORY_SEPARATOR . $controllers,
             );
         }
 
@@ -122,83 +169,33 @@ abstract class AbstractKernel implements KernelInterface
         return $this;
     }
 
-    /**
-     * @throws SecurityException
-     */
-    #[\Override]
-    public function createRequestFromGlobals(): RequestInterface
-    {
-        $req = new Request(container: $this->container);
-        if ($this->system instanceof System) {
-            $router = $this->system->getRouter();
-            if (null !== $router && !$req->isCli()) {
-                $routes = $router->getRoutes();
-                /**
-                 * @var array{
-                 *      classname: string,
-                 *      method: non-empty-string,
-                 *      arguments: array<non-empty-string, string>,
-                 *      path: string,
-                 *      name: non-falsy-string
-                 *  } $route
-                 */
-                foreach ($routes as $route) {
-                    if ($router->match(
-                        container: $this->container,
-                        req: $req,
-                        route: $route,
-                    )) {
-                        $req->setCurrentRoute(route: $route);
-                        break; // Stop after the first match
-                    }
-                }
-            }
-        }
-
-        return $req;
-    }
-
-    #[\Override]
-    public function createCliFromRequest(): CliInterface
-    {
-        // TODO(@supa-chayajin): Handle CLI command from request
-
-        return new Cli(
-            container: $this->container,
-            cli: false,
-        );
-    }
-
     #[\Override]
     public function run(CliInterface|RequestInterface $handler): void
     {
         $handler->process()->render();
     }
 
+    /**
+     * @throws RenderingException
+     */
     private function handleException(Throwable $e): void
     {
         if ($this->isCli()) {
-            // In CLI mode, we usually don't want JSON output for a not found route.
-            // We can log it or simply exit silently.
-            return;
+            fwrite(STDERR, 'Error: ' . $e->getMessage() . PHP_EOL);
+            exit(1);
         }
 
+        $this->buildErrorResponse(e: $e);
+    }
+
+    private function buildErrorResponse(Throwable $e): void
+    {
         // Exception Handler Hardening:
-        // Create a failsafe container if the main one doesn't exist yet.
-        $failsafeContainer = $this->container;
-        if (null === $failsafeContainer) {
-            $config = new Config(
-                configDir: APP_ROOT . '/app',
-                environment: 'prod',
-                failsafe: true,
-            );
-            $security = new Security(cfg: $config);
-            $failsafeContainer = new Container(security: $security);
-        }
+        $container = $this->container ?? $this->createFailsafeContainer();
 
         $handler = new Request(
-            container: $failsafeContainer,
-            cli: false,
+            container: $container,
+            cli: AppMode::WEB,
         );
         $statusCode = 500;
 
@@ -218,6 +215,22 @@ abstract class AbstractKernel implements KernelInterface
         }
 
         http_response_code($statusCode);
+
         new Response(handler: $handler)->throw(view: new View(data: $data));
+    }
+
+    private function createFailsafeContainer(): ContainerInterface
+    {
+        /** @var string $root */
+        $root = APP_ROOT;
+        // Create a failsafe container if the main one doesn't exist yet.
+        $config = new Config(
+            configDir: $root . '/app',
+            environment: 'prod',
+            failsafe: Failsafe::ENABLED,
+        );
+        $security = new Security(cfg: $config);
+
+        return new Container(security: $security);
     }
 }

@@ -7,7 +7,7 @@ namespace WaffleTests\Trait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionMethod;
 use Waffle\Trait\ReflectionTrait;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Trait\Helper\DummyAttribute;
 use WaffleTests\Trait\Helper\DummyClassWithAttribute;
 

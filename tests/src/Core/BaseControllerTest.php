@@ -7,7 +7,7 @@ namespace WaffleTests\Core;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Core\BaseController;
 use Waffle\Interface\BaseControllerInterface;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(BaseController::class)]
 final class BaseControllerTest extends TestCase

@@ -6,12 +6,8 @@
 /.vscode
 /.idx
 
-# Docker
-.dockerignore
-docker-compose.yml
-docker-compose.*.yml
-Dockerfile
-Makefile
+# Framework dev specific
+/.env.local
 
 # Vendors
 /vendor

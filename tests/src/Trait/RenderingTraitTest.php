@@ -7,7 +7,7 @@ namespace WaffleTests\Trait;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Trait\Helper\TraitObject;
 
 final class RenderingTraitTest extends TestCase
@@ -35,7 +35,7 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // We call the rendering method, simulating a 'dev' environment.
         $this->traitObject->rendering($view, Constant::ENV_DEV);
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // --- Assertions ---
         // We assert that the output is a valid JSON string.
@@ -52,7 +52,7 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // We call the rendering method, simulating the 'test' environment.
         $this->traitObject->rendering($view, Constant::ENV_TEST);
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // --- Assertions ---
         // We assert that nothing was echoed, as expected in a test environment.
@@ -68,7 +68,7 @@ final class RenderingTraitTest extends TestCase
         ob_start();
         // The throw() method should always render output, regardless of the environment.
         $this->traitObject->throw($view);
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // --- Assertions ---
         static::assertJson($output);

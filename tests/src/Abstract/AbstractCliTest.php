@@ -9,9 +9,10 @@ use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractCli;
 use Waffle\Core\Response;
+use Waffle\Enum\HttpBag;
 use WaffleTests\Abstract\Helper\ConcreteTestCli;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(AbstractCli::class)]
 final class AbstractCliTest extends TestCase
@@ -79,11 +80,17 @@ final class AbstractCliTest extends TestCase
         $_ENV['APP_ENV'] = 'test';
 
         // When: A new CLI object is created and configured.
-        $cli = new ConcreteTestCli(container: $this->createMockContainer());
+        $cli = new ConcreteTestCli(
+            container: $this->createMockContainer(),
+            globals: [
+                'server' => $_SERVER,
+                'env' => $_ENV,
+            ],
+        );
 
         // Then: The public properties should accurately reflect the superglobal values.
-        static::assertSame('vendor/bin/phpunit', $cli->server['PHP_SELF']);
-        static::assertSame('test', $cli->env['APP_ENV']);
+        static::assertSame('vendor/bin/phpunit', $cli->bag(key: HttpBag::SERVER)->get(key: 'PHP_SELF'));
+        static::assertSame('test', $cli->bag(key: HttpBag::ENV)->get(key: 'APP_ENV'));
 
         // Cleanup
         unset($_SERVER['PHP_SELF'], $_ENV['APP_ENV']);

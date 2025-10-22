@@ -8,18 +8,18 @@ use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
+use WaffleTests\AbstractTestCase as TestCase;
+use WaffleTests\Core\Helper\AbstractUninstantiable;
 use WaffleTests\Core\Helper\ServiceA;
 use WaffleTests\Core\Helper\ServiceB;
 use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
-use WaffleTests\Core\Helper\Uninstantiable;
 use WaffleTests\Core\Helper\WithPrimitive;
-use WaffleTests\TestCase;
 
 final class ContainerTest extends TestCase
 {
-    private Container $container;
+    private null|Container $container = null;
 
     #[\Override]
     protected function setUp(): void
@@ -120,7 +120,7 @@ final class ContainerTest extends TestCase
         $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
 
         $container = new Container($securityMock);
-        $container->get(ServiceA::class);
+        $container->get(id: ServiceA::class);
     }
 
     public function testThrowsExceptionForUninstantiableClass(): void
@@ -128,7 +128,7 @@ final class ContainerTest extends TestCase
         static::expectException(ContainerException::class);
         static::expectExceptionMessageMatches('/Class ".*" is not instantiable./');
 
-        $this->container->get(Uninstantiable::class);
+        $this->container->get(AbstractUninstantiable::class);
     }
 
     public function testThrowsExceptionForNonResolvablePrimitiveParameter(): void

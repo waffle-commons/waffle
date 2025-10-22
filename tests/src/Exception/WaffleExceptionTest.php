@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Exception;
 
 use Waffle\Exception\WaffleException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 final class WaffleExceptionTest extends TestCase
 {

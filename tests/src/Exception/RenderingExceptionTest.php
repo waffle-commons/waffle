@@ -7,7 +7,7 @@ namespace WaffleTests\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Exception\RenderingException;
 use Waffle\Exception\WaffleException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(RenderingException::class)]
 final class RenderingExceptionTest extends TestCase

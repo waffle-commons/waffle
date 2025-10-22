@@ -10,7 +10,7 @@ use Waffle\Core\Cli;
 use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(Cli::class)]
 final class CliTest extends TestCase

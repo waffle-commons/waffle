@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
+use Waffle\Http\ParameterBag;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
@@ -15,70 +18,15 @@ abstract class AbstractRequest implements RequestInterface
 {
     use RequestTrait;
 
-    /**
-     * @var array<mixed>
-     */
-    public array $globals {
-        get => $GLOBALS;
-    }
+    public ParameterBag $query; // For $_GET
+    public ParameterBag $request; // For $_POST
+    public ParameterBag $server; // For $_SERVER
+    public ParameterBag $files; // For $_FILES
+    public ParameterBag $cookies; // For $_COOKIE
+    public ParameterBag $session; // For $_SESSION
+    public ParameterBag $env; // For $_ENV
 
-    /**
-     * @var array<mixed>
-     */
-    public array $server {
-        get => $_SERVER;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $get {
-        get => $_GET;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $post {
-        get => $_POST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $files {
-        get => $_FILES;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $cookie {
-        get => $_COOKIE;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $session {
-        get => $_SESSION;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $request {
-        get => $_REQUEST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $env {
-        get => $_ENV;
-    }
-
-    public bool $cli = false {
+    public AppMode $cli = AppMode::WEB {
         set => $this->cli = $value;
     }
 
@@ -100,13 +48,65 @@ abstract class AbstractRequest implements RequestInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, bool $cli);
+    /**
+     * @template T
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: T|string|array<string, mixed>,
+     *       get: T|string|array<string, mixed>,
+     *       post: T|string|array<string, mixed>,
+     *       files: T|string|array<string, mixed>,
+     *       cookie: T|string|array<string, mixed>,
+     *       session: T|string|array<string, mixed>,
+     *       request: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
+     *   } $globals
+     */
+    abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
 
+    /**
+     * @template T
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: T|string|array<string, mixed>,
+     *       get: T|string|array<string, mixed>,
+     *       post: T|string|array<string, mixed>,
+     *       files: T|string|array<string, mixed>,
+     *       cookie: T|string|array<string, mixed>,
+     *       session: T|string|array<string, mixed>,
+     *       request: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
+     *   } $globals
+     * @return void
+     */
     #[\Override]
-    public function configure(ContainerInterface $container, bool $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void
     {
         $this->container = $container;
         $this->cli = $cli;
+        /** @var array<string, mixed> $getGlobals */
+        $getGlobals = $globals['get'] ?? [];
+        $this->query = new ParameterBag(parameters: $getGlobals);
+        /** @var array<string, mixed> $postGlobals */
+        $postGlobals = $globals['post'] ?? [];
+        $this->request = new ParameterBag(parameters: $postGlobals);
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        $this->server = new ParameterBag(parameters: $serverGlobals);
+        /** @var array<string, mixed> $filesGlobals */
+        $filesGlobals = $globals['files'] ?? [];
+        $this->files = new ParameterBag(parameters: $filesGlobals);
+        /** @var array<string, mixed> $cookieGlobals */
+        $cookieGlobals = $globals['cookie'] ?? [];
+        $this->cookies = new ParameterBag(parameters: $cookieGlobals);
+        /** @var array<string, mixed> $sessionGlobals */
+        $sessionGlobals = $globals['session'] ?? [];
+        $this->session = new ParameterBag(parameters: $sessionGlobals);
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $this->env = new ParameterBag(parameters: $envGlobals);
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractRequest implements RequestInterface
     #[\Override]
     public function process(): ResponseInterface
     {
-        if (null === $this->currentRoute && !$this->isCli()) {
+        if (null === $this->currentRoute && AppMode::WEB === $this->cli) {
             // Instead of exiting, we now throw a specific exception.
             throw new RouteNotFoundException();
         }
@@ -141,8 +141,23 @@ abstract class AbstractRequest implements RequestInterface
         return $this;
     }
 
+    #[\Override]
     public function isCli(): bool
     {
-        return $this->cli;
+        return $this->cli === AppMode::CLI;
+    }
+
+    #[\Override]
+    public function bag(HttpBag $key): ParameterBag
+    {
+        return match ($key) {
+            HttpBag::QUERY => $this->query,
+            HttpBag::REQUEST => $this->request,
+            HttpBag::SERVER => $this->server,
+            HttpBag::FILES => $this->files,
+            HttpBag::COOKIES => $this->cookies,
+            HttpBag::SESSION => $this->session,
+            HttpBag::ENV => $this->env,
+        };
     }
 }

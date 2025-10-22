@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Core;
 
 use Waffle\Core\YamlParser;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 class YamlParserTest extends TestCase
 {

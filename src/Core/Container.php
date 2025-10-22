@@ -18,16 +18,13 @@ final class Container implements ContainerInterface
     /** @var array<string, object> */
     private array $instances = [];
 
-    /** @var array<string, string> */
+    /** @var array<string, string|Closure|object|callable> */
     private array $definitions = [];
 
     /** @var array<string, true> */
     private array $resolving = [];
 
-    private SecurityInterface $security {
-        get => $this->security;
-        set => $this->security = $value;
-    }
+    private SecurityInterface $security;
 
     public function __construct(SecurityInterface $security)
     {
@@ -35,8 +32,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * @throws ContainerException
-     * @throws NotFoundException
+     * @throws ContainerException|NotFoundException|ReflectionException
      */
     #[\Override]
     public function get(string $id): object
@@ -48,25 +44,17 @@ final class Container implements ContainerInterface
         if (isset($this->resolving[$id])) {
             throw new ContainerException("Circular dependency detected while resolving service \"{$id}\".");
         }
+
         $this->resolving[$id] = true;
 
         try {
-            $concrete = $this->definitions[$id] ?? $id;
-
-            $instance = match (true) {
-                $concrete instanceof Closure => $concrete($this),
-                class_exists($concrete) => $this->resolve($concrete),
-                default => throw new NotFoundException("Service or class \"{$id}\" not found."),
-            };
-
-            $this->security->analyze($instance);
-
+            $instance = $this->build($id);
             $this->instances[$id] = $instance;
-
-            return $instance;
         } finally {
             unset($this->resolving[$id]);
         }
+
+        return $instance;
     }
 
     #[\Override]
@@ -75,19 +63,43 @@ final class Container implements ContainerInterface
         return isset($this->definitions[$id]) || class_exists($id);
     }
 
+    /**
+     * @param string $id
+     * @param object|callable|string $concrete
+     */
     #[\Override]
-    public function set(string $id, callable|string $concrete): void
+    public function set(string $id, object|callable|string $concrete): void
     {
         $this->definitions[$id] = $concrete;
     }
 
-    private function resolve(string $class): object
+    /**
+     * @throws ContainerException
+     * @throws NotFoundException
+     * @throws ReflectionException
+     */
+    private function build(string $id): object
     {
-        try {
-            $reflector = new ReflectionClass($class);
-        } catch (ReflectionException $e) {
-            throw new ContainerException("Failed to reflect class \"{$class}\".", 0, $e);
-        }
+        $concrete = $this->definitions[$id] ?? $id;
+
+        /** @var object $instance */
+        $instance = match (true) {
+            $concrete instanceof Closure => $concrete($this),
+            is_string($concrete) && class_exists($concrete) => $this->resolve($concrete),
+            default => throw new NotFoundException("Service or class \"{$id}\" not found."),
+        };
+
+        $this->security->analyze($instance);
+
+        return $instance;
+    }
+
+    /**
+     * @throws ContainerException|ReflectionException
+     */
+    private function resolve(string $class): null|object|string
+    {
+        $reflector = new ReflectionClass($class);
 
         if (!$reflector->isInstantiable()) {
             throw new ContainerException("Class \"{$class}\" is not instantiable.");
@@ -96,7 +108,7 @@ final class Container implements ContainerInterface
         $constructor = $reflector->getConstructor();
 
         if (null === $constructor) {
-            return new $class();
+            return $reflector->newInstance();
         }
 
         $dependencies = $this->resolveDependencies($constructor->getParameters());
@@ -106,8 +118,8 @@ final class Container implements ContainerInterface
 
     /**
      * @param ReflectionParameter[] $parameters
-     * @return array<int, object>
-     * @throws ContainerException
+     * @return array<int, mixed>
+     * @throws ContainerException|ReflectionException
      */
     private function resolveDependencies(array $parameters): array
     {
@@ -125,7 +137,9 @@ final class Container implements ContainerInterface
                 throw new ContainerException("Cannot resolve primitive parameter \"{$parameter->getName()}\".");
             }
 
-            $dependencies[] = $this->get($type->getName());
+            /** @var string $name */
+            $name = $type->getName();
+            $dependencies[] = $this->get(id: $name);
         }
 
         return $dependencies;

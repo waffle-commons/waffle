@@ -6,7 +6,7 @@ namespace WaffleTests\Attribute;
 
 use Waffle\Attribute\Argument;
 use Waffle\Attribute\Route;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 final class RouteTest extends TestCase
 {

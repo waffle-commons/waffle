@@ -9,8 +9,8 @@ use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
 use Waffle\Router\Router;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\TestKernelWithConfig;
-use WaffleTests\TestCase;
 
 #[CoversClass(System::class)]
 final class SystemTest extends TestCase
@@ -27,7 +27,7 @@ final class SystemTest extends TestCase
 
         // We expect the 'analyze' method to be called twice during the boot process:
         // once for the Kernel and once for the Configuration object.
-        $securityMock->expects($this->exactly(2))->method('analyze');
+        $securityMock->expects($this->exactly(3))->method('analyze');
 
         // Create a dummy Configuration object
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
@@ -75,7 +75,7 @@ final class SystemTest extends TestCase
         $system->boot($testKernel);
 
         // We retrieve the captured output and stop buffering.
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         // First, we assert that the router was NOT registered because the security check failed.

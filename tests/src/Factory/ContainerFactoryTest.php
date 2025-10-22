@@ -6,9 +6,9 @@ namespace WaffleTests\Factory;
 
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Factory\ContainerFactory;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\TempController;
 use WaffleTests\Helper\TempService;
-use WaffleTests\TestCase;
 
 final class ContainerFactoryTest extends TestCase
 {
@@ -59,8 +59,8 @@ final class ContainerFactoryTest extends TestCase
 
         // Assertions
         // On vérifie que la factory a bien enregistré les services dans le conteneur.
-        static::assertTrue($container->has(TempService::class));
-        static::assertTrue($container->has(TempController::class));
+        static::assertTrue($container->has(id: TempService::class));
+        static::assertTrue($container->has(id: TempController::class));
     }
 
     public function testCreateRegistersServicesFromFile(): void
@@ -77,7 +77,7 @@ final class ContainerFactoryTest extends TestCase
             directory: $helperDir,
         );
 
-        static::assertTrue($container->has(TempService::class));
+        static::assertTrue($container->has(id: TempService::class));
     }
 
     public function testCreateThrowsExceptionForUnknownClassType(): void

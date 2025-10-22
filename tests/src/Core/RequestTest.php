@@ -11,8 +11,10 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(Request::class)]
 final class RequestTest extends TestCase
@@ -104,26 +106,48 @@ final class RequestTest extends TestCase
      * This test verifies that the public properties of the Request object
      * correctly expose the corresponding PHP superglobals.
      *
-     * @param string $property The name of the public property to test.
+     * @param HttpBag $property The name of the public property to test.
      * @param array<string, string> $superglobal The superglobal array to simulate.
      */
     #[DataProvider('superglobalProvider')]
-    public function testSuperglobalPropertiesAreCorrectlyExposed(string $property, array $superglobal): void
+    public function testSuperglobalPropertiesAreCorrectlyExposed(HttpBag $property, array $superglobal): void
     {
         // Given: We simulate a superglobal array.
         // This assignment depends on how PHPUnit handles superglobals.
         // In some environments, direct assignment works.
-        $GLOBALS['_' . strtoupper($property)] = $superglobal;
+        $gProps = match ($property) {
+            HttpBag::QUERY => 'get',
+            HttpBag::REQUEST => 'post',
+            HttpBag::COOKIES => 'cookie',
+            HttpBag::SESSION => 'session',
+            HttpBag::ENV => 'env',
+            HttpBag::FILES => 'files',
+            default => 'server',
+        };
+        $GLOBALS['_' . strtoupper($gProps)] = $superglobal;
+        $globals = [
+            'server' => $superglobal,
+            'get' => $superglobal,
+            'post' => $superglobal,
+            'files' => $superglobal,
+            'cookie' => $superglobal,
+            'session' => $superglobal,
+            'request' => $superglobal,
+            'env' => $superglobal,
+        ];
 
         // When: A new Request object is created.
-        $request = $this->createRealRequest();
+        $request = $this->createRealRequest(globals: $globals);
         $request->configure(
             container: $request->container,
-            cli: false,
+            cli: AppMode::WEB,
+            globals: $globals,
         ); // Manually trigger configuration to load superglobals
 
         // Then: The public property should accurately reflect the superglobal values.
-        static::assertSame($superglobal, $request->{$property});
+        foreach ($superglobal as $key => $value) {
+            static::assertSame($value, $request->bag(key: $property)->get(key: $key));
+        }
     }
 
     /**
@@ -134,11 +158,11 @@ final class RequestTest extends TestCase
     public static function superglobalProvider(): array
     {
         return [
-            'GET superglobal' => ['get', ['page' => '1']],
-            'POST superglobal' => ['post', ['name' => 'John']],
-            'COOKIE superglobal' => ['cookie', ['session_id' => 'abcde']],
-            'SERVER superglobal' => ['server', ['REQUEST_URI' => '/home']],
-            'ENV superglobal' => ['env', ['APP_ENV' => 'test']],
+            'QUERY superglobal' => [HttpBag::QUERY, ['page' => '1']],
+            'REQUEST superglobal' => [HttpBag::REQUEST, ['name' => 'John']],
+            'COOKIES superglobal' => [HttpBag::COOKIES, ['session_id' => 'abcde']],
+            'SERVER superglobal' => [HttpBag::SERVER, ['REQUEST_URI' => '/home']],
+            'ENV superglobal' => [HttpBag::ENV, ['APP_ENV' => 'test']],
         ];
     }
 

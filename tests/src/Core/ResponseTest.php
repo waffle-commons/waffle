@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Core\Constant;
 use Waffle\Core\Response;
 use Waffle\Exception\RenderingException;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\DummyControllerWithService;
 use WaffleTests\Core\Helper\DummyService;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase
@@ -48,7 +48,20 @@ final class ResponseTest extends TestCase
     public function testRenderFromRequest(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev'; // Explicitly set the environment to 'dev'
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -57,13 +70,11 @@ final class ResponseTest extends TestCase
             Constant::NAME => 'user_list',
         ]);
 
-        $_ENV[Constant::APP_ENV] = 'dev'; // Ensure output is echoed
-
         // 2. Action
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -85,7 +96,7 @@ final class ResponseTest extends TestCase
         ob_start();
         $response = new Response(handler: $cli);
         $response->render(); // Should do nothing in CLI context for now
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertEmpty($output);
@@ -100,7 +111,20 @@ final class ResponseTest extends TestCase
         // 1. Setup
         // We manipulate the superglobal BEFORE instantiating the Request object.
         $_SERVER[Constant::REQUEST_URI] = '/users/123';
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -110,13 +134,11 @@ final class ResponseTest extends TestCase
             Constant::NAME => 'user_show',
         ]);
 
-        $_ENV[Constant::APP_ENV] = 'dev';
-
         // 2. Action
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertJson($output);
@@ -139,7 +161,20 @@ final class ResponseTest extends TestCase
 
         // Manipulate the superglobal with the invalid URI.
         $_SERVER[Constant::REQUEST_URI] = '/users/abc';
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
 
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
@@ -148,8 +183,6 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/users/{id}',
             Constant::NAME => 'user_show',
         ]);
-
-        $_ENV[Constant::APP_ENV] = 'dev';
 
         // 2. Action
         $response = new Response(handler: $request);
@@ -162,7 +195,21 @@ final class ResponseTest extends TestCase
     public function testRenderInjectsSimpleService(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 8);
+        $_ENV[Constant::APP_ENV] = 'dev'; // Explicitly set the environment to 'dev'
+        $_SERVER['REQUEST_URI'] = '/service-test'; // Explicitly set the request uri
+        $request = $this->createRealRequest(
+            level: 8,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyControllerWithService::class,
             Constant::METHOD => 'index',
@@ -170,13 +217,12 @@ final class ResponseTest extends TestCase
             Constant::PATH => '/service-test',
             Constant::NAME => 'service_test',
         ]);
-        $_ENV[Constant::APP_ENV] = 'dev';
 
         // 2. Action
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         // Decode the JSON and assert on the structure and specific values, ignoring dynamic ones.
@@ -203,7 +249,20 @@ final class ResponseTest extends TestCase
     public function testRenderProducesNoOutputWhenAppEnvIsTest(): void
     {
         // 1. Setup
-        $request = $this->createRealRequest(level: 2);
+        $_ENV[Constant::APP_ENV] = 'test'; // Explicitly set the environment to 'test'
+        $request = $this->createRealRequest(
+            level: 2,
+            globals: [
+                'server' => $_SERVER ?? [],
+                'get' => $_GET ?? [],
+                'post' => $_POST ?? [],
+                'files' => $_FILES ?? [],
+                'cookie' => $_COOKIE ?? [],
+                'session' => $_SESSION ?? [],
+                'request' => $_GET ?? [],
+                'env' => $_ENV ?? [],
+            ],
+        );
         $request->setCurrentRoute([
             Constant::CLASSNAME => DummyController::class,
             Constant::METHOD => 'list',
@@ -212,13 +271,11 @@ final class ResponseTest extends TestCase
             Constant::NAME => 'user_list',
         ]);
 
-        $_ENV[Constant::APP_ENV] = 'test'; // Explicitly set the environment to 'test'
-
         // 2. Action
         ob_start();
         $response = new Response(handler: $request);
         $response->render();
-        $output = ob_get_clean() ?: '';
+        $output = ob_get_clean() ?? '';
 
         // 3. Assertions
         static::assertEmpty($output);

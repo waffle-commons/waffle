@@ -5,76 +5,20 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Http\ParameterBag;
 use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\ResponseInterface;
 
 abstract class AbstractCli implements CliInterface
 {
-    /**
-     * @var array<mixed>
-     */
-    public array $globals {
-        get => $GLOBALS;
-    }
+    public ParameterBag $server; // For $_SERVER
+    public ParameterBag $env; // For $_ENV
 
-    /**
-     * @var array<mixed>
-     */
-    public array $server {
-        get => $_SERVER;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $get {
-        get => $_GET;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $post {
-        get => $_POST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $files {
-        get => $_FILES;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $cookie {
-        get => $_COOKIE;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $session {
-        get => $_SESSION;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $request {
-        get => $_REQUEST;
-    }
-
-    /**
-     * @var array<mixed>
-     */
-    public array $env {
-        get => $_ENV;
-    }
-
-    public bool $cli = true {
+    public AppMode $cli = AppMode::CLI {
         set => $this->cli = $value;
     }
 
@@ -96,13 +40,38 @@ abstract class AbstractCli implements CliInterface
         set => $this->container = $value;
     }
 
-    abstract public function __construct(ContainerInterface $container, bool $cli);
+    /**
+     * @template T
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
+     *   } $globals
+     */
+    abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
 
+    /**
+     * @template T
+     * @param ContainerInterface $container
+     * @param AppMode $cli
+     * @param array{
+     *       server: T|string|array<string, mixed>,
+     *       env: T|string|array<string, mixed>
+     *   } $globals
+     * @return void
+     */
     #[\Override]
-    public function configure(ContainerInterface $container, bool $cli): void
+    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void
     {
         $this->container = $container;
         $this->cli = $cli;
+        /** @var array<string, mixed> $serverGlobals */
+        $serverGlobals = $globals['server'] ?? [];
+        $this->server = new ParameterBag(parameters: $serverGlobals);
+        /** @var array<string, mixed> $envGlobals */
+        $envGlobals = $globals['env'] ?? [];
+        $this->env = new ParameterBag(parameters: $envGlobals);
     }
 
     #[\Override]
@@ -127,5 +96,24 @@ abstract class AbstractCli implements CliInterface
         $this->currentRoute = $route;
 
         return $this;
+    }
+
+    #[\Override]
+    public function isCli(): bool
+    {
+        return $this->cli === AppMode::CLI;
+    }
+
+    /**
+     * @throws NotFoundException
+     */
+    #[\Override]
+    public function bag(HttpBag $key): ParameterBag
+    {
+        return match ($key) {
+            HttpBag::SERVER => $this->server,
+            HttpBag::ENV => $this->env,
+            default => throw new NotFoundException(),
+        };
     }
 }

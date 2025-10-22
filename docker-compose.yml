@@ -1,0 +1,32 @@
+#
+# Waffle Framework - Docker Compose for FrankenPHP Development
+# This file orchestrates a simple, high-performance local development environment.
+#
+services:
+  # FrankenPHP Service (Web Server + PHP)
+  waffle:
+    build:
+      context: .
+      target: waffle_frankenphp_dev # Use the dev stage with Xdebug
+      args:
+        APP_ENV: development
+        FRANKEN_VERSION: 1.7.0
+        PHP_VERSION: 8.4.8
+        OS: bookworm
+    container_name: waffle-dev
+    ports:
+      # Expose port 8080 on your host and 80 in the container
+      - "8080:80"
+      # Expose port 443 for HTTPS (optional but good practice)
+      - "8443:443"
+    volumes:
+      # Mount the entire project directory into the container for live-reloading
+      - .:/app
+      # Mount our Caddyfile for server configuration
+      - ./docker/frankenphp/Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      # Enable HTTPS with a self-signed certificate for local development
+      SERVER_NAME: "localhost"
+      CADDY_GLOBAL_OPTIONS: "debug"
+      XDEBUG_MODE: "debug,coverage"
+

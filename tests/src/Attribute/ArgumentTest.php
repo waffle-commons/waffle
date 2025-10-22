@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Attribute;
 
 use Waffle\Attribute\Argument;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 final class ArgumentTest extends TestCase
 {

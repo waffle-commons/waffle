@@ -7,7 +7,7 @@ namespace WaffleTests\Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Exception\WaffleException;
-use WaffleTests\TestCase;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(RouteNotFoundException::class)]
 final class RouteNotFoundExceptionTest extends TestCase

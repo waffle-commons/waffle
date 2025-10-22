@@ -9,9 +9,11 @@ use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
+use Waffle\Enum\AppMode;
+use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
+use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Router\Dummy\DummyController;
-use WaffleTests\TestCase;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase
@@ -53,7 +55,7 @@ final class AbstractRequestTest extends TestCase
      */
     public function testProcessDoesNotThrowExceptionInCliMode(): void
     {
-        $request = $this->createRealRequest(isCli: true);
+        $request = $this->createRealRequest(isCli: AppMode::CLI);
 
         $response = $request->process();
         static::assertInstanceOf(Response::class, $response);
@@ -102,10 +104,19 @@ final class AbstractRequestTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_ENV['APP_ENV'] = 'test';
 
-        $request = $this->createRealRequest();
+        $request = $this->createRealRequest(globals: [
+            'server' => $_SERVER ?? [],
+            'get' => $_GET ?? [],
+            'post' => $_POST ?? [],
+            'files' => $_FILES ?? [],
+            'cookie' => $_COOKIE ?? [],
+            'session' => $_SESSION ?? [],
+            'request' => $_GET ?? [],
+            'env' => $_ENV ?? [],
+        ]);
 
-        static::assertSame('GET', $request->server['REQUEST_METHOD']);
-        static::assertSame('test', $request->env['APP_ENV']);
+        static::assertSame('GET', $request->bag(key: HttpBag::SERVER)->get(key: 'REQUEST_METHOD'));
+        static::assertSame('test', $request->bag(key: HttpBag::ENV)->get(key: 'APP_ENV'));
 
         unset($_SERVER['REQUEST_METHOD'], $_ENV['APP_ENV']);
     }
