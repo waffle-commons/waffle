@@ -57,8 +57,3 @@ end_line = 282
 code = "cyclomatic-complexity"
 start_line = 21
 end_line = 260
-
-[[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
-code = "return-type"
-start_line = 165
-end_line = 167
