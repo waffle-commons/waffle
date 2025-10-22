@@ -36,10 +36,15 @@ class ParameterBag
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        /** @var T|string|array<mixed> $parameter */
-        $parameter = $this->parameters[$key];
+        // Check if the key exists before accessing it
+        if ($this->has($key)) {
+            /** @var T|string|array<mixed> $parameter */
+            $parameter = $this->parameters[$key];
 
-        return $parameter ?? $default;
+            return $parameter;
+        }
+
+        return $default;
     }
 
     /**

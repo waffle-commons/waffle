@@ -45,7 +45,12 @@ class RouteCache
 
     private function isProduction(): bool
     {
-        return getenv(Constant::APP_ENV) === Constant::ENV_DEFAULT;
+        $env = getenv(Constant::APP_ENV);
+        if (!$env) {
+            return true;
+        }
+
+        return $env === Constant::ENV_DEFAULT;
     }
 
     private function getCacheFilePath(): string
