@@ -1,5 +1,5 @@
 ---
-name: "\\U0001F41B Bug Report"
+name: "🐛 Bug Report"
 about: Report a reproducible bug or issue in the Waffle framework.
 title: "[BUG] A brief, descriptive title"
 labels: bug

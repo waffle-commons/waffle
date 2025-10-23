@@ -1,5 +1,5 @@
 ---
-name: "\\U0001F680 Feature Request"
+name: "🚀 Feature Request"
 about: Suggest a new feature or an enhancement for the Waffle framework.
 title: "[FEAT] A brief, descriptive title"
 labels: enhancement
