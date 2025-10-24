@@ -50,8 +50,8 @@ end_line = 87
 
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
-start_line = 15
-end_line = 107
+start_line = 18
+end_line = 245
 
 [[entries."tests/src/Cache/RouteCacheTest.php".issues]]
 code = "no-else-clause"
@@ -80,33 +80,8 @@ end_line = 262
 
 [[entries."tests/src/Core/SystemTest.php".issues]]
 code = "explicit-octal"
-start_line = 28
-end_line = 28
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "assertion-style"
-start_line = 142
-end_line = 142
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "strict-assertions"
-start_line = 150
-end_line = 150
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "strict-assertions"
-start_line = 151
-end_line = 151
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "strict-assertions"
-start_line = 195
-end_line = 195
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "strict-assertions"
-start_line = 196
-end_line = 196
+start_line = 29
+end_line = 29
 
 [[entries."tests/src/Helper/Security/Rule7ValidObject.php".issues]]
 code = "no-boolean-flag-parameter"

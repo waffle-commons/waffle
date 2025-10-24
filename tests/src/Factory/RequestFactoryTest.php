@@ -140,7 +140,7 @@ final class RequestFactoryTest extends TestCase
 
         // Mock file_get_contents specifically for 'php://input'
         $fileGetContentsMock = $this->getFunctionMock('Waffle\\Factory', 'file_get_contents');
-        $fileGetContentsMock->expects($this->once())->with($this->equalTo('php://input'))->willReturn($jsonString);
+        $fileGetContentsMock->expects($this->once())->with(static::equalTo('php://input'))->willReturn($jsonString);
 
         // --- Action ---
         $request = $factory->createFromGlobals($container, $systemMockPassedToFactory);
@@ -148,8 +148,8 @@ final class RequestFactoryTest extends TestCase
         // --- Assertions ---
         static::assertInstanceOf(Request::class, $request);
         static::assertEmpty($request->query->all());
-        static::assertEquals($jsonData, $request->request->all(), 'Request bag should contain decoded JSON data.');
-        static::assertEquals($jsonData, $request->bag(HttpBag::REQUEST)->all());
+        static::assertSame($jsonData, $request->request->all(), 'Request bag should contain decoded JSON data.');
+        static::assertSame($jsonData, $request->bag(HttpBag::REQUEST)->all());
         static::assertNotNull($request->currentRoute);
         static::assertSame('/trigger-error', $request->currentRoute['path']);
     }
@@ -193,8 +193,8 @@ final class RequestFactoryTest extends TestCase
         // --- Assertions ---
         static::assertInstanceOf(Request::class, $request);
         static::assertEmpty($request->query->all());
-        static::assertEquals($postData, $request->request->all(), 'Request bag should contain POST data.');
-        static::assertEquals($postData, $request->bag(HttpBag::REQUEST)->all());
+        static::assertSame($postData, $request->request->all(), 'Request bag should contain POST data.');
+        static::assertSame($postData, $request->bag(HttpBag::REQUEST)->all());
         static::assertNotNull($request->currentRoute);
         static::assertSame('/users/{id}/{slug}', $request->currentRoute['path']);
     }

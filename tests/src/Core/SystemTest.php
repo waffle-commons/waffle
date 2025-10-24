@@ -21,6 +21,7 @@ final class SystemTest extends TestCase
 
     private string $emptyControllerDir = 'empty_controllers_for_system_test';
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,6 +31,7 @@ final class SystemTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Clean up the empty directory
