@@ -11,8 +11,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "WaffleTests\\": "tests/src/",
-            "App\\": "public/app"
+            "WaffleTests\\": "tests/src/"
         }
     },
     "authors": [
