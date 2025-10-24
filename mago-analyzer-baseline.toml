@@ -728,6 +728,76 @@ code = "possibly-null-operand"
 start_line = 90
 end_line = 90
 
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-operand"
+start_line = 45
+end_line = 45
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-property-type-coercion"
+start_line = 41
+end_line = 41
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "redundant-null-coalesce"
+start_line = 42
+end_line = 42
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "undefined-variable"
+start_line = 41
+end_line = 41
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "mixed-assignment"
+start_line = 85
+end_line = 85
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "mixed-assignment"
+start_line = 143
+end_line = 143
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-argument"
+start_line = 119
+end_line = 119
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 64
+end_line = 64
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 70
+end_line = 70
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 94
+end_line = 94
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 98
+end_line = 98
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 109
+end_line = 109
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 113
+end_line = 113
+
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "possibly-null-operand"
+start_line = 137
+end_line = 137
+
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "less-specific-nested-argument-type"
 start_line = 115

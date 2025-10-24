@@ -83,6 +83,31 @@ code = "explicit-octal"
 start_line = 28
 end_line = 28
 
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "assertion-style"
+start_line = 142
+end_line = 142
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "strict-assertions"
+start_line = 150
+end_line = 150
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "strict-assertions"
+start_line = 151
+end_line = 151
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "strict-assertions"
+start_line = 195
+end_line = 195
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "strict-assertions"
+start_line = 196
+end_line = 196
+
 [[entries."tests/src/Helper/Security/Rule7ValidObject.php".issues]]
 code = "no-boolean-flag-parameter"
 start_line = 8
@@ -113,10 +138,20 @@ code = "no-boolean-flag-parameter"
 start_line = 109
 end_line = 109
 
+[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+code = "explicit-octal"
+start_line = 25
+end_line = 25
+
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 23
-end_line = 264
+end_line = 334
+
+[[entries."tests/src/Router/RouterTest.php".issues]]
+code = "too-many-methods"
+start_line = 23
+end_line = 334
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "no-error-control-operator"
