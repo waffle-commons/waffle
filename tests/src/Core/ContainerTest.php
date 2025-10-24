@@ -16,6 +16,9 @@ use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
 use WaffleTests\Core\Helper\WithPrimitive;
+use WaffleTests\Core\Helper\ServiceWithDefaultParam;
+use WaffleTests\Core\Helper\ServiceWithOptionalParam;
+use WaffleTests\Core\Helper\ServiceWithUnionParam;
 
 final class ContainerTest extends TestCase
 {
@@ -137,5 +140,51 @@ final class ContainerTest extends TestCase
         static::expectExceptionMessage('Cannot resolve primitive parameter "_primitive".');
 
         $this->container->get(WithPrimitive::class);
+    }
+
+    public function testResolveDependenciesWithOptionalNullableParam(): void
+    {
+        // The container should be able to resolve this class even if the optional
+        // parameter is not provided in the definition.
+        $this->container->set(ServiceWithOptionalParam::class, ServiceWithOptionalParam::class);
+
+        /** @var ServiceWithOptionalParam $service */
+        $service = $this->container->get(ServiceWithOptionalParam::class);
+
+        static::assertInstanceOf(ServiceWithOptionalParam::class, $service);
+        // The constructor should have used the default null value.
+        static::assertNull($service->name);
+    }
+
+    public function testResolveDependenciesWithDefaultScalarParam(): void
+    {
+        // The container should use the default scalar value defined in the constructor.
+        $this->container->set(ServiceWithDefaultParam::class, ServiceWithDefaultParam::class);
+
+        /** @var ServiceWithDefaultParam $service */
+        $service = $this->container->get(ServiceWithDefaultParam::class);
+
+        static::assertInstanceOf(ServiceWithDefaultParam::class, $service);
+        // The constructor should have used the default value 5.
+        static::assertSame(5, $service->count);
+    }
+
+    public function testResolveDependenciesThrowsForUnresolvableUnionParam(): void
+    {
+        // The container cannot automatically decide whether to inject a string or an int
+        // for a scalar union type without explicit configuration or context.
+        $this->container->set(ServiceWithUnionParam::class, ServiceWithUnionParam::class);
+
+        // We expect a ContainerException because the 'id' parameter is unresolvable.
+        // Note: The exact exception message might vary depending on how deep the
+        // resolution goes before failing, but it should indicate a resolution problem.
+        $this->expectException(ContainerException::class);
+        // A more specific message expectation might be fragile, but could be:
+        // $this->expectExceptionMessageMatches('/Cannot resolve parameter "\$id"/');
+        // OR depending on implementation:
+        // $this->expectExceptionMessageMatches('/Cannot resolve primitive parameter "id"/');
+
+        // Attempting to get the service should trigger the exception.
+        $this->container->get(ServiceWithUnionParam::class);
     }
 }
