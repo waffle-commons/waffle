@@ -11,7 +11,6 @@ use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Request;
 use Waffle\Core\Response;
-use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\Controller\TempController;
@@ -140,7 +139,6 @@ final class RequestTest extends TestCase
         $request = $this->createRealRequest(globals: $globals);
         $request->configure(
             container: $request->container,
-            cli: AppMode::WEB,
             globals: $globals,
         ); // Manually trigger configuration to load superglobals
 

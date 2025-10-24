@@ -83,26 +83,6 @@ final class ResponseTest extends TestCase
     }
 
     /**
-     * This test ensures that when the Response is constructed with a CLI handler,
-     * it correctly identifies the context and does not attempt to render output
-     * in the same way as a web request.
-     */
-    public function testRenderFromCli(): void
-    {
-        // 1. Setup
-        $cli = $this->createRealCli();
-
-        // 2. Action
-        ob_start();
-        $response = new Response(handler: $cli);
-        $response->render(); // Should do nothing in CLI context for now
-        $output = ob_get_clean() ?? '';
-
-        // 3. Assertions
-        static::assertEmpty($output);
-    }
-
-    /**
      * This test verifies that the Response class correctly resolves URL parameters
      * and passes them as arguments to the controller action.
      */

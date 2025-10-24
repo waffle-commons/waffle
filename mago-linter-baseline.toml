@@ -1,7 +1,7 @@
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "cyclomatic-complexity"
-start_line = 32
-end_line = 235
+start_line = 28
+end_line = 215
 
 [[entries."src/Core/Config.php".issues]]
 code = "cyclomatic-complexity"
@@ -51,7 +51,7 @@ end_line = 87
 [[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
-end_line = 122
+end_line = 107
 
 [[entries."tests/src/Cache/RouteCacheTest.php".issues]]
 code = "no-else-clause"
@@ -70,13 +70,13 @@ end_line = 140
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "no-global"
-start_line = 126
-end_line = 126
+start_line = 125
+end_line = 125
 
 [[entries."tests/src/Core/ResponseTest.php".issues]]
 code = "cyclomatic-complexity"
 start_line = 15
-end_line = 282
+end_line = 262
 
 [[entries."tests/src/Core/SystemTest.php".issues]]
 code = "explicit-octal"
@@ -115,8 +115,8 @@ end_line = 109
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "cyclomatic-complexity"
-start_line = 24
-end_line = 268
+start_line = 23
+end_line = 264
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "no-error-control-operator"

@@ -6,7 +6,6 @@ namespace WaffleTests\Abstract;
 
 use Waffle\Core\Constant;
 use Waffle\Interface\ContainerInterface;
-use WaffleTests\Abstract\Helper\CliKernel;
 use WaffleTests\Abstract\Helper\WebKernel;
 use WaffleTests\AbstractTestCase as TestCase;
 
@@ -83,29 +82,6 @@ final class AbstractKernelTest extends TestCase
         static::assertJson($output, 'Output was: ' . $output);
         static::assertStringContainsString('"message": "An unexpected error occurred."', $output);
         static::assertStringContainsString('"error": "Something went wrong"', $output);
-    }
-
-    public function testHandleInCliMode(): void
-    {
-        // Arrange: Create a partial mock of the kernel.
-        $_ENV[Constant::APP_ENV] = 'test';
-
-        // Instantiate our test-specific WebKernel but do not boot it yet.
-        $kernel = new CliKernel(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-            container: $this->container,
-        );
-
-        // Act: Manually boot and configure the kernel now that the mock is set up.
-        $kernel->boot()->configure();
-
-        ob_start();
-        $kernel->handle();
-        $output = ob_get_clean() ?? '';
-
-        // Assert
-        static::assertEmpty($output, 'Output in CLI mode should be empty, got: ' . $output);
     }
 
     public function testBootLoadsEnvironmentVariables(): void

@@ -105,19 +105,4 @@ final class AbstractResponseTest extends TestCase
         // Action
         $response->render();
     }
-
-    /**
-     * Tests that the response can be built from a CLI handler.
-     */
-    public function testBuildFromCliHandler(): void
-    {
-        // Setup
-        $cliHandler = $this->createRealCli();
-
-        // Action
-        $response = new ConcreteTestResponse(handler: $cliHandler);
-
-        // Assert
-        static::assertTrue($response->isCli());
-    }
 }

@@ -34,7 +34,6 @@ final class Constant
     public const string PHPEXT = '.php';
     public const string CLASSNAME = 'classname';
     public const string WEB = 'web';
-    public const string CLI = 'cli';
     public const string METHOD = 'method';
     public const string METHOD_GET = 'GET';
     public const string METHOD_POST = 'POST';

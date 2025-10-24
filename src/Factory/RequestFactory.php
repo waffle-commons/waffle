@@ -7,7 +7,6 @@ namespace Waffle\Factory;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
-use Waffle\Enum\AppMode;
 use Waffle\Exception\SecurityException;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
@@ -65,11 +64,10 @@ class RequestFactory
         ];
         $req = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: $globals,
         );
         $router = $system->getRouter();
-        if (null !== $router && !$req->isCli()) {
+        if (null !== $router) {
             $routes = $router->getRoutes();
             /**
              * @var array{

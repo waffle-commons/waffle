@@ -8,10 +8,8 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use Waffle\Core\Constant;
 use Waffle\Core\View;
-use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use Waffle\Exception\RenderingException;
-use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\RequestInterface;
 use Waffle\Interface\ResponseInterface;
@@ -26,17 +24,15 @@ abstract class AbstractResponse implements ResponseInterface
     use RequestTrait;
 
     private null|View $view = null;
-    private AppMode $cli;
-    private CliInterface|RequestInterface $handler;
+    private RequestInterface $handler;
     public null|ContainerInterface $container = null;
 
     #[\Override]
-    public function build(CliInterface|RequestInterface $handler): void
+    public function build(RequestInterface $handler): void
     {
         $this->view = null;
         $this->handler = $handler;
         $this->container = $handler->container;
-        $this->cli = $handler->cli;
     }
 
     /**

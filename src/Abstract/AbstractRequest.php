@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Core\Response;
-use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Http\ParameterBag;
@@ -25,10 +24,6 @@ abstract class AbstractRequest implements RequestInterface
     public ParameterBag $cookies; // For $_COOKIE
     public ParameterBag $session; // For $_SESSION
     public ParameterBag $env; // For $_ENV
-
-    public AppMode $cli = AppMode::WEB {
-        set => $this->cli = $value;
-    }
 
     /**
      * @var array{
@@ -51,7 +46,6 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @template T
      * @param ContainerInterface $container
-     * @param AppMode $cli
      * @param array{
      *       server: T|string|array<string, mixed>,
      *       get: T|string|array<string, mixed>,
@@ -63,12 +57,11 @@ abstract class AbstractRequest implements RequestInterface
      *       env: T|string|array<string, mixed>
      *   } $globals
      */
-    abstract public function __construct(ContainerInterface $container, AppMode $cli, array $globals = []);
+    abstract public function __construct(ContainerInterface $container, array $globals = []);
 
     /**
      * @template T
      * @param ContainerInterface $container
-     * @param AppMode $cli
      * @param array{
      *       server: T|string|array<string, mixed>,
      *       get: T|string|array<string, mixed>,
@@ -82,10 +75,9 @@ abstract class AbstractRequest implements RequestInterface
      * @return void
      */
     #[\Override]
-    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void
+    public function configure(ContainerInterface $container, array $globals = []): void
     {
         $this->container = $container;
-        $this->cli = $cli;
         /** @var array<string, mixed> $getGlobals */
         $getGlobals = $globals['get'] ?? [];
         $this->query = new ParameterBag(parameters: $getGlobals);
@@ -115,7 +107,7 @@ abstract class AbstractRequest implements RequestInterface
     #[\Override]
     public function process(): ResponseInterface
     {
-        if (null === $this->currentRoute && AppMode::WEB === $this->cli) {
+        if (null === $this->currentRoute) {
             // Instead of exiting, we now throw a specific exception.
             throw new RouteNotFoundException();
         }
@@ -139,12 +131,6 @@ abstract class AbstractRequest implements RequestInterface
         $this->currentRoute = $route;
 
         return $this;
-    }
-
-    #[\Override]
-    public function isCli(): bool
-    {
-        return $this->cli === AppMode::CLI;
     }
 
     #[\Override]

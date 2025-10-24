@@ -6,7 +6,7 @@ namespace Waffle\Interface;
 
 interface ResponseInterface
 {
-    public function build(CliInterface|RequestInterface $handler): void;
+    public function build(RequestInterface $handler): void;
 
     public function render(): void;
 }

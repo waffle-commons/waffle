@@ -11,7 +11,6 @@ use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
 use Waffle\Core\System;
-use Waffle\Enum\AppMode;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
@@ -114,7 +113,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/users';
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
@@ -147,7 +145,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = $url;
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
@@ -193,7 +190,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/non-existent-route';
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
