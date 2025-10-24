@@ -15,10 +15,10 @@ use WaffleTests\Core\Helper\ServiceB;
 use WaffleTests\Core\Helper\ServiceC;
 use WaffleTests\Core\Helper\ServiceD;
 use WaffleTests\Core\Helper\ServiceE;
-use WaffleTests\Core\Helper\WithPrimitive;
 use WaffleTests\Core\Helper\ServiceWithDefaultParam;
 use WaffleTests\Core\Helper\ServiceWithOptionalParam;
 use WaffleTests\Core\Helper\ServiceWithUnionParam;
+use WaffleTests\Core\Helper\WithPrimitive;
 
 final class ContainerTest extends TestCase
 {

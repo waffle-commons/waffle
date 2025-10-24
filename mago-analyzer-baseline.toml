@@ -325,53 +325,43 @@ end_line = 269
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 35
-end_line = 35
+start_line = 38
+end_line = 38
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 45
-end_line = 45
+start_line = 48
+end_line = 48
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 55
-end_line = 55
+start_line = 58
+end_line = 58
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 56
-end_line = 56
+start_line = 59
+end_line = 59
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 98
-end_line = 98
+start_line = 101
+end_line = 101
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 109
-end_line = 109
+start_line = 112
+end_line = 112
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 33
-end_line = 33
+start_line = 36
+end_line = 36
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 35
-end_line = 35
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 42
-end_line = 42
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 43
-end_line = 43
+start_line = 38
+end_line = 38
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -380,13 +370,13 @@ end_line = 45
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 53
-end_line = 53
+start_line = 46
+end_line = 46
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 55
-end_line = 55
+start_line = 48
+end_line = 48
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -395,18 +385,23 @@ end_line = 56
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 66
-end_line = 66
+start_line = 58
+end_line = 58
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 76
-end_line = 76
+start_line = 59
+end_line = 59
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 77
-end_line = 77
+start_line = 69
+end_line = 69
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 79
+end_line = 79
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -415,43 +410,38 @@ end_line = 80
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 85
-end_line = 85
+start_line = 83
+end_line = 83
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 86
-end_line = 86
+start_line = 88
+end_line = 88
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 91
-end_line = 91
+start_line = 89
+end_line = 89
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 96
-end_line = 96
+start_line = 94
+end_line = 94
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 98
-end_line = 98
+start_line = 99
+end_line = 99
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 105
-end_line = 105
+start_line = 101
+end_line = 101
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 106
-end_line = 106
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 107
-end_line = 107
+start_line = 108
+end_line = 108
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -460,13 +450,53 @@ end_line = 109
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 130
-end_line = 130
+start_line = 110
+end_line = 110
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 138
-end_line = 138
+start_line = 112
+end_line = 112
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 133
+end_line = 133
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 141
+end_line = 141
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 148
+end_line = 148
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 151
+end_line = 151
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 161
+end_line = 161
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 164
+end_line = 164
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 175
+end_line = 175
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 187
+end_line = 187
 
 [[entries."tests/src/Core/RequestTest.php".issues]]
 code = "invalid-return-statement"
@@ -1285,8 +1315,8 @@ end_line = 70
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "possibly-invalid-argument"
-start_line = 118
-end_line = 118
+start_line = 126
+end_line = 126
 
 [[entries."tests/src/Trait/UriParserTraitTest.php".issues]]
 code = "ambiguous-object-method-access"
