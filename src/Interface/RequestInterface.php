@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Waffle\Interface;
 
-use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use Waffle\Http\ParameterBag;
 
 interface RequestInterface
 {
-    public AppMode $cli {
-        get;
-        set;
-    }
-
     /**
      * @var array{
      *     classname: string,
@@ -37,7 +31,6 @@ interface RequestInterface
     /**
      * @template T
      * @param ContainerInterface $container
-     * @param AppMode $cli
      * @param array{
      *       server: T|string|array<string, mixed>,
      *       get: T|string|array<string, mixed>,
@@ -50,7 +43,7 @@ interface RequestInterface
      *   } $globals
      * @return void
      */
-    public function configure(ContainerInterface $container, AppMode $cli, array $globals = []): void;
+    public function configure(ContainerInterface $container, array $globals = []): void;
 
     public function process(): ResponseInterface;
 
@@ -65,8 +58,6 @@ interface RequestInterface
      * @return $this
      */
     public function setCurrentRoute(null|array $route = null): self;
-
-    public function isCli(): bool;
 
     public function bag(HttpBag $key): ParameterBag;
 }

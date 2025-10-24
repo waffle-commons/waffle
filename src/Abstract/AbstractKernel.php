@@ -13,26 +13,21 @@ use Waffle\Core\Response;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Core\View;
-use Waffle\Enum\AppMode;
 use Waffle\Enum\Failsafe;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\RenderingException;
 use Waffle\Exception\RouteNotFoundException;
-use Waffle\Factory\CliFactory;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Factory\RequestFactory;
-use Waffle\Interface\CliInterface;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
 use Waffle\Interface\RequestInterface;
-use Waffle\Trait\MicrokernelTrait;
 use Waffle\Trait\ReflectionTrait;
 
 abstract class AbstractKernel implements KernelInterface
 {
-    use MicrokernelTrait;
     use ReflectionTrait;
 
     private string $environment = Constant::ENV_PROD {
@@ -71,12 +66,10 @@ abstract class AbstractKernel implements KernelInterface
                 throw new NotFoundException();
             }
 
-            $handler = $this->isCli()
-                ? new CliFactory()->createFromGlobals(container: $this->container)
-                : new RequestFactory()->createFromGlobals(
-                    container: $this->container,
-                    system: $this->system,
-                );
+            $handler = new RequestFactory()->createFromGlobals(
+                container: $this->container,
+                system: $this->system,
+            );
 
             $this->run(handler: $handler);
         } catch (Throwable $e) {
@@ -170,7 +163,7 @@ abstract class AbstractKernel implements KernelInterface
     }
 
     #[\Override]
-    public function run(CliInterface|RequestInterface $handler): void
+    public function run(RequestInterface $handler): void
     {
         $handler->process()->render();
     }
@@ -180,23 +173,10 @@ abstract class AbstractKernel implements KernelInterface
      */
     private function handleException(Throwable $e): void
     {
-        if ($this->isCli()) {
-            fwrite(STDERR, 'Error: ' . $e->getMessage() . PHP_EOL);
-            exit(1);
-        }
-
-        $this->buildErrorResponse(e: $e);
-    }
-
-    private function buildErrorResponse(Throwable $e): void
-    {
         // Exception Handler Hardening:
         $container = $this->container ?? $this->createFailsafeContainer();
 
-        $handler = new Request(
-            container: $container,
-            cli: AppMode::WEB,
-        );
+        $handler = new Request(container: $container);
         $statusCode = 500;
 
         $data = [

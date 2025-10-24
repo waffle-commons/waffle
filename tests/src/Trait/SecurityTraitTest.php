@@ -11,15 +11,23 @@ use stdClass;
 use Waffle\Exception\SecurityException;
 use Waffle\Trait\SecurityTrait;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Helper\NonReadOnlyService;
+use WaffleTests\Helper\Service\NonReadOnlyService;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
+use WaffleTests\Trait\Helper\TraitSecurity;
 use WaffleTests\Trait\Helper\UninitializedPropertyClass;
 
 #[CoversTrait(SecurityTrait::class)]
 final class SecurityTraitTest extends TestCase
 {
-    use SecurityTrait;
+    private TraitSecurity $traitObject; // Use helper object
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->traitObject = new TraitSecurity();
+    }
 
     /**
      * @param object $object
@@ -29,7 +37,7 @@ final class SecurityTraitTest extends TestCase
     #[DataProvider('validExpectationsProvider')]
     public function testIsValidReturnsTrueForMatchingExpectations(object $object, array $expectations): void
     {
-        static::assertTrue($this->isValid($object, $expectations));
+        static::assertTrue($this->traitObject->isValid($object, $expectations));
     }
 
     public static function validExpectationsProvider(): array
@@ -47,7 +55,7 @@ final class SecurityTraitTest extends TestCase
     #[DataProvider('mismatchedExpectationsProvider')]
     public function testIsValidReturnsFalseForMismatchedExpectations(object $object, array $expectations): void
     {
-        static::assertFalse($this->isValid($object, $expectations));
+        static::assertFalse($this->traitObject->callIsValid($object, $expectations));
     }
 
     public static function mismatchedExpectationsProvider(): array
@@ -67,7 +75,7 @@ final class SecurityTraitTest extends TestCase
         static::expectException(SecurityException::class);
         static::expectExceptionMessageMatches($expectedExceptionMessage);
 
-        $this->isSecure(
+        $this->traitObject->callIsSecure(
             object: $violatingObject,
             level: $securityLevel,
         );
@@ -77,15 +85,15 @@ final class SecurityTraitTest extends TestCase
     {
         $validObject = new FinalReadOnlyClass();
 
-        $this->isSecure(
+        $this->traitObject->callIsSecure(
             object: $validObject,
             level: 1,
         );
-        $this->isSecure(
+        $this->traitObject->callIsSecure(
             object: $validObject,
             level: 5,
         );
-        $this->isSecure(object: $validObject);
+        $this->traitObject->callIsSecure(object: $validObject);
 
         static::assertTrue(true);
     }
@@ -115,7 +123,7 @@ final class SecurityTraitTest extends TestCase
         $objectWithoutConstructor = $reflectionClass->newInstanceWithoutConstructor();
 
         // 3. Action: Run the security check. It should now detect the uninitialized property.
-        $this->isSecure(
+        $this->traitObject->callIsSecure(
             object: $objectWithoutConstructor,
             level: 6,
         );
@@ -129,10 +137,35 @@ final class SecurityTraitTest extends TestCase
         // We create a dummy class that simulates a framework service that is not readonly.
         $nonReadOnlyService = new NonReadOnlyService();
 
-        $this->isSecure(
+        $this->traitObject->callIsSecure(
             object: $nonReadOnlyService,
             level: 9,
         );
+    }
+
+    public function testIsValidWithMultipleExpectationsMixed(): void
+    {
+        $dateTime = new \DateTime();
+
+        // Should pass if at least one expectation matches the object's class or interfaces/parents
+        // Note: isValid currently checks if the object is an instance of *ALL* expectations. Let's test that behavior.
+        // If it should pass if *ANY* match, the logic in SecurityTrait::isValid needs adjustment.
+
+        // Test current behavior (must match ALL)
+        static::assertTrue($this->traitObject->callIsValid($dateTime, [\DateTime::class, \DateTimeInterface::class]));
+        static::assertFalse($this->traitObject->callIsValid($dateTime, [\DateTime::class, \stdClass::class])); // Fails: not stdClass
+    }
+
+    public function testIsValidWithNullObject(): void
+    {
+        // The isValid method has a check `if (null === $object)`, should return false.
+        static::assertFalse($this->traitObject->callIsValid(null, [\stdClass::class]));
+    }
+
+    public function testIsValidWithEmptyExpectations(): void
+    {
+        // If there are no expectations, the loop is skipped, and it should return true.
+        static::assertTrue($this->traitObject->callIsValid(new \stdClass(), []));
     }
 
     public static function securityViolationProvider(): \Generator

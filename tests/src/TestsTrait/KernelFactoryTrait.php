@@ -14,16 +14,19 @@ use Waffle\Interface\KernelInterface;
 
 trait KernelFactoryTrait
 {
-    protected function createTestConfigFile(int $securityLevel = 10): void
-    {
+    protected function createTestConfigFile(
+        int $securityLevel = 10,
+        string $controllerPath = 'tests/src/Helper/Controller',
+        string $servicePath = 'tests/src/Helper/Service',
+    ): void {
         $yamlContent = <<<YAML
         waffle:
           security:
             level: {$securityLevel}
           paths:
             # Point to the actual test helpers for controller/service resolution
-            controllers: 'tests/src/Helper'
-            services: 'tests/src/Helper'
+            controllers: '{$controllerPath}'
+            services: '{$servicePath}'
         YAML;
         file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
 
@@ -35,9 +38,17 @@ trait KernelFactoryTrait
         file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
     }
 
-    protected function createAndGetConfig(int $securityLevel = 10, Failsafe $failsafe = Failsafe::DISABLED): Config
-    {
-        $this->createTestConfigFile(securityLevel: $securityLevel);
+    protected function createAndGetConfig(
+        int $securityLevel = 10,
+        string $controllerPath = 'tests/src/Helper/Controller',
+        string $servicePath = 'tests/src/Helper/Service',
+        Failsafe $failsafe = Failsafe::DISABLED,
+    ): Config {
+        $this->createTestConfigFile(
+            securityLevel: $securityLevel,
+            controllerPath: $controllerPath,
+            servicePath: $servicePath,
+        );
 
         return new Config(
             configDir: $this->testConfigDir,

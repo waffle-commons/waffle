@@ -30,6 +30,10 @@ tests:
 mago:
 	@docker-compose exec frankenphp composer mago
 
+# Runs the full "pipeline" of tests and Mago static analysis tool inside the container.
+scan:
+	@docker-compose exec frankenphp composer scan
+
 # A shortcut to run both tests and Mago.
 ci: tests mago
 

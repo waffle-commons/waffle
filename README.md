@@ -52,64 +52,9 @@ Waffle is designed around a few core principles:
 
 ### Installation
 
-The best way to start a new project, for now, is by using the official `fuzzy` application skeleton:
+_The workflow is currently under migration towards `waffle-commons/workspace` and will be update soon._
 
-```shell
-composer create-project eightyfour/fuzzy my-api
-```
-
-This will set up a new project with a sensible directory structure and all the necessary configurations.
-
-### Quick Start: "Hello World"
-
-Let's see how simple it is to create a new endpoint.
-
-#### 1. Create a Controller (`app/Controller/HomeController.php`)
-
-This is where you define your application logic. Use the `#[Route]` attribute to define your endpoints.
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Controller;
-
-use Waffle\Attribute\Route;
-use Waffle\Core\BaseController;
-use Waffle\Core\View;
-
-#[Route(path: '/', name: 'home')]
-final class HomeController extends BaseController
-{
-    #[Route(path: '', name: 'index')]
-    public function index(): View
-    {
-        return new View(data: ['message' => 'Hello, Waffle!']);
-    }
-}
-```
-
-
-#### 2. Run your application
-
-If you used the fuzzy skeleton, you can start the local development server with Docker:
-
-```shell
-make dev
-```
-
-
-That's it! Visit [http://localhost](http://localhost) in your browser. You will get the following JSON response:
-
-```json
-{
-  "data": {
-    "message": "Hello, Waffle!"
-  }
-}
-```
-
+You can run it directly on you machine (with PHP8.4+ installed).
 
 ## Testing
 

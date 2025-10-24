@@ -134,7 +134,7 @@ class Config
 
         if (!is_bool($value)) {
             throw new InvalidConfigurationException(sprintf(
-                'Configuration key "%s" expects type "array", but got "%s".',
+                'Configuration key "%s" expects type "boolean", but got "%s".',
                 $key,
                 gettype($value),
             ));

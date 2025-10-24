@@ -10,5 +10,5 @@ interface KernelInterface
 
     public function configure(): self;
 
-    public function run(CliInterface|RequestInterface $handler): void;
+    public function run(RequestInterface $handler): void;
 }

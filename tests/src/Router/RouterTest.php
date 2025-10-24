@@ -6,13 +6,15 @@ namespace WaffleTests\Router;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Waffle\Core\Config;
+use Waffle\Core\Container;
 use Waffle\Core\Request;
 use Waffle\Core\Security;
 use Waffle\Core\System;
-use Waffle\Enum\AppMode;
+use Waffle\Interface\ContainerInterface;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 /**
  * This test class provides comprehensive coverage for the Waffle\Router\Router class.
@@ -23,10 +25,10 @@ use WaffleTests\Router\Dummy\DummyController;
 final class RouterTest extends TestCase
 {
     private Router $router;
-    private string $dummyControllerDir;
 
     private array $serverBackup;
     private System $system;
+    private ContainerInterface $container;
 
     /**
      * This setup method is executed before each test. It prepares a clean and consistent
@@ -40,20 +42,24 @@ final class RouterTest extends TestCase
 
         // Backup the global state to ensure test isolation.
         $this->serverBackup = $_SERVER;
-        $this->dummyControllerDir = __DIR__ . '/Dummy';
 
-        // 1. Mock the deepest dependency: Security.
-        // The `analyze` method has a `void` return type, so we don't use `willReturn`.
-        $securityMock = $this->createMock(Security::class);
-        $securityMock->method('analyze');
+        // 1. Create a specific Config for this test pointing ONLY to Dummy controllers
+        $testConfig = $this->createAndGetConfig(securityLevel: 2);
 
-        // 2. Create a REAL System instance, injecting the security mock.
-        // This ensures the System object is correctly constructed and its properties are initialized.
-        $this->system = new System($securityMock);
+        // 2. Create Security and Container using THIS specific config
+        $security = new Security($testConfig);
+        $this->container = new Container($security);
+        // Pre-populate container if needed
+        $this->container->set(Config::class, $testConfig);
+        $this->container->set(Security::class, $security);
+        // IMPORTANT: Manually register TempController if auto-discovery might fail now
+        $this->container->set(TempController::class, TempController::class);
+
+        $this->system = new System($security);
 
         // 3. Instantiate the Router with its dependencies.
         $this->router = new Router(
-            directory: $this->dummyControllerDir,
+            directory: 'tests/src/Helper/Controller',
             system: $this->system,
         );
     }
@@ -76,6 +82,7 @@ final class RouterTest extends TestCase
     public function testRegisterRoutesDiscoversAndBuildsRoutes(): void
     {
         // Action: Execute the boot and registration process.
+        $this->createTestConfigFile(securityLevel: 2);
         $container = $this->createRealContainer(level: 2);
         $this->router->boot(container: $container);
 
@@ -87,7 +94,7 @@ final class RouterTest extends TestCase
         foreach ($this->router->routes as $route) {
             if ('user_users_list' === $route['name']) {
                 $foundRoute = true;
-                static::assertSame(DummyController::class, $route['classname']);
+                static::assertSame(TempController::class, $route['classname']);
                 static::assertSame('/users', $route['path']);
                 static::assertSame('list', $route['method']);
                 break;
@@ -106,7 +113,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/users';
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
@@ -139,7 +145,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = $url;
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
@@ -185,7 +190,6 @@ final class RouterTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/non-existent-route';
         $request = new Request(
             container: $container,
-            cli: AppMode::WEB,
             globals: [
                 'server' => $_SERVER ?? [],
                 'get' => $_GET ?? [],
@@ -234,6 +238,30 @@ final class RouterTest extends TestCase
     }
 
     /**
+     * This test validates the production optimization feature of route caching.
+     */
+    public function testBootLoadsRoutesFromCacheInProduction(): void
+    {
+        putenv('APP_ENV=prod');
+        $cacheFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'waffle_routes_cache.php';
+        $routes = $this->provideRoutesArray();
+        $content = '<?php return ' . var_export($routes, true) . ';';
+        file_put_contents($cacheFile, $content, LOCK_EX);
+
+        $container = $this->createRealContainer(level: 2);
+        $this->router->boot(container: $container);
+        static::assertFileExists($cacheFile, 'The router should have created a cache file.');
+
+        $cachedRoutes = $this->router->routes;
+        static::assertSame($routes, $cachedRoutes, 'The cache file should have the same routes.');
+        static::assertNotEmpty($cachedRoutes, 'The cache file should not be empty.');
+        static::assertCount(5, $cachedRoutes, 'The cache file should contain the correct number of routes.');
+
+        unlink($cacheFile);
+        putenv('APP_ENV=test');
+    }
+
+    /**
      * This test validates that the router is robust and does not crash when provided with
      * a non-existent controller directory. A well-behaved framework should handle this
      * configuration error gracefully instead of throwing a fatal error.
@@ -257,5 +285,51 @@ final class RouterTest extends TestCase
             $badRouter->boot(container: $container),
             'The boot method should still return the router instance.',
         );
+    }
+
+    private function provideRoutesArray(): array
+    {
+        return [
+            [
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'list',
+                'arguments' => [],
+                'path' => '/users',
+                'name' => 'user_users_list',
+            ],
+            [
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'show',
+                'arguments' => [
+                    'id' => 'int',
+                ],
+                'path' => '/users/{id}',
+                'name' => 'user_users_show',
+            ],
+            [
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'details',
+                'arguments' => [
+                    'id' => 'int',
+                    'slug' => 'string',
+                ],
+                'path' => '/users/{id}/{slug}',
+                'name' => 'user_users_details',
+            ],
+            [
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'profile',
+                'arguments' => [],
+                'path' => '/users/profile/view',
+                'name' => 'user_users_profile_view',
+            ],
+            [
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'throwError',
+                'arguments' => [],
+                'path' => '/trigger-error',
+                'name' => 'user_trigger_error',
+            ],
+        ];
     }
 }

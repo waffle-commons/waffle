@@ -46,13 +46,6 @@ class System extends AbstractSystem
             );
             /** @var Container $container */
             $container = $kernel->container;
-            $this->security->analyze(
-                object: $container,
-                expectations: [
-                    Container::class,
-                    ContainerInterface::class,
-                ],
-            );
             /** @var string $controllers */
             $controllers = $config->getString(key: 'waffle.paths.controllers');
             /** @var string $root */

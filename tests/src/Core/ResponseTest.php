@@ -11,7 +11,7 @@ use Waffle\Exception\RenderingException;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\DummyControllerWithService;
 use WaffleTests\Core\Helper\DummyService;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(Response::class)]
 final class ResponseTest extends TestCase
@@ -63,7 +63,7 @@ final class ResponseTest extends TestCase
             ],
         );
         $request->setCurrentRoute([
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'list',
             Constant::ARGUMENTS => [],
             Constant::PATH => '/users',
@@ -80,26 +80,6 @@ final class ResponseTest extends TestCase
         static::assertJson($output);
         $expectedJson = json_encode(['data' => ['id' => 1, 'name' => 'John Doe']]);
         static::assertJsonStringEqualsJsonString((string) $expectedJson, $output);
-    }
-
-    /**
-     * This test ensures that when the Response is constructed with a CLI handler,
-     * it correctly identifies the context and does not attempt to render output
-     * in the same way as a web request.
-     */
-    public function testRenderFromCli(): void
-    {
-        // 1. Setup
-        $cli = $this->createRealCli();
-
-        // 2. Action
-        ob_start();
-        $response = new Response(handler: $cli);
-        $response->render(); // Should do nothing in CLI context for now
-        $output = ob_get_clean() ?? '';
-
-        // 3. Assertions
-        static::assertEmpty($output);
     }
 
     /**
@@ -127,7 +107,7 @@ final class ResponseTest extends TestCase
         );
 
         $request->setCurrentRoute([
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'show', // Assuming 'show' is the correct method for a single item
             Constant::ARGUMENTS => ['id' => 'int'],
             Constant::PATH => '/users/{id}',
@@ -177,7 +157,7 @@ final class ResponseTest extends TestCase
         );
 
         $request->setCurrentRoute([
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'show',
             Constant::ARGUMENTS => ['id' => 'int'],
             Constant::PATH => '/users/{id}',
@@ -264,7 +244,7 @@ final class ResponseTest extends TestCase
             ],
         );
         $request->setCurrentRoute([
-            Constant::CLASSNAME => DummyController::class,
+            Constant::CLASSNAME => TempController::class,
             Constant::METHOD => 'list',
             Constant::ARGUMENTS => [],
             Constant::PATH => '/users',

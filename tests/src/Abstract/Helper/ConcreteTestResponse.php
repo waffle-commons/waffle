@@ -6,7 +6,6 @@ namespace WaffleTests\Abstract\Helper;
 
 use Waffle\Abstract\AbstractResponse;
 use Waffle\Core\View;
-use Waffle\Interface\CliInterface;
 use Waffle\Interface\RequestInterface;
 
 /**
@@ -14,7 +13,7 @@ use Waffle\Interface\RequestInterface;
  */
 class ConcreteTestResponse extends AbstractResponse
 {
-    public function __construct(CliInterface|RequestInterface $handler)
+    public function __construct(RequestInterface $handler)
     {
         $this->build(handler: $handler);
     }
@@ -25,10 +24,5 @@ class ConcreteTestResponse extends AbstractResponse
             'id' => 1,
             'name' => 'John Doe',
         ]);
-    }
-
-    public function isCli(): bool
-    {
-        return true;
     }
 }

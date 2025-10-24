@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractRequest;
-use Waffle\Enum\AppMode;
 use Waffle\Interface\ContainerInterface;
 
 class Request extends AbstractRequest
@@ -13,7 +12,6 @@ class Request extends AbstractRequest
     /**
      * @template T
      * @param ContainerInterface $container
-     * @param AppMode $cli
      * @param array{
      *       server: T|string|array<mixed>,
      *       get: T|string|array<mixed>,
@@ -25,7 +23,7 @@ class Request extends AbstractRequest
      *       env: T|string|array<mixed>
      *   } $globals
      */
-    public function __construct(ContainerInterface $container, AppMode $cli, array $globals = [])
+    public function __construct(ContainerInterface $container, array $globals = [])
     {
         /** @var array<string, mixed> $getGlobals */
         $getGlobals = $globals['get'] ?? [];
@@ -53,7 +51,6 @@ class Request extends AbstractRequest
         ];
         $this->configure(
             container: $container,
-            cli: $cli,
             globals: $newGlobals,
         );
     }

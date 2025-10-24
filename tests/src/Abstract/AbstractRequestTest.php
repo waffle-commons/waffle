@@ -9,11 +9,10 @@ use ReflectionClass;
 use ReflectionException;
 use Waffle\Abstract\AbstractRequest;
 use Waffle\Core\Response;
-use Waffle\Enum\AppMode;
 use Waffle\Enum\HttpBag;
 use Waffle\Exception\RouteNotFoundException;
 use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Router\Dummy\DummyController;
+use WaffleTests\Helper\Controller\TempController;
 
 #[CoversClass(AbstractRequest::class)]
 final class AbstractRequestTest extends TestCase
@@ -49,19 +48,6 @@ final class AbstractRequestTest extends TestCase
     }
 
     /**
-     * This test validates a key architectural choice: in a Command-Line Interface (CLI)
-     * context, the application should not fail if no route is provided. This allows for
-     * CLI commands to be handled differently from web requests.
-     */
-    public function testProcessDoesNotThrowExceptionInCliMode(): void
-    {
-        $request = $this->createRealRequest(isCli: AppMode::CLI);
-
-        $response = $request->process();
-        static::assertInstanceOf(Response::class, $response);
-    }
-
-    /**
      * This test ensures that the `setCurrentRoute` method correctly updates the internal
      * state of the request object and adheres to a fluent interface pattern by returning
      * its own instance.
@@ -81,7 +67,7 @@ final class AbstractRequestTest extends TestCase
          *   }|null $routeData
          */
         $routeData = [
-            'classname' => DummyController::class,
+            'classname' => TempController::class,
             'method' => 'list',
             'arguments' => [],
             'path' => '/home',
