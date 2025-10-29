@@ -9,7 +9,7 @@ const APP_CONFIG = 'temp_config';
 
 require_once __DIR__ . '/src/AbstractTestCase.php';
 
-// The DummyController is a test helper, so we include it manually.
+// required test helpers, so we include them manually.
 require_once __DIR__ . '/src/Helper/Service/TempService.php';
 require_once __DIR__ . '/src/Helper/Controller/TempController.php';
 require_once __DIR__ . '/src/Helper/Security/Rule2ValidObject1.php';
