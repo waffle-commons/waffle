@@ -38,7 +38,7 @@ trait UriParserTrait
         // If the result is an empty array (e.g., path was '///'), return ['']
         // This covers cases where the path contained only slashes but wasn't exactly '/'
         $issetSegArray = isset($segments);
-        $emptySegArray = $segments === [] || $segments === [''];
+        $emptySegArray = empty($segments);
         if ($issetSegArray && $emptySegArray && preg_match('#^/+$#', $path)) {
             return [''];
         }
@@ -78,7 +78,7 @@ trait UriParserTrait
         }
 
         $issetSegArray = isset($segments);
-        $emptySegArray = $segments === [] || $segments === [''];
+        $emptySegArray = empty($segments);
         if ($issetSegArray && $emptySegArray && preg_match('#^/+$#', $path)) {
             return [''];
         }
