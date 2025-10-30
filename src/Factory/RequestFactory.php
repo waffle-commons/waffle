@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Factory;
 
+use JsonException;
+use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Core\Constant;
 use Waffle\Core\Request;
 use Waffle\Core\System;
@@ -17,9 +19,9 @@ class RequestFactory
      * Creates a Request object from PHP's superglobals.
      * This is the single point in the application with direct access to these globals.
      *
-     * @throws SecurityException
+     * @throws SecurityException|JsonException
      */
-    public function createFromGlobals(ContainerInterface $container, System $system): RequestInterface
+    public function createFromGlobals(ContainerInterface $container, System $system): ServerRequestInterface
     {
         $postData = isset($_POST) ? $_POST : [];
         $contentType = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
@@ -42,14 +44,14 @@ class RequestFactory
         /**
          * @template T
          * @var array{
-         *        server: T|string|array<mixed>,
-         *        get: T|string|array<mixed>,
-         *        post: T|string|array<mixed>,
-         *        files: T|string|array<mixed>,
-         *        cookie: T|string|array<mixed>,
-         *        session: T|string|array<mixed>,
-         *        request: T|string|array<mixed>,
-         *        env: T|string|array<mixed>
+         *        server: T|string|array<string, mixed>,
+         *        get: T|string|array<string, mixed>,
+         *        post: T|string|array<string, mixed>,
+         *        files: T|string|array<string, mixed>,
+         *        cookie: T|string|array<string, mixed>,
+         *        session: T|string|array<string, mixed>,
+         *        request: T|string|array<string, mixed>,
+         *        env: T|string|array<string, mixed>
          *    } $globals
          */
         $globals = [
