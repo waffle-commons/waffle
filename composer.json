@@ -25,7 +25,8 @@
         "php": "^8.4",
         "psr/http-message": "^2.0",
         "psr/container": "^2.0",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "psr/http-factory": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
