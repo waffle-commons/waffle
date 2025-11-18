@@ -248,6 +248,11 @@ code = "explicit-octal"
 start_line = 25
 end_line = 25
 
+[[entries."tests/src/Router/RouteParserTest.php".issues]]
+code = "no-redundant-use"
+start_line = 7
+end_line = 7
+
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "prefer-early-continue"
 start_line = 65

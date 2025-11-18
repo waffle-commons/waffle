@@ -65,38 +65,28 @@ end_line = 124
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-argument"
-start_line = 95
-end_line = 95
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-argument"
-start_line = 97
-end_line = 97
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-argument"
 start_line = 101
 end_line = 101
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-array-access"
-start_line = 96
-end_line = 96
+code = "mixed-argument"
+start_line = 105
+end_line = 105
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-array-access"
-start_line = 98
-end_line = 98
+start_line = 102
+end_line = 102
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-assignment"
-start_line = 93
-end_line = 93
+start_line = 100
+end_line = 100
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-operand"
-start_line = 108
-end_line = 108
+start_line = 112
+end_line = 112
 
 [[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
 code = "less-specific-return-statement"
