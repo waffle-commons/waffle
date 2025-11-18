@@ -32,7 +32,8 @@
         "phpunit/phpunit": "^12.0",
         "carthage-software/mago": "^1.0.0-beta.31",
         "vimeo/psalm": "^6.13",
-        "php-mock/php-mock-phpunit": "^2.13"
+        "php-mock/php-mock-phpunit": "^2.13",
+        "waffle-commons/http": "dev-feature/+1-psr_implementation"
     },
     "scripts": {
         "formatter": "vendor/bin/mago fmt",

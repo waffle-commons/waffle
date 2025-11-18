@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
+use Psr\Http\Message\ResponseInterface;
+use Waffle\Commons\Http\ServerRequest;
+use Waffle\Commons\Http\Uri;
 use Waffle\Core\Constant;
 use Waffle\Interface\ContainerInterface;
 use WaffleTests\Abstract\Helper\WebKernel;
@@ -19,11 +22,10 @@ final class AbstractKernelTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalAppEnv = $_ENV[Constant::APP_ENV] ?? null; // Backup APP_ENV
+        $this->originalAppEnv = $_ENV[Constant::APP_ENV] ?? null;
 
         $this->container = $this->createRealContainer(level: 2);
 
-        // Instantiate our test-specific WebKernel but do not boot it yet.
         $this->kernel = new WebKernel(
             configDir: $this->testConfigDir,
             environment: 'dev',
@@ -34,7 +36,6 @@ final class AbstractKernelTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        // Restore original APP_ENV
         $_ENV[Constant::APP_ENV] = $this->originalAppEnv;
         if ($this->originalAppEnv === null) {
             unset($_ENV[Constant::APP_ENV]);
@@ -47,41 +48,58 @@ final class AbstractKernelTest extends TestCase
     public function testHandleWithMatchingRouteRendersResponse(): void
     {
         // Arrange
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI'] = '/users';
         $_ENV[Constant::APP_ENV] = 'dev';
 
-        // Act: Boot the kernel now that the environment is ready.
-        $this->kernel?->boot()->configure();
+        $uri = new Uri('/users');
+        $request = new ServerRequest('GET', $uri);
 
-        ob_start();
-        $this->kernel?->handle();
-        $output = ob_get_clean() ?? '';
+        // Act
+        $this->kernel?->boot()->configure();
+        $response = $this->kernel?->handle($request);
 
         // Assert
-        static::assertJson($output, 'Output was: ' . $output);
-        $expectedJson = '{"data":{"id":1,"name":"John Doe"}}';
-        static::assertJsonStringEqualsJsonString($expectedJson, $output);
+        static::assertInstanceOf(ResponseInterface::class, $response);
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('application/json', $response->getHeaderLine('Content-Type'));
+
+        $body = (string) $response->getBody();
+        static::assertJson($body);
+
+        // Use flexible JSON assertion
+        $expectedJson = '{"id":1,"name":"John Doe"}';
+        static::assertJsonStringEqualsJsonString($expectedJson, $body);
     }
 
     public function testHandleCatchesAndRendersThrowable(): void
     {
         // Arrange
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI'] = '/trigger-error';
         $_ENV[Constant::APP_ENV] = 'dev';
 
-        // Act: Boot the kernel.
-        $this->kernel?->boot()->configure();
+        $uri = new Uri('/trigger-error');
+        $request = new ServerRequest('GET', $uri);
 
-        ob_start();
-        $this->kernel?->handle();
-        $output = ob_get_clean() ?? '';
+        // Act
+        $this->kernel?->boot()->configure();
+        $response = $this->kernel?->handle($request);
 
         // Assert
-        static::assertJson($output, 'Output was: ' . $output);
-        static::assertStringContainsString('"message": "An unexpected error occurred."', $output);
-        static::assertStringContainsString('"error": "Something went wrong"', $output);
+        static::assertInstanceOf(ResponseInterface::class, $response);
+        static::assertSame(500, $response->getStatusCode());
+        static::assertSame('application/json', $response->getHeaderLine('Content-Type'));
+
+        $body = (string) $response->getBody();
+        static::assertJson($body);
+
+        // Decode to array for robust testing
+        $data = json_decode($body, true);
+
+        static::assertArrayHasKey('error', $data);
+        static::assertTrue($data['error']);
+        static::assertArrayHasKey('message', $data);
+        static::assertSame('Something went wrong', $data['message']);
+
+        // In 'dev' environment, trace should be present
+        static::assertArrayHasKey('trace', $data);
     }
 
     public function testBootLoadsEnvironmentVariables(): void

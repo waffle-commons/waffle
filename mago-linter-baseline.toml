@@ -73,16 +73,6 @@ code = "prefer-early-continue"
 start_line = 33
 end_line = 38
 
-[[entries."src/Factory/RequestFactory.php".issues]]
-code = "no-redundant-use"
-start_line = 13
-end_line = 13
-
-[[entries."src/Factory/RequestFactory.php".issues]]
-code = "prefer-early-continue"
-start_line = 83
-end_line = 90
-
 [[entries."src/Router/RouteParser.php".issues]]
 code = "no-else-clause"
 start_line = 86
@@ -173,11 +163,6 @@ code = "no-empty"
 start_line = 80
 end_line = 80
 
-[[entries."tests/src/Abstract/AbstractResponseTest.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 18
-end_line = 245
-
 [[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
 code = "no-redundant-use"
 start_line = 6
@@ -218,30 +203,10 @@ code = "too-many-methods"
 start_line = 22
 end_line = 189
 
-[[entries."tests/src/Core/RequestTest.php".issues]]
-code = "no-global"
-start_line = 125
-end_line = 125
-
-[[entries."tests/src/Core/ResponseTest.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 15
-end_line = 262
-
 [[entries."tests/src/Core/SystemTest.php".issues]]
 code = "explicit-octal"
 start_line = 29
 end_line = 29
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "no-redundant-use"
-start_line = 8
-end_line = 8
-
-[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
-code = "no-redundant-use"
-start_line = 12
-end_line = 12
 
 [[entries."tests/src/Helper/Security/Rule3ValidObject1.php".issues]]
 code = "no-protected-in-final"
@@ -284,49 +249,44 @@ start_line = 25
 end_line = 25
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 23
-end_line = 334
+code = "prefer-early-continue"
+start_line = 65
+end_line = 71
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "prefer-early-continue"
-start_line = 94
-end_line = 100
+start_line = 87
+end_line = 90
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "prefer-early-continue"
-start_line = 129
-end_line = 132
+start_line = 109
+end_line = 112
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "prefer-early-continue"
-start_line = 161
-end_line = 164
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 206
-end_line = 209
+start_line = 138
+end_line = 141
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "too-many-methods"
-start_line = 23
-end_line = 334
+start_line = 19
+end_line = 266
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "no-error-control-operator"
-start_line = 123
-end_line = 123
+start_line = 117
+end_line = 117
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "prefer-static-closure"
-start_line = 147
-end_line = 147
+start_line = 141
+end_line = 141
 
 [[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
 code = "too-many-methods"
-start_line = 25
-end_line = 225
+start_line = 20
+end_line = 219
 
 [[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
 code = "too-many-methods"
