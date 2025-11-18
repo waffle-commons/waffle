@@ -1,17 +1,62 @@
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "array-to-string-conversion"
+start_line = 82
+end_line = 82
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "missing-override-attribute"
+start_line = 53
+end_line = 53
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-argument"
+start_line = 118
+end_line = 118
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "mixed-argument"
+start_line = 119
+end_line = 119
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "non-existent-method"
+start_line = 118
+end_line = 118
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "non-existent-method"
+start_line = 119
+end_line = 119
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "non-existent-method"
+start_line = 125
+end_line = 125
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "possibly-null-argument"
+start_line = 82
+end_line = 82
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "reference-to-undefined-variable"
+start_line = 84
+end_line = 84
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "unknown-class-instantiation"
+start_line = 172
+end_line = 172
+
+[[entries."src/Factory/RequestFactory.php".issues]]
+code = "invalid-return-statement"
+start_line = 94
+end_line = 94
+
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-operand"
 start_line = 90
 end_line = 90
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 74
-end_line = 74
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "possibly-false-argument"
@@ -57,6 +102,16 @@ end_line = 58
 code = "redundant-null-coalesce"
 start_line = 78
 end_line = 78
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "too-few-arguments"
+start_line = 57
+end_line = 57
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "too-few-arguments"
+start_line = 77
+end_line = 77
 
 [[entries."tests/src/Abstract/AbstractRequestTest.php".issues]]
 code = "less-specific-nested-argument-type"
@@ -789,14 +844,54 @@ start_line = 37
 end_line = 37
 
 [[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
-code = "mixed-argument"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
 code = "possibly-null-operand"
 start_line = 90
 end_line = 90
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-array-access"
+start_line = 106
+end_line = 106
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-array-access"
+start_line = 153
+end_line = 153
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-array-access"
+start_line = 198
+end_line = 198
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 103
+end_line = 103
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 104
+end_line = 104
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 149
+end_line = 149
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 150
+end_line = 150
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 194
+end_line = 194
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "mixed-method-access"
+start_line = 195
+end_line = 195
 
 [[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
 code = "mixed-operand"
@@ -807,6 +902,56 @@ end_line = 45
 code = "mixed-property-type-coercion"
 start_line = 41
 end_line = 41
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 103
+end_line = 103
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 104
+end_line = 104
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 105
+end_line = 105
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 149
+end_line = 149
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 150
+end_line = 150
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 152
+end_line = 152
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 194
+end_line = 194
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 195
+end_line = 195
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 197
+end_line = 197
+
+[[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
+code = "non-existent-property"
+start_line = 238
+end_line = 238
 
 [[entries."tests/src/Factory/RequestFactoryTest.php".issues]]
 code = "redundant-null-coalesce"

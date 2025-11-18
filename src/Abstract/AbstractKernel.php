@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use ReflectionMethod;
-use Throwable;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ReflectionMethod;
+use Throwable;
 use Waffle\Core\Config;
 use Waffle\Core\Constant;
 use Waffle\Core\Container;
@@ -129,6 +129,7 @@ abstract class AbstractKernel implements KernelInterface
                     $args[] = $val;
                     $paramIndex++;
                 }
+
                 // 3. Default / Optional parameters are handled by PHP if not provided
             }
 
@@ -143,10 +144,10 @@ abstract class AbstractKernel implements KernelInterface
             $response->getBody()->write($json);
             $response->getBody()->rewind();
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withHeader('X-Powered-By', 'Waffle Framework');
-
+            return $response->withHeader('Content-Type', 'application/json')->withHeader(
+                'X-Powered-By',
+                'Waffle Framework',
+            );
         } catch (Throwable $e) {
             return $this->handleException($e);
         }
@@ -172,7 +173,9 @@ abstract class AbstractKernel implements KernelInterface
             return new $waffleResponseClass($code);
         }
 
-        throw new \RuntimeException('No Response implementation found. Please install waffle-commons/http or provide a PSR-17 factory.');
+        throw new \RuntimeException(
+            'No Response implementation found. Please install waffle-commons/http or provide a PSR-17 factory.',
+        );
     }
 
     /**
@@ -274,7 +277,7 @@ abstract class AbstractKernel implements KernelInterface
             $data['line'] = $e->getLine();
         }
 
-        $code = ($e instanceof RouteNotFoundException) ? 404 : 500;
+        $code = $e instanceof RouteNotFoundException ? 404 : 500;
 
         try {
             $json = json_encode($data, JSON_THROW_ON_ERROR);

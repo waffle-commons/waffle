@@ -35,16 +35,6 @@
         "php-mock/php-mock-phpunit": "^2.13"
     },
     "scripts": {
-        "post-install-cmd": [
-          "@post-cmd"
-        ],
-        "post-update-cmd": [
-          "@post-cmd"
-        ],
-        "post-cmd": [
-          "mkdir -p var/cache",
-          "chmod -R 777 var/cache"
-        ],
         "formatter": "vendor/bin/mago fmt",
         "linter": "vendor/bin/mago lint",
         "analyzer": "vendor/bin/mago analyze",
@@ -64,6 +54,12 @@
         "scan": [
             "@mago",
             "@tests"
+        ],
+        "ci": [
+            "@mago",
+            "@tests",
+            "composer audit",
+            "vendor/bin/psalm --taint-analysis"
         ]
     },
     "config": {
