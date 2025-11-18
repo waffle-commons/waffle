@@ -42,7 +42,13 @@ class ControllerFinder
         }
 
         foreach ($paths as $path) {
+            // Ignore dot files and common system directories
             if ($path === Constant::CURRENT_DIR || $path === Constant::PREVIOUS_DIR) {
+                continue;
+            }
+
+            // FIX: Explicitly ignore 'vendor' directory to prevent scanning dependencies
+            if ($path === 'vendor' || $path === 'var' || str_starts_with($path, '.')) {
                 continue;
             }
 
@@ -54,7 +60,11 @@ class ControllerFinder
             }
 
             if (str_contains($path, Constant::PHPEXT)) {
-                $files[] = $this->className(path: $file);
+                $className = $this->className(path: $file);
+                // Only add if a valid class name was found
+                if ($className !== Constant::EMPTY_STRING) {
+                    $files[] = $className;
+                }
             }
         }
 

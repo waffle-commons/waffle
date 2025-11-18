@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use Waffle\Attribute\Route;
@@ -27,6 +28,26 @@ class RouteParser
      */
     public function parse(ContainerInterface $container, string $controllerClass): array
     {
+        if (!class_exists($controllerClass)) {
+            return [];
+        }
+
+        // 1. Analyze class via Reflection FIRST to avoid unnecessary/unsafe instantiation.
+        $reflection = new ReflectionClass($controllerClass);
+
+        // Ignore abstracts and interfaces
+        if ($reflection->isAbstract() || $reflection->isInterface()) {
+            return [];
+        }
+
+        // Check if the class has the #[Route] attribute.
+        // If not, it's not a controller we care about, so don't instantiate it.
+        $attributes = $reflection->getAttributes(Route::class);
+        if (empty($attributes)) {
+            return [];
+        }
+
+        // 2. Now that we know it's a valid route candidate, resolve it from container.
         if (!$container->has(id: $controllerClass)) {
             return [];
         }

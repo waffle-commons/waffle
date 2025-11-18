@@ -6,8 +6,9 @@ namespace WaffleTests\Router;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Waffle\Commons\Http\ServerRequest; // Use new class
-use Waffle\Commons\Http\Uri; // Use new class
+use Waffle\Commons\Container\Container as CommonsContainer; // Import inner container
+use Waffle\Commons\Http\ServerRequest;
+use Waffle\Commons\Http\Uri;
 use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
@@ -33,7 +34,11 @@ final class RouterTest extends TestCase
 
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
         $security = new Security($testConfig);
-        $this->container = new Container($security);
+
+        // FIX: Instantiate inner container first
+        $innerContainer = new CommonsContainer();
+        $this->container = new Container($innerContainer, $security);
+
         $this->container->set(Config::class, $testConfig);
         $this->container->set(Security::class, $security);
         $this->container->set(TempController::class, TempController::class);
@@ -91,7 +96,7 @@ final class RouterTest extends TestCase
             }
         }
 
-        static::assertNotNull($matchingRoute);
+        static::assertNotNull($matchingRoute, 'A matching route should have been found for /users.');
         static::assertSame('user_users_list', $matchingRoute['name']);
     }
 
@@ -113,7 +118,7 @@ final class RouterTest extends TestCase
             }
         }
 
-        static::assertNotNull($matchingRoute);
+        static::assertNotNull($matchingRoute, "A matching route should have been found for {$url}.");
         static::assertSame($expectedRouteName, $matchingRoute['name']);
     }
 
@@ -142,7 +147,7 @@ final class RouterTest extends TestCase
             }
         }
 
-        static::assertNull($matchingRoute);
+        static::assertNull($matchingRoute, 'No route should have been found for /non-existent-route.');
     }
 
     /**

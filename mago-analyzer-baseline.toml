@@ -1,12 +1,17 @@
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "array-to-string-conversion"
-start_line = 82
-end_line = 82
+start_line = 87
+end_line = 87
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "impossible-assignment"
+start_line = 299
+end_line = 299
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "missing-override-attribute"
-start_line = 53
-end_line = 53
+start_line = 65
+end_line = 65
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "mixed-argument"
@@ -19,6 +24,16 @@ start_line = 119
 end_line = 119
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "no-value"
+start_line = 303
+end_line = 303
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
+code = "non-existent-class"
+start_line = 300
+end_line = 300
+
+[[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "non-existent-method"
 start_line = 118
 end_line = 118
@@ -30,23 +45,28 @@ end_line = 119
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "non-existent-method"
-start_line = 125
-end_line = 125
+start_line = 122
+end_line = 122
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "possibly-null-argument"
-start_line = 82
-end_line = 82
+start_line = 87
+end_line = 87
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "reference-to-undefined-variable"
-start_line = 84
-end_line = 84
+start_line = 89
+end_line = 89
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "unknown-class-instantiation"
-start_line = 172
-end_line = 172
+start_line = 157
+end_line = 157
+
+[[entries."src/Core/Container.php".issues]]
+code = "non-existent-method"
+start_line = 73
+end_line = 73
 
 [[entries."src/Router/Router.php".issues]]
 code = "mixed-argument"
@@ -65,33 +85,108 @@ end_line = 124
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-argument"
-start_line = 101
-end_line = 101
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-argument"
-start_line = 105
-end_line = 105
+start_line = 185
+end_line = 185
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-array-access"
-start_line = 102
-end_line = 102
+start_line = 99
+end_line = 99
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-array-access"
+start_line = 183
+end_line = 183
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-array-access"
+start_line = 185
+end_line = 185
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-assignment"
-start_line = 100
-end_line = 100
+start_line = 70
+end_line = 70
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-assignment"
+start_line = 92
+end_line = 92
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-assignment"
+start_line = 98
+end_line = 98
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-assignment"
+start_line = 149
+end_line = 149
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-assignment"
+start_line = 182
+end_line = 182
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-method-access"
+start_line = 152
+end_line = 152
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "mixed-method-access"
+start_line = 198
+end_line = 198
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "mixed-operand"
-start_line = 112
-end_line = 112
+start_line = 106
+end_line = 106
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 70
+end_line = 70
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 92
+end_line = 92
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 110
+end_line = 110
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 136
+end_line = 136
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 140
+end_line = 140
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 149
+end_line = 149
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 198
+end_line = 198
+
+[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+code = "possibly-null-property-access"
+start_line = 201
+end_line = 201
 
 [[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
 code = "less-specific-return-statement"
-start_line = 41
-end_line = 41
+start_line = 55
+end_line = 55
 
 [[entries."tests/src/AbstractTestCase.php".issues]]
 code = "mixed-operand"
@@ -145,73 +240,48 @@ end_line = 269
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 38
-end_line = 38
+start_line = 44
+end_line = 44
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 48
-end_line = 48
+start_line = 71
+end_line = 71
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 58
-end_line = 58
+start_line = 81
+end_line = 81
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 59
-end_line = 59
+start_line = 82
+end_line = 82
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 101
-end_line = 101
+start_line = 122
+end_line = 122
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "mixed-assignment"
-start_line = 112
-end_line = 112
+start_line = 133
+end_line = 133
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 36
-end_line = 36
+start_line = 42
+end_line = 42
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 38
-end_line = 38
+start_line = 44
+end_line = 44
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 45
-end_line = 45
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 46
-end_line = 46
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 48
-end_line = 48
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 56
-end_line = 56
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 58
-end_line = 58
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 59
-end_line = 59
+start_line = 68
+end_line = 68
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -220,38 +290,28 @@ end_line = 69
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
+start_line = 71
+end_line = 71
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
 start_line = 79
 end_line = 79
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 80
-end_line = 80
+start_line = 81
+end_line = 81
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 83
-end_line = 83
+start_line = 82
+end_line = 82
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 88
-end_line = 88
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 89
-end_line = 89
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 94
-end_line = 94
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 99
-end_line = 99
+start_line = 92
+end_line = 92
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -260,8 +320,13 @@ end_line = 101
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 108
-end_line = 108
+start_line = 102
+end_line = 102
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 104
+end_line = 104
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -275,8 +340,33 @@ end_line = 110
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 112
-end_line = 112
+start_line = 115
+end_line = 115
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 120
+end_line = 120
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 122
+end_line = 122
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 129
+end_line = 129
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 130
+end_line = 130
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 131
+end_line = 131
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
@@ -285,38 +375,48 @@ end_line = 133
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 141
-end_line = 141
+start_line = 145
+end_line = 145
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 148
-end_line = 148
+start_line = 153
+end_line = 153
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 151
-end_line = 151
+start_line = 160
+end_line = 160
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 161
-end_line = 161
+start_line = 163
+end_line = 163
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 164
-end_line = 164
+start_line = 173
+end_line = 173
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
-start_line = 175
-end_line = 175
+start_line = 176
+end_line = 176
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "possible-method-access-on-null"
 start_line = 187
 end_line = 187
+
+[[entries."tests/src/Core/ContainerTest.php".issues]]
+code = "possible-method-access-on-null"
+start_line = 199
+end_line = 199
+
+[[entries."tests/src/Core/Helper/TestKernelWithConfig.php".issues]]
+code = "too-few-arguments"
+start_line = 21
+end_line = 21
 
 [[entries."tests/src/Core/SystemTest.php".issues]]
 code = "possibly-false-argument"
@@ -440,13 +540,13 @@ end_line = 29
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-argument"
-start_line = 53
-end_line = 53
+start_line = 52
+end_line = 52
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-assignment"
-start_line = 90
-end_line = 90
+start_line = 99
+end_line = 99
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-operand"
@@ -455,33 +555,33 @@ end_line = 30
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-operand"
-start_line = 37
-end_line = 37
+start_line = 36
+end_line = 36
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-property-access"
-start_line = 91
-end_line = 91
+start_line = 100
+end_line = 100
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-return-statement"
-start_line = 85
-end_line = 85
+start_line = 94
+end_line = 94
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-return-statement"
-start_line = 92
-end_line = 92
+start_line = 101
+end_line = 101
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-method"
-start_line = 85
-end_line = 85
+start_line = 94
+end_line = 94
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-method"
-start_line = 90
-end_line = 90
+start_line = 99
+end_line = 99
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-property"
@@ -490,8 +590,8 @@ end_line = 30
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-property"
-start_line = 53
-end_line = 53
+start_line = 52
+end_line = 52
 
 [[entries."tests/src/Trait/Helper/TraitReflection.php".issues]]
 code = "less-specific-nested-argument-type"

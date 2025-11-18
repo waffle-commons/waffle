@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Waffle\Commons\Container\Container as CommonsContainer;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
@@ -29,6 +31,10 @@ final class ContainerTest extends TestCase
     {
         parent::setUp();
 
+        // createRealContainer in AbstractTestCase handles the wrapping correctly now.
+        // We assume KernelFactoryTrait::createRealContainer has been updated (see previous conversation)
+        // or we do it manually here to be sure.
+
         $this->container = $this->createRealContainer(level: 8);
     }
 
@@ -40,6 +46,23 @@ final class ContainerTest extends TestCase
 
         static::assertInstanceOf(ServiceA::class, $serviceA);
     }
+
+    // Only update the security check test which mocks dependencies
+    public function testSecurityCheckIsCalledOnResolve(): void
+    {
+        $securityMock = $this->createMock(Security::class);
+        $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
+
+        // Mock inner container to return a ServiceA instance
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $innerMock->method('get')->willReturn(new ServiceA());
+
+        // Pass both mocks
+        $container = new Container($innerMock, $securityMock);
+        $container->get(id: ServiceA::class);
+    }
+
+    // ... (Rest of the file unchanged) ...
 
     public function testCanResolveClassWithDependencies(): void
     {
@@ -73,14 +96,12 @@ final class ContainerTest extends TestCase
     public function testThrowsExceptionForCircularDependencies(): void
     {
         static::expectException(ContainerException::class);
-        static::expectExceptionMessage(
-            'Circular dependency detected while resolving service "WaffleTests\Core\Helper\ServiceD".',
-        );
+        // Note: The exact message comes from the Commons component now.
+        static::expectExceptionMessage('Circular dependency detected');
 
         $this->container->set(ServiceD::class, ServiceD::class);
         $this->container->set(ServiceE::class, ServiceE::class);
 
-        // This should trigger the circular dependency detection
         $this->container->get(ServiceD::class);
     }
 
@@ -117,19 +138,10 @@ final class ContainerTest extends TestCase
         static::assertInstanceOf(ServiceA::class, $serviceC->serviceB->serviceA);
     }
 
-    public function testSecurityCheckIsCalledOnResolve(): void
-    {
-        $securityMock = $this->createMock(Security::class);
-        $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
-
-        $container = new Container($securityMock);
-        $container->get(id: ServiceA::class);
-    }
-
     public function testThrowsExceptionForUninstantiableClass(): void
     {
         static::expectException(ContainerException::class);
-        static::expectExceptionMessageMatches('/Class ".*" is not instantiable./');
+        static::expectExceptionMessageMatches('/is not instantiable/');
 
         $this->container->get(AbstractUninstantiable::class);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,9 +16,9 @@ use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Core\System;
 use Waffle\Core\View;
+use Waffle\Enum\Failsafe;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
-use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Interface\ContainerInterface;
@@ -48,13 +49,23 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
+    // Holds the raw PSR-11 implementation injected by Runtime
+    private null|PsrContainerInterface $innerContainer = null;
+
+    /**
+     * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
+     */
+    public function setContainerImplementation(PsrContainerInterface $container): void
+    {
+        $this->innerContainer = $container;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            // Ensure the kernel is booted and configured
             $this->boot()->configure();
 
             if ($this->container === null) {
@@ -65,10 +76,7 @@ abstract class AbstractKernel implements KernelInterface
                 throw new NotFoundException('System not initialized.');
             }
 
-            // --- Routing Logic (Bridge to existing Router) ---
-            // The existing Router is not yet fully PSR-7 compliant regarding matching.
-            // We bridge the gap by manually matching the PSR-7 request path against the loaded routes.
-
+            // --- Routing Logic (Bridge) ---
             $path = $request->getUri()->getPath();
             $routes = $this->system->getRouter()?->getRoutes() ?? [];
             $matchedRoute = null;
@@ -76,16 +84,13 @@ abstract class AbstractKernel implements KernelInterface
 
             foreach ($routes as $route) {
                 $routePath = $route[Constant::PATH];
-
-                // Convert route path (e.g., /users/{id}) to regex
-                // This is a simplified matching logic for the Alpha version.
                 $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([^/]+)', $routePath);
                 $pattern = '#^' . str_replace('/', '\/', $pattern) . '$#';
 
                 if (preg_match($pattern, $path, $matches)) {
                     $matchedRoute = $route;
-                    array_shift($matches); // Remove the full match
-                    $routeParams = $matches; // Remaining items are the parameter values
+                    array_shift($matches);
+                    $routeParams = $matches;
                     break;
                 }
             }
@@ -99,29 +104,21 @@ abstract class AbstractKernel implements KernelInterface
             $method = $matchedRoute[Constant::METHOD];
 
             if (!$this->container->has($controllerClass)) {
-                // Auto-register the controller if it's not already in the container
                 $this->container->set($controllerClass, $controllerClass);
             }
 
             /** @var object $controller */
             $controller = $this->container->get($controllerClass);
 
-            // Resolve Controller Arguments
-            // We currently support injecting services (via type hint) or route parameters (via position/name placeholder).
             $refMethod = new ReflectionMethod($controller, $method);
             $args = [];
             $paramIndex = 0;
 
             foreach ($refMethod->getParameters() as $param) {
                 $type = $param->getType();
-
-                // 1. Try to inject a service from the container
                 if ($type && !$type->isBuiltin() && $this->container->has($type->getName())) {
                     $args[] = $this->container->get($type->getName());
-                }
-                // 2. Try to inject a route parameter (primitive type)
-                elseif (isset($routeParams[$paramIndex])) {
-                    // In a full implementation, we would cast to int/string based on type hint.
+                } elseif (isset($routeParams[$paramIndex])) {
                     $val = $routeParams[$paramIndex];
                     if ($type && $type->getName() === 'int') {
                         $val = (int) $val;
@@ -129,44 +126,32 @@ abstract class AbstractKernel implements KernelInterface
                     $args[] = $val;
                     $paramIndex++;
                 }
-
-                // 3. Default / Optional parameters are handled by PHP if not provided
             }
 
             /** @var View $view */
             $view = $refMethod->invokeArgs($controller, $args);
 
             // --- Response Creation ---
-            // Convert the View data object into a JSON response
             $json = json_encode($view->data, JSON_THROW_ON_ERROR);
 
             $response = $this->createResponse(200);
             $response->getBody()->write($json);
             $response->getBody()->rewind();
 
-            return $response->withHeader('Content-Type', 'application/json')->withHeader(
-                'X-Powered-By',
-                'Waffle Framework',
-            );
+            return $response->withHeader('Content-Type', 'application/json');
         } catch (Throwable $e) {
             return $this->handleException($e);
         }
     }
 
-    /**
-     * Helper to create a PSR-7 Response.
-     * It tries to use a PSR-17 Factory if available, or falls back to Waffle's implementation.
-     */
     private function createResponse(int $code = 200): ResponseInterface
     {
-        // 1. Try PSR-17 Factory from Container (Preferred)
         if ($this->container && $this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);
             return $factory->createResponse($code);
         }
 
-        // 2. Fallback: Direct instantiation of Waffle's HTTP Response
         $waffleResponseClass = 'Waffle\\Commons\\Http\\Response';
         if (class_exists($waffleResponseClass)) {
             /** @var ResponseInterface */
@@ -174,7 +159,7 @@ abstract class AbstractKernel implements KernelInterface
         }
 
         throw new \RuntimeException(
-            'No Response implementation found. Please install waffle-commons/http or provide a PSR-17 factory.',
+            'No Response implementation found. Please install waffle-commons/http or a PSR-17 factory.',
         );
     }
 
@@ -196,7 +181,6 @@ abstract class AbstractKernel implements KernelInterface
             if (!file_exists($file)) {
                 continue;
             }
-
             $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             if ($lines) {
                 foreach ($lines as $line) {
@@ -238,7 +222,15 @@ abstract class AbstractKernel implements KernelInterface
 
         $security = new Security(cfg: $this->config);
 
-        $this->container = new Container(security: $security);
+        // Check if an implementation was provided via setContainerImplementation
+        if ($this->innerContainer === null) {
+            throw new ContainerException(
+                'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().',
+            );
+        }
+
+        // Wrap the provided container with the Core Security Decorator
+        $this->container = new Container($this->innerContainer, $security);
 
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');
@@ -261,9 +253,6 @@ abstract class AbstractKernel implements KernelInterface
         return $this;
     }
 
-    /**
-     * Handles exceptions by converting them into a valid JSON ResponseInterface.
-     */
     private function handleException(Throwable $e): ResponseInterface
     {
         $data = [
@@ -286,10 +275,32 @@ abstract class AbstractKernel implements KernelInterface
             $response->getBody()->rewind();
             return $response->withHeader('Content-Type', 'application/json');
         } catch (Throwable $critical) {
-            // Critical fallback if JSON encoding fails or Response cannot be created
             $response = $this->createResponse(500);
-            $response->getBody()->write('{"error": "Critical System Error", "details": "Exception handling failed."}');
+            $response->getBody()->write(json_encode([
+                'error' => 'Critical System Error',
+                'details' => 'Exception handling failed.',
+            ], JSON_THROW_ON_ERROR));
             return $response->withHeader('Content-Type', 'application/json');
         }
+    }
+
+    private function createFailsafeContainer(): ContainerInterface
+    {
+        /** @var string $root */
+        $root = APP_ROOT;
+        $config = new Config(
+            configDir: $root . '/app',
+            environment: 'prod',
+            failsafe: Failsafe::ENABLED,
+        );
+        $security = new Security(cfg: $config);
+
+        // Fix: We must provide an inner container even in failsafe mode
+        // Assuming CommonsContainer is available via autoload if waffle-commons/container is installed
+        $inner = class_exists(CommonsContainer::class)
+            ? new CommonsContainer()
+            : throw new \RuntimeException('waffle-commons/container is missing.');
+
+        return new Container($inner, $security);
     }
 }
