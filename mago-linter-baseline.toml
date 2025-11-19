@@ -40,8 +40,8 @@ end_line = 177
 
 [[entries."src/Core/Container.php".issues]]
 code = "no-else-clause"
-start_line = 74
-end_line = 76
+start_line = 76
+end_line = 78
 
 [[entries."src/Core/System.php".issues]]
 code = "no-redundant-use"
@@ -175,8 +175,8 @@ end_line = 67
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-else-clause"
-start_line = 206
-end_line = 210
+start_line = 340
+end_line = 344
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-redundant-use"
@@ -184,14 +184,14 @@ start_line = 13
 end_line = 13
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "prefer-first-class-callable"
-start_line = 87
-end_line = 87
+code = "too-many-methods"
+start_line = 19
+end_line = 95
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "prefer-static-closure"
-start_line = 87
-end_line = 87
+code = "too-many-methods"
+start_line = 97
+end_line = 177
 
 [[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
 code = "no-redundant-use"
@@ -224,19 +224,14 @@ start_line = 17
 end_line = 294
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "no-redundant-use"
-start_line = 7
-end_line = 7
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "prefer-static-closure"
-start_line = 120
-end_line = 120
+start_line = 129
+end_line = 129
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "too-many-methods"
-start_line = 24
-end_line = 201
+start_line = 33
+end_line = 240
 
 [[entries."tests/src/Core/Helper/SystemTestKernel.php".issues]]
 code = "no-else-clause"
@@ -262,11 +257,6 @@ end_line = 8
 code = "explicit-octal"
 start_line = 25
 end_line = 25
-
-[[entries."tests/src/Router/RouteParserTest.php".issues]]
-code = "no-redundant-use"
-start_line = 7
-end_line = 7
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "no-else-clause"

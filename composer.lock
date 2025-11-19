@@ -2274,16 +2274,16 @@
         },
         {
             "name": "php-mock/php-mock-phpunit",
-            "version": "2.13.1",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-mock/php-mock-phpunit.git",
-                "reference": "29f90fe44a04105959d6ae835b10c9e0da2fcaa7"
+                "reference": "c074f7a260cb80bdc7cf0823dc23174bc49064e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-mock/php-mock-phpunit/zipball/29f90fe44a04105959d6ae835b10c9e0da2fcaa7",
-                "reference": "29f90fe44a04105959d6ae835b10c9e0da2fcaa7",
+                "url": "https://api.github.com/repos/php-mock/php-mock-phpunit/zipball/c074f7a260cb80bdc7cf0823dc23174bc49064e1",
+                "reference": "c074f7a260cb80bdc7cf0823dc23174bc49064e1",
                 "shasum": ""
             },
             "require": {
@@ -2330,7 +2330,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-mock/php-mock-phpunit/issues",
-                "source": "https://github.com/php-mock/php-mock-phpunit/tree/2.13.1"
+                "source": "https://github.com/php-mock/php-mock-phpunit/tree/2.14.0"
             },
             "funding": [
                 {
@@ -2338,7 +2338,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-23T06:00:08+00:00"
+            "time": "2025-11-19T21:07:31+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2459,16 +2459,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.10.1",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "431c02da15e566adb0ad9c5030fa6f6204d9de9e"
+                "reference": "8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/431c02da15e566adb0ad9c5030fa6f6204d9de9e",
-                "reference": "431c02da15e566adb0ad9c5030fa6f6204d9de9e",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3",
+                "reference": "8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3",
                 "shasum": ""
             },
             "require": {
@@ -2511,9 +2511,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.10.1"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.11.0"
             },
-            "time": "2025-11-18T07:51:16+00:00"
+            "time": "2025-11-19T20:28:58+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -5091,12 +5091,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/container.git",
-                "reference": "1905ec50faaf59ce8085991067c19ab733836dfc"
+                "reference": "279b58f4ed1b4af721d3bfe94a6e52f97a1317fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/container/zipball/1905ec50faaf59ce8085991067c19ab733836dfc",
-                "reference": "1905ec50faaf59ce8085991067c19ab733836dfc",
+                "url": "https://api.github.com/repos/waffle-commons/container/zipball/279b58f4ed1b4af721d3bfe94a6e52f97a1317fc",
+                "reference": "279b58f4ed1b4af721d3bfe94a6e52f97a1317fc",
                 "shasum": ""
             },
             "require": {
@@ -5130,7 +5130,7 @@
                 "issues": "https://github.com/waffle-commons/container/issues",
                 "source": "https://github.com/waffle-commons/container/tree/feature/#1-psr_implementation"
             },
-            "time": "2025-11-18T15:31:39+00:00"
+            "time": "2025-11-19T13:28:09+00:00"
         },
         {
             "name": "waffle-commons/http",
@@ -5138,12 +5138,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/http.git",
-                "reference": "9e702ec4de1190b4adf919010569826381cd7ceb"
+                "reference": "e75df1b76496ebbf258753a0174893fb623fb7c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/http/zipball/9e702ec4de1190b4adf919010569826381cd7ceb",
-                "reference": "9e702ec4de1190b4adf919010569826381cd7ceb",
+                "url": "https://api.github.com/repos/waffle-commons/http/zipball/e75df1b76496ebbf258753a0174893fb623fb7c6",
+                "reference": "e75df1b76496ebbf258753a0174893fb623fb7c6",
                 "shasum": ""
             },
             "require": {
@@ -5178,7 +5178,7 @@
                 "issues": "https://github.com/waffle-commons/http/issues",
                 "source": "https://github.com/waffle-commons/http/tree/feature/#1-psr_implementation"
             },
-            "time": "2025-11-18T13:45:03+00:00"
+            "time": "2025-11-19T13:28:10+00:00"
         },
         {
             "name": "webmozart/assert",

@@ -130,4 +130,22 @@ final class AbstractSystemTest extends TestCase
         // Assert that the property now holds the exact Router instance we passed to the method.
         static::assertSame($router, $routerProperty->getValue($this->system));
     }
+
+    public function testGetRouterReturnsNullByDefault(): void
+    {
+        static::assertNull($this->system->getRouter());
+    }
+
+    public function testGetRouterReturnsRegisteredRouter(): void
+    {
+        $routerSystemMock = $this->createMock(System::class);
+        $router = new Router(
+            directory: false,
+            system: $routerSystemMock,
+        );
+
+        $this->system->registerRouter($router);
+
+        static::assertSame($router, $this->system->getRouter());
+    }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Waffle\Commons\Container\Container as CommonsContainer;
+use Psr\Container\NotFoundExceptionInterface;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
@@ -21,6 +22,14 @@ use WaffleTests\Core\Helper\ServiceWithDefaultParam;
 use WaffleTests\Core\Helper\ServiceWithOptionalParam;
 use WaffleTests\Core\Helper\ServiceWithUnionParam;
 use WaffleTests\Core\Helper\WithPrimitive;
+
+class PsrNotFoundException extends \Exception implements NotFoundExceptionInterface
+{
+}
+
+class PsrContainerException extends \Exception implements ContainerExceptionInterface
+{
+}
 
 final class ContainerTest extends TestCase
 {
@@ -198,5 +207,35 @@ final class ContainerTest extends TestCase
 
         // Attempting to get the service should trigger the exception.
         $this->container->get(ServiceWithUnionParam::class);
+    }
+
+    public function testGetWrapsPsrNotFoundException(): void
+    {
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $innerMock->method('get')->willThrowException(new PsrNotFoundException('PSR Not Found'));
+
+        $securityMock = $this->createMock(Security::class);
+
+        $container = new Container($innerMock, $securityMock);
+
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('PSR Not Found');
+
+        $container->get('missing_service');
+    }
+
+    public function testGetWrapsPsrContainerException(): void
+    {
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $innerMock->method('get')->willThrowException(new PsrContainerException('PSR Error'));
+
+        $securityMock = $this->createMock(Security::class);
+
+        $container = new Container($innerMock, $securityMock);
+
+        $this->expectException(ContainerException::class);
+        $this->expectExceptionMessage('PSR Error');
+
+        $container->get('broken_service');
     }
 }

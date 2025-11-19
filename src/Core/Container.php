@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
@@ -42,9 +44,9 @@ final class Container implements ContainerInterface, PsrContainerInterface
             $this->security->analyze($instance);
 
             return $instance;
-        } catch (\Psr\Container\NotFoundExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface $e) {
             throw new NotFoundException($e->getMessage(), (int) $e->getCode());
-        } catch (\Psr\Container\ContainerExceptionInterface $e) {
+        } catch (ContainerExceptionInterface $e) {
             throw new ContainerException($e->getMessage(), (int) $e->getCode());
         } catch (SecurityException $e) {
             throw $e;
