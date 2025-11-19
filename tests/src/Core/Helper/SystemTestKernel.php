@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core\Helper;
 
-use Waffle\Commons\Container\Container as CommonsContainer; // Use the real component
 use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
@@ -21,11 +20,18 @@ final class SystemTestKernel extends Kernel
         $this->config = $config;
         $security = new Security(cfg: $config);
 
-        // Create the inner PSR-11 container
-        $innerContainer = new CommonsContainer();
+        // Try to use real container if available, otherwise use a minimal mock-like structure via reflection?
+        // Ideally, we should use the real container component if we are testing integration.
+        // If unavailable, we can't easily mock the inner container here without dependency injection.
+        // Assuming waffle-commons/container IS available in require-dev environment.
 
-        // Instantiate Core Container with the inner container + security
-        $this->container = new Container($innerContainer, $security);
+        if (class_exists('Waffle\Commons\Container\Container')) {
+            $innerContainer = new \Waffle\Commons\Container\Container();
+            $this->container = new Container($innerContainer, $security);
+        } else {
+            // Fallback for strict isolation (might fail if tests rely on real container behavior)
+            throw new \RuntimeException('Waffle\Commons\Container\Container not found. Install dev dependencies.');
+        }
     }
 
     #[\Override]
@@ -36,8 +42,10 @@ final class SystemTestKernel extends Kernel
         }
         if ($this->container === null) {
             $security = new Security(cfg: $this->config);
-            $innerContainer = new CommonsContainer();
-            $this->container = new Container($innerContainer, $security);
+            if (class_exists('Waffle\Commons\Container\Container')) {
+                $innerContainer = new \Waffle\Commons\Container\Container();
+                $this->container = new Container($innerContainer, $security);
+            }
         }
 
         return $this;
