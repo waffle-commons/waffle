@@ -31,13 +31,28 @@ final class AbstractKernelTest extends TestCase
         // 1. Mock the Inner PSR-11 Container
         $this->innerContainerMock = new class($this->responseFactoryMock) implements PsrContainerInterface {
             private $services = [];
-            public function __construct($factory) {
+
+            public function __construct($factory)
+            {
                 $this->services[ResponseFactoryInterface::class] = $factory;
-                $this->services['WaffleTests\Helper\Controller\TempController'] = new \WaffleTests\Helper\Controller\TempController();
+                $this->services['WaffleTests\Helper\Controller\TempController'] =
+                    new \WaffleTests\Helper\Controller\TempController();
             }
-            public function get(string $id) { return $this->services[$id] ?? null; }
-            public function has(string $id): bool { return isset($this->services[$id]); }
-            public function set(string $id, $concrete): void { $this->services[$id] = $concrete; }
+
+            public function get(string $id)
+            {
+                return $this->services[$id] ?? null;
+            }
+
+            public function has(string $id): bool
+            {
+                return isset($this->services[$id]);
+            }
+
+            public function set(string $id, $concrete): void
+            {
+                $this->services[$id] = $concrete;
+            }
         };
 
         // 2. Mock the Response Factory
@@ -48,7 +63,7 @@ final class AbstractKernelTest extends TestCase
             configDir: $this->testConfigDir,
             environment: 'dev',
             container: null,
-            innerContainer: $this->innerContainerMock
+            innerContainer: $this->innerContainerMock,
         );
     }
 
@@ -70,9 +85,7 @@ final class AbstractKernelTest extends TestCase
     {
         $streamMock = $this->createMock(StreamInterface::class);
         // FIX: Ensure write() returns an int (bytes written) to satisfy strict types
-        $streamMock->expects($this->any())
-            ->method('write')
-            ->willReturnCallback(fn($str) => strlen($str));
+        $streamMock->expects($this->any())->method('write')->willReturnCallback(fn($str) => strlen($str));
 
         $streamMock->expects($this->any())->method('rewind');
         $streamMock->method('__toString')->willReturn('{"id":1,"name":"John Doe"}');
@@ -98,7 +111,10 @@ final class AbstractKernelTest extends TestCase
         $responseMock = $this->createResponseMock(200);
 
         // Use method() instead of expects(once()) to be resilient against internal retry logic
-        $this->responseFactoryMock->method('createResponse')->with(200)->willReturn($responseMock);
+        $this->responseFactoryMock
+            ->method('createResponse')
+            ->with(200)
+            ->willReturn($responseMock);
 
         $response = $this->kernel->handle($requestMock);
 
@@ -117,7 +133,10 @@ final class AbstractKernelTest extends TestCase
 
         $responseMock = $this->createResponseMock(500);
 
-        $this->responseFactoryMock->method('createResponse')->with(500)->willReturn($responseMock);
+        $this->responseFactoryMock
+            ->method('createResponse')
+            ->with(500)
+            ->willReturn($responseMock);
 
         $response = $this->kernel->handle($requestMock);
 
@@ -151,7 +170,10 @@ final class AbstractKernelTest extends TestCase
 
         // We expect this to be called. Using method() allows multiple calls if error handling triggers,
         // but we verify the result is what we expect.
-        $this->responseFactoryMock->method('createResponse')->with(200)->willReturn($responseMock);
+        $this->responseFactoryMock
+            ->method('createResponse')
+            ->with(200)
+            ->willReturn($responseMock);
 
         $response = $this->kernel->handle($requestMock);
 
@@ -165,7 +187,7 @@ final class AbstractKernelTest extends TestCase
             configDir: $this->testConfigDir,
             environment: 'prod',
             container: null,
-            innerContainer: null // CRITICAL: Missing container -> triggers Exception in configure()
+            innerContainer: null, // CRITICAL: Missing container -> triggers Exception in configure()
         );
 
         $uriMock = $this->createMock(UriInterface::class);

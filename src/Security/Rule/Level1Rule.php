@@ -30,6 +30,7 @@ class Level1Rule implements SecurityRuleInterface
                 message: "Level 1: Object validation failed. Instance mismatch for {$class}.",
                 code: 500,
             );
+
             // @codeCoverageIgnoreEnd
         }
     }
