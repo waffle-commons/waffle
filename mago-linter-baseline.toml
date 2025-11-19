@@ -133,6 +133,11 @@ code = "prefer-early-continue"
 start_line = 83
 end_line = 85
 
+[[entries."src/Trait/RequestTrait.php".issues]]
+code = "no-redundant-use"
+start_line = 6
+end_line = 6
+
 [[entries."src/Trait/SecurityTrait.php".issues]]
 code = "no-redundant-use"
 start_line = 6
@@ -167,16 +172,6 @@ end_line = 39
 code = "prefer-early-continue"
 start_line = 65
 end_line = 67
-
-[[entries."src/Trait/UriParserTrait.php".issues]]
-code = "no-empty"
-start_line = 40
-end_line = 40
-
-[[entries."src/Trait/UriParserTrait.php".issues]]
-code = "no-empty"
-start_line = 80
-end_line = 80
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-redundant-use"
@@ -242,31 +237,6 @@ end_line = 19
 code = "no-boolean-flag-parameter"
 start_line = 8
 end_line = 8
-
-[[entries."tests/src/Http/ParameterBagTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 22
-end_line = 22
-
-[[entries."tests/src/Http/ParameterBagTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 45
-end_line = 45
-
-[[entries."tests/src/Http/ParameterBagTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 65
-end_line = 65
-
-[[entries."tests/src/Http/ParameterBagTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 86
-end_line = 86
-
-[[entries."tests/src/Http/ParameterBagTest.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 109
-end_line = 109
 
 [[entries."tests/src/Router/ControllerFinderTest.php".issues]]
 code = "explicit-octal"

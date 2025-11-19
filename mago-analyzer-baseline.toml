@@ -837,13 +837,3 @@ end_line = 70
 code = "possibly-invalid-argument"
 start_line = 126
 end_line = 126
-
-[[entries."tests/src/Trait/UriParserTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 48
-end_line = 48
-
-[[entries."tests/src/Trait/UriParserTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 82
-end_line = 82

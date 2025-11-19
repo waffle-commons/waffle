@@ -12,27 +12,6 @@ final class RequestTraitTest extends TestCase
 {
     use RequestTrait;
 
-    public static function requestUriProvider(): array
-    {
-        return [
-            'Root URL' => ['/', ['', '']],
-            'Simple path' => ['/users/list', ['', 'users', 'list']],
-            'Path with query string' => ['/products/view?id=123', ['', 'products', 'view']],
-            'Path with trailing slash' => ['/articles/', ['', 'articles', '']],
-        ];
-    }
-
-    /**
-     * @param string $uri
-     * @param array{string, string[]} $expected
-     * @return void
-     */
-    #[DataProvider('requestUriProvider')]
-    public function testGetRequestUri(string $uri, array $expected): void
-    {
-        static::assertSame($expected, $this->getRequestUri($uri));
-    }
-
     public static function pathUriProvider(): array
     {
         return [
