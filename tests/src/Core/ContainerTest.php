@@ -11,6 +11,7 @@ use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\SecurityException;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\AbstractUninstantiable;
 use WaffleTests\Core\Helper\ServiceA;
@@ -56,7 +57,6 @@ final class ContainerTest extends TestCase
         static::assertInstanceOf(ServiceA::class, $serviceA);
     }
 
-    // Only update the security check test which mocks dependencies
     public function testSecurityCheckIsCalledOnResolve(): void
     {
         $securityMock = $this->createMock(Security::class);
@@ -70,8 +70,6 @@ final class ContainerTest extends TestCase
         $container = new Container($innerMock, $securityMock);
         $container->get(id: ServiceA::class);
     }
-
-    // ... (Rest of the file unchanged) ...
 
     public function testCanResolveClassWithDependencies(): void
     {
@@ -237,5 +235,48 @@ final class ContainerTest extends TestCase
         $this->expectExceptionMessage('PSR Error');
 
         $container->get('broken_service');
+    }
+
+    public function testGetWrapsSecurityException(): void
+    {
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $innerMock->method('get')->willThrowException(new SecurityException('Security Error'));
+
+        $securityMock = $this->createMock(Security::class);
+
+        $container = new Container($innerMock, $securityMock);
+
+        $this->expectException(SecurityException::class);
+        $this->expectExceptionMessage('Security Error');
+
+        $container->get('broken_service');
+    }
+
+    public function testGetWrapsThrowable(): void
+    {
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $innerMock->method('get')->willThrowException(new ContainerException('Throwable Error'));
+
+        $securityMock = $this->createMock(Security::class);
+
+        $container = new Container($innerMock, $securityMock);
+
+        $this->expectException(ContainerException::class);
+        $this->expectExceptionMessage('Throwable Error');
+
+        $container->get('broken_service');
+    }
+
+    public function testSetThrowsException(): void
+    {
+        $innerMock = $this->createMock(PsrContainerInterface::class);
+        $securityMock = $this->createMock(Security::class);
+
+        $container = new Container($innerMock, $securityMock);
+
+        $this->expectException(ContainerException::class);
+        $this->expectExceptionMessage("The inner container does not support mutable 'set' operations.");
+
+        $container->set('broken_service', 'broken_service');
     }
 }

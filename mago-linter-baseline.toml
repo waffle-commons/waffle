@@ -173,6 +173,71 @@ code = "prefer-early-continue"
 start_line = 65
 end_line = 67
 
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "assertion-style"
+start_line = 119
+end_line = 119
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "assertion-style"
+start_line = 307
+end_line = 307
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "explicit-octal"
+start_line = 36
+end_line = 36
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "explicit-octal"
+start_line = 365
+end_line = 365
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "no-boolean-flag-parameter"
+start_line = 434
+end_line = 434
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "no-error-control-operator"
+start_line = 51
+end_line = 51
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "prefer-arrow-function"
+start_line = 279
+end_line = 279
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "prefer-early-continue"
+start_line = 439
+end_line = 444
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "prefer-first-class-callable"
+start_line = 384
+end_line = 386
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "prefer-static-closure"
+start_line = 279
+end_line = 279
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "too-many-methods"
+start_line = 26
+end_line = 447
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "too-many-methods"
+start_line = 131
+end_line = 273
+
+[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+code = "too-many-methods"
+start_line = 194
+end_line = 266
+
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-else-clause"
 start_line = 340
@@ -225,13 +290,13 @@ end_line = 294
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "prefer-static-closure"
-start_line = 129
-end_line = 129
+start_line = 127
+end_line = 127
 
 [[entries."tests/src/Core/ContainerTest.php".issues]]
 code = "too-many-methods"
-start_line = 33
-end_line = 240
+start_line = 34
+end_line = 281
 
 [[entries."tests/src/Core/Helper/SystemTestKernel.php".issues]]
 code = "no-else-clause"
