@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace WaffleTests\TestsTrait;
 
 use Waffle\Abstract\AbstractKernel;
-use Waffle\Commons\Container\Container as CommonsContainer; // The PSR-11 implementation
+// The PSR-11 implementation
 use Waffle\Core\Config;
 use Waffle\Core\Container as CoreContainer; // The Security Decorator
 use Waffle\Core\Security;
 use Waffle\Enum\Failsafe;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
+use WaffleTests\Helper\MockContainer;
 
 trait KernelFactoryTrait
 {
@@ -70,7 +71,7 @@ trait KernelFactoryTrait
         $security = $this->createAndGetSecurity(config: $config);
 
         // 1. Create the raw PSR-11 container from the component
-        $innerContainer = new CommonsContainer();
+        $innerContainer = new MockContainer();
 
         // 2. Wrap it with the Core Container (Security Decorator)
         $container = new CoreContainer($innerContainer, $security);
@@ -85,9 +86,9 @@ trait KernelFactoryTrait
     /**
      * Helper to get just the inner container if needed for the Kernel constructor in tests
      */
-    protected function createInnerContainer(): CommonsContainer
+    protected function createInnerContainer(): MockContainer
     {
-        return new CommonsContainer();
+        return new MockContainer();
     }
 
     protected function createMockContainer(): ContainerInterface

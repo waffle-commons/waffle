@@ -8,6 +8,7 @@ use Waffle\Core\Config;
 use Waffle\Core\Container;
 use Waffle\Core\Security;
 use Waffle\Kernel;
+use WaffleTests\Helper\MockContainer;
 
 /**
  * A concrete Kernel implementation for testing the System::boot method specifically.
@@ -20,18 +21,9 @@ final class SystemTestKernel extends Kernel
         $this->config = $config;
         $security = new Security(cfg: $config);
 
-        // Try to use real container if available, otherwise use a minimal mock-like structure via reflection?
-        // Ideally, we should use the real container component if we are testing integration.
-        // If unavailable, we can't easily mock the inner container here without dependency injection.
-        // Assuming waffle-commons/container IS available in require-dev environment.
-
-        if (class_exists('Waffle\Commons\Container\Container')) {
-            $innerContainer = new \Waffle\Commons\Container\Container();
-            $this->container = new Container($innerContainer, $security);
-        } else {
-            // Fallback for strict isolation (might fail if tests rely on real container behavior)
-            throw new \RuntimeException('Waffle\Commons\Container\Container not found. Install dev dependencies.');
-        }
+        // Use MockContainer for testing
+        $innerContainer = new MockContainer();
+        $this->container = new Container($innerContainer, $security);
     }
 
     #[\Override]
@@ -42,10 +34,8 @@ final class SystemTestKernel extends Kernel
         }
         if ($this->container === null) {
             $security = new Security(cfg: $this->config);
-            if (class_exists('Waffle\Commons\Container\Container')) {
-                $innerContainer = new \Waffle\Commons\Container\Container();
-                $this->container = new Container($innerContainer, $security);
-            }
+            $innerContainer = new MockContainer();
+            $this->container = new Container($innerContainer, $security);
         }
 
         return $this;

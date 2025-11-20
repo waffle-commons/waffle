@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37b48a6a37ffc2004459053ca960c293",
+    "content-hash": "d78ab39f3b4018a0d8cf695a067333ff",
     "packages": [
         {
             "name": "psr/container",
@@ -5086,101 +5086,6 @@
             "time": "2025-08-06T10:10:28+00:00"
         },
         {
-            "name": "waffle-commons/container",
-            "version": "dev-feature/+1-psr_implementation",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/container.git",
-                "reference": "279b58f4ed1b4af721d3bfe94a6e52f97a1317fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/container/zipball/279b58f4ed1b4af721d3bfe94a6e52f97a1317fc",
-                "reference": "279b58f4ed1b4af721d3bfe94a6e52f97a1317fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/container": "^2.0"
-            },
-            "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
-                "php-mock/php-mock-phpunit": "^2.13",
-                "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Waffle\\Commons\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Leslie Petrimaux",
-                    "email": "contact@waffle-commons.cloud"
-                }
-            ],
-            "description": "Container component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/container/issues",
-                "source": "https://github.com/waffle-commons/container/tree/feature/#1-psr_implementation"
-            },
-            "time": "2025-11-19T13:28:09+00:00"
-        },
-        {
-            "name": "waffle-commons/http",
-            "version": "dev-feature/+1-psr_implementation",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/http.git",
-                "reference": "e75df1b76496ebbf258753a0174893fb623fb7c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/http/zipball/e75df1b76496ebbf258753a0174893fb623fb7c6",
-                "reference": "e75df1b76496ebbf258753a0174893fb623fb7c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4",
-                "psr/http-factory": "^1.1",
-                "psr/http-message": "^2.0"
-            },
-            "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
-                "php-mock/php-mock-phpunit": "^2.13",
-                "phpunit/phpunit": "^12.0",
-                "vimeo/psalm": "^6.13"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Waffle\\Commons\\Http\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Leslie Petrimaux",
-                    "email": "contact@waffle-commons.cloud"
-                }
-            ],
-            "description": "Http component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/http/issues",
-                "source": "https://github.com/waffle-commons/http/tree/feature/#1-psr_implementation"
-            },
-            "time": "2025-11-19T13:28:10+00:00"
-        },
-        {
             "name": "webmozart/assert",
             "version": "1.12.1",
             "source": {
@@ -5242,9 +5147,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "carthage-software/mago": 10,
-        "waffle-commons/container": 20,
-        "waffle-commons/http": 20
+        "carthage-software/mago": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

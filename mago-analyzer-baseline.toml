@@ -873,6 +873,66 @@ code = "possibly-null-operand"
 start_line = 90
 end_line = 90
 
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "incompatible-parameter-name"
+start_line = 112
+end_line = 112
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "invalid-return-statement"
+start_line = 78
+end_line = 78
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "invalid-return-statement"
+start_line = 104
+end_line = 104
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "missing-override-attribute"
+start_line = 16
+end_line = 16
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "missing-override-attribute"
+start_line = 107
+end_line = 107
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "missing-override-attribute"
+start_line = 112
+end_line = 112
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "mixed-argument"
+start_line = 86
+end_line = 86
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "mixed-assignment"
+start_line = 38
+end_line = 38
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "mixed-assignment"
+start_line = 49
+end_line = 49
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "mixed-assignment"
+start_line = 54
+end_line = 54
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "nullable-return-statement"
+start_line = 104
+end_line = 104
+
+[[entries."tests/src/Helper/MockContainer.php".issues]]
+code = "unevaluated-code"
+start_line = 62
+end_line = 62
+
 [[entries."tests/src/Router/ControllerFinderTest.php".issues]]
 code = "mixed-assignment"
 start_line = 85
@@ -940,13 +1000,13 @@ end_line = 44
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "mixed-argument"
-start_line = 193
-end_line = 193
+start_line = 170
+end_line = 170
 
 [[entries."tests/src/Router/RouterTest.php".issues]]
 code = "mixed-assignment"
-start_line = 191
-end_line = 191
+start_line = 168
+end_line = 168
 
 [[entries."tests/src/Security/Rule/Level6RuleTest.php".issues]]
 code = "possibly-invalid-argument"
@@ -965,58 +1025,58 @@ end_line = 29
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-argument"
-start_line = 52
-end_line = 52
+start_line = 53
+end_line = 53
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "mixed-assignment"
-start_line = 99
-end_line = 99
-
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-operand"
-start_line = 30
-end_line = 30
-
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-operand"
-start_line = 36
-end_line = 36
-
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-property-access"
 start_line = 100
 end_line = 100
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-return-statement"
-start_line = 94
-end_line = 94
+code = "mixed-operand"
+start_line = 31
+end_line = 31
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-return-statement"
+code = "mixed-operand"
+start_line = 37
+end_line = 37
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-property-access"
 start_line = 101
 end_line = 101
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "non-existent-method"
-start_line = 94
-end_line = 94
+code = "mixed-return-statement"
+start_line = 95
+end_line = 95
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "mixed-return-statement"
+start_line = 102
+end_line = 102
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-method"
-start_line = 99
-end_line = 99
+start_line = 95
+end_line = 95
+
+[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+code = "non-existent-method"
+start_line = 100
+end_line = 100
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-property"
-start_line = 30
-end_line = 30
+start_line = 31
+end_line = 31
 
 [[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
 code = "non-existent-property"
-start_line = 52
-end_line = 52
+start_line = 53
+end_line = 53
 
 [[entries."tests/src/Trait/Helper/TraitReflection.php".issues]]
 code = "less-specific-nested-argument-type"

@@ -16,6 +16,7 @@ use Waffle\Interface\ContainerInterface;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\Controller\TempController;
+use WaffleTests\Helper\MockContainer;
 
 #[CoversClass(Router::class)]
 final class RouterTest extends TestCase
@@ -34,36 +35,12 @@ final class RouterTest extends TestCase
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
         $security = new Security($testConfig);
 
-        // We need a real container logic for routing tests as it resolves controllers
-        // But we can mock the inner container if we want strictly no dependency
-        // For now, we use the createRealContainer helper which uses the dev dependency if available
-        // If we want ZERO dependency, we must mock the inner container here too.
-
-        // Let's use a mock for the inner container to be consistent with AbstractKernelTest
-        $innerContainerMock = $this->createMock(\Psr\Container\ContainerInterface::class);
-
-        $this->container = new Container($innerContainerMock, $security);
-
-        // We can't easily set into a mock inner container unless we configure the mock behavior.
-        // This makes testing the Router harder if we don't have a real container.
-        // Given Router relies heavily on container, using the real one (dev dependency) is much better.
-        // Assuming waffle-commons/container is available in require-dev.
-
-        // Revert to using real container if available for simplicity in Router tests,
-        // or mock if strict isolation is required.
-
-        if (class_exists('Waffle\Commons\Container\Container')) {
-            $innerContainer = new \Waffle\Commons\Container\Container();
-            $this->container = new Container($innerContainer, $security);
-            $this->container->set(Config::class, $testConfig);
-            $this->container->set(Security::class, $security);
-            $this->container->set(TempController::class, TempController::class);
-        } else {
-            // Fallback to mock if container component is missing
-            $this->container = $this->createMock(ContainerInterface::class);
-            $this->container->method('has')->willReturn(true);
-            $this->container->method('get')->willReturn(new TempController());
-        }
+        // Use MockContainer for testing
+        $innerContainer = new MockContainer();
+        $this->container = new Container($innerContainer, $security);
+        $this->container->set(Config::class, $testConfig);
+        $this->container->set(Security::class, $security);
+        $this->container->set(TempController::class, new TempController());
 
         $this->system = new System($security);
         $this->router = new Router(
