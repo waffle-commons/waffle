@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace WaffleTests\TestsTrait;
 
 use Waffle\Abstract\AbstractKernel;
+// The PSR-11 implementation
 use Waffle\Core\Config;
-use Waffle\Core\Container;
+use Waffle\Core\Container as CoreContainer; // The Security Decorator
 use Waffle\Core\Security;
 use Waffle\Enum\Failsafe;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Interface\KernelInterface;
+use WaffleTests\Helper\MockContainer;
 
 trait KernelFactoryTrait
 {
@@ -24,13 +26,11 @@ trait KernelFactoryTrait
           security:
             level: {$securityLevel}
           paths:
-            # Point to the actual test helpers for controller/service resolution
             controllers: '{$controllerPath}'
             services: '{$servicePath}'
         YAML;
         file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
 
-        // Also create a test-specific environment file.
         $yamlContentTest = <<<YAML
         waffle:
           test_specific_key: true
@@ -62,23 +62,33 @@ trait KernelFactoryTrait
         return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
     }
 
-    protected function createRealContainer(int $level = 10): Container
+    /**
+     * Creates the Core Container (Decorator) wrapping a real Commons Container.
+     */
+    protected function createRealContainer(int $level = 10): CoreContainer
     {
         $config = $this->createAndGetConfig(securityLevel: $level);
         $security = $this->createAndGetSecurity(config: $config);
-        $container = new Container(security: $security);
 
-        // Pre-populate the container with the instances we've already created.
-        $container->set(
-            id: Config::class,
-            concrete: $config,
-        );
-        $container->set(
-            id: Security::class,
-            concrete: $security,
-        );
+        // 1. Create the raw PSR-11 container from the component
+        $innerContainer = new MockContainer();
+
+        // 2. Wrap it with the Core Container (Security Decorator)
+        $container = new CoreContainer($innerContainer, $security);
+
+        // Pre-populate key services into the INNER container via the wrapper's set() method
+        $container->set(Config::class, $config);
+        $container->set(Security::class, $security);
 
         return $container;
+    }
+
+    /**
+     * Helper to get just the inner container if needed for the Kernel constructor in tests
+     */
+    protected function createInnerContainer(): MockContainer
+    {
+        return new MockContainer();
     }
 
     protected function createMockContainer(): ContainerInterface

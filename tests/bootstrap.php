@@ -9,7 +9,7 @@ const APP_CONFIG = 'temp_config';
 
 require_once __DIR__ . '/src/AbstractTestCase.php';
 
-// The DummyController is a test helper, so we include it manually.
+// required test helpers, so we include them manually.
 require_once __DIR__ . '/src/Helper/Service/TempService.php';
 require_once __DIR__ . '/src/Helper/Controller/TempController.php';
 require_once __DIR__ . '/src/Helper/Security/Rule2ValidObject1.php';
@@ -38,12 +38,8 @@ require_once __DIR__ . '/src/Helper/Security/Rule9ViolationName.php';
 require_once __DIR__ . '/src/Helper/Security/Rule10ViolatingObject.php';
 require_once __DIR__ . '/src/Trait/Helper/AbstractService.php';
 require_once __DIR__ . '/src/Helper/Service/NonReadOnlyService.php';
-require_once __DIR__ . '/src/Abstract/Helper/TestRequest.php';
-require_once __DIR__ . '/src/Abstract/Helper/ConcreteTestResponse.php';
 require_once __DIR__ . '/src/Abstract/Helper/ConcreteTestKernel.php';
-require_once __DIR__ . '/src/Abstract/Helper/ConcreteTestRequest.php';
 require_once __DIR__ . '/src/Abstract/Helper/ConcreteTestSecurity.php';
-require_once __DIR__ . '/src/Abstract/Helper/ControllableTestRequest.php';
 require_once __DIR__ . '/src/Abstract/Helper/TestConfig.php';
 require_once __DIR__ . '/src/Abstract/Helper/WebKernel.php';
 require_once __DIR__ . '/src/Core/Helper/DummyControllerWithService.php';
@@ -58,10 +54,10 @@ require_once __DIR__ . '/src/Core/Helper/WithPrimitive.php';
 require_once __DIR__ . '/src/Core/Helper/TestKernelWithConfig.php';
 require_once __DIR__ . '/src/Trait/Helper/DummyAttribute.php';
 require_once __DIR__ . '/src/Trait/Helper/DummyClassWithAttribute.php';
+require_once __DIR__ . '/src/Trait/Helper/DuplicateRouteController.php';
 require_once __DIR__ . '/src/Trait/Helper/FinalReadOnlyClass.php';
 require_once __DIR__ . '/src/Trait/Helper/NonFinalTestController.php';
 require_once __DIR__ . '/src/Trait/Helper/TraitObject.php';
 require_once __DIR__ . '/src/Trait/Helper/TraitParser.php';
 require_once __DIR__ . '/src/Trait/Helper/TraitReflection.php';
-require_once __DIR__ . '/src/Trait/Helper/TraitUri.php';
 require_once __DIR__ . '/src/Trait/Helper/UninitializedPropertyClass.php';

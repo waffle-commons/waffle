@@ -1,7 +1,5 @@
 <?php
 
-// tests/src/Trait/ReflectionTraitTest.php
-
 declare(strict_types=1);
 
 namespace WaffleTests\Trait;
@@ -10,7 +8,7 @@ use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionMethod;
 use Waffle\Core\Constant;
-use Waffle\Core\Request;
+use Waffle\Core\Container; // Changed target class
 use Waffle\Trait\ReflectionTrait;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\Controller\TempController;
@@ -19,9 +17,6 @@ use WaffleTests\Trait\Helper\DummyClassWithAttribute;
 use WaffleTests\Trait\Helper\FinalReadOnlyClass;
 use WaffleTests\Trait\Helper\NonFinalTestController;
 use WaffleTests\Trait\Helper\TraitReflection;
-
-// For isFinal test
-// For isFinal test
 
 #[CoversTrait(ReflectionTrait::class)]
 final class ReflectionTraitTest extends TestCase
@@ -51,18 +46,17 @@ final class ReflectionTraitTest extends TestCase
     public static function classNameProvider(): array
     {
         /** @var string $root */
-        $root = APP_ROOT; // Assuming APP_ROOT is defined globally in bootstrap
+        $root = APP_ROOT;
 
         return [
             'Source file' => [
-                $root . '/src/Core/Request.php',
-                Request::class,
+                $root . '/src/Core/Container.php', // Changed from Request.php
+                Container::class, // Changed from Request::class
             ],
             'Test file' => [
                 $root . '/tests/src/Helper/Controller/TempController.php',
                 TempController::class,
             ],
-            // Add edge cases here dynamically in a separate method if needed
         ];
     }
 

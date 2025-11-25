@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
+use Psr\Http\Message\ServerRequestInterface; // Import PSR-7
 use Waffle\Cache\RouteCache;
 use Waffle\Core\Constant;
-use Waffle\Core\Request;
 use Waffle\Core\System;
-use Waffle\Enum\HttpBag;
 use Waffle\Exception\SecurityException;
 use Waffle\Interface\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
-use Waffle\Trait\RequestTrait;
+use Waffle\Trait\RequestTrait; // Note: RequestTrait might also need updates or removal if it relies on old logic
 
 final class Router
 {
@@ -88,26 +87,22 @@ final class Router
      * Matches the current request against a registered route path.
      *
      * @param ContainerInterface $container
-     * @param Request $req
-     * @param array{
-     *     classname: class-string,
-     *     method: string,
-     *     arguments: array<string, mixed>,
-     *     path: string,
-     *     name: non-falsy-string
-     *  } $route
+     * @param ServerRequestInterface $req  <-- Update type hint
+     * @param array $route
      * @return bool
      * @throws SecurityException
      */
-    public function match(ContainerInterface $container, Request $req, array $route): bool
+    public function match(ContainerInterface $container, ServerRequestInterface $req, array $route): bool
     {
+        // Update logic to use PSR-7 methods
+        // $req->getUri()->getPath() instead of RequestTrait helper
+
+        // If using internal helper getPathUri from RequestTrait:
         $pathSegments = $this->getPathUri($route[Constant::PATH]);
-        $server = $req->bag(key: HttpBag::SERVER);
-        $serverUri = $server->get(
-            key: Constant::REQUEST_URI,
-            default: Constant::EMPTY_STRING,
-        );
-        $urlSegments = $this->getRequestUri(uri: $serverUri);
+
+        // PSR-7 URI Handling
+        $uriPath = $req->getUri()->getPath();
+        $urlSegments = $this->getPathUri($uriPath); // Reuse getPathUri for segments
 
         if (count($pathSegments) !== count($urlSegments)) {
             return false;

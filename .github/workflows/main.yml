@@ -171,7 +171,7 @@ jobs:
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml
