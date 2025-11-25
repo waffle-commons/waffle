@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract\Helper;
 
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Waffle\Core\Config;
 use Waffle\Core\Security;
 use Waffle\Core\System;
@@ -24,7 +26,9 @@ class WebKernel extends Kernel
         string $environment,
         null|ContainerInterface $container = null,
         null|PsrContainerInterface $innerContainer = null,
+        LoggerInterface $logger = new NullLogger(),
     ) {
+        parent::__construct($logger);
         $this->configDir = $configDir;
         $this->testEnvironment = $environment;
         $this->container = $container;

@@ -8,6 +8,8 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use ReflectionMethod;
 use Throwable;
 use Waffle\Core\Config;
@@ -59,6 +61,13 @@ abstract class AbstractKernel implements KernelInterface
     {
         $this->innerContainer = $container;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        protected LoggerInterface $logger = new NullLogger(),
+    ) {}
 
     /**
      * {@inheritdoc}
@@ -255,6 +264,8 @@ abstract class AbstractKernel implements KernelInterface
 
     private function handleException(Throwable $e): ResponseInterface
     {
+        $this->logger->error($e->getMessage(), ['exception' => $e]);
+
         $data = [
             'error' => true,
             'message' => $e->getMessage(),

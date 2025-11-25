@@ -14,6 +14,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use ReflectionClass;
 use RuntimeException;
 use Waffle\Abstract\AbstractKernel;
@@ -333,7 +335,13 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
         $kernel =
             new #[AllowDynamicProperties]
-            class($this->testConfigDir, 'test') extends AbstractKernel {
+            class($this->testConfigDir, 'test', new NullLogger()) extends AbstractKernel {
+                public function __construct(string $configDir, string $env, LoggerInterface $logger)
+                {
+                    parent::__construct($logger);
+                    $this->environment = $env;
+                }
+
                 public function boot(): AbstractKernel
                 {
                     return $this;

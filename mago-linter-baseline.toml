@@ -1,27 +1,27 @@
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "braced-string-interpolation"
-start_line = 98
-end_line = 98
+start_line = 107
+end_line = 107
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "cyclomatic-complexity"
-start_line = 27
-end_line = 305
+start_line = 29
+end_line = 316
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "halstead"
-start_line = 65
-end_line = 144
+start_line = 74
+end_line = 153
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "kan-defect"
-start_line = 27
-end_line = 305
+start_line = 29
+end_line = 316
 
 [[entries."src/Abstract/AbstractKernel.php".issues]]
 code = "no-else-clause"
-start_line = 120
-end_line = 127
+start_line = 129
+end_line = 136
 
 [[entries."src/Core/Config.php".issues]]
 code = "cyclomatic-complexity"
@@ -175,68 +175,68 @@ end_line = 67
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "assertion-style"
-start_line = 119
-end_line = 119
+start_line = 121
+end_line = 121
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "assertion-style"
-start_line = 307
-end_line = 307
+start_line = 309
+end_line = 309
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "explicit-octal"
-start_line = 36
-end_line = 36
+start_line = 38
+end_line = 38
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "explicit-octal"
-start_line = 365
-end_line = 365
+start_line = 373
+end_line = 373
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "no-boolean-flag-parameter"
-start_line = 434
-end_line = 434
+start_line = 442
+end_line = 442
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "no-error-control-operator"
-start_line = 51
-end_line = 51
+start_line = 53
+end_line = 53
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "prefer-arrow-function"
-start_line = 279
-end_line = 279
+start_line = 281
+end_line = 281
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "prefer-early-continue"
-start_line = 439
-end_line = 444
+start_line = 447
+end_line = 452
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "prefer-first-class-callable"
-start_line = 384
-end_line = 386
+start_line = 392
+end_line = 394
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "prefer-static-closure"
-start_line = 279
-end_line = 279
+start_line = 281
+end_line = 281
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "too-many-methods"
-start_line = 26
-end_line = 447
+start_line = 28
+end_line = 455
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "too-many-methods"
-start_line = 131
-end_line = 273
+start_line = 133
+end_line = 275
 
 [[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
 code = "too-many-methods"
-start_line = 194
-end_line = 266
+start_line = 196
+end_line = 268
 
 [[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
 code = "no-else-clause"
