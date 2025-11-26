@@ -7,7 +7,7 @@ namespace WaffleTests\Trait;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionMethod;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Core\Container; // Changed target class
 use Waffle\Trait\ReflectionTrait;
 use WaffleTests\AbstractTestCase as TestCase;

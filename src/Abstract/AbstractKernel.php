@@ -4,28 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use ReflectionMethod;
-use Throwable;
-use Waffle\Core\Config;
-use Waffle\Core\Constant;
-use Waffle\Core\Container;
-use Waffle\Core\Security;
-use Waffle\Core\System;
-use Waffle\Core\View;
-use Waffle\Enum\Failsafe;
-use Waffle\Exception\Container\ContainerException;
-use Waffle\Exception\Container\NotFoundException;
-use Waffle\Exception\RouteNotFoundException;
-use Waffle\Factory\ContainerFactory;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
-use Waffle\Trait\ReflectionTrait;
+use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Http\Message\ResponseFactoryInterface;use Psr\Http\Message\ResponseInterface;use Psr\Http\Message\ServerRequestInterface;use Psr\Log\LoggerInterface;use Psr\Log\NullLogger;use ReflectionMethod;use Throwable;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Core\Config;use Waffle\Core\Container;use Waffle\Core\Security;use Waffle\Core\System;use Waffle\Core\View;use Waffle\Exception\Container\ContainerException;use Waffle\Exception\Container\NotFoundException;use Waffle\Exception\RouteNotFoundException;use Waffle\Factory\ContainerFactory;use Waffle\Trait\ReflectionTrait;
 
 abstract class AbstractKernel implements KernelInterface
 {

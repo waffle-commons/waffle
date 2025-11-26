@@ -8,8 +8,8 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use Waffle\Attribute\Route;
-use Waffle\Core\Constant;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
 
 class RouteParser

@@ -10,7 +10,7 @@ use Psr\Log\NullLogger;
 use Waffle\Core\Config;
 use Waffle\Core\Security;
 use Waffle\Core\System;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Kernel;
 
 /**

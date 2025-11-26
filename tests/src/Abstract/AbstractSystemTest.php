@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use Waffle\Abstract\AbstractSystem;
-use Waffle\Core\Security;
-use Waffle\Core\System;
-use Waffle\Interface\KernelInterface;
-use Waffle\Router\Router;
-use WaffleTests\AbstractTestCase as TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;use Waffle\Abstract\AbstractSystem;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Core\Security;use Waffle\Core\System;use Waffle\Router\Router;use WaffleTests\AbstractTestCase as TestCase;
 
 /**
  * This test class is dedicated to validating the AbstractSystem class, which serves
@@ -59,7 +53,7 @@ final class AbstractSystemTest extends TestCase
             // A minimal implementation of the abstract boot method is required to
             // instantiate the class, even if it's not used in all tests.
             #[\Override]
-            public function boot(KernelInterface $kernel): \Waffle\Interface\SystemInterface
+            public function boot(KernelInterface $kernel): \Waffle\Commons\Contracts\System\SystemInterface
             {
                 return $this;
             }

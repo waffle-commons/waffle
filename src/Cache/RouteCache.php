@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Cache;
 
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 
 class RouteCache
 {

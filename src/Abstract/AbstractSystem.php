@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Waffle\Core\Security;
-use Waffle\Interface\SystemInterface;
-use Waffle\Router\Router;
-use Waffle\Trait\ReflectionTrait;
-use Waffle\Trait\SystemTrait;
+use Waffle\Commons\Contracts\System\SystemInterface;use Waffle\Core\Security;use Waffle\Router\Router;use Waffle\Trait\ReflectionTrait;use Waffle\Trait\SystemTrait;
 
 abstract class AbstractSystem implements SystemInterface
 {

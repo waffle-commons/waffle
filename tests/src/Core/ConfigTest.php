@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use ReflectionClass; // Added for testing protected method
-use ReflectionObject;
-use Waffle\Core\Config; // Added use statement
-use Waffle\Core\System;
-use Waffle\Enum\Failsafe;
-use Waffle\Exception\InvalidConfigurationException; // Added use statement
-use Waffle\Interface\YamlParserInterface;
-use WaffleTests\AbstractTestCase as TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;use ReflectionClass;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Commons\Contracts\Parser\YamlParserInterface;use Waffle\Core\Config;use Waffle\Core\System;use Waffle\Exception\InvalidConfigurationException;use WaffleTests\AbstractTestCase as TestCase;
+// Added for testing protected method
+// Added use statement
+// Added use statement
 
 #[CoversClass(Config::class)] // Added CoversClass
 class ConfigTest extends TestCase

@@ -8,11 +8,11 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\SecurityException;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\SecurityInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 
 /**
  * The Core Container acts as a secure decorator around ANY PSR-11 Container.

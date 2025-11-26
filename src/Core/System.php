@@ -8,8 +8,8 @@ use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
 use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\SecurityException;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 

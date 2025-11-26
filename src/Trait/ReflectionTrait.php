@@ -9,7 +9,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 
 trait ReflectionTrait
 {

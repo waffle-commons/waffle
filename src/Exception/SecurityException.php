@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Waffle\Exception;
 
-final class SecurityException extends WaffleException
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
+
+final class SecurityException extends WaffleException implements SecurityExceptionInterface
 {
     public function __construct(string $message = '', int $code = 0, null|\Throwable $previous = null)
     {

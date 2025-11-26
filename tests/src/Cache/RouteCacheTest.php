@@ -6,7 +6,7 @@ namespace WaffleTests\Cache;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Cache\RouteCache;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 use WaffleTests\AbstractTestCase;
 
 #[CoversClass(RouteCache::class)]

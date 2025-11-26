@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-use Waffle\Enum\Failsafe;
-use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Commons\Contracts\Config\ConfigInterface;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Exception\InvalidConfigurationException;
 
-class Config
+class Config implements ConfigInterface
 {
     private array $parameters = [];
 

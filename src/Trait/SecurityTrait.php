@@ -8,7 +8,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionObject;
 use ReflectionProperty;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Exception\SecurityException;
 use Waffle\Security\Rule\Level10Rule;
 use Waffle\Security\Rule\Level1Rule;

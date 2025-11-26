@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d78ab39f3b4018a0d8cf695a067333ff",
+    "content-hash": "e8ce0058da41c86fccea59fafc843453",
     "packages": [
+        {
+            "name": "psr/cache",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/3.0.0"
+            },
+            "time": "2021-02-03T23:26:27+00:00"
+        },
         {
             "name": "psr/container",
             "version": "2.0.2",
@@ -60,22 +109,21 @@
             "time": "2021-11-05T16:47:00+00:00"
         },
         {
-            "name": "psr/http-factory",
-            "version": "1.1.0",
+            "name": "psr/event-dispatcher",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
+                "url": "https://github.com/php-fig/event-dispatcher.git",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
-                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
+                "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1",
-                "psr/http-message": "^1.0 || ^2.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
             "extra": {
@@ -85,7 +133,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
+                    "Psr\\EventDispatcher\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -95,24 +143,20 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
+                    "homepage": "http://www.php-fig.org/"
                 }
             ],
-            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
+            "description": "Standard interfaces for event handling.",
             "keywords": [
-                "factory",
-                "http",
-                "message",
+                "events",
                 "psr",
-                "psr-17",
-                "psr-7",
-                "request",
-                "response"
+                "psr-14"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-factory"
+                "issues": "https://github.com/php-fig/event-dispatcher/issues",
+                "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
             },
-            "time": "2024-04-15T12:06:14+00:00"
+            "time": "2019-01-08T18:20:26+00:00"
         },
         {
             "name": "psr/http-message",
@@ -168,6 +212,62 @@
             "time": "2023-04-04T09:54:51+00:00"
         },
         {
+            "name": "psr/http-server-handler",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-server-handler.git",
+                "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-server-handler/zipball/84c4fb66179be4caaf8e97bd239203245302e7d4",
+                "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side request handler",
+            "keywords": [
+                "handler",
+                "http",
+                "http-interop",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response",
+                "server"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-server-handler/tree/1.0.2"
+            },
+            "time": "2023-04-10T20:06:20+00:00"
+        },
+        {
             "name": "psr/log",
             "version": "3.0.2",
             "source": {
@@ -216,6 +316,58 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "waffle-commons/contracts",
+            "version": "0.1.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/waffle-commons/contracts.git",
+                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
+                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.4",
+                "psr/cache": "^3.0",
+                "psr/container": "^2.0",
+                "psr/event-dispatcher": "^1.0",
+                "psr/http-message": "^1.1 || ^2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "carthage-software/mago": "^1.0.0-beta.31",
+                "php-mock/php-mock-phpunit": "^2.13",
+                "phpunit/phpunit": "^12.0",
+                "vimeo/psalm": "^6.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Waffle\\Commons\\Contracts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leslie Petrimaux",
+                    "email": "contact@waffle-commons.cloud"
+                }
+            ],
+            "description": "Contracts component for Waffle framework.",
+            "support": {
+                "issues": "https://github.com/waffle-commons/contracts/issues",
+                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha1"
+            },
+            "time": "2025-11-26T13:10:28+00:00"
         }
     ],
     "packages-dev": [
@@ -1029,16 +1181,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.0.0-rc.3",
+            "version": "1.0.0-rc.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "ed0c848ab54763e0446a813dc922fb9ce0625601"
+                "reference": "09b1f6e4a040ff7d6d6122da1d0690a412a14670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/ed0c848ab54763e0446a813dc922fb9ce0625601",
-                "reference": "ed0c848ab54763e0446a813dc922fb9ce0625601",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/09b1f6e4a040ff7d6d6122da1d0690a412a14670",
+                "reference": "09b1f6e4a040ff7d6d6122da1d0690a412a14670",
                 "shasum": ""
             },
             "require": {
@@ -1076,7 +1228,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.0.0-rc.3"
+                "source": "https://github.com/carthage-software/mago/tree/1.0.0-rc.5"
             },
             "funding": [
                 {
@@ -1084,7 +1236,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-15T23:54:54+00:00"
+            "time": "2025-11-25T02:04:59+00:00"
         },
         {
             "name": "composer/pcre",
@@ -2459,16 +2611,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.11.0",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3"
+                "reference": "92a98ada2b93d9b201a613cb5a33584dde25f195"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3",
-                "reference": "8cbe6100e8971efbf8e2e7da3a202ba83eafd5a3",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/92a98ada2b93d9b201a613cb5a33584dde25f195",
+                "reference": "92a98ada2b93d9b201a613cb5a33584dde25f195",
                 "shasum": ""
             },
             "require": {
@@ -2511,9 +2663,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.11.0"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.12.0"
             },
-            "time": "2025-11-19T20:28:58+00:00"
+            "time": "2025-11-21T15:09:14+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -2898,16 +3050,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.4.3",
+            "version": "12.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d8f644d8d9bb904867f7a0aeb1bd306e0d966949"
+                "reference": "9253ec75a672e39fcc9d85bdb61448215b8162c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d8f644d8d9bb904867f7a0aeb1bd306e0d966949",
-                "reference": "d8f644d8d9bb904867f7a0aeb1bd306e0d966949",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9253ec75a672e39fcc9d85bdb61448215b8162c7",
+                "reference": "9253ec75a672e39fcc9d85bdb61448215b8162c7",
                 "shasum": ""
             },
             "require": {
@@ -2975,7 +3127,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.4.3"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.4.4"
             },
             "funding": [
                 {
@@ -2999,7 +3151,62 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-11-13T07:20:26+00:00"
+            "time": "2025-11-21T07:39:11+00:00"
+        },
+        {
+            "name": "psr/http-factory",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-factory.git",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
+            "keywords": [
+                "factory",
+                "http",
+                "message",
+                "psr",
+                "psr-17",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/http-factory"
+            },
+            "time": "2024-04-15T12:06:14+00:00"
         },
         {
             "name": "revolt/event-loop",
@@ -5145,11 +5352,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "carthage-software/mago": 10
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {},
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"

@@ -6,14 +6,15 @@ namespace Waffle\Router;
 
 use Psr\Http\Message\ServerRequestInterface; // Import PSR-7
 use Waffle\Cache\RouteCache;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Core\System;
 use Waffle\Exception\SecurityException;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Trait\ReflectionTrait;
 use Waffle\Trait\RequestTrait; // Note: RequestTrait might also need updates or removal if it relies on old logic
 
-final class Router
+final class Router implements RouterInterface
 {
     use ReflectionTrait;
     use RequestTrait;
@@ -88,7 +89,13 @@ final class Router
      *
      * @param ContainerInterface $container
      * @param ServerRequestInterface $req  <-- Update type hint
-     * @param array $route
+     * @param array{
+     *        classname: class-string,
+     *        method: string,
+     *        arguments: array<string, mixed>,
+     *        path: string,
+     *        name: non-falsy-string
+     *   } $route
      * @return bool
      * @throws SecurityException
      */

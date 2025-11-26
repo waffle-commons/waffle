@@ -10,8 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Waffle\Core\Constant;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use WaffleTests\Abstract\Helper\WebKernel;
 use WaffleTests\AbstractTestCase as TestCase;
 

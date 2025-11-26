@@ -35,7 +35,7 @@ final class RouteDiscovererTest extends TestCase
         $discoverer = new RouteDiscoverer(directory: false);
 
         // Mock container not needed since discover checks files first
-        $container = $this->createMock(\Waffle\Interface\ContainerInterface::class);
+        $container = $this->createMock(\Waffle\Commons\Contracts\Container\ContainerInterface::class);
 
         static::assertEmpty($discoverer->discover($container));
     }
@@ -43,7 +43,7 @@ final class RouteDiscovererTest extends TestCase
     public function testDiscoverReturnsEmptyArrayIfDirectoryIsEmpty(): void
     {
         $discoverer = new RouteDiscoverer(directory: $this->tempDir);
-        $container = $this->createMock(\Waffle\Interface\ContainerInterface::class);
+        $container = $this->createMock(\Waffle\Commons\Contracts\Container\ContainerInterface::class);
 
         static::assertEmpty($discoverer->discover($container));
     }

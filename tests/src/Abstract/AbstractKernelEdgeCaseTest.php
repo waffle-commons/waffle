@@ -19,7 +19,7 @@ use Psr\Log\NullLogger;
 use ReflectionClass;
 use RuntimeException;
 use Waffle\Abstract\AbstractKernel;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Router\Router;
 use WaffleTests\Abstract\Helper\WebKernel;
 

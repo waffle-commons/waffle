@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 
 class RouteDiscoverer
 {

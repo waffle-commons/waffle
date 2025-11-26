@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Trait;
 
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 
 trait RequestTrait
 {

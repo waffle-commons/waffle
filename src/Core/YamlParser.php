@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-use Waffle\Interface\YamlParserInterface;
+use Waffle\Commons\Contracts\Parser\YamlParserInterface;
 
 /**
  * A very simple, native YAML file parser.

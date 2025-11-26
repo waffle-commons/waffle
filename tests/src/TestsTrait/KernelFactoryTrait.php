@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\TestsTrait;
 
-use Waffle\Abstract\AbstractKernel;
+use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Core\Config;use Waffle\Core\Container as CoreContainer;use Waffle\Core\Security;use WaffleTests\Helper\MockContainer;
 // The PSR-11 implementation
-use Waffle\Core\Config;
-use Waffle\Core\Container as CoreContainer; // The Security Decorator
-use Waffle\Core\Security;
-use Waffle\Enum\Failsafe;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
-use WaffleTests\Helper\MockContainer;
+// The Security Decorator
 
 trait KernelFactoryTrait
 {

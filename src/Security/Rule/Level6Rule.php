@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Security\Rule;
 
-use Waffle\Exception\SecurityException;
-use Waffle\Interface\SecurityRuleInterface;
-use Waffle\Trait\ReflectionTrait;
+use Waffle\Commons\Contracts\Security\SecurityRuleInterface;use Waffle\Exception\SecurityException;use Waffle\Trait\ReflectionTrait;
 
 class Level6Rule implements SecurityRuleInterface
 {
