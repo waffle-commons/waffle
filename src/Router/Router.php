@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
-use Psr\Http\Message\ServerRequestInterface; // Import PSR-7
-use Waffle\Cache\RouteCache;
-use Waffle\Commons\Contracts\Routing\RouterInterface;
-use Waffle\Commons\Contracts\Constant\Constant;
-use Waffle\Core\System;
-use Waffle\Exception\SecurityException;
-use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Trait\ReflectionTrait;
-use Waffle\Trait\RequestTrait; // Note: RequestTrait might also need updates or removal if it relies on old logic
+use Psr\Http\Message\ServerRequestInterface;use Waffle\Commons\Utils\Trait\ReflectionTrait;use Waffle\Cache\RouteCache;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Routing\RouterInterface;use Waffle\Core\System;use Waffle\Exception\SecurityException;use Waffle\Trait\RequestTrait; // Import PSR-7
+// Note: RequestTrait might also need updates or removal if it relies on old logic
 
 final class Router implements RouterInterface
 {

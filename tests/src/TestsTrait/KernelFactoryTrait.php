@@ -10,10 +10,6 @@ use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\C
 
 trait KernelFactoryTrait
 {
-    protected function createAndGetSecurity(int $level = 10, null|Config $config = null): Security
-    {
-        return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
-    }
 
     /**
      * Creates the Core Container (Decorator) wrapping a real Commons Container.

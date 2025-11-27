@@ -30,7 +30,8 @@
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^3.0",
         "psr/cache": "^3.0",
-        "waffle-commons/contracts": "1.0.0-dev"
+        "waffle-commons/contracts": "1.0.0-dev",
+        "waffle-commons/utils": "1.0.0-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
@@ -45,6 +46,15 @@
         "url": "../contracts",
         "options": {
           "versions": { "waffle-commons/contracts": "1.0.0-dev" },
+          "symlink": true
+        }
+      },
+      {
+        "type": "path",
+        "canonical": false,
+        "url": "../utils",
+        "options": {
+          "versions": { "waffle-commons/utils": "1.0.0-dev" },
           "symlink": true
         }
       }
