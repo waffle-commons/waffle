@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract\Helper;
 
-use Waffle\Abstract\AbstractSecurity;
-use Waffle\Core\Config;
-use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Abstract\AbstractSecurity;use Waffle\Commons\Config\Config;use Waffle\Commons\Config\Exception\InvalidConfigurationException;
 
 /**
  * A concrete implementation of Security for testing purposes.

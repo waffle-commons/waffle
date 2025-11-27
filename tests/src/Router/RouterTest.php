@@ -4,19 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Router;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UriInterface;
-use Waffle\Core\Config;
-use Waffle\Core\Container;
-use Waffle\Core\Security;
-use Waffle\Core\System;
-use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Router\Router;
-use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Helper\Controller\TempController;
-use WaffleTests\Helper\MockContainer;
+use PHPUnit\Framework\Attributes\CoversClass;use PHPUnit\Framework\Attributes\DataProvider;use Psr\Http\Message\ServerRequestInterface;use Psr\Http\Message\UriInterface;use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Core\Container;use Waffle\Core\Security;use Waffle\Core\System;use Waffle\Router\Router;use WaffleTests\AbstractTestCase as TestCase;use WaffleTests\Helper\Controller\TempController;use WaffleTests\Helper\MockContainer;
 
 #[CoversClass(Router::class)]
 final class RouterTest extends TestCase

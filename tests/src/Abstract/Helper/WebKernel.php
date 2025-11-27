@@ -4,14 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract\Helper;
 
-use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use Waffle\Core\Config;
-use Waffle\Core\Security;
-use Waffle\Core\System;
-use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Kernel;
+use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Log\LoggerInterface;use Psr\Log\NullLogger;use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Core\Security;use Waffle\Core\System;use Waffle\Kernel;
 
 /**
  * This is a test double for the concrete Kernel.

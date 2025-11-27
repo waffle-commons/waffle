@@ -359,46 +359,6 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->handle($request);
     }
 
-    /**
-     * Tests the private createFailsafeContainer method.
-     * Uses class_alias to simulate the missing dependency cleanly.
-     * Runs in separate process to avoid polluting global class state for other tests.
-     */
-    #[RunInSeparateProcess]
-    #[PreserveGlobalState(false)]
-    public function testCreateFailsafeContainer(): void
-    {
-        // 1. Prepare environment
-        $expectedAppDir = APP_ROOT . '/app';
-        if (!is_dir($expectedAppDir)) {
-            mkdir($expectedAppDir, 0777, true);
-        }
-
-        // 2. MOCK DEPENDENCY: Use class_alias to map the missing class to our local Stub
-        // This fools class_exists() and new() calls in the Kernel.
-        $targetClass = 'CommonsContainer';
-
-        if (!class_exists($targetClass, false)) {
-            class_alias(StubCommonsContainer::class, $targetClass);
-        }
-
-        $kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'prod',
-        );
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('waffle-commons/container is missing.');
-
-        // 3. INVOKE PRIVATE METHOD via Closure Binding
-        $invoker = function () {
-            return $this->createFailsafeContainer();
-        };
-
-        $boundInvoker = $invoker->bindTo($kernel, AbstractKernel::class);
-
-        $boundInvoker();
-    }
-
     // --- Helpers ---
 
     private function createMockRequest(): ServerRequestInterface

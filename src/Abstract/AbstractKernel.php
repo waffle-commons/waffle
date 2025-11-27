@@ -4,7 +4,28 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Http\Message\ResponseFactoryInterface;use Psr\Http\Message\ResponseInterface;use Psr\Http\Message\ServerRequestInterface;use Psr\Log\LoggerInterface;use Psr\Log\NullLogger;use ReflectionMethod;use Throwable;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Core\Config;use Waffle\Core\Container;use Waffle\Core\Security;use Waffle\Core\System;use Waffle\Core\View;use Waffle\Exception\Container\ContainerException;use Waffle\Exception\Container\NotFoundException;use Waffle\Exception\RouteNotFoundException;use Waffle\Factory\ContainerFactory;use Waffle\Trait\ReflectionTrait;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use ReflectionMethod;
+use Throwable;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Core\Container;
+use Waffle\Core\Security;
+use Waffle\Core\System;
+use Waffle\Core\View;
+use Waffle\Exception\Container\ContainerException;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Exception\RouteNotFoundException;
+use Waffle\Factory\ContainerFactory;
+use Waffle\Trait\ReflectionTrait;
 
 abstract class AbstractKernel implements KernelInterface
 {
@@ -15,7 +36,7 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->environment = $value;
     }
 
-    public null|Config $config = null {
+    public null|ConfigInterface $config = null {
         get => $this->config;
         set => $this->config = $value;
     }
@@ -39,6 +60,14 @@ abstract class AbstractKernel implements KernelInterface
     public function setContainerImplementation(PsrContainerInterface $container): void
     {
         $this->innerContainer = $container;
+    }
+
+    /**
+     * Allows injecting Configuration (e.g., from waffle-commons/config).
+     */
+    public function setConfiguration(ConfigInterface $config): void
+    {
+        $this->config = $config;
     }
 
     /**
@@ -201,10 +230,8 @@ abstract class AbstractKernel implements KernelInterface
         /** @var string $root */
         $root = APP_ROOT;
         if ($this->config === null) {
-            $rootConfig = $root . DIRECTORY_SEPARATOR . APP_CONFIG;
-            $this->config = new Config(
-                configDir: $rootConfig,
-                environment: $this->environment,
+            throw new InvalidConfigurationException(
+                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.'
             );
         }
 
@@ -272,25 +299,5 @@ abstract class AbstractKernel implements KernelInterface
             ], JSON_THROW_ON_ERROR));
             return $response->withHeader('Content-Type', 'application/json');
         }
-    }
-
-    private function createFailsafeContainer(): ContainerInterface
-    {
-        /** @var string $root */
-        $root = APP_ROOT;
-        $config = new Config(
-            configDir: $root . '/app',
-            environment: 'prod',
-            failsafe: Failsafe::ENABLED,
-        );
-        $security = new Security(cfg: $config);
-
-        // Fix: We must provide an inner container even in failsafe mode
-        // Assuming CommonsContainer is available via autoload if waffle-commons/container is installed
-        $inner = class_exists(CommonsContainer::class)
-            ? new CommonsContainer()
-            : throw new \RuntimeException('waffle-commons/container is missing.');
-
-        return new Container($inner, $security);
     }
 }

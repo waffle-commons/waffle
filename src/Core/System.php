@@ -6,10 +6,11 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
-use Waffle\Exception\InvalidConfigurationException;
-use Waffle\Exception\SecurityException;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Exception\SecurityException;
 use Waffle\Kernel;
 use Waffle\Router\Router;
 
@@ -21,7 +22,7 @@ class System extends AbstractSystem
     }
 
     /**
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationExceptionInterface
      */
     #[\Override]
     public function boot(KernelInterface $kernel): self
@@ -36,15 +37,15 @@ class System extends AbstractSystem
                     KernelInterface::class,
                 ],
             );
-            /** @var Config $config */
+            /** @var ConfigInterface $config */
             $config = $kernel->config;
             $this->security->analyze(
                 object: $config,
                 expectations: [
-                    Config::class,
+                    ConfigInterface::class,
                 ],
             );
-            /** @var Container $container */
+            /** @var ContainerInterface $container */
             $container = $kernel->container;
             /** @var string $controllers */
             $controllers = $config->getString(key: 'waffle.paths.controllers');

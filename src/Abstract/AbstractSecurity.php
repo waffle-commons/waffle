@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Waffle\Commons\Contracts\Security\SecurityInterface;use Waffle\Core\Config;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Exception\SecurityException;use Waffle\Trait\SecurityTrait;
+use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Security\SecurityInterface;use Waffle\Exception\SecurityException;use Waffle\Trait\SecurityTrait;
 
 abstract class AbstractSecurity implements SecurityInterface
 {
