@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use Waffle\Core\Security; // No longer mocking Security
-use Waffle\Core\System;
-use Waffle\Exception\SecurityException;
-use Waffle\Router\Router;
-use WaffleTests\AbstractTestCase as TestCase;
-use WaffleTests\Core\Helper\SystemTestKernel;
-use WaffleTests\TestsTrait\KernelFactoryTrait; // Added for config helper
+use PHPUnit\Framework\Attributes\CoversClass;use Waffle\Commons\Security\Security;use Waffle\Core\System;use Waffle\Exception\SecurityException;use Waffle\Router\Router;use WaffleTests\AbstractTestCase as TestCase;use WaffleTests\Core\Helper\SystemTestKernel;use WaffleTests\TestsTrait\KernelFactoryTrait;
+// No longer mocking Security
+// Added for config helper
 
 #[CoversClass(System::class)]
 final class SystemTest extends TestCase

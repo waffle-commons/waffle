@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core\Helper;
 
-use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\Core\Container;use Waffle\Core\Security;
+use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\Commons\Security\Security;use Waffle\Core\Container;
 
 /**
  * A concrete Kernel implementation for testing purposes.

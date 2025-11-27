@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\TestsTrait;
 
-use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Contracts\Enum\Failsafe;use Waffle\Core\Container as CoreContainer;use Waffle\Core\Security;use WaffleTests\Helper\MockContainer;
+use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Security\Security;use Waffle\Core\Container as CoreContainer;use WaffleTests\Helper\MockContainer;
 // The PSR-11 implementation
 // The Security Decorator
 
