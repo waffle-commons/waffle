@@ -4,15 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use Throwable;
-use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Exception\Container\ContainerException;
-use Waffle\Exception\Container\NotFoundException;
-use Waffle\Exception\SecurityException;
-use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Psr\Container\ContainerExceptionInterface;use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Container\NotFoundExceptionInterface;use Throwable;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Security\SecurityInterface;use Waffle\Commons\Security\Exception\SecurityException;use Waffle\Exception\Container\ContainerException;use Waffle\Exception\Container\NotFoundException;
 
 /**
  * The Core Container acts as a secure decorator around ANY PSR-11 Container.
