@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8ce0058da41c86fccea59fafc843453",
+    "content-hash": "13044250d3f432af9e79287e4804674f",
     "packages": [
         {
             "name": "psr/cache",
@@ -319,17 +319,11 @@
         },
         {
             "name": "waffle-commons/contracts",
-            "version": "0.1.0-alpha1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4"
-            },
+            "version": "1.0.0-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
-                "reference": "9a8ed9b2ad0e6e6a539ae36839dae9537e63c6c4",
-                "shasum": ""
+                "type": "path",
+                "url": "../contracts",
+                "reference": "683e048ba46327dd739902bbbda314582b55787d"
             },
             "require": {
                 "php": "^8.4",
@@ -352,7 +346,47 @@
                     "Waffle\\Commons\\Contracts\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Contracts\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -363,11 +397,90 @@
                 }
             ],
             "description": "Contracts component for Waffle framework.",
-            "support": {
-                "issues": "https://github.com/waffle-commons/contracts/issues",
-                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha1"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "waffle-commons/utils",
+            "version": "1.0.0-dev",
+            "dist": {
+                "type": "path",
+                "url": "../utils",
+                "reference": "06e41486bf60fe222210b83029cb63c77613df12"
             },
-            "time": "2025-11-26T13:10:28+00:00"
+            "require": {
+                "php": "^8.4",
+                "waffle-commons/contracts": "1.0.0-dev"
+            },
+            "require-dev": {
+                "carthage-software/mago": "^1.0.0-beta.31",
+                "php-mock/php-mock-phpunit": "^2.13",
+                "phpunit/phpunit": "^12.0",
+                "vimeo/psalm": "^6.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Waffle\\Commons\\Utils\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "WaffleTests\\Commons\\Utils\\": "tests/src/"
+                }
+            },
+            "scripts": {
+                "formatter": [
+                    "vendor/bin/mago fmt"
+                ],
+                "linter": [
+                    "vendor/bin/mago lint"
+                ],
+                "analyzer": [
+                    "vendor/bin/mago analyze"
+                ],
+                "phpunit": [
+                    "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage"
+                ],
+                "benchmark": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "vendor/bin/phpbench run --report=default_report --output=waffle_html --retry-threshold=10"
+                ],
+                "mago": [
+                    "@formatter",
+                    "@linter",
+                    "@analyzer"
+                ],
+                "tests": [
+                    "@phpunit"
+                ],
+                "scan": [
+                    "@mago",
+                    "@tests"
+                ],
+                "ci": [
+                    "@mago",
+                    "@tests",
+                    "composer audit",
+                    "vendor/bin/psalm --taint-analysis"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leslie Petrimaux",
+                    "email": "contact@waffle-commons.cloud"
+                }
+            ],
+            "description": "Utils component for Waffle framework.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         }
     ],
     "packages-dev": [
@@ -1181,16 +1294,16 @@
         },
         {
             "name": "carthage-software/mago",
-            "version": "1.0.0-rc.5",
+            "version": "1.0.0-rc.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "09b1f6e4a040ff7d6d6122da1d0690a412a14670"
+                "reference": "d7fe3d07d92eefbf2c40476ca79bee5485d97cdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/09b1f6e4a040ff7d6d6122da1d0690a412a14670",
-                "reference": "09b1f6e4a040ff7d6d6122da1d0690a412a14670",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/d7fe3d07d92eefbf2c40476ca79bee5485d97cdd",
+                "reference": "d7fe3d07d92eefbf2c40476ca79bee5485d97cdd",
                 "shasum": ""
             },
             "require": {
@@ -1228,7 +1341,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.0.0-rc.5"
+                "source": "https://github.com/carthage-software/mago/tree/1.0.0-rc.6"
             },
             "funding": [
                 {
@@ -1236,7 +1349,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-25T02:04:59+00:00"
+            "time": "2025-11-26T21:36:43+00:00"
         },
         {
             "name": "composer/pcre",
@@ -3210,16 +3323,16 @@
         },
         {
             "name": "revolt/event-loop",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/revoltphp/event-loop.git",
-                "reference": "09bf1bf7f7f574453efe43044b06fafe12216eb3"
+                "reference": "b6fc06dce8e9b523c9946138fa5e62181934f91c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/09bf1bf7f7f574453efe43044b06fafe12216eb3",
-                "reference": "09bf1bf7f7f574453efe43044b06fafe12216eb3",
+                "url": "https://api.github.com/repos/revoltphp/event-loop/zipball/b6fc06dce8e9b523c9946138fa5e62181934f91c",
+                "reference": "b6fc06dce8e9b523c9946138fa5e62181934f91c",
                 "shasum": ""
             },
             "require": {
@@ -3276,9 +3389,9 @@
             ],
             "support": {
                 "issues": "https://github.com/revoltphp/event-loop/issues",
-                "source": "https://github.com/revoltphp/event-loop/tree/v1.0.7"
+                "source": "https://github.com/revoltphp/event-loop/tree/v1.0.8"
             },
-            "time": "2025-01-25T19:27:39+00:00"
+            "time": "2025-08-27T21:33:23+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -4179,16 +4292,16 @@
         },
         {
             "name": "spatie/array-to-xml",
-            "version": "3.4.1",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/array-to-xml.git",
-                "reference": "6a740f39415aee8886aea10333403adc77d50791"
+                "reference": "7b9202dccfe18d4e3a13303156d6bbcc1c61dabf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/6a740f39415aee8886aea10333403adc77d50791",
-                "reference": "6a740f39415aee8886aea10333403adc77d50791",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/7b9202dccfe18d4e3a13303156d6bbcc1c61dabf",
+                "reference": "7b9202dccfe18d4e3a13303156d6bbcc1c61dabf",
                 "shasum": ""
             },
             "require": {
@@ -4231,7 +4344,7 @@
                 "xml"
             ],
             "support": {
-                "source": "https://github.com/spatie/array-to-xml/tree/3.4.1"
+                "source": "https://github.com/spatie/array-to-xml/tree/3.4.3"
             },
             "funding": [
                 {
@@ -4243,7 +4356,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-12T10:32:50+00:00"
+            "time": "2025-11-27T09:08:26+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
@@ -5353,7 +5466,10 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "waffle-commons/contracts": 20,
+        "waffle-commons/utils": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
