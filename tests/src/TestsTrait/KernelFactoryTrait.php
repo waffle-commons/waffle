@@ -51,19 +51,23 @@ trait KernelFactoryTrait
         );
 
         $config = $this->createMock(ConfigInterface::class);
-        $config->method('getString')->willReturnCallback(function ($key) use ($controllerPath, $servicePath) {
-            return match ($key) {
-                'waffle.paths.controllers' => $controllerPath,
-                'waffle.paths.services' => $servicePath,
-                default => null,
-            };
-        });
-        $config->method('getInt')->willReturnCallback(function ($key) use ($securityLevel) {
-            return match ($key) {
-                'waffle.security.level' => $securityLevel,
-                default => null,
-            };
-        });
+        $config
+            ->method('getString')
+            ->willReturnCallback(function ($key) use ($controllerPath, $servicePath) {
+                return match ($key) {
+                    'waffle.paths.controllers' => $controllerPath,
+                    'waffle.paths.services' => $servicePath,
+                    default => null,
+                };
+            });
+        $config
+            ->method('getInt')
+            ->willReturnCallback(function ($key) use ($securityLevel) {
+                return match ($key) {
+                    'waffle.security.level' => $securityLevel,
+                    default => null,
+                };
+            });
 
         return $config;
     }

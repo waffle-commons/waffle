@@ -42,11 +42,30 @@ class WebKernel extends Kernel
     public function configure(): self
     {
         $this->config = new class($this->configDir, $this->testEnvironment) implements ConfigInterface {
-            public function __construct(private string $dir, private string $env) {}
-            public function getInt(string $key, null|int $default = null): null|int { return 10; }
-            public function getString(string $key, null|string $default = null): null|string { return null; }
-            public function getArray(string $key, null|array $default = null): null|array { return []; }
-            public function getBool(string $key, bool $default = false): bool { return false; }
+            public function __construct(
+                private string $dir,
+                private string $env,
+            ) {}
+
+            public function getInt(string $key, null|int $default = null): null|int
+            {
+                return 10;
+            }
+
+            public function getString(string $key, null|string $default = null): null|string
+            {
+                return null;
+            }
+
+            public function getArray(string $key, null|array $default = null): null|array
+            {
+                return [];
+            }
+
+            public function getBool(string $key, bool $default = false): bool
+            {
+                return false;
+            }
         };
 
         // If the container is pre-set (legacy tests), we skip the standard container creation
@@ -57,7 +76,9 @@ class WebKernel extends Kernel
             if ($this->security === null) {
                 // Fallback mock if not set
                 $this->security = new class implements SecurityInterface {
-                    public function analyze(object $object, array $expectations = []): void {}
+                    public function analyze(object $object, array $expectations = []): void
+                    {
+                    }
                 };
             }
             $this->system = new System(security: $this->security)->boot(kernel: $this);

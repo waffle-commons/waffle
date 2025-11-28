@@ -9,8 +9,8 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 

@@ -95,16 +95,14 @@ final class SystemTest extends TestCase
         // We configure the 'analyze' method to throw a SecurityException. This simulates
         // a critical security validation failure during the framework's boot sequence.
         // We are testing the system's ability to catch this and respond gracefully.
-        $exception = new class ('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
+        $exception = new class('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
             public function serialize(): array
             {
                 return ['message' => $this->getMessage(), 'code' => $this->getCode()];
             }
         };
 
-        $securityMock
-            ->method('analyze')
-            ->will($this->throwException($exception));
+        $securityMock->method('analyze')->will($this->throwException($exception));
 
         // Create a dummy Configuration and Kernel for the test.
         $testConfig = $this->createAndGetConfig(); // Use default config here

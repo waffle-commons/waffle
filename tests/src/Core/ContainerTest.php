@@ -240,7 +240,7 @@ final class ContainerTest extends TestCase
     public function testGetWrapsSecurityException(): void
     {
         $innerMock = $this->createMock(PsrContainerInterface::class);
-        $exception = new class ('Security Error') extends \Exception implements SecurityExceptionInterface {
+        $exception = new class('Security Error') extends \Exception implements SecurityExceptionInterface {
             public function serialize(): array
             {
                 return ['message' => $this->getMessage(), 'code' => $this->getCode()];

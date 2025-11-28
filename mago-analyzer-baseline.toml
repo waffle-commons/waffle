@@ -446,6 +446,54 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-18056:18450::settestconfig`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-21193:21968::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-29747:31955::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `waffle\abstract\abstractkernel::setconfiguration`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `waffle\abstract\abstractkernel::setsecurity`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+count = 5
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `class@anonymous:6107558782360210274-21193:21968::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `class@anonymous:6107558782360210274-29747:31955::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
 message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::get`.'
 count = 1
@@ -632,39 +680,87 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertarrayhaskey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertarraynothaskey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-array-access"
 message = "Unsafe array access on type `mixed`."
-count = 1
+count = 4
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 4
+count = 11
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 14
+count = 29
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-operand"
 message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 10
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `waffletests\abstract\stubresponse::getbody`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `waffletests\abstract\stubresponse::getstatuscode`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-value"
+message = 'Argument #2 passed to method `phpunit\framework\assert::assertsame` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "non-existent-class-like"
+message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Config\ConfigInterface` does not exist.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "non-existent-class-like"
+message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Security\SecurityInterface` does not exist.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "non-existent-class-like"
 message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 6
+count = 13
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 4
+count = 11
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-false-argument"
+message = "Argument #1 of function `count` is possibly `false`, but parameter type `Countable|array<array-key, mixed>` does not accept it."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -675,13 +771,13 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractSystemTest.php"
 code = "invalid-override-attribute"
-message = "Invalid `#[Override]` attribute on `class@anonymous:7350966032097653580-2001:2777::boot`."
+message = "Invalid `#[Override]` attribute on `class@anonymous:7350966032097653580-2038:2823::boot`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractSystemTest.php"
 code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$securityMock`: expected `unknown-ref(Waffle\Commons\Security\Security)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
+message = 'Invalid type for property `$securityMock`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
 count = 1
 
 [[issues]]
@@ -735,13 +831,13 @@ count = 20
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
 code = "invalid-argument"
-message = '''Invalid argument type for argument #1 of `phpunit\framework\testcase::expectexception`: expected `class-string<Throwable>`, but found `class-string('Waffle\Commons\Security\Exception\SecurityException')`.'''
+message = '''Invalid argument type for argument #1 of `phpunit\framework\testcase::expectexception`: expected `class-string<Throwable>`, but found `class-string('Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface')`.'''
 count = 1
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
+message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
 count = 6
 
 [[issues]]
@@ -758,20 +854,14 @@ count = 2
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
-code = "no-value"
-message = 'Argument #1 passed to method `PHPUnit\Framework\MockObject\InvocationStubber::willthrowexception` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "tests/src/Core/ContainerTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Security\Exception\SecurityException` not found.'
+code = "non-existent-class-like"
+message = "Class `class@anonymous:6500893443738153388-9317:9575` cannot implement unknown type `SecurityExceptionInterface`"
 count = 1
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
 code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Security\Security` does not exist.'
+message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Security\SecurityInterface` does not exist.'
 count = 1
 
 [[issues]]
@@ -782,12 +872,6 @@ count = 29
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "impossible-assignment"
-message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
 code = "invalid-argument"
 message = 'Invalid argument type for argument #1 of `Waffle\Core\System::boot`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but found `WaffleTests\Core\Helper\SystemTestKernel`.'
 count = 2
@@ -795,8 +879,8 @@ count = 2
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Security\Security)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
-count = 1
+message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+count = 2
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
@@ -806,32 +890,14 @@ count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "no-value"
-message = 'Argument #1 passed to method `phpunit\framework\testcase::throwexception` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "no-value"
-message = 'Argument #1 passed to method `waffle\core\system::__construct` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Security\Exception\SecurityException` not found.'
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Security\Security` not found.'
+code = "non-existent-class-like"
+message = "Class `class@anonymous:5549540738590508990-4051:4320` cannot implement unknown type `SecurityExceptionInterface`"
 count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
 code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Security\Security` does not exist.'
+message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Security\SecurityInterface` does not exist.'
 count = 1
 
 [[issues]]
@@ -850,24 +916,6 @@ count = 1
 file = "tests/src/Core/SystemTest.php"
 code = "redundant-null-coalesce"
 message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
-count = 1
-
-[[issues]]
-file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
-code = "impossible-assignment"
-message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
-count = 1
-
-[[issues]]
-file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
-code = "no-value"
-message = 'Argument #2 passed to method `phpunit\framework\assert::assertinstanceof` has type `never`, meaning it cannot produce a value.'
-count = 2
-
-[[issues]]
-file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Config\Exception\InvalidConfigurationException` not found.'
 count = 1
 
 [[issues]]
@@ -968,8 +1016,14 @@ count = 3
 
 [[issues]]
 file = "tests/src/Router/RouterTest.php"
-code = "impossible-assignment"
-message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
 count = 1
 
 [[issues]]
@@ -997,24 +1051,6 @@ message = "Assigning `mixed` type to a variable may lead to unexpected behavior.
 count = 1
 
 [[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "no-value"
-message = 'Argument #1 passed to method `waffle\core\system::__construct` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "no-value"
-message = 'Argument #2 passed to method `waffle\core\container::__construct` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Security\Security` not found.'
-count = 1
-
-[[issues]]
 file = "tests/src/TestsTrait/HttpFactoryTrait.php"
 code = "never-return"
 message = "Cannot return value with type 'never' from this function."
@@ -1029,26 +1065,26 @@ count = 1
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Config\Config)`.'
+message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`.'
 count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Security\Security)`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `unknown-ref(Waffle\Commons\Security\Security)`.'
+message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`.'
 count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
+count = 2
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 4
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
@@ -1065,6 +1101,18 @@ count = 1
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createandgetconfig`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createandgetsecurity`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-return-statement"
 message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockcontainer`. Saw type `mixed`.'
 count = 1
 
@@ -1076,33 +1124,27 @@ count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "never-return"
-message = "Cannot return value with type 'never' from this function."
-count = 2
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Config\Config` not found.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Commons\Security\Security` not found.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "non-existent-method"
 message = 'Method `createmock` does not exist on type `WaffleTests\TestsTrait\KernelFactoryTrait`.'
-count = 2
+count = 4
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "non-existent-property"
 message = 'Property `$testConfigDir` does not exist on trait `WaffleTests\TestsTrait\KernelFactoryTrait`.'
-count = 2
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "unused-parameter"
+message = "Parameter `$config` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "unused-parameter"
+message = "Parameter `$level` is never used."
+count = 1
 
 [[issues]]
 file = "tests/src/Trait/RenderingTraitTest.php"
