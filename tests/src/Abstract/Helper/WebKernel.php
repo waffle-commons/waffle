@@ -38,6 +38,11 @@ class WebKernel extends Kernel
         }
     }
 
+    public function setDeps(PsrContainerInterface $innerContainer): void
+    {
+        $this->setContainerImplementation($innerContainer);
+    }
+
     #[\Override]
     public function configure(): self
     {

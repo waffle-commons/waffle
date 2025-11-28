@@ -1,184 +1,88 @@
 variant = "loose"
 
 [[issues]]
-file = "src/Abstract/AbstractController.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Abstract\AbstractController` cannot implement unknown type `BaseControllerInterface`'
+file = "src/Abstract/AbstractKernel.php"
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `Waffle\Abstract\AbstractKernel::handle`.'
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "invalid-override-attribute"
-message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractKernel::boot`.'
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Commons\Contracts\Container\ContainerInterface::get`: expected `string`, but found `mixed`.'
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "invalid-override-attribute"
-message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractKernel::configure`.'
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Commons\Contracts\Container\ContainerInterface::has`: expected `string`, but found `mixed`.'
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Abstract\AbstractKernel` cannot implement unknown type `KernelInterface`'
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Abstract\AbstractKernel` cannot use unknown type `ReflectionTrait`'
+code = "non-existent-method"
+message = "Method `getname` does not exist on type `ReflectionIntersectionType`."
+count = 3
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-method"
+message = "Method `getname` does not exist on type `ReflectionUnionType`."
+count = 3
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-method"
+message = "Method `isbuiltin` does not exist on type `ReflectionIntersectionType`."
 count = 1
 
 [[issues]]
-file = "src/Abstract/AbstractSystem.php"
-code = "invalid-override-attribute"
-message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractSystem::registerrouter`.'
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-method"
+message = "Method `isbuiltin` does not exist on type `ReflectionUnionType`."
 count = 1
 
 [[issues]]
-file = "src/Abstract/AbstractSystem.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Abstract\AbstractSystem` cannot implement unknown type `SystemInterface`'
+file = "src/Abstract/AbstractKernel.php"
+code = "possibly-null-array-access"
+message = "Cannot perform array access on possibly `null` value."
 count = 1
 
 [[issues]]
-file = "src/Abstract/AbstractSystem.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Abstract\AbstractSystem` cannot use unknown type `ReflectionTrait`'
+file = "src/Abstract/AbstractKernel.php"
+code = "possibly-undefined-string-array-index"
+message = "Possibly undefined array key 'params' accessed on `array{'arguments': array<string, mixed>, 'classname': class-string, 'method': string, 'name': truthy-string, 'params'?: array<string, mixed>, 'path': string}`."
 count = 1
 
 [[issues]]
-file = "src/Cache/RouteCache.php"
-code = "no-value"
-message = "Argument #1 passed to function `getenv` has type `never`, meaning it cannot produce a value."
+file = "src/Abstract/AbstractKernel.php"
+code = "redundant-condition"
+message = "Redundant condition"
 count = 1
 
 [[issues]]
-file = "src/Cache/RouteCache.php"
-code = "non-existent-class-like"
-message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 2
-
-[[issues]]
-file = "src/Cache/RouteCache.php"
-code = "redundant-comparison"
-message = "Redundant `===` comparison: left-hand side is never identical to right-hand side."
+file = "src/Abstract/AbstractKernel.php"
+code = "unknown-class-instantiation"
+message = "Cannot determine the concrete class for instantiation."
 count = 1
 
 [[issues]]
 file = "src/Core/System.php"
-code = "invalid-override-attribute"
-message = 'Invalid `#[Override]` attribute on `Waffle\Core\System::boot`.'
-count = 1
-
-[[issues]]
-file = "src/Core/View.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Core\View` cannot implement unknown type `ViewInterface`'
-count = 1
-
-[[issues]]
-file = "src/Exception/Container/ContainerException.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Exception\Container\ContainerException` cannot implement unknown type `ContainerExceptionInterface`'
-count = 1
-
-[[issues]]
-file = "src/Exception/Container/NotFoundException.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Exception\Container\NotFoundException` cannot implement unknown type `NotFoundExceptionInterface`'
-count = 1
-
-[[issues]]
-file = "src/Exception/InvalidConfigurationException.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Exception\InvalidConfigurationException` cannot implement unknown type `InvalidConfigurationExceptionInterface`'
-count = 1
-
-[[issues]]
-file = "src/Exception/RouteNotFoundException.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Exception\RouteNotFoundException` cannot implement unknown type `RouteNotFoundExceptionInterface`'
-count = 1
-
-[[issues]]
-file = "src/Factory/ContainerFactory.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Factory\ContainerFactory` cannot use unknown type `ReflectionTrait`'
-count = 1
-
-[[issues]]
-file = "src/Router/ControllerFinder.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Router\ControllerFinder` cannot use unknown type `ReflectionTrait`'
-count = 1
-
-[[issues]]
-file = "src/Router/RouteParser.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Router\RouteParser` cannot use unknown type `ReflectionTrait`'
-count = 1
-
-[[issues]]
-file = "src/Router/Router.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Router\Router` cannot implement unknown type `RouterInterface`'
-count = 1
-
-[[issues]]
-file = "src/Router/Router.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Router\Router` cannot use unknown type `ReflectionTrait`'
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "impossible-assignment"
-message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "match-default-arm-always-executed"
-message = "This default arm is always executed because no other arms can match."
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "no-value"
-message = 'Argument #2 passed to method `Waffle\Trait\RenderingTrait::rendering` has type `never`, meaning it cannot produce a value.'
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "non-existent-class-like"
-message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 3
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "redundant-comparison"
-message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "redundant-condition"
-message = "This condition (type `true`) will always evaluate to true."
-count = 1
-
-[[issues]]
-file = "src/Trait/RenderingTrait.php"
-code = "unreachable-match-arm"
-message = "This match arm is unreachable."
+code = "invalid-property-read"
+message = 'Cannot read from write-only property `Waffle\Abstract\AbstractSystem::$security` - property only has a set hook.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::injectcontainer`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Container\ContainerInterface`.'
-count = 3
+code = "deprecated-method"
+message = "Call to deprecated method: `ReflectionProperty::setaccessible`."
+count = 2
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
@@ -386,21 +290,15 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 6
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "mixed-operand"
 message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Container\ContainerInterface` does not exist.'
-count = 6
+code = "non-existent-property"
+message = "Property `$environment` does not exist on class `class@anonymous:10447039815579447816-9921:10415`."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
@@ -412,6 +310,12 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unused-parameter"
 message = "Parameter `$code` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unused-parameter"
+message = "Parameter `$configDir` is never used."
 count = 1
 
 [[issues]]
@@ -434,57 +338,27 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-18083:18477::settestconfig`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+code = "deprecated-method"
+message = "Call to deprecated method: `ReflectionProperty::setaccessible`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-21217:21947::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+code = "invalid-return-statement"
+message = 'Invalid return type for function `class@anonymous:6107558782360210274-30990:33198::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `class@anonymous:6107558782360210274-29726:31934::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
+code = "less-specific-return-statement"
+message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-18823:19078` for function `class@anonymous:6107558782360210274-18823:19078::configure`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `waffle\abstract\abstractkernel::setconfiguration`: expected `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Config\ConfigInterface`.'
-count = 3
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `waffle\abstract\abstractkernel::setsecurity`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 5
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `class@anonymous:6107558782360210274-21217:21947::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+code = "less-specific-return-statement"
+message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-19425:19819` for function `class@anonymous:6107558782360210274-19425:19819::configure`.'
 count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `class@anonymous:6107558782360210274-29726:31934::setdeps`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #3 of `class@anonymous:6107558782360210274-21217:21947::setdeps`: expected `Psr\Container\ContainerInterface`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Container\ContainerInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
-count = 2
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -496,6 +370,12 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
 message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::has`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::set`.'
 count = 1
 
 [[issues]]
@@ -700,13 +580,25 @@ count = 11
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 29
+count = 23
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-operand"
 message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
-count = 10
+count = 11
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-property-type-coercion"
+message = 'A value with a less specific type `mixed` is being assigned to property `$$container` (Waffle\Commons\Contracts\Container\ContainerInterface|null).'
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "mixed-property-type-coercion"
+message = 'A value with a less specific type `mixed` is being assigned to property `$$system` (Waffle\Core\System|null).'
+count = 2
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -722,33 +614,33 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "no-value"
-message = 'Argument #2 passed to method `phpunit\framework\assert::assertsame` has type `never`, meaning it cannot produce a value.'
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Container` not found.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-class-like"
-message = 'Class `WaffleTests\Abstract\StubContainer` cannot implement unknown type `ContainerInterface`'
+code = "non-existent-method"
+message = 'Method `expects` does not exist on type `Psr\Http\Message\ResponseFactoryInterface`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Config\ConfigInterface` does not exist.'
-count = 1
+code = "non-existent-method"
+message = 'Method `method` does not exist on type `Psr\Http\Message\ResponseFactoryInterface`.'
+count = 6
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Security\SecurityInterface` does not exist.'
-count = 1
+code = "non-existent-method"
+message = 'Method `method` does not exist on type `Waffle\Commons\Contracts\Routing\RouterInterface`.'
+count = 3
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-class-like"
-message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 13
+code = "nullable-return-statement"
+message = 'Function `class@anonymous:6107558782360210274-30990:33198::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -763,21 +655,39 @@ message = "Argument #1 of function `count` is possibly `false`, but parameter ty
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "redundant-null-coalesce"
-message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "less-specific-return-statement"
+message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `waffletests\abstract\helper\webkernel` for function `waffletests\abstract\helper\webkernel::configure`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractSystemTest.php"
-code = "invalid-override-attribute"
-message = "Invalid `#[Override]` attribute on `class@anonymous:7350966032097653580-2038:2823::boot`."
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getArray`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractSystemTest.php"
-code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$securityMock`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getBool`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getInt`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getString`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-2615:2809::analyze`."
 count = 1
 
 [[issues]]
@@ -787,75 +697,45 @@ message = "Invalid left operand: type `mixed` cannot be reliably used in string 
 count = 2
 
 [[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "invalid-operand"
-message = "Invalid type `never` for left operand in string concatenation."
-count = 9
-
-[[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "invalid-operand"
-message = "Invalid type `never` for right operand in string concatenation."
-count = 8
-
-[[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "mixed-operand"
-message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+file = "tests/src/Core/Helper/SystemTestKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:8956013134879199278-1152:1330::analyze`."
 count = 1
 
 [[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "mixed-property-type-coercion"
-message = "A value with a less specific type `mixed` is being assigned to property `$$cacheFilePath` (string)."
+file = "tests/src/Core/Helper/SystemTestKernel.php"
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:8956013134879199278-597:759::analyze`."
 count = 1
 
 [[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "no-value"
-message = "Argument #1 passed to function `getenv` has type `never`, meaning it cannot produce a value."
+file = "tests/src/Core/Helper/TestKernelWithConfig.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
 count = 1
 
 [[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "no-value"
-message = "Argument #1 passed to function `putenv` has type `never`, meaning it cannot produce a value."
-count = 2
+file = "tests/src/Core/Helper/TestKernelWithConfig.php"
+code = "invalid-property-assignment-value"
+message = 'Invalid type for property `$config`: expected `Waffle\Commons\Contracts\Config\ConfigInterface|null`, but got `unknown-ref(Waffle\Commons\Config\Config)`.'
+count = 1
 
 [[issues]]
-file = "tests/src/Cache/RouteCacheTest.php"
-code = "non-existent-class-like"
-message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 20
+file = "tests/src/Core/Helper/TestKernelWithConfig.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Security\Security` not found.'
+count = 1
 
 [[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Core\System::boot`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but found `WaffleTests\Core\Helper\SystemTestKernel`.'
-count = 2
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 2
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
+file = "tests/src/Core/Helper/TestKernelWithConfig.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Container` not found.'
 count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "non-existent-class-like"
-message = "Class `class@anonymous:5549540738590508990-4051:4320` cannot implement unknown type `SecurityExceptionInterface`"
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
-code = "non-existent-class-like"
-message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Security\SecurityInterface` does not exist.'
+code = "missing-override-attribute"
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:5549540738590508990-2730:2999::serialize`."
 count = 1
 
 [[issues]]
@@ -880,12 +760,6 @@ count = 1
 file = "tests/src/Factory/ContainerFactoryTest.php"
 code = "invalid-method-access"
 message = "Attempting to access a method on a non-object type (`string`)."
-count = 2
-
-[[issues]]
-file = "tests/src/Factory/ContainerFactoryTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
 count = 3
 
 [[issues]]
@@ -908,6 +782,18 @@ count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
+code = "incompatible-parameter-name"
+message = 'Parameter #2 of `WaffleTests\Helper\MockContainer::set()` is named `$service` but parent `Waffle\Commons\Contracts\Container\ContainerInterface::set()` names it `$concrete`'
+count = 2
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `waffletests\helper\mockcontainer::instantiate`: expected `object`, but found `null|object`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
 code = "missing-override-attribute"
 message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::get`.'
 count = 1
@@ -920,86 +806,38 @@ count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
-code = "non-existent-class-like"
-message = 'Class `WaffleTests\Helper\MockContainer` cannot implement unknown type `ContainerInterface`'
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::set`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Router/ControllerFinderTest.php"
+file = "tests/src/Helper/MockContainer.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
 count = 2
 
 [[issues]]
-file = "tests/src/Router/ControllerFinderTest.php"
-code = "possibly-null-argument"
-message = 'Argument #1 of method `Waffle\Router\ControllerFinder::find` is possibly `null`, but parameter type `false|string` does not accept it.'
+file = "tests/src/Helper/MockContainer.php"
+code = "nullable-return-statement"
+message = 'Function `waffletests\helper\mockcontainer::instantiate` is declared to return `object` but possibly returns a nullable value (inferred as `null|object`).'
 count = 1
 
 [[issues]]
-file = "tests/src/Router/ControllerFinderTest.php"
-code = "possibly-null-operand"
-message = "Possibly null left operand used in string concatenation (type `null|string`)."
-count = 7
-
-[[issues]]
-file = "tests/src/Router/RouteDiscovererTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Router\RouteDiscoverer::discover`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Container\ContainerInterface`.'
-count = 2
-
-[[issues]]
-file = "tests/src/Router/RouteDiscovererTest.php"
-code = "possibly-null-argument"
-message = "Argument #1 of function `is_dir` is possibly `null`, but parameter type `string` does not accept it."
+file = "tests/src/Helper/MockContainer.php"
+code = "possibly-invalid-argument"
+message = "Possible argument type mismatch for argument #1 of `reflectionclass::__construct`: expected `('T.reflectionclass extends object)|class-string<'T.reflectionclass extends object>`, but possibly received `string`."
 count = 1
 
 [[issues]]
-file = "tests/src/Router/RouteDiscovererTest.php"
-code = "possibly-null-argument"
-message = "Argument #1 of function `rmdir` is possibly `null`, but parameter type `string` does not accept it."
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouteDiscovererTest.php"
-code = "possibly-null-argument"
-message = 'Argument #1 of method `waffle\router\routediscoverer::__construct` is possibly `null`, but parameter type `false|string` does not accept it.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouteParserTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
-count = 3
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$container`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but got `WaffleTests\Helper\MockContainer`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertcount`: expected `Countable|iterable<mixed, mixed>`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+file = "tests/src/Helper/MockContainer.php"
+code = "unevaluated-code"
+message = "Unreachable code detected."
 count = 1
 
 [[issues]]
@@ -1012,12 +850,6 @@ count = 1
 file = "tests/src/TestsTrait/HttpFactoryTrait.php"
 code = "non-existent-class"
 message = 'Class `Waffle\Core\Request` not found.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "invalid-return-statement"
-message = 'Invalid return type for function `waffletests\teststrait\kernelfactorytrait::createrealcontainer`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `WaffleTests\Helper\MockContainer`.'
 count = 1
 
 [[issues]]
@@ -1091,18 +923,6 @@ file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "unused-parameter"
 message = "Parameter `$level` is never used."
 count = 1
-
-[[issues]]
-file = "tests/src/Trait/RenderingTraitTest.php"
-code = "no-value"
-message = 'Argument #2 passed to method `waffle\trait\renderingtrait::rendering` has type `never`, meaning it cannot produce a value.'
-count = 3
-
-[[issues]]
-file = "tests/src/Trait/RenderingTraitTest.php"
-code = "non-existent-class-like"
-message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
-count = 3
 
 [[issues]]
 file = "tests/src/Trait/RenderingTraitTest.php"

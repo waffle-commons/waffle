@@ -8,12 +8,10 @@ use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface;
-use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Kernel;
-use Waffle\Router\Router;
 use Waffle\Trait\RenderingTrait;
 
 class System extends AbstractSystem
@@ -49,16 +47,6 @@ class System extends AbstractSystem
                     ConfigInterface::class,
                 ],
             );
-            /** @var ContainerInterface $container */
-            $container = $kernel->container;
-            /** @var string $controllers */
-            $controllers = $config->getString(key: 'waffle.paths.controllers');
-            /** @var string $root */
-            $root = APP_ROOT;
-            $this->registerRouter(router: new Router(
-                directory: $root . DIRECTORY_SEPARATOR . $controllers,
-                system: $this,
-            )->boot(container: $container));
         } catch (SecurityExceptionInterface $e) {
             $this->throw(view: new View(data: $e->serialize()));
         }

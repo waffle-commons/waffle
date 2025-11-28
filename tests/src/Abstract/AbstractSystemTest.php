@@ -9,7 +9,6 @@ use Waffle\Abstract\AbstractSystem;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
-use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
 
 /**
@@ -82,70 +81,5 @@ final class AbstractSystemTest extends TestCase
         // Assert that the 'security' property holds the exact same mock object
         // we passed into the constructor.
         static::assertSame($this->securityMock, $securityProperty->getValue($this->system));
-    }
-
-    /**
-     * This test validates the initial state of the `router` property. It's crucial
-     * to ensure that properties are in a predictable state (in this case, null)
-     * before they are explicitly set. This prevents bugs related to uninitialized
-     * or "stale" state.
-     */
-    public function testRouterPropertyIsNullByDefault(): void
-    {
-        // Use reflection to access the protected 'router' property.
-        $reflector = new \ReflectionObject($this->system);
-        $routerProperty = $reflector->getProperty('router');
-
-        // Assert that the router property is null immediately after the object
-        // is created, before `registerRouter` has been called.
-        static::assertNull($routerProperty->getValue($this->system));
-    }
-
-    /**
-     * This test covers the main public method of the AbstractSystem class: `registerRouter`.
-     * It ensures that the method correctly assigns the provided Router object to its
-     * corresponding internal property, fulfilling its primary responsibility.
-     */
-    public function testRegisterRouterSetsRouterProperty(): void
-    {
-        // 1. Setup
-        // We cannot mock the Router class directly because it is declared as "final".
-        // PHPUnit cannot create a mock for a final class. Instead, we must create
-        // a real instance. This requires providing its own dependencies.
-        $routerSystemMock = $this->createMock(System::class);
-        $router = new Router(
-            directory: false,
-            system: $routerSystemMock,
-        );
-
-        // 2. Action
-        // Call the method we want to test.
-        $this->system->registerRouter($router);
-
-        // 3. Assertions
-        // Use reflection to access the protected 'router' property for verification.
-        $reflector = new \ReflectionObject($this->system);
-        $routerProperty = $reflector->getProperty('router');
-
-        // Assert that the property now holds the exact Router instance we passed to the method.
-        static::assertSame($router, $routerProperty->getValue($this->system));
-    }
-
-    public function testGetRouterReturnsNullByDefault(): void
-    {
-        static::assertNull($this->system->getRouter());
-    }
-
-    public function testGetRouterReturnsRegisteredRouter(): void
-    {
-        $routerSystemMock = $this->createMock(System::class);
-        $router = new Router(
-            directory: false,
-            system: $routerSystemMock,
-        );
-
-        $this->system->registerRouter($router);
-
-        static::assertSame($router, $this->system->getRouter());
     }
 }

@@ -16,6 +16,7 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
@@ -50,6 +51,8 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
+    protected null|RouterInterface $router = null;
+
     protected null|SecurityInterface $security = null;
 
     // Holds the raw PSR-11 implementation injected by Runtime
@@ -76,6 +79,11 @@ abstract class AbstractKernel implements KernelInterface
         $this->security = $security;
     }
 
+    public function setRouter(RouterInterface $router): void
+    {
+        $this->router = $router;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -100,26 +108,14 @@ abstract class AbstractKernel implements KernelInterface
             }
 
             // --- Routing Logic (Bridge) ---
-            $path = $request->getUri()->getPath();
-            $routes = $this->system->getRouter()?->getRoutes() ?? [];
-            $matchedRoute = null;
-            $routeParams = [];
-
-            foreach ($routes as $route) {
-                $routePath = $route[Constant::PATH];
-                $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([^/]+)', $routePath);
-                $pattern = '#^' . str_replace('/', '\/', $pattern) . '$#';
-
-                if (preg_match($pattern, $path, $matches)) {
-                    $matchedRoute = $route;
-                    array_shift($matches);
-                    $routeParams = $matches;
-                    break;
-                }
+            if ($this->router === null) {
+                throw new ContainerException('Router not initialized. Please inject RouterInterface.');
             }
 
+            $matchedRoute = $this->router->matchRequest($request);
+
             if ($matchedRoute === null) {
-                throw new RouteNotFoundException("No route found for path: $path");
+                throw new RouteNotFoundException('No route found for path: ' . $request->getUri()->getPath());
             }
 
             // --- Dispatching Logic ---
@@ -135,19 +131,17 @@ abstract class AbstractKernel implements KernelInterface
 
             $refMethod = new ReflectionMethod($controller, $method);
             $args = [];
-            $paramIndex = 0;
 
             foreach ($refMethod->getParameters() as $param) {
                 $type = $param->getType();
                 if ($type && !$type->isBuiltin() && $this->container->has($type->getName())) {
                     $args[] = $this->container->get($type->getName());
-                } elseif (isset($routeParams[$paramIndex])) {
-                    $val = $routeParams[$paramIndex];
+                } elseif (isset($matchedRoute['params'][$param->getName()])) {
+                    $val = $matchedRoute['params'][$param->getName()];
                     if ($type && $type->getName() === 'int') {
                         $val = (int) $val;
                     }
                     $args[] = $val;
-                    $paramIndex++;
                 }
             }
 
