@@ -16,6 +16,7 @@ use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
@@ -237,7 +238,8 @@ final class AbstractKernelTest extends TestCase
     private null|string $originalAppEnv = null;
 
     private StubContainer $innerContainer;
-    private $responseFactoryMock;
+    private ResponseFactoryInterface $responseFactoryMock;
+    private RouterInterface $routerMock;
 
     #[\Override]
     protected function setUp(): void
@@ -247,13 +249,15 @@ final class AbstractKernelTest extends TestCase
 
         $this->innerContainer = new StubContainer();
         $this->responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
+        $this->routerMock = $this->createMock(RouterInterface::class);
 
         $this->kernel = new WebKernel(
             configDir: $this->testConfigDir,
             environment: 'dev',
             container: null,
-            innerContainer: $this->innerContainer,
         );
+        $this->kernel->setDeps($this->innerContainer);
+        $this->kernel->setRouter($this->routerMock);
         $this->kernel->setSecurity($this->createMock(SecurityInterface::class));
     }
 
@@ -278,6 +282,17 @@ final class AbstractKernelTest extends TestCase
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestMock->method('getUri')->willReturn($uriMock);
 
+        $this->routerMock
+            ->method('matchRequest')
+            ->willReturn([
+                'path' => '/users',
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'list',
+                'name' => 'users',
+                'arguments' => [],
+                'params' => [],
+            ]);
+
         $responseStub = new StubResponse(200);
         $this->responseFactoryMock->method('createResponse')->willReturn($responseStub);
 
@@ -301,6 +316,17 @@ final class AbstractKernelTest extends TestCase
         $uriMock->method('getPath')->willReturn('/users');
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestMock->method('getUri')->willReturn($uriMock);
+
+        $this->routerMock
+            ->method('matchRequest')
+            ->willReturn([
+                'path' => '/users',
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'list',
+                'name' => 'users',
+                'arguments' => [],
+                'params' => [],
+            ]);
 
         $responseStub = new StubResponse(202);
 
@@ -330,6 +356,17 @@ final class AbstractKernelTest extends TestCase
         $uriMock->method('getPath')->willReturn('/trigger-error');
         $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestMock->method('getUri')->willReturn($uriMock);
+
+        $this->routerMock
+            ->method('matchRequest')
+            ->willReturn([
+                'path' => '/trigger-error',
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'throwError',
+                'name' => 'error',
+                'arguments' => [],
+                'params' => [],
+            ]);
 
         $responseStub = new StubResponse(500);
         $this->responseFactoryMock
@@ -802,20 +839,20 @@ final class AbstractKernelTest extends TestCase
         // But for now, let's stick to the anonymous class but we need to set up routing.
 
         // Actually, let's use a simpler approach: Mock System to return a router with routes.
-        $systemMock = $this->createMock(\Waffle\Core\System::class);
-        // Use real Router since it's final and we can inject routes via public property
-        $router = new \Waffle\Router\Router(false, $systemMock);
-        $router->routes = [
-            [
+        // Mock RouterInterface
+        $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
+        $routerMock
+            ->method('matchRequest')
+            ->willReturn([
                 'path' => '/trigger-error',
                 'classname' => 'WaffleTests\Helper\Controller\TempController',
                 'method' => 'throwError',
                 'name' => 'error',
-                'arguments' => [], // Ensure arguments key exists to match type definition
-            ],
-        ];
+                'arguments' => [],
+                'params' => [],
+            ]);
 
-        $systemMock->method('getRouter')->willReturn($router);
+        $systemMock = $this->createMock(\Waffle\Core\System::class);
 
         // Update kernel to use this system
         $kernel = new class(new NullLogger(), $systemMock) extends Kernel {
@@ -875,6 +912,7 @@ final class AbstractKernelTest extends TestCase
         };
 
         $kernel->setDeps($configMock, $securityMock, $this->innerContainer);
+        $kernel->setRouter($routerMock);
 
         // We need to cast kernel to use the new method, or just rely on PHP to find it on the object.
         // The error was "Call to undefined method Waffle\Kernel@anonymous::getSystem()"
@@ -929,19 +967,20 @@ final class AbstractKernelTest extends TestCase
         $controller = new ArgumentController();
         $this->innerContainer->services[ArgumentController::class] = $controller;
 
-        // Mock System/Router to return our route
-        $systemMock = $this->createMock(\Waffle\Core\System::class);
-        $router = new \Waffle\Router\Router(false, $systemMock);
-        $router->routes = [
-            [
+        // Mock RouterInterface
+        $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
+        $routerMock
+            ->method('matchRequest')
+            ->willReturn([
                 'path' => '/args/{id}/{slug}',
                 'classname' => ArgumentController::class,
                 'method' => 'action',
                 'name' => 'args_test',
                 'arguments' => [],
-            ],
-        ];
-        $systemMock->method('getRouter')->willReturn($router);
+                'params' => ['id' => '123', 'slug' => 'test-slug'],
+            ]);
+
+        $systemMock = $this->createMock(\Waffle\Core\System::class);
 
         // Use anonymous kernel to control system injection
         $kernel = new class(new NullLogger(), $systemMock, $this->innerContainer) extends Kernel {
@@ -972,6 +1011,7 @@ final class AbstractKernelTest extends TestCase
         $kernel->setConfiguration($configMock);
         $kernel->setSecurity($securityMock);
         $kernel->setContainerImplementation($this->innerContainer);
+        $kernel->setRouter($routerMock);
 
         $response = $kernel->handle($requestMock);
 

@@ -27,6 +27,5 @@ require_once __DIR__ . '/src/Core/Helper/ServiceE.php';
 require_once __DIR__ . '/src/Core/Helper/AbstractUninstantiable.php';
 require_once __DIR__ . '/src/Core/Helper/WithPrimitive.php';
 require_once __DIR__ . '/src/Core/Helper/TestKernelWithConfig.php';
-require_once __DIR__ . '/src/Trait/Helper/DuplicateRouteController.php';
 require_once __DIR__ . '/src/Trait/Helper/TraitObject.php';
 require_once __DIR__ . '/src/Trait/Helper/UninitializedPropertyClass.php';
