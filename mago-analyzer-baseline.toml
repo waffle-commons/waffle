@@ -67,18 +67,6 @@ message = "Redundant `===` comparison: left-hand side is never identical to righ
 count = 1
 
 [[issues]]
-file = "src/Core/Container.php"
-code = "invalid-override-attribute"
-message = 'Invalid `#[Override]` attribute on `Waffle\Core\Container::set`.'
-count = 1
-
-[[issues]]
-file = "src/Core/Container.php"
-code = "non-existent-class-like"
-message = 'Class `Waffle\Core\Container` cannot implement unknown type `ContainerInterface`'
-count = 1
-
-[[issues]]
 file = "src/Core/System.php"
 code = "invalid-override-attribute"
 message = 'Invalid `#[Override]` attribute on `Waffle\Core\System::boot`.'
@@ -830,15 +818,21 @@ count = 20
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+count = 6
+
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
 code = "invalid-argument"
 message = '''Invalid argument type for argument #1 of `phpunit\framework\testcase::expectexception`: expected `class-string<Throwable>`, but found `class-string('Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface')`.'''
 count = 1
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 6
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Core\Container)`).'
+count = 29
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
@@ -851,6 +845,12 @@ file = "tests/src/Core/ContainerTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
 count = 2
+
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Container` not found.'
+count = 6
 
 [[issues]]
 file = "tests/src/Core/ContainerTest.php"
@@ -921,7 +921,7 @@ count = 1
 [[issues]]
 file = "tests/src/Factory/ContainerFactoryTest.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Factory\ContainerFactory::create`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `Waffle\Core\Container`.'
+message = 'Invalid argument type for argument #1 of `Waffle\Factory\ContainerFactory::create`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `unknown-ref(Waffle\Core\Container)`.'
 count = 3
 
 [[issues]]
@@ -929,6 +929,12 @@ file = "tests/src/Factory/ContainerFactoryTest.php"
 code = "invalid-method-access"
 message = "Attempting to access a method on a non-object type (`string`)."
 count = 2
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Core\Container)`).'
+count = 3
 
 [[issues]]
 file = "tests/src/Factory/ContainerFactoryTest.php"
@@ -1011,31 +1017,19 @@ count = 1
 [[issues]]
 file = "tests/src/Router/RouteParserTest.php"
 code = "invalid-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Router\RouteParser::parse`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `Waffle\Core\Container`.'
+message = 'Invalid argument type for argument #1 of `Waffle\Router\RouteParser::parse`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `unknown-ref(Waffle\Core\Container)`.'
 count = 3
+
+[[issues]]
+file = "tests/src/Router/RouteParserTest.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Core\Container)`).'
+count = 1
 
 [[issues]]
 file = "tests/src/Router/RouterTest.php"
 code = "invalid-argument"
 message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Security\SecurityInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-method-access"
-message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
-count = 3
-
-[[issues]]
-file = "tests/src/Router/RouterTest.php"
-code = "invalid-property-assignment-value"
-message = 'Invalid type for property `$container`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but got `Waffle\Core\Container`.'
 count = 1
 
 [[issues]]
@@ -1048,6 +1042,12 @@ count = 1
 file = "tests/src/Router/RouterTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Container` not found.'
 count = 1
 
 [[issues]]
@@ -1064,14 +1064,8 @@ count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Contracts\Config\ConfigInterface)`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "invalid-argument"
-message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`.'
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
 count = 1
 
 [[issues]]
@@ -1120,6 +1114,18 @@ count = 1
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-return-statement"
 message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockkernel`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "never-return"
+message = "Cannot return value with type 'never' from this function."
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Container` not found.'
 count = 1
 
 [[issues]]

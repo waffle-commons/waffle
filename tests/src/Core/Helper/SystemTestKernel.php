@@ -6,7 +6,6 @@ namespace WaffleTests\Core\Helper;
 
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Core\Container;
 use Waffle\Kernel;
 use WaffleTests\Helper\MockContainer;
 
@@ -28,7 +27,7 @@ final class SystemTestKernel extends Kernel
 
         // Use MockContainer for testing
         $innerContainer = new MockContainer();
-        $this->container = new Container($innerContainer, $security);
+        $this->container = $innerContainer;
     }
 
     #[\Override]
@@ -44,7 +43,7 @@ final class SystemTestKernel extends Kernel
                 }
             };
             $innerContainer = new MockContainer();
-            $this->container = new Container($innerContainer, $security);
+            $this->container = $innerContainer;
         }
 
         return $this;

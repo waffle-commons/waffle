@@ -9,7 +9,7 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Core\Container as CoreContainer;
+
 use WaffleTests\Helper\MockContainer;
 
 // The PSR-11 implementation
@@ -80,18 +80,18 @@ trait KernelFactoryTrait
     /**
      * Creates the Core Container (Decorator) wrapping a real Commons Container.
      */
-    protected function createRealContainer(int $level = 10): CoreContainer
+    /**
+     * Creates a Mock Container that behaves like a real one.
+     */
+    protected function createRealContainer(int $level = 10): ContainerInterface
     {
         $config = $this->createAndGetConfig(securityLevel: $level);
         $security = $this->createAndGetSecurity(config: $config);
 
-        // 1. Create the raw PSR-11 container from the component
-        $innerContainer = new MockContainer();
+        // 1. Create the mock container
+        $container = new MockContainer();
 
-        // 2. Wrap it with the Core Container (Security Decorator)
-        $container = new CoreContainer($innerContainer, $security);
-
-        // Pre-populate key services into the INNER container via the wrapper's set() method
+        // Pre-populate key services
         $container->set(ConfigInterface::class, $config);
         $container->set(SecurityInterface::class, $security);
 

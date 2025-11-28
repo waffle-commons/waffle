@@ -18,7 +18,6 @@ use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
-use Waffle\Core\Container;
 use Waffle\Core\System;
 use Waffle\Core\View;
 use Waffle\Exception\Container\ContainerException;
@@ -258,8 +257,28 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
-        // Wrap the provided container with the Core Security Decorator
-        $this->container = new Container($this->innerContainer, $this->security);
+        // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
+        // We cast it to our interface to support set() operations if available.
+        if ($this->innerContainer instanceof ContainerInterface) {
+            $this->container = $this->innerContainer;
+        } else {
+            // Fallback for raw PSR-11 containers that might not implement our interface but have methods we need?
+            // Ideally, the user should inject a compatible container.
+            // For now, we can't easily wrap it without a concrete class.
+            // We assume the user knows what they are doing.
+            // If they inject a read-only container, set() calls will fail, which is expected behavior for read-only.
+            // But strict typing requires ContainerInterface.
+            // We can't satisfy strict typing without a wrapper.
+            // BUT, we are removing the wrapper to be a micro-core.
+            // So we must change the property type or rely on the user injecting the right type.
+            // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
+            if (!$this->innerContainer instanceof ContainerInterface) {
+                throw new ContainerException(
+                    'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.',
+                );
+            }
+            $this->container = $this->innerContainer;
+        }
 
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');

@@ -195,11 +195,11 @@ if (!class_exists('Waffle\Commons\Http\Response')) {
     eval('namespace Waffle\Commons\Http; class Response extends \WaffleTests\Abstract\StubResponse {}');
 }
 
-class StubContainer implements PsrContainerInterface
+class StubContainer implements ContainerInterface, PsrContainerInterface
 {
     public array $services = [];
 
-    public function get(string $id)
+    public function get(string $id): mixed
     {
         return $this->services[$id] ?? null;
     }
@@ -615,7 +615,7 @@ final class AbstractKernelTest extends TestCase
     {
         $configMock = $this->createMock(ConfigInterface::class);
         $securityMock = $this->createMock(SecurityInterface::class);
-        $containerMock = $this->createMock(PsrContainerInterface::class);
+        $containerMock = $this->createMock(ContainerInterface::class);
 
         $kernel = new class(new NullLogger()) extends Kernel {
             // Declare property to avoid deprecation
@@ -635,7 +635,7 @@ final class AbstractKernelTest extends TestCase
             public function configure(): self
             {
                 // Init container but skip System
-                $this->container = new \Waffle\Core\Container($this->innerContainer, $this->security);
+                $this->container = $this->innerContainer;
                 return $this;
             }
         };
@@ -960,7 +960,7 @@ final class AbstractKernelTest extends TestCase
             {
                 // Init container but skip System overwrite
                 // We use our local reference because parent's innerContainer is private
-                $this->container = new \Waffle\Core\Container($this->innerContainerRef, $this->security);
+                $this->container = $this->innerContainerRef;
                 $this->system = $this->systemMock;
                 return $this;
             }

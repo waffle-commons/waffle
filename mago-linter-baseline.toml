@@ -21,7 +21,13 @@ count = 1
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
 code = "kan-defect"
-message = "Class has a high kan defect score (2.47)."
+message = "Class has a high kan defect score (2.6100000000000003)."
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
 count = 1
 
 [[issues]]
@@ -31,9 +37,9 @@ message = "Avoid `elseif` clauses."
 count = 1
 
 [[issues]]
-file = "src/Core/Container.php"
-code = "no-else-clause"
-message = "Avoid `else` clauses."
+file = "src/Controller/DummyController.php"
+code = "strict-types"
+message = "Missing `declare(strict_types=1);` statement at the beginning of the file."
 count = 1
 
 [[issues]]
@@ -77,6 +83,12 @@ file = "src/Router/RouteParser.php"
 code = "prefer-early-continue"
 message = "Consider using early continue pattern to reduce nesting."
 count = 2
+
+[[issues]]
+file = "src/Service/DummyService.php"
+code = "strict-types"
+message = "Missing `declare(strict_types=1);` statement at the beginning of the file."
+count = 1
 
 [[issues]]
 file = "src/Trait/RequestTrait.php"

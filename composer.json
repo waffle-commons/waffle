@@ -40,24 +40,28 @@
         "php-mock/php-mock-phpunit": "^2.13"
     },
     "repositories": [
-      {
-        "type": "path",
-        "canonical": false,
-        "url": "../contracts",
-        "options": {
-          "versions": { "waffle-commons/contracts": "1.0.0-dev" },
-          "symlink": true
+        {
+            "type": "path",
+            "canonical": false,
+            "url": "../contracts",
+            "options": {
+                "versions": {
+                    "waffle-commons/contracts": "1.0.0-dev"
+                },
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "canonical": false,
+            "url": "../utils",
+            "options": {
+                "versions": {
+                    "waffle-commons/utils": "1.0.0-dev"
+                },
+                "symlink": true
+            }
         }
-      },
-      {
-        "type": "path",
-        "canonical": false,
-        "url": "../utils",
-        "options": {
-          "versions": { "waffle-commons/utils": "1.0.0-dev" },
-          "symlink": true
-        }
-      }
     ],
     "scripts": {
         "formatter": "vendor/bin/mago fmt",

@@ -11,7 +11,6 @@ use Psr\Http\Message\UriInterface;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Core\Container;
 use Waffle\Core\System;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
@@ -37,7 +36,7 @@ final class RouterTest extends TestCase
 
         // Use MockContainer for testing
         $innerContainer = new MockContainer();
-        $this->container = new Container($innerContainer, $security);
+        $this->container = $innerContainer;
         $this->container->set(ConfigInterface::class, $testConfig);
         $this->container->set(SecurityInterface::class, $security);
         $this->container->set(TempController::class, new TempController());
