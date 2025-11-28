@@ -10,7 +10,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Commons\Security\Exception\SecurityException;
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 
@@ -48,7 +48,7 @@ final class Container implements ContainerInterface, PsrContainerInterface
             throw new NotFoundException($e->getMessage(), (int) $e->getCode());
         } catch (ContainerExceptionInterface $e) {
             throw new ContainerException($e->getMessage(), (int) $e->getCode());
-        } catch (SecurityException $e) {
+        } catch (SecurityExceptionInterface $e) {
             throw $e;
         } catch (Throwable $e) {
             throw new ContainerException($e->getMessage(), (int) $e->getCode());

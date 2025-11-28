@@ -7,7 +7,7 @@ namespace WaffleTests\Abstract;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Abstract\AbstractSystem;
 use Waffle\Commons\Contracts\Core\KernelInterface;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
@@ -25,7 +25,7 @@ use WaffleTests\AbstractTestCase as TestCase;
 #[CoversClass(AbstractSystem::class)]
 final class AbstractSystemTest extends TestCase
 {
-    private Security $securityMock;
+    private SecurityInterface $securityMock;
     private AbstractSystem $system;
 
     /**
@@ -43,12 +43,12 @@ final class AbstractSystemTest extends TestCase
         parent::setUp();
 
         // Create a mock for the Security dependency, as AbstractSystem requires it.
-        $this->securityMock = $this->createMock(Security::class);
+        $this->securityMock = $this->createMock(SecurityInterface::class);
 
         // Create a concrete, anonymous class that extends AbstractSystem for testing purposes.
         // This allows us to instantiate and test the non-abstract methods of the parent.
         $this->system = new class($this->securityMock) extends AbstractSystem {
-            public function __construct(Security $security)
+            public function __construct(SecurityInterface $security)
             {
                 // We must call the parent constructor if it exists, but here we are
                 // setting the protected property directly as per the abstract class's design.

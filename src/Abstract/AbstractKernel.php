@@ -16,7 +16,7 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\Container;
 use Waffle\Core\System;
@@ -51,6 +51,8 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
+    protected null|SecurityInterface $security = null;
+
     // Holds the raw PSR-11 implementation injected by Runtime
     private null|PsrContainerInterface $innerContainer = null;
 
@@ -68,6 +70,11 @@ abstract class AbstractKernel implements KernelInterface
     public function setConfiguration(ConfigInterface $config): void
     {
         $this->config = $config;
+    }
+
+    public function setSecurity(SecurityInterface $security): void
+    {
+        $this->security = $security;
     }
 
     /**
@@ -204,10 +211,13 @@ abstract class AbstractKernel implements KernelInterface
                     if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
                         continue;
                     }
-                    putenv($line);
                     [$key, $value] = explode('=', $line, 2);
-                    $_ENV[$key] = $value;
-                    $_SERVER[$key] = $value;
+                    // Only set if not already set (OS env vars take precedence)
+                    if (getenv($key) === false && !isset($_ENV[$key])) {
+                        putenv($line);
+                        $_ENV[$key] = $value;
+                        $_SERVER[$key] = $value;
+                    }
                 }
             }
         }
@@ -235,7 +245,11 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
-        $security = new Security(cfg: $this->config);
+        if ($this->security === null) {
+            throw new ContainerException(
+                'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().',
+            );
+        }
 
         // Check if an implementation was provided via setContainerImplementation
         if ($this->innerContainer === null) {
@@ -245,7 +259,7 @@ abstract class AbstractKernel implements KernelInterface
         }
 
         // Wrap the provided container with the Core Security Decorator
-        $this->container = new Container($this->innerContainer, $security);
+        $this->container = new Container($this->innerContainer, $this->security);
 
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');
@@ -263,7 +277,7 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
-        $this->system = new System(security: $security)->boot(kernel: $this);
+        $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         return $this;
     }

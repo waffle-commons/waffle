@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace WaffleTests\TestsTrait;
 
 use Waffle\Abstract\AbstractKernel;
-use Waffle\Commons\Config\Config;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\Container as CoreContainer;
 use WaffleTests\Helper\MockContainer;
 
@@ -43,22 +43,34 @@ trait KernelFactoryTrait
         int $securityLevel = 10,
         string $controllerPath = 'tests/src/Helper/Controller',
         string $servicePath = 'tests/src/Helper/Service',
-    ): Config {
+    ): ConfigInterface {
         $this->createTestConfigFile(
             securityLevel: $securityLevel,
             controllerPath: $controllerPath,
             servicePath: $servicePath,
         );
 
-        return new Config(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-        );
+        $config = $this->createMock(ConfigInterface::class);
+        $config->method('getString')->willReturnCallback(function ($key) use ($controllerPath, $servicePath) {
+            return match ($key) {
+                'waffle.paths.controllers' => $controllerPath,
+                'waffle.paths.services' => $servicePath,
+                default => null,
+            };
+        });
+        $config->method('getInt')->willReturnCallback(function ($key) use ($securityLevel) {
+            return match ($key) {
+                'waffle.security.level' => $securityLevel,
+                default => null,
+            };
+        });
+
+        return $config;
     }
 
-    protected function createAndGetSecurity(int $level = 10, null|Config $config = null): Security
+    protected function createAndGetSecurity(int $level = 10, null|ConfigInterface $config = null): SecurityInterface
     {
-        return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
+        return $this->createMock(SecurityInterface::class);
     }
 
     /**
@@ -76,8 +88,8 @@ trait KernelFactoryTrait
         $container = new CoreContainer($innerContainer, $security);
 
         // Pre-populate key services into the INNER container via the wrapper's set() method
-        $container->set(Config::class, $config);
-        $container->set(Security::class, $security);
+        $container->set(ConfigInterface::class, $config);
+        $container->set(SecurityInterface::class, $security);
 
         return $container;
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Exception;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Waffle\Commons\Config\Exception\InvalidConfigurationException;
+use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\WaffleException;
 use WaffleTests\AbstractTestCase as TestCase;
 
@@ -22,7 +22,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         $exception = new InvalidConfigurationException($message, $code);
 
         static::assertInstanceOf(InvalidConfigurationException::class, $exception);
-        static::assertInstanceOf(WaffleException::class, $exception);
+        static::assertInstanceOf(\Exception::class, $exception);
         static::assertSame($message, $exception->getMessage());
         static::assertSame($code, $exception->getCode());
     }

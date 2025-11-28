@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use Waffle\Commons\Security\Exception\SecurityException;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Router\Router;
 use WaffleTests\AbstractTestCase as TestCase;
@@ -61,8 +61,8 @@ final class SystemTest extends TestCase
         // Load the config normally using the AbstractTestCase helper
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
 
-        // Create a REAL Security instance using this low-level config
-        $security = new Security($testConfig);
+        // Create a mock Security instance
+        $security = $this->createMock(SecurityInterface::class);
 
         // Create a dummy Kernel for the test.
         // Ensure the kernel uses the correct config which has the modified paths
@@ -90,14 +90,21 @@ final class SystemTest extends TestCase
     {
         // 1. Setup
         // Create a mock for the Security class that is configured to throw an exception.
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         // We configure the 'analyze' method to throw a SecurityException. This simulates
         // a critical security validation failure during the framework's boot sequence.
         // We are testing the system's ability to catch this and respond gracefully.
+        $exception = new class ('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
+            public function serialize(): array
+            {
+                return ['message' => $this->getMessage(), 'code' => $this->getCode()];
+            }
+        };
+
         $securityMock
             ->method('analyze')
-            ->will($this->throwException(new SecurityException('Security analysis failed.')));
+            ->will($this->throwException($exception));
 
         // Create a dummy Configuration and Kernel for the test.
         $testConfig = $this->createAndGetConfig(); // Use default config here

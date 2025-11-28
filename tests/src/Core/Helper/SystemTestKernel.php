@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core\Helper;
 
-use Waffle\Commons\Config\Config;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\Container;
 use Waffle\Kernel;
 use WaffleTests\Helper\MockContainer;
@@ -15,11 +15,14 @@ use WaffleTests\Helper\MockContainer;
  */
 final class SystemTestKernel extends Kernel
 {
-    public function __construct(Config $config)
+    public function __construct(ConfigInterface $config)
     {
         // Manually set properties needed for System::boot to work
         $this->config = $config;
-        $security = new Security(cfg: $config);
+        // Mock Security for testing
+        $security = new class implements SecurityInterface {
+            public function analyze(object $object, array $expectations = []): void {}
+        };
 
         // Use MockContainer for testing
         $innerContainer = new MockContainer();
@@ -33,7 +36,9 @@ final class SystemTestKernel extends Kernel
             throw new \LogicException('Config not set in SystemTestKernel');
         }
         if ($this->container === null) {
-            $security = new Security(cfg: $this->config);
+            $security = new class implements SecurityInterface {
+                public function analyze(object $object, array $expectations = []): void {}
+            };
             $innerContainer = new MockContainer();
             $this->container = new Container($innerContainer, $security);
         }

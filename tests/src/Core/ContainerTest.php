@@ -7,8 +7,8 @@ namespace WaffleTests\Core;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Waffle\Commons\Security\Exception\SecurityException;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\Container;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
@@ -59,7 +59,7 @@ final class ContainerTest extends TestCase
 
     public function testSecurityCheckIsCalledOnResolve(): void
     {
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
         $securityMock->expects($this->once())->method('analyze')->with(static::isInstanceOf(ServiceA::class));
 
         // Mock inner container to return a ServiceA instance
@@ -212,7 +212,7 @@ final class ContainerTest extends TestCase
         $innerMock = $this->createMock(PsrContainerInterface::class);
         $innerMock->method('get')->willThrowException(new PsrNotFoundException('PSR Not Found'));
 
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         $container = new Container($innerMock, $securityMock);
 
@@ -227,7 +227,7 @@ final class ContainerTest extends TestCase
         $innerMock = $this->createMock(PsrContainerInterface::class);
         $innerMock->method('get')->willThrowException(new PsrContainerException('PSR Error'));
 
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         $container = new Container($innerMock, $securityMock);
 
@@ -240,13 +240,19 @@ final class ContainerTest extends TestCase
     public function testGetWrapsSecurityException(): void
     {
         $innerMock = $this->createMock(PsrContainerInterface::class);
-        $innerMock->method('get')->willThrowException(new SecurityException('Security Error'));
+        $exception = new class ('Security Error') extends \Exception implements SecurityExceptionInterface {
+            public function serialize(): array
+            {
+                return ['message' => $this->getMessage(), 'code' => $this->getCode()];
+            }
+        };
+        $innerMock->method('get')->willThrowException($exception);
 
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         $container = new Container($innerMock, $securityMock);
 
-        $this->expectException(SecurityException::class);
+        $this->expectException(SecurityExceptionInterface::class);
         $this->expectExceptionMessage('Security Error');
 
         $container->get('broken_service');
@@ -257,7 +263,7 @@ final class ContainerTest extends TestCase
         $innerMock = $this->createMock(PsrContainerInterface::class);
         $innerMock->method('get')->willThrowException(new ContainerException('Throwable Error'));
 
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         $container = new Container($innerMock, $securityMock);
 
@@ -270,7 +276,7 @@ final class ContainerTest extends TestCase
     public function testSetThrowsException(): void
     {
         $innerMock = $this->createMock(PsrContainerInterface::class);
-        $securityMock = $this->createMock(Security::class);
+        $securityMock = $this->createMock(SecurityInterface::class);
 
         $container = new Container($innerMock, $securityMock);
 

@@ -8,9 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Waffle\Commons\Config\Config;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\Container;
 use Waffle\Core\System;
 use Waffle\Router\Router;
@@ -33,13 +33,13 @@ final class RouterTest extends TestCase
         $this->serverBackup = $_SERVER;
 
         $testConfig = $this->createAndGetConfig(securityLevel: 2);
-        $security = new Security($testConfig);
+        $security = $this->createMock(SecurityInterface::class);
 
         // Use MockContainer for testing
         $innerContainer = new MockContainer();
         $this->container = new Container($innerContainer, $security);
-        $this->container->set(Config::class, $testConfig);
-        $this->container->set(Security::class, $security);
+        $this->container->set(ConfigInterface::class, $testConfig);
+        $this->container->set(SecurityInterface::class, $security);
         $this->container->set(TempController::class, new TempController());
 
         $this->system = new System($security);

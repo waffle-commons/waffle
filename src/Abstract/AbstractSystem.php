@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Waffle\Commons\Contracts\System\SystemInterface;
-use Waffle\Commons\Security\Security;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Router\Router;
 use Waffle\Trait\SystemTrait;
@@ -15,7 +15,7 @@ abstract class AbstractSystem implements SystemInterface
     use ReflectionTrait;
     use SystemTrait;
 
-    public Security $security {
+    public SecurityInterface $security {
         set => $this->security = $value;
     }
 
