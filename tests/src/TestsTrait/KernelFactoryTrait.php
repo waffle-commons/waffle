@@ -9,7 +9,6 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-
 use WaffleTests\Helper\MockContainer;
 
 // The PSR-11 implementation

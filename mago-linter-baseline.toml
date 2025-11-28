@@ -37,12 +37,6 @@ message = "Avoid `elseif` clauses."
 count = 1
 
 [[issues]]
-file = "src/Controller/DummyController.php"
-code = "strict-types"
-message = "Missing `declare(strict_types=1);` statement at the beginning of the file."
-count = 1
-
-[[issues]]
 file = "src/Factory/ContainerFactory.php"
 code = "prefer-early-continue"
 message = "Consider using early continue pattern to reduce nesting."
@@ -83,12 +77,6 @@ file = "src/Router/RouteParser.php"
 code = "prefer-early-continue"
 message = "Consider using early continue pattern to reduce nesting."
 count = 2
-
-[[issues]]
-file = "src/Service/DummyService.php"
-code = "strict-types"
-message = "Missing `declare(strict_types=1);` statement at the beginning of the file."
-count = 1
 
 [[issues]]
 file = "src/Trait/RequestTrait.php"
@@ -220,18 +208,6 @@ count = 1
 file = "tests/src/Cache/RouteCacheTest.php"
 code = "no-else-clause"
 message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "tests/src/Core/ContainerTest.php"
-code = "prefer-static-closure"
-message = "This arrow function does not use `$this` and should be declared static."
-count = 1
-
-[[issues]]
-file = "tests/src/Core/ContainerTest.php"
-code = "too-many-methods"
-message = "Class has too many methods."
 count = 1
 
 [[issues]]
