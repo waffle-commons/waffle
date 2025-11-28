@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core\Helper;
 
-use Waffle\Commons\Config\Config;use Waffle\Commons\Security\Security;use Waffle\Core\Container;use Waffle\Kernel;use WaffleTests\Helper\MockContainer;
+use Waffle\Commons\Config\Config;
+use Waffle\Commons\Security\Security;
+use Waffle\Core\Container;
+use Waffle\Kernel;
+use WaffleTests\Helper\MockContainer;
 
 /**
  * A concrete Kernel implementation for testing the System::boot method specifically.

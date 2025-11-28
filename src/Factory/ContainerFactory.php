@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Waffle\Factory;
 
-use Waffle\Commons\Utils\Trait\ReflectionTrait;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Exception\Container\ContainerException;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
+use Waffle\Exception\Container\ContainerException;
 
 final class ContainerFactory
 {

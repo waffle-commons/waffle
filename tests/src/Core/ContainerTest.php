@@ -4,7 +4,25 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
-use Psr\Container\ContainerExceptionInterface;use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Container\NotFoundExceptionInterface;use Waffle\Commons\Security\Exception\SecurityException;use Waffle\Commons\Security\Security;use Waffle\Core\Container;use Waffle\Exception\Container\ContainerException;use Waffle\Exception\Container\NotFoundException;use WaffleTests\AbstractTestCase as TestCase;use WaffleTests\Core\Helper\AbstractUninstantiable;use WaffleTests\Core\Helper\ServiceA;use WaffleTests\Core\Helper\ServiceB;use WaffleTests\Core\Helper\ServiceC;use WaffleTests\Core\Helper\ServiceD;use WaffleTests\Core\Helper\ServiceE;use WaffleTests\Core\Helper\ServiceWithDefaultParam;use WaffleTests\Core\Helper\ServiceWithOptionalParam;use WaffleTests\Core\Helper\ServiceWithUnionParam;use WaffleTests\Core\Helper\WithPrimitive;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Waffle\Commons\Security\Exception\SecurityException;
+use Waffle\Commons\Security\Security;
+use Waffle\Core\Container;
+use Waffle\Exception\Container\ContainerException;
+use Waffle\Exception\Container\NotFoundException;
+use WaffleTests\AbstractTestCase as TestCase;
+use WaffleTests\Core\Helper\AbstractUninstantiable;
+use WaffleTests\Core\Helper\ServiceA;
+use WaffleTests\Core\Helper\ServiceB;
+use WaffleTests\Core\Helper\ServiceC;
+use WaffleTests\Core\Helper\ServiceD;
+use WaffleTests\Core\Helper\ServiceE;
+use WaffleTests\Core\Helper\ServiceWithDefaultParam;
+use WaffleTests\Core\Helper\ServiceWithOptionalParam;
+use WaffleTests\Core\Helper\ServiceWithUnionParam;
+use WaffleTests\Core\Helper\WithPrimitive;
 
 class PsrNotFoundException extends \Exception implements NotFoundExceptionInterface
 {

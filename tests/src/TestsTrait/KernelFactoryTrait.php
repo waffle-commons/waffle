@@ -4,12 +4,62 @@ declare(strict_types=1);
 
 namespace WaffleTests\TestsTrait;
 
-use Waffle\Abstract\AbstractKernel;use Waffle\Commons\Config\Config;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Security\Security;use Waffle\Core\Container as CoreContainer;use WaffleTests\Helper\MockContainer;
+use Waffle\Abstract\AbstractKernel;
+use Waffle\Commons\Config\Config;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Security\Security;
+use Waffle\Core\Container as CoreContainer;
+use WaffleTests\Helper\MockContainer;
+
 // The PSR-11 implementation
 // The Security Decorator
 
 trait KernelFactoryTrait
 {
+    protected function createTestConfigFile(
+        int $securityLevel = 10,
+        string $controllerPath = 'tests/src/Helper/Controller',
+        string $servicePath = 'tests/src/Helper/Service',
+    ): void {
+        $yamlContent = <<<YAML
+        waffle:
+          security:
+            level: {$securityLevel}
+          paths:
+            controllers: '{$controllerPath}'
+            services: '{$servicePath}'
+        YAML;
+        file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
+
+        $yamlContentTest = <<<YAML
+        waffle:
+          test_specific_key: true
+        YAML;
+        file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
+    }
+
+    protected function createAndGetConfig(
+        int $securityLevel = 10,
+        string $controllerPath = 'tests/src/Helper/Controller',
+        string $servicePath = 'tests/src/Helper/Service',
+    ): Config {
+        $this->createTestConfigFile(
+            securityLevel: $securityLevel,
+            controllerPath: $controllerPath,
+            servicePath: $servicePath,
+        );
+
+        return new Config(
+            configDir: $this->testConfigDir,
+            environment: 'dev',
+        );
+    }
+
+    protected function createAndGetSecurity(int $level = 10, null|Config $config = null): Security
+    {
+        return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
+    }
 
     /**
      * Creates the Core Container (Decorator) wrapping a real Commons Container.

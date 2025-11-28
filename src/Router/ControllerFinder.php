@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
-use Waffle\Commons\Utils\Trait\ReflectionTrait;use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
 
 class ControllerFinder
 {

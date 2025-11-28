@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Exception;
 
-use PHPUnit\Framework\Attributes\CoversClass;use Waffle\Commons\Config\Exception\InvalidConfigurationException;use Waffle\Exception\WaffleException;use WaffleTests\AbstractTestCase as TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Waffle\Commons\Config\Exception\InvalidConfigurationException;
+use Waffle\Exception\WaffleException;
+use WaffleTests\AbstractTestCase as TestCase;
 
 #[CoversClass(InvalidConfigurationException::class)]
 final class InvalidConfigurationExceptionTest extends TestCase

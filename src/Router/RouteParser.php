@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace Waffle\Router;
 
-use ReflectionClass;use ReflectionMethod;use ReflectionNamedType;use Waffle\Commons\Utils\Trait\ReflectionTrait;use Waffle\Attribute\Route;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionNamedType;
+use Waffle\Attribute\Route;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
 
 class RouteParser
 {

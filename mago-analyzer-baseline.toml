@@ -1,1334 +1,1135 @@
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "array-to-string-conversion"
-start_line = 96
-end_line = 96
+variant = "loose"
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "impossible-assignment"
-start_line = 310
-end_line = 310
+[[issues]]
+file = "src/Abstract/AbstractController.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Abstract\AbstractController` cannot implement unknown type `BaseControllerInterface`'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "missing-override-attribute"
-start_line = 74
-end_line = 74
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "invalid-override-attribute"
+message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractKernel::boot`.'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-argument"
-start_line = 127
-end_line = 127
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "invalid-override-attribute"
+message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractKernel::configure`.'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "mixed-argument"
-start_line = 128
-end_line = 128
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Abstract\AbstractKernel` cannot implement unknown type `KernelInterface`'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Abstract\AbstractKernel` cannot use unknown type `ReflectionTrait`'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractSystem.php"
+code = "invalid-override-attribute"
+message = 'Invalid `#[Override]` attribute on `Waffle\Abstract\AbstractSystem::registerrouter`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractSystem.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Abstract\AbstractSystem` cannot implement unknown type `SystemInterface`'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractSystem.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Abstract\AbstractSystem` cannot use unknown type `ReflectionTrait`'
+count = 1
+
+[[issues]]
+file = "src/Cache/RouteCache.php"
 code = "no-value"
-start_line = 314
-end_line = 314
+message = "Argument #1 passed to function `getenv` has type `never`, meaning it cannot produce a value."
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "non-existent-class"
-start_line = 311
-end_line = 311
+[[issues]]
+file = "src/Cache/RouteCache.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
+count = 2
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "non-existent-method"
-start_line = 127
-end_line = 127
+[[issues]]
+file = "src/Cache/RouteCache.php"
+code = "redundant-comparison"
+message = "Redundant `===` comparison: left-hand side is never identical to right-hand side."
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "non-existent-method"
-start_line = 128
-end_line = 128
+[[issues]]
+file = "src/Core/Container.php"
+code = "invalid-override-attribute"
+message = 'Invalid `#[Override]` attribute on `Waffle\Core\Container::set`.'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "non-existent-method"
-start_line = 131
-end_line = 131
+[[issues]]
+file = "src/Core/Container.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Core\Container` cannot implement unknown type `ContainerInterface`'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "possibly-null-argument"
-start_line = 96
-end_line = 96
+[[issues]]
+file = "src/Core/System.php"
+code = "invalid-override-attribute"
+message = 'Invalid `#[Override]` attribute on `Waffle\Core\System::boot`.'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "reference-to-undefined-variable"
-start_line = 98
-end_line = 98
+[[issues]]
+file = "src/Core/View.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Core\View` cannot implement unknown type `ViewInterface`'
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "unknown-class-instantiation"
-start_line = 166
-end_line = 166
+[[issues]]
+file = "src/Exception/Container/ContainerException.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Exception\Container\ContainerException` cannot implement unknown type `ContainerExceptionInterface`'
+count = 1
 
-[[entries."src/Core/Container.php".issues]]
-code = "non-existent-method"
-start_line = 75
-end_line = 75
+[[issues]]
+file = "src/Exception/Container/NotFoundException.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Exception\Container\NotFoundException` cannot implement unknown type `NotFoundExceptionInterface`'
+count = 1
 
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-argument"
-start_line = 100
-end_line = 100
+[[issues]]
+file = "src/Exception/InvalidConfigurationException.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Exception\InvalidConfigurationException` cannot implement unknown type `InvalidConfigurationExceptionInterface`'
+count = 1
 
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-argument"
-start_line = 122
-end_line = 122
+[[issues]]
+file = "src/Exception/RouteNotFoundException.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Exception\RouteNotFoundException` cannot implement unknown type `RouteNotFoundExceptionInterface`'
+count = 1
 
-[[entries."src/Router/Router.php".issues]]
-code = "mixed-argument"
-start_line = 124
-end_line = 124
+[[issues]]
+file = "src/Factory/ContainerFactory.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Factory\ContainerFactory` cannot use unknown type `ReflectionTrait`'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "invalid-callable"
-start_line = 398
-end_line = 398
+[[issues]]
+file = "src/Router/ControllerFinder.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Router\ControllerFinder` cannot use unknown type `ReflectionTrait`'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "invalid-method-access"
-start_line = 396
-end_line = 396
+[[issues]]
+file = "src/Router/RouteParser.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Router\RouteParser` cannot use unknown type `ReflectionTrait`'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "src/Router/Router.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Router\Router` cannot implement unknown type `RouterInterface`'
+count = 1
+
+[[issues]]
+file = "src/Router/Router.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Router\Router` cannot use unknown type `ReflectionTrait`'
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "match-default-arm-always-executed"
+message = "This default arm is always executed because no other arms can match."
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "no-value"
+message = 'Argument #2 passed to method `Waffle\Trait\RenderingTrait::rendering` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
+count = 3
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "redundant-comparison"
+message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "redundant-condition"
+message = "This condition (type `true`) will always evaluate to true."
+count = 1
+
+[[issues]]
+file = "src/Trait/RenderingTrait.php"
+code = "unreachable-match-arm"
+message = "This match arm is unreachable."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::injectcontainer`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Container\ContainerInterface`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 33
-end_line = 33
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::setUp`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 46
-end_line = 46
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::tearDown`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 134
-end_line = 134
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubCommonsContainer::get`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 139
-end_line = 139
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubCommonsContainer::has`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 144
-end_line = 144
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getBody`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 149
-end_line = 149
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeaderLine`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 154
-end_line = 154
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeader`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 159
-end_line = 159
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeaders`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 164
-end_line = 164
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getProtocolVersion`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 169
-end_line = 169
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getReasonPhrase`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 174
-end_line = 174
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getStatusCode`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 179
-end_line = 179
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::hasHeader`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 184
-end_line = 184
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withAddedHeader`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 189
-end_line = 189
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withBody`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 194
-end_line = 194
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withHeader`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 197
-end_line = 197
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withProtocolVersion`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 202
-end_line = 202
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withStatus`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 206
-end_line = 206
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withoutHeader`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 211
-end_line = 211
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::__toString`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 216
-end_line = 216
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::close`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 221
-end_line = 221
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::detach`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 226
-end_line = 226
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::eof`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 231
-end_line = 231
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getContents`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 235
-end_line = 235
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getMetadata`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 239
-end_line = 239
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getSize`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 244
-end_line = 244
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isReadable`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 249
-end_line = 249
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isSeekable`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 254
-end_line = 254
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isWritable`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 259
-end_line = 259
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::read`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 264
-end_line = 264
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::rewind`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 271
-end_line = 271
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::seek`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 344
-end_line = 344
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::tell`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 464
-end_line = 464
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::write`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "missing-override-attribute"
-start_line = 469
-end_line = 469
+message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-9921:10415::boot`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "mixed-assignment"
-start_line = 396
-end_line = 396
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 6
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "mixed-operand"
-start_line = 51
-end_line = 51
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "mixed-operand"
-start_line = 371
-end_line = 371
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "non-existent-class-like"
+message = 'Class, Interface, or Trait `Waffle\Commons\Contracts\Container\ContainerInterface` does not exist.'
+count = 6
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "non-existent-method"
-start_line = 393
-end_line = 393
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "non-existent-property"
-start_line = 341
-end_line = 341
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "possibly-false-argument"
-start_line = 88
-end_line = 88
+message = "Argument #1 of function `strlen` is possibly `false`, but parameter type `string` does not accept it."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unused-parameter"
-start_line = 281
-end_line = 281
+message = "Parameter `$code` is never used."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unused-parameter"
-start_line = 320
-end_line = 320
+message = "Parameter `$id` is never used."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unused-parameter"
-start_line = 338
-end_line = 338
+message = "Parameter `$request` is never used."
+count = 2
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unused-parameter"
-start_line = 421
-end_line = 421
+message = "Parameter `$service` is never used."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "unused-parameter"
-start_line = 474
-end_line = 474
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "unused-statement"
-start_line = 381
-end_line = 381
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 23
-end_line = 23
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::get`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 28
-end_line = 28
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::has`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 32
-end_line = 32
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getBody`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 37
-end_line = 37
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeaderLine`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 42
-end_line = 42
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeader`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 47
-end_line = 47
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeaders`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 52
-end_line = 52
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getProtocolVersion`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 57
-end_line = 57
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getReasonPhrase`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 61
-end_line = 61
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getStatusCode`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 65
-end_line = 65
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::hasHeader`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 70
-end_line = 70
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withAddedHeader`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 76
-end_line = 76
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withBody`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 81
-end_line = 81
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withHeader`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 86
-end_line = 86
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withProtocolVersion`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 91
-end_line = 91
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withStatus`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 108
-end_line = 108
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withoutHeader`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 113
-end_line = 113
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::__toString`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 118
-end_line = 118
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::close`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 123
-end_line = 123
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::detach`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 128
-end_line = 128
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::eof`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 133
-end_line = 133
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getContents`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 138
-end_line = 138
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getMetadata`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 143
-end_line = 143
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getSize`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 148
-end_line = 148
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isReadable`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 153
-end_line = 153
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isSeekable`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 158
-end_line = 158
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isWritable`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 163
-end_line = 163
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::read`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 168
-end_line = 168
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::rewind`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 173
-end_line = 173
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::seek`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 183
-end_line = 183
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::tell`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "missing-override-attribute"
-start_line = 188
-end_line = 188
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::write`.'
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-array-access"
-start_line = 318
-end_line = 318
+message = "Unsafe array access on type `mixed`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-assignment"
-start_line = 258
-end_line = 258
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 4
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-assignment"
-start_line = 288
-end_line = 288
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-assignment"
-start_line = 314
-end_line = 314
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-assignment"
-start_line = 317
-end_line = 317
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-method-access"
-start_line = 251
-end_line = 251
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 14
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 260
-end_line = 260
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 261
-end_line = 261
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 278
-end_line = 278
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 279
-end_line = 279
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 280
-end_line = 280
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 281
-end_line = 281
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 290
-end_line = 290
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 305
-end_line = 305
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 306
-end_line = 306
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 307
-end_line = 307
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 316
-end_line = 316
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "mixed-method-access"
-start_line = 317
-end_line = 317
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-operand"
-start_line = 350
-end_line = 350
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
+count = 6
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "possible-method-access-on-null"
-start_line = 258
-end_line = 258
+message = "Attempting to call a method on `null`."
+count = 4
 
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 288
-end_line = 288
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 314
-end_line = 314
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 353
-end_line = 353
-
-[[entries."tests/src/Abstract/Helper/WebKernel.php".issues]]
-code = "less-specific-return-statement"
-start_line = 59
-end_line = 59
-
-[[entries."tests/src/AbstractTestCase.php".issues]]
-code = "mixed-operand"
-start_line = 15
-end_line = 15
-
-[[entries."tests/src/AbstractTestCase.php".issues]]
-code = "mixed-operand"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/Cache/RouteCacheTest.php".issues]]
-code = "mixed-operand"
-start_line = 50
-end_line = 50
-
-[[entries."tests/src/Cache/RouteCacheTest.php".issues]]
-code = "mixed-property-type-coercion"
-start_line = 28
-end_line = 28
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-argument"
-start_line = 84
-end_line = 84
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-argument"
-start_line = 85
-end_line = 85
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-assignment"
-start_line = 83
-end_line = 83
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-assignment"
-start_line = 263
-end_line = 263
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-assignment"
-start_line = 266
-end_line = 266
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "mixed-assignment"
-start_line = 269
-end_line = 269
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 78
-end_line = 78
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 88
-end_line = 88
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 89
-end_line = 89
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 129
-end_line = 129
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "mixed-assignment"
-start_line = 140
-end_line = 140
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 52
-end_line = 52
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 75
-end_line = 75
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 76
-end_line = 76
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 78
-end_line = 78
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 86
-end_line = 86
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 88
-end_line = 88
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 89
-end_line = 89
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 99
-end_line = 99
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 108
-end_line = 108
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 109
-end_line = 109
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 111
-end_line = 111
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 116
-end_line = 116
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 117
-end_line = 117
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 122
-end_line = 122
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 127
-end_line = 127
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 129
-end_line = 129
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 136
-end_line = 136
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 137
-end_line = 137
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 138
-end_line = 138
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 140
-end_line = 140
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 152
-end_line = 152
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 160
-end_line = 160
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 167
-end_line = 167
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 170
-end_line = 170
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 180
-end_line = 180
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 183
-end_line = 183
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 194
-end_line = 194
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "possible-method-access-on-null"
-start_line = 206
-end_line = 206
-
-[[entries."tests/src/Core/Helper/TestKernelWithConfig.php".issues]]
-code = "too-few-arguments"
-start_line = 21
-end_line = 21
-
-[[entries."tests/src/Core/SystemTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 118
-end_line = 118
-
-[[entries."tests/src/Core/SystemTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 121
-end_line = 121
-
-[[entries."tests/src/Core/SystemTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "redundant-null-coalesce"
-start_line = 111
-end_line = 111
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
 
-[[entries."tests/src/Core/YamlParserTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "invalid-override-attribute"
+message = "Invalid `#[Override]` attribute on `class@anonymous:7350966032097653580-2001:2777::boot`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
 code = "invalid-property-assignment-value"
-start_line = 185
-end_line = 185
+message = 'Invalid type for property `$securityMock`: expected `unknown-ref(Waffle\Commons\Security\Security)`, but got `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
+count = 1
 
-[[entries."tests/src/Core/YamlParserTest.php".issues]]
-code = "invalid-return-statement"
-start_line = 187
-end_line = 187
+[[issues]]
+file = "tests/src/AbstractTestCase.php"
+code = "mixed-operand"
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 2
 
-[[entries."tests/src/Core/YamlParserTest.php".issues]]
-code = "nullable-return-statement"
-start_line = 187
-end_line = 187
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "invalid-operand"
+message = "Invalid type `never` for left operand in string concatenation."
+count = 9
 
-[[entries."tests/src/Core/YamlParserTest.php".issues]]
-code = "possibly-null-argument"
-start_line = 186
-end_line = 186
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "invalid-operand"
+message = "Invalid type `never` for right operand in string concatenation."
+count = 8
 
-[[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
-code = "invalid-method-access"
-start_line = 36
-end_line = 36
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
 
-[[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
-code = "invalid-method-access"
-start_line = 37
-end_line = 37
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "mixed-property-type-coercion"
+message = "A value with a less specific type `mixed` is being assigned to property `$$cacheFilePath` (string)."
+count = 1
 
-[[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
-code = "mixed-argument"
-start_line = 37
-end_line = 37
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "no-value"
+message = "Argument #1 passed to function `getenv` has type `never`, meaning it cannot produce a value."
+count = 1
 
-[[entries."tests/src/Factory/ContainerFactoryTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 90
-end_line = 90
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "no-value"
+message = "Argument #1 passed to function `putenv` has type `never`, meaning it cannot produce a value."
+count = 2
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "incompatible-parameter-name"
-start_line = 112
-end_line = 112
+[[issues]]
+file = "tests/src/Cache/RouteCacheTest.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
+count = 20
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "invalid-return-statement"
-start_line = 78
-end_line = 78
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "invalid-argument"
+message = '''Invalid argument type for argument #1 of `phpunit\framework\testcase::expectexception`: expected `class-string<Throwable>`, but found `class-string('Waffle\Commons\Security\Exception\SecurityException')`.'''
+count = 1
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "invalid-return-statement"
-start_line = 104
-end_line = 104
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
+count = 6
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "missing-override-attribute"
-start_line = 16
-end_line = 16
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "missing-override-attribute"
-start_line = 107
-end_line = 107
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "missing-override-attribute"
-start_line = 112
-end_line = 112
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "mixed-argument"
-start_line = 86
-end_line = 86
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
 code = "mixed-assignment"
-start_line = 38
-end_line = 38
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 6
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "mixed-assignment"
-start_line = 49
-end_line = 49
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "mixed-assignment"
-start_line = 54
-end_line = 54
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `PHPUnit\Framework\MockObject\InvocationStubber::willthrowexception` has type `never`, meaning it cannot produce a value.'
+count = 1
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "nullable-return-statement"
-start_line = 104
-end_line = 104
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "unevaluated-code"
-start_line = 62
-end_line = 62
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "mixed-assignment"
-start_line = 85
-end_line = 85
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "mixed-assignment"
-start_line = 143
-end_line = 143
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-argument"
-start_line = 119
-end_line = 119
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 64
-end_line = 64
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 70
-end_line = 70
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 94
-end_line = 94
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 98
-end_line = 98
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 109
-end_line = 109
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 113
-end_line = 113
-
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
-code = "possibly-null-operand"
-start_line = 137
-end_line = 137
-
-[[entries."tests/src/Router/RouteDiscovererTest.php".issues]]
-code = "possibly-null-argument"
-start_line = 26
-end_line = 26
-
-[[entries."tests/src/Router/RouteDiscovererTest.php".issues]]
-code = "possibly-null-argument"
-start_line = 27
-end_line = 27
-
-[[entries."tests/src/Router/RouteDiscovererTest.php".issues]]
-code = "possibly-null-argument"
-start_line = 44
-end_line = 44
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "mixed-argument"
-start_line = 170
-end_line = 170
-
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "mixed-assignment"
-start_line = 168
-end_line = 168
-
-[[entries."tests/src/Security/Rule/Level6RuleTest.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 56
-end_line = 56
-
-[[entries."tests/src/TestsTrait/HttpFactoryTrait.php".issues]]
-code = "never-return"
-start_line = 29
-end_line = 32
-
-[[entries."tests/src/TestsTrait/HttpFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
 code = "non-existent-class"
-start_line = 29
-end_line = 29
+message = 'Class `Waffle\Commons\Security\Exception\SecurityException` not found.'
+count = 1
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "non-existent-class-like"
+message = 'Class, Interface, or Trait `Waffle\Commons\Security\Security` does not exist.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/ContainerTest.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 29
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Core\System::boot`: expected `unknown-ref(Waffle\Commons\Contracts\Core\KernelInterface)`, but found `WaffleTests\Core\Helper\SystemTestKernel`.'
+count = 2
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `waffle\core\system::__construct`: expected `unknown-ref(Waffle\Commons\Security\Security)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Security\Security`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `phpunit\framework\testcase::throwexception` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `waffle\core\system::__construct` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Security\Exception\SecurityException` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Security\Security` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "non-existent-class-like"
+message = 'Class, Interface, or Trait `Waffle\Commons\Security\Security` does not exist.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "possibly-false-argument"
+message = 'Argument #1 of method `phpunit\framework\assert::assertjson` is possibly `false`, but parameter type `string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "possibly-false-argument"
+message = 'Argument #2 of method `phpunit\framework\assert::assertstringcontainsstring` is possibly `false`, but parameter type `string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "redundant-null-coalesce"
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "no-value"
+message = 'Argument #2 passed to method `phpunit\framework\assert::assertinstanceof` has type `never`, meaning it cannot produce a value.'
+count = 2
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Config\Exception\InvalidConfigurationException` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Factory\ContainerFactory::create`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `Waffle\Core\Container`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "invalid-method-access"
+message = "Attempting to access a method on a non-object type (`string`)."
+count = 2
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
 code = "mixed-argument"
-start_line = 53
-end_line = 53
+message = "Invalid argument type for argument #1 of `rmdir`: expected `string`, but found `mixed`."
+count = 1
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `unlink`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "possibly-null-operand"
+message = "Possibly null left operand used in string concatenation (type `null|string`)."
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::get`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "missing-override-attribute"
+message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::has`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "non-existent-class-like"
+message = 'Class `WaffleTests\Helper\MockContainer` cannot implement unknown type `ContainerInterface`'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/ControllerFinderTest.php"
 code = "mixed-assignment"
-start_line = 100
-end_line = 100
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/Router/ControllerFinderTest.php"
+code = "possibly-null-argument"
+message = 'Argument #1 of method `Waffle\Router\ControllerFinder::find` is possibly `null`, but parameter type `false|string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/ControllerFinderTest.php"
+code = "possibly-null-operand"
+message = "Possibly null left operand used in string concatenation (type `null|string`)."
+count = 7
+
+[[issues]]
+file = "tests/src/Router/RouteDiscovererTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Router\RouteDiscoverer::discover`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `PHPUnit\Framework\MockObject\MockObject&Waffle\Commons\Contracts\Container\ContainerInterface`.'
+count = 2
+
+[[issues]]
+file = "tests/src/Router/RouteDiscovererTest.php"
+code = "possibly-null-argument"
+message = "Argument #1 of function `is_dir` is possibly `null`, but parameter type `string` does not accept it."
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouteDiscovererTest.php"
+code = "possibly-null-argument"
+message = "Argument #1 of function `rmdir` is possibly `null`, but parameter type `string` does not accept it."
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouteDiscovererTest.php"
+code = "possibly-null-argument"
+message = 'Argument #1 of method `waffle\router\routediscoverer::__construct` is possibly `null`, but parameter type `false|string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouteParserTest.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Router\RouteParser::parse`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but found `Waffle\Core\Container`.'
+count = 3
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "impossible-assignment"
+message = "Invalid assignment: the right-hand side has type `never` and cannot produce a value."
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`).'
+count = 3
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "invalid-property-assignment-value"
+message = 'Invalid type for property `$container`: expected `unknown-ref(Waffle\Commons\Contracts\Container\ContainerInterface)`, but got `Waffle\Core\Container`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertcount`: expected `Countable|iterable<mixed, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `waffle\core\system::__construct` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "no-value"
+message = 'Argument #2 passed to method `waffle\core\container::__construct` has type `never`, meaning it cannot produce a value.'
+count = 1
+
+[[issues]]
+file = "tests/src/Router/RouterTest.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Security\Security` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/HttpFactoryTrait.php"
+code = "never-return"
+message = "Cannot return value with type 'never' from this function."
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/HttpFactoryTrait.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Core\Request` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Config\Config)`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `Waffle\Core\Container::set`: expected `(callable(...mixed=): mixed)|object|string`, but found `unknown-ref(Waffle\Commons\Security\Security)`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #2 of `waffle\core\container::__construct`: expected `unknown-ref(Waffle\Commons\Contracts\Security\SecurityInterface)`, but found `unknown-ref(Waffle\Commons\Security\Security)`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-operand"
-start_line = 31
-end_line = 31
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 2
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "mixed-operand"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-property-access"
-start_line = 101
-end_line = 101
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-return-statement"
-start_line = 95
-end_line = 95
+message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockcontainer`. Saw type `mixed`.'
+count = 1
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-return-statement"
-start_line = 102
-end_line = 102
+message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockkernel`. Saw type `mixed`.'
+count = 1
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "never-return"
+message = "Cannot return value with type 'never' from this function."
+count = 2
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Config\Config` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "non-existent-class"
+message = 'Class `Waffle\Commons\Security\Security` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "non-existent-method"
-start_line = 95
-end_line = 95
+message = 'Method `createmock` does not exist on type `WaffleTests\TestsTrait\KernelFactoryTrait`.'
+count = 2
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "non-existent-method"
-start_line = 100
-end_line = 100
-
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "non-existent-property"
-start_line = 31
-end_line = 31
+message = 'Property `$testConfigDir` does not exist on trait `WaffleTests\TestsTrait\KernelFactoryTrait`.'
+count = 2
 
-[[entries."tests/src/TestsTrait/KernelFactoryTrait.php".issues]]
-code = "non-existent-property"
-start_line = 53
-end_line = 53
+[[issues]]
+file = "tests/src/Trait/RenderingTraitTest.php"
+code = "no-value"
+message = 'Argument #2 passed to method `waffle\trait\renderingtrait::rendering` has type `never`, meaning it cannot produce a value.'
+count = 3
 
-[[entries."tests/src/Trait/Helper/TraitReflection.php".issues]]
-code = "less-specific-nested-argument-type"
-start_line = 36
-end_line = 36
+[[issues]]
+file = "tests/src/Trait/RenderingTraitTest.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Waffle\Commons\Contracts\Constant\Constant` not found.'
+count = 3
 
-[[entries."tests/src/Trait/Helper/TraitReflection.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 26
-end_line = 26
-
-[[entries."tests/src/Trait/ParserTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 69
-end_line = 69
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 117
-end_line = 117
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 127
-end_line = 127
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 138
-end_line = 138
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 156
-end_line = 156
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 164
-end_line = 164
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 176
-end_line = 176
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 180
-end_line = 180
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 189
-end_line = 189
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 190
-end_line = 190
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 194
-end_line = 194
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 195
-end_line = 195
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 206
-end_line = 206
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 207
-end_line = 207
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 208
-end_line = 208
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "ambiguous-object-method-access"
-start_line = 209
-end_line = 209
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 140
-end_line = 140
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 141
-end_line = 141
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 157
-end_line = 157
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 165
-end_line = 165
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 211
-end_line = 211
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 212
-end_line = 212
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 214
-end_line = 214
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-argument"
-start_line = 216
-end_line = 216
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-array-access"
-start_line = 213
-end_line = 213
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-array-access"
-start_line = 215
-end_line = 215
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-array-access"
-start_line = 217
-end_line = 217
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 117
-end_line = 117
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 127
-end_line = 127
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 138
-end_line = 138
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 156
-end_line = 156
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 164
-end_line = 164
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 206
-end_line = 206
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 207
-end_line = 207
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 208
-end_line = 208
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-assignment"
-start_line = 209
-end_line = 209
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-method-access"
-start_line = 213
-end_line = 213
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-method-access"
-start_line = 215
-end_line = 215
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "mixed-method-access"
-start_line = 217
-end_line = 217
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
+[[issues]]
+file = "tests/src/Trait/RenderingTraitTest.php"
 code = "possibly-false-argument"
-start_line = 41
-end_line = 41
+message = 'Argument #1 of method `phpunit\framework\assert::assertjson` is possibly `false`, but parameter type `string` does not accept it.'
+count = 2
 
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
+[[issues]]
+file = "tests/src/Trait/RenderingTraitTest.php"
 code = "possibly-false-argument"
-start_line = 42
-end_line = 42
+message = 'Argument #2 of method `phpunit\framework\assert::assertstringcontainsstring` is possibly `false`, but parameter type `string` does not accept it.'
+count = 2
 
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 73
-end_line = 73
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "possibly-false-argument"
-start_line = 74
-end_line = 74
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
+[[issues]]
+file = "tests/src/Trait/RenderingTraitTest.php"
 code = "redundant-null-coalesce"
-start_line = 37
-end_line = 37
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 54
-end_line = 54
-
-[[entries."tests/src/Trait/RenderingTraitTest.php".issues]]
-code = "redundant-null-coalesce"
-start_line = 70
-end_line = 70
-
-[[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
-code = "possibly-invalid-argument"
-start_line = 126
-end_line = 126
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 3

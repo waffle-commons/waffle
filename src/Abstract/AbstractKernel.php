@@ -4,7 +4,28 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
-use Psr\Container\ContainerInterface as PsrContainerInterface;use Psr\Http\Message\ResponseFactoryInterface;use Psr\Http\Message\ResponseInterface;use Psr\Http\Message\ServerRequestInterface;use Psr\Log\LoggerInterface;use Psr\Log\NullLogger;use ReflectionMethod;use Waffle\Commons\Utils\Trait\ReflectionTrait;use Throwable;use Waffle\Commons\Contracts\Config\ConfigInterface;use Waffle\Commons\Contracts\Constant\Constant;use Waffle\Commons\Contracts\Container\ContainerInterface;use Waffle\Commons\Contracts\Core\KernelInterface;use Waffle\Commons\Security\Security;use Waffle\Core\Container;use Waffle\Core\System;use Waffle\Core\View;use Waffle\Exception\Container\ContainerException;use Waffle\Exception\Container\NotFoundException;use Waffle\Exception\InvalidConfigurationException;use Waffle\Exception\RouteNotFoundException;use Waffle\Factory\ContainerFactory;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use ReflectionMethod;
+use Throwable;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Security\Security;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
+use Waffle\Core\Container;
+use Waffle\Core\System;
+use Waffle\Core\View;
+use Waffle\Exception\Container\ContainerException;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Exception\RouteNotFoundException;
+use Waffle\Factory\ContainerFactory;
 
 abstract class AbstractKernel implements KernelInterface
 {
@@ -210,7 +231,7 @@ abstract class AbstractKernel implements KernelInterface
         $root = APP_ROOT;
         if ($this->config === null) {
             throw new InvalidConfigurationException(
-                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.'
+                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.',
             );
         }
 
