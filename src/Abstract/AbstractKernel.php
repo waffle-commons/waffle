@@ -12,20 +12,20 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionMethod;
 use Throwable;
-use Waffle\Core\Config;
-use Waffle\Core\Constant;
-use Waffle\Core\Container;
-use Waffle\Core\Security;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
 use Waffle\Core\View;
-use Waffle\Enum\Failsafe;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\RouteNotFoundException;
 use Waffle\Factory\ContainerFactory;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
-use Waffle\Trait\ReflectionTrait;
 
 abstract class AbstractKernel implements KernelInterface
 {
@@ -36,7 +36,7 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->environment = $value;
     }
 
-    public null|Config $config = null {
+    public null|ConfigInterface $config = null {
         get => $this->config;
         set => $this->config = $value;
     }
@@ -51,6 +51,10 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
+    protected null|RouterInterface $router = null;
+
+    protected null|SecurityInterface $security = null;
+
     // Holds the raw PSR-11 implementation injected by Runtime
     private null|PsrContainerInterface $innerContainer = null;
 
@@ -60,6 +64,24 @@ abstract class AbstractKernel implements KernelInterface
     public function setContainerImplementation(PsrContainerInterface $container): void
     {
         $this->innerContainer = $container;
+    }
+
+    /**
+     * Allows injecting Configuration (e.g., from waffle-commons/config).
+     */
+    public function setConfiguration(ConfigInterface $config): void
+    {
+        $this->config = $config;
+    }
+
+    public function setSecurity(SecurityInterface $security): void
+    {
+        $this->security = $security;
+    }
+
+    public function setRouter(RouterInterface $router): void
+    {
+        $this->router = $router;
     }
 
     /**
@@ -86,26 +108,14 @@ abstract class AbstractKernel implements KernelInterface
             }
 
             // --- Routing Logic (Bridge) ---
-            $path = $request->getUri()->getPath();
-            $routes = $this->system->getRouter()?->getRoutes() ?? [];
-            $matchedRoute = null;
-            $routeParams = [];
-
-            foreach ($routes as $route) {
-                $routePath = $route[Constant::PATH];
-                $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([^/]+)', $routePath);
-                $pattern = '#^' . str_replace('/', '\/', $pattern) . '$#';
-
-                if (preg_match($pattern, $path, $matches)) {
-                    $matchedRoute = $route;
-                    array_shift($matches);
-                    $routeParams = $matches;
-                    break;
-                }
+            if ($this->router === null) {
+                throw new ContainerException('Router not initialized. Please inject RouterInterface.');
             }
 
+            $matchedRoute = $this->router->matchRequest($request);
+
             if ($matchedRoute === null) {
-                throw new RouteNotFoundException("No route found for path: $path");
+                throw new RouteNotFoundException('No route found for path: ' . $request->getUri()->getPath());
             }
 
             // --- Dispatching Logic ---
@@ -121,19 +131,17 @@ abstract class AbstractKernel implements KernelInterface
 
             $refMethod = new ReflectionMethod($controller, $method);
             $args = [];
-            $paramIndex = 0;
 
             foreach ($refMethod->getParameters() as $param) {
                 $type = $param->getType();
                 if ($type && !$type->isBuiltin() && $this->container->has($type->getName())) {
                     $args[] = $this->container->get($type->getName());
-                } elseif (isset($routeParams[$paramIndex])) {
-                    $val = $routeParams[$paramIndex];
+                } elseif (isset($matchedRoute['params'][$param->getName()])) {
+                    $val = $matchedRoute['params'][$param->getName()];
                     if ($type && $type->getName() === 'int') {
                         $val = (int) $val;
                     }
                     $args[] = $val;
-                    $paramIndex++;
                 }
             }
 
@@ -196,10 +204,13 @@ abstract class AbstractKernel implements KernelInterface
                     if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
                         continue;
                     }
-                    putenv($line);
                     [$key, $value] = explode('=', $line, 2);
-                    $_ENV[$key] = $value;
-                    $_SERVER[$key] = $value;
+                    // Only set if not already set (OS env vars take precedence)
+                    if (getenv($key) === false && !isset($_ENV[$key])) {
+                        putenv($line);
+                        $_ENV[$key] = $value;
+                        $_SERVER[$key] = $value;
+                    }
                 }
             }
         }
@@ -222,14 +233,16 @@ abstract class AbstractKernel implements KernelInterface
         /** @var string $root */
         $root = APP_ROOT;
         if ($this->config === null) {
-            $rootConfig = $root . DIRECTORY_SEPARATOR . APP_CONFIG;
-            $this->config = new Config(
-                configDir: $rootConfig,
-                environment: $this->environment,
+            throw new InvalidConfigurationException(
+                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.',
             );
         }
 
-        $security = new Security(cfg: $this->config);
+        if ($this->security === null) {
+            throw new ContainerException(
+                'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().',
+            );
+        }
 
         // Check if an implementation was provided via setContainerImplementation
         if ($this->innerContainer === null) {
@@ -238,8 +251,28 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
-        // Wrap the provided container with the Core Security Decorator
-        $this->container = new Container($this->innerContainer, $security);
+        // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
+        // We cast it to our interface to support set() operations if available.
+        if ($this->innerContainer instanceof ContainerInterface) {
+            $this->container = $this->innerContainer;
+        } else {
+            // Fallback for raw PSR-11 containers that might not implement our interface but have methods we need?
+            // Ideally, the user should inject a compatible container.
+            // For now, we can't easily wrap it without a concrete class.
+            // We assume the user knows what they are doing.
+            // If they inject a read-only container, set() calls will fail, which is expected behavior for read-only.
+            // But strict typing requires ContainerInterface.
+            // We can't satisfy strict typing without a wrapper.
+            // BUT, we are removing the wrapper to be a micro-core.
+            // So we must change the property type or rely on the user injecting the right type.
+            // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
+            if (!$this->innerContainer instanceof ContainerInterface) {
+                throw new ContainerException(
+                    'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.',
+                );
+            }
+            $this->container = $this->innerContainer;
+        }
 
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');
@@ -257,7 +290,7 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
-        $this->system = new System(security: $security)->boot(kernel: $this);
+        $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         return $this;
     }
@@ -293,25 +326,5 @@ abstract class AbstractKernel implements KernelInterface
             ], JSON_THROW_ON_ERROR));
             return $response->withHeader('Content-Type', 'application/json');
         }
-    }
-
-    private function createFailsafeContainer(): ContainerInterface
-    {
-        /** @var string $root */
-        $root = APP_ROOT;
-        $config = new Config(
-            configDir: $root . '/app',
-            environment: 'prod',
-            failsafe: Failsafe::ENABLED,
-        );
-        $security = new Security(cfg: $config);
-
-        // Fix: We must provide an inner container even in failsafe mode
-        // Assuming CommonsContainer is available via autoload if waffle-commons/container is installed
-        $inner = class_exists(CommonsContainer::class)
-            ? new CommonsContainer()
-            : throw new \RuntimeException('waffle-commons/container is missing.');
-
-        return new Container($inner, $security);
     }
 }

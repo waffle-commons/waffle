@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
-final readonly class View
+use Waffle\Commons\Contracts\View\ViewInterface;
+
+final readonly class View implements ViewInterface
 {
     /**
      * @param array<mixed>|null $data

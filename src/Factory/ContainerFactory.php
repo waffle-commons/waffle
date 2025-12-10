@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Waffle\Factory;
 
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Exception\Container\ContainerException;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Trait\ReflectionTrait;
 
 final class ContainerFactory
 {
@@ -31,7 +31,7 @@ final class ContainerFactory
             $files = $this->scanDirectory($directory);
 
             foreach ($files as $class) {
-                if ($container->has(id: $class)) {
+                if (!$container->has(id: $class)) {
                     $container->set(
                         id: $class,
                         concrete: $class,
