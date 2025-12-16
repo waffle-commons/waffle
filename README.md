@@ -103,38 +103,54 @@ final class HelloController extends BaseController
 }
 ```
 
-**3\. Entry Point (`public/index.php`) - Uses the Runtime:**
+// 3. Entry Point (`public/index.php`) - Uses the Runtime:
 
 ```php
+use Waffle\Commons\Config\Config;
+use Waffle\Commons\Container\Container;
+use Waffle\Commons\Http\Emitter\ResponseEmitter;
+use Waffle\Commons\Http\Factory\GlobalsFactory;
 use Waffle\Commons\Runtime\WaffleRuntime;
-use Workspace\Kernel; // Or your application's Kernel namespace
+use Waffle\Commons\Security\Security;
+use App\Kernel;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
 define('APP_ROOT', dirname(__DIR__));
 
-// Instantiate the Kernel
+// 1. Setup Dependencies
+$config = new Config(APP_ROOT . '/config', 'prod');
+$security = new Security($config);
+$container = new Container();
+
+// 2. Setup Kernel
 $kernel = new Kernel();
+$kernel->setConfiguration($config);
+$kernel->setSecurity($security);
+$kernel->setContainerImplementation($container);
 
-// Instantiate the Runtime (The Glue)
+// 3. Create Request & Emitter
+$request = (new GlobalsFactory())->createServerRequestFromGlobals();
+$emitter = new ResponseEmitter();
+
+// 4. Run via Runtime
 $runtime = new WaffleRuntime();
-
-// Run the application
-$runtime->run($kernel); 
+$runtime->run($kernel, $request, $emitter);
 ```
 
 Testing
 -------
 
-Waffle is built with testing in mind. To run the complete test suite for the framework itself:
+To run the tests, use the following command:
 
-```shell
+```bash
 composer tests
 ```
 
 Contributing
 ------------
 
-Contributions are welcome! Please feel free to submit a pull request or create an issue. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+Contributions are welcome! Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 License
 -------

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\Trait;
 
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 use WaffleTests\AbstractTestCase as TestCase;

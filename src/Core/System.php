@@ -6,22 +6,25 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
-use Waffle\Exception\InvalidConfigurationException;
-use Waffle\Exception\SecurityException;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Kernel;
-use Waffle\Router\Router;
+use Waffle\Trait\RenderingTrait;
 
 class System extends AbstractSystem
 {
-    public function __construct(Security $security)
+    use RenderingTrait;
+
+    public function __construct(SecurityInterface $security)
     {
         $this->security = $security;
     }
 
     /**
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationExceptionInterface
      */
     #[\Override]
     public function boot(KernelInterface $kernel): self
@@ -36,26 +39,16 @@ class System extends AbstractSystem
                     KernelInterface::class,
                 ],
             );
-            /** @var Config $config */
+            /** @var ConfigInterface $config */
             $config = $kernel->config;
             $this->security->analyze(
                 object: $config,
                 expectations: [
-                    Config::class,
+                    ConfigInterface::class,
                 ],
             );
-            /** @var Container $container */
-            $container = $kernel->container;
-            /** @var string $controllers */
-            $controllers = $config->getString(key: 'waffle.paths.controllers');
-            /** @var string $root */
-            $root = APP_ROOT;
-            $this->registerRouter(router: new Router(
-                directory: $root . DIRECTORY_SEPARATOR . $controllers,
-                system: $this,
-            )->boot(container: $container));
-        } catch (SecurityException $e) {
-            $e->throw(view: new View(data: $e->serialize()));
+        } catch (SecurityExceptionInterface $e) {
+            $this->throw(view: new View(data: $e->serialize()));
         }
 
         return $this;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Trait;
 
 use JsonException;
-use Waffle\Core\Constant;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Core\View;
 use Waffle\Exception\RenderingException;
 

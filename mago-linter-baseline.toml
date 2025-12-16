@@ -1,394 +1,199 @@
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "braced-string-interpolation"
-start_line = 107
-end_line = 107
+variant = "loose"
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "cyclomatic-complexity"
-start_line = 29
-end_line = 316
+message = "Class has high complexity."
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
-code = "halstead"
-start_line = 74
-end_line = 153
-
-[[entries."src/Abstract/AbstractKernel.php".issues]]
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "kan-defect"
-start_line = 29
-end_line = 316
+message = "Class has a high kan defect score (2.38)."
+count = 1
 
-[[entries."src/Abstract/AbstractKernel.php".issues]]
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "no-else-clause"
-start_line = 129
-end_line = 136
+message = "Avoid `else` clauses."
+count = 1
 
-[[entries."src/Core/Config.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 9
-end_line = 180
-
-[[entries."src/Core/Config.php".issues]]
-code = "no-boolean-flag-parameter"
-start_line = 125
-end_line = 125
-
-[[entries."src/Core/Config.php".issues]]
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "no-else-clause"
-start_line = 170
-end_line = 177
+message = "Avoid `elseif` clauses."
+count = 1
 
-[[entries."src/Core/Container.php".issues]]
-code = "no-else-clause"
-start_line = 76
-end_line = 78
-
-[[entries."src/Core/System.php".issues]]
-code = "no-redundant-use"
-start_line = 10
-end_line = 10
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 12
-end_line = 127
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 81
-end_line = 88
-
-[[entries."src/Core/YamlParser.php".issues]]
-code = "no-else-clause"
-start_line = 102
-end_line = 109
-
-[[entries."src/Core/YamlParser.php".issues]]
+[[issues]]
+file = "src/Factory/ContainerFactory.php"
 code = "prefer-early-continue"
-start_line = 84
-end_line = 86
+message = "Consider using early continue pattern to reduce nesting."
+count = 1
 
-[[entries."src/Factory/ContainerFactory.php".issues]]
-code = "prefer-early-continue"
-start_line = 33
-end_line = 38
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 14
-end_line = 165
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "kan-defect"
-start_line = 14
-end_line = 165
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "no-else-clause"
-start_line = 107
-end_line = 109
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "no-else-clause"
-start_line = 111
-end_line = 113
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "no-empty"
-start_line = 45
-end_line = 45
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "prefer-early-continue"
-start_line = 136
-end_line = 140
-
-[[entries."src/Router/RouteParser.php".issues]]
-code = "prefer-early-continue"
-start_line = 159
-end_line = 161
-
-[[entries."src/Security/Rule/Level2Rule.php".issues]]
-code = "prefer-early-continue"
-start_line = 30
-end_line = 35
-
-[[entries."src/Security/Rule/Level5Rule.php".issues]]
-code = "prefer-early-continue"
-start_line = 30
-end_line = 35
-
-[[entries."src/Security/Rule/Level6Rule.php".issues]]
-code = "prefer-early-continue"
-start_line = 26
-end_line = 31
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 7
-end_line = 7
-
-[[entries."src/Trait/ReflectionTrait.php".issues]]
-code = "prefer-early-continue"
-start_line = 83
-end_line = 85
-
-[[entries."src/Trait/RequestTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 6
-end_line = 6
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 6
-end_line = 6
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 7
-end_line = 7
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 8
-end_line = 8
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 9
-end_line = 9
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "no-redundant-use"
-start_line = 10
-end_line = 10
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "prefer-early-continue"
-start_line = 37
-end_line = 39
-
-[[entries."src/Trait/SecurityTrait.php".issues]]
-code = "prefer-early-continue"
-start_line = 65
-end_line = 67
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "assertion-style"
-start_line = 121
-end_line = 121
+message = "Inconsistent assertions style."
+count = 2
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "assertion-style"
-start_line = 309
-end_line = 309
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "explicit-octal"
-start_line = 38
-end_line = 38
+message = "Use explicit octal numeral notation."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "explicit-octal"
-start_line = 373
-end_line = 373
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "no-boolean-flag-parameter"
-start_line = 442
-end_line = 442
+message = "Avoid boolean flag parameters."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "no-error-control-operator"
-start_line = 53
-end_line = 53
+message = "Unsafe use of error control operator `@`."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "no-redundant-use"
+message = "Unused import: `PreserveGlobalState`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "no-redundant-use"
+message = "Unused import: `RunInSeparateProcess`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "prefer-arrow-function"
-start_line = 281
-end_line = 281
+message = "This closure can be simplified to a more concise arrow function."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "prefer-early-continue"
-start_line = 447
-end_line = 452
+message = "Consider using early continue pattern to reduce nesting."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "prefer-first-class-callable"
-start_line = 392
-end_line = 394
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "prefer-static-closure"
-start_line = 281
-end_line = 281
+message = "This closure does not use `$this` and should be declared static."
+count = 1
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "too-many-methods"
-start_line = 28
-end_line = 455
+message = "Anonymous class has too many methods."
+count = 2
 
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "too-many-methods"
-start_line = 133
-end_line = 275
-
-[[entries."tests/src/Abstract/AbstractKernelEdgeCaseTest.php".issues]]
-code = "too-many-methods"
-start_line = 196
-end_line = 268
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "no-else-clause"
-start_line = 340
-end_line = 344
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "no-redundant-use"
-start_line = 13
-end_line = 13
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "too-many-methods"
-start_line = 19
-end_line = 95
-
-[[entries."tests/src/Abstract/AbstractKernelTest.php".issues]]
-code = "too-many-methods"
-start_line = 97
-end_line = 177
-
-[[entries."tests/src/Abstract/Helper/ConcreteTestKernel.php".issues]]
-code = "no-redundant-use"
-start_line = 6
-end_line = 6
-
-[[entries."tests/src/Cache/RouteCacheTest.php".issues]]
-code = "no-else-clause"
-start_line = 49
-end_line = 51
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "no-redundant-use"
-start_line = 7
-end_line = 7
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "no-redundant-use"
-start_line = 9
-end_line = 9
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 84
-end_line = 86
-
-[[entries."tests/src/Core/ConfigTest.php".issues]]
-code = "too-many-methods"
-start_line = 17
-end_line = 294
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "prefer-static-closure"
-start_line = 127
-end_line = 127
-
-[[entries."tests/src/Core/ContainerTest.php".issues]]
-code = "too-many-methods"
-start_line = 34
-end_line = 281
-
-[[entries."tests/src/Core/SystemTest.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "explicit-octal"
-start_line = 29
-end_line = 29
+message = "Use explicit octal numeral notation."
+count = 2
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "braced-string-interpolation"
-start_line = 23
-end_line = 23
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "braced-string-interpolation"
-start_line = 71
-end_line = 71
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-eval"
+message = "Unsafe use of `eval` construct."
+count = 1
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "cyclomatic-complexity"
-start_line = 11
-end_line = 116
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-redundant-method-override"
+message = "Redundant method override."
+count = 2
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-redundant-use"
+message = "Unused import: `NotFoundException`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "prefer-static-closure"
+message = "This closure does not use `$this` and should be declared static."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/Helper/ConcreteTestKernel.php"
+code = "no-redundant-use"
+message = "Unused import: `System`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
 code = "halstead"
-start_line = 30
-end_line = 64
+message = "Method has a high halstead difficulty"
+count = 1
 
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "no-else-clause"
-start_line = 50
-end_line = 52
-
-[[entries."tests/src/Helper/MockContainer.php".issues]]
-code = "no-else-clause"
-start_line = 52
-end_line = 55
-
-[[entries."tests/src/Helper/Security/Rule3ValidObject1.php".issues]]
-code = "no-protected-in-final"
-start_line = 19
-end_line = 19
-
-[[entries."tests/src/Helper/Security/Rule7ValidObject.php".issues]]
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
 code = "no-boolean-flag-parameter"
-start_line = 8
-end_line = 8
+message = "Avoid boolean flag parameters."
+count = 1
 
-[[entries."tests/src/Router/ControllerFinderTest.php".issues]]
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
 code = "explicit-octal"
-start_line = 25
-end_line = 25
+message = "Use explicit octal numeral notation."
+count = 1
 
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 70
-end_line = 76
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "braced-string-interpolation"
+message = "Unbraced variable in string interpolation."
+count = 2
 
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 94
-end_line = 97
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
+count = 1
 
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 117
-end_line = 120
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "halstead"
+message = "Method has a high halstead difficulty"
+count = 1
 
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "prefer-early-continue"
-start_line = 147
-end_line = 150
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "no-else-clause"
+message = "Avoid `else` clauses."
+count = 1
 
-[[entries."tests/src/Router/RouterTest.php".issues]]
-code = "too-many-methods"
-start_line = 20
-end_line = 251
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "no-else-clause"
+message = "Avoid `elseif` clauses."
+count = 1
 
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "no-error-control-operator"
-start_line = 117
-end_line = 117
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "prefer-arrow-function"
+message = "This closure can be simplified to a more concise arrow function."
+count = 2
 
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "prefer-static-closure"
-start_line = 141
-end_line = 141
-
-[[entries."tests/src/Trait/ReflectionTraitTest.php".issues]]
-code = "too-many-methods"
-start_line = 20
-end_line = 219
-
-[[entries."tests/src/Trait/SecurityTraitTest.php".issues]]
-code = "too-many-methods"
-start_line = 19
-end_line = 246
+message = "This closure does not use `$this` and should be declared static."
+count = 2

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace WaffleTests\TestsTrait;
 
 use Waffle\Abstract\AbstractKernel;
-// The PSR-11 implementation
-use Waffle\Core\Config;
-use Waffle\Core\Container as CoreContainer; // The Security Decorator
-use Waffle\Core\Security;
-use Waffle\Enum\Failsafe;
-use Waffle\Interface\ContainerInterface;
-use Waffle\Interface\KernelInterface;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use WaffleTests\Helper\MockContainer;
+
+// The PSR-11 implementation
+// The Security Decorator
 
 trait KernelFactoryTrait
 {
@@ -42,43 +42,57 @@ trait KernelFactoryTrait
         int $securityLevel = 10,
         string $controllerPath = 'tests/src/Helper/Controller',
         string $servicePath = 'tests/src/Helper/Service',
-        Failsafe $failsafe = Failsafe::DISABLED,
-    ): Config {
+    ): ConfigInterface {
         $this->createTestConfigFile(
             securityLevel: $securityLevel,
             controllerPath: $controllerPath,
             servicePath: $servicePath,
         );
 
-        return new Config(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-            failsafe: $failsafe,
-        );
+        $config = $this->createMock(ConfigInterface::class);
+        $config
+            ->method('getString')
+            ->willReturnCallback(function ($key) use ($controllerPath, $servicePath) {
+                return match ($key) {
+                    'waffle.paths.controllers' => $controllerPath,
+                    'waffle.paths.services' => $servicePath,
+                    default => null,
+                };
+            });
+        $config
+            ->method('getInt')
+            ->willReturnCallback(function ($key) use ($securityLevel) {
+                return match ($key) {
+                    'waffle.security.level' => $securityLevel,
+                    default => null,
+                };
+            });
+
+        return $config;
     }
 
-    protected function createAndGetSecurity(int $level = 10, null|Config $config = null): Security
+    protected function createAndGetSecurity(int $level = 10, null|ConfigInterface $config = null): SecurityInterface
     {
-        return new Security(cfg: $config ?? $this->createAndGetConfig(securityLevel: $level));
+        return $this->createMock(SecurityInterface::class);
     }
 
     /**
      * Creates the Core Container (Decorator) wrapping a real Commons Container.
      */
-    protected function createRealContainer(int $level = 10): CoreContainer
+    /**
+     * Creates a Mock Container that behaves like a real one.
+     */
+    protected function createRealContainer(int $level = 10): ContainerInterface
     {
         $config = $this->createAndGetConfig(securityLevel: $level);
         $security = $this->createAndGetSecurity(config: $config);
 
-        // 1. Create the raw PSR-11 container from the component
-        $innerContainer = new MockContainer();
+        // 1. Create the mock container
+        $container = new MockContainer();
 
-        // 2. Wrap it with the Core Container (Security Decorator)
-        $container = new CoreContainer($innerContainer, $security);
-
-        // Pre-populate key services into the INNER container via the wrapper's set() method
-        $container->set(Config::class, $config);
-        $container->set(Security::class, $security);
+        // Pre-populate key services
+        $container->set(ConfigInterface::class, $config);
+        $container->set(SecurityInterface::class, $security);
 
         return $container;
     }

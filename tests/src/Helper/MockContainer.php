@@ -7,7 +7,7 @@ namespace WaffleTests\Helper;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Waffle\Interface\ContainerInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
 
 class MockContainer implements ContainerInterface, PsrContainerInterface
 {

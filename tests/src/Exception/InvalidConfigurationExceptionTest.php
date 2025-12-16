@@ -22,7 +22,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         $exception = new InvalidConfigurationException($message, $code);
 
         static::assertInstanceOf(InvalidConfigurationException::class, $exception);
-        static::assertInstanceOf(WaffleException::class, $exception);
+        static::assertInstanceOf(\Exception::class, $exception);
         static::assertSame($message, $exception->getMessage());
         static::assertSame($code, $exception->getCode());
     }
