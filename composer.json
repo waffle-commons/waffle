@@ -20,10 +20,9 @@
             "email": "contact@waffle-commons.cloud"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "minimum-stability": "stable",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "psr/container": "^2.0",
         "psr/http-message": "^1.1 || ^2.0",
         "psr/http-server-handler": "^1.0",
