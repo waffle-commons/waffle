@@ -20,7 +20,7 @@
             "email": "contact@waffle-commons.cloud"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": "^8.5",
         "psr/container": "^2.0",
@@ -29,8 +29,8 @@
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^3.0",
         "psr/cache": "^3.0",
-        "waffle-commons/contracts": "self.version",
-        "waffle-commons/utils": "self.version"
+        "waffle-commons/contracts": "1.0.0-dev",
+        "waffle-commons/utils": "1.0.0-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
@@ -38,6 +38,26 @@
         "vimeo/psalm": "^6.13",
         "php-mock/php-mock-phpunit": "^2.13"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "canonical": false,
+            "url": "../contracts",
+            "options": {
+                "versions": { "waffle-commons/contracts": "1.0.0-dev" },
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "canonical": false,
+            "url": "../utils",
+            "options": {
+                "versions": { "waffle-commons/utils": "1.0.0-dev" },
+                "symlink": true
+            }
+        }
+    ],
     "scripts": {
         "formatter": "vendor/bin/mago fmt",
         "linter": "vendor/bin/mago lint",
