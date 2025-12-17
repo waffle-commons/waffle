@@ -30,13 +30,15 @@
         "psr/log": "^3.0",
         "psr/cache": "^3.0",
         "waffle-commons/contracts": "1.0.0-dev",
-        "waffle-commons/utils": "1.0.0-dev"
+        "waffle-commons/utils": "1.0.0-dev",
+        "psr/http-server-middleware": "^1.0@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
         "carthage-software/mago": "^1.0.0-beta.31",
         "vimeo/psalm": "^6.13",
-        "php-mock/php-mock-phpunit": "^2.13"
+        "php-mock/php-mock-phpunit": "^2.13",
+        "nyholm/psr7": "^1.8@dev"
     },
     "repositories": [
         {

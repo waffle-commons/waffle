@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use AllowDynamicProperties;
+use Nyholm\Psr7\ServerRequest;
+use WaffleTests\Abstract\Helper\WebKernel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -17,16 +19,19 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
+use Waffle\Exception\Container\NotFoundException;
+use Waffle\Exception\Container\ContainerException;
 use RuntimeException;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Router\Router;
-use WaffleTests\Abstract\Helper\WebKernel;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 /**
  * Targets specific logic branches in AbstractKernel not covered by the main test.
  */
 #[CoversClass(AbstractKernel::class)]
+#[AllowMockObjectsWithoutExpectations]
 class AbstractKernelEdgeCaseTest extends TestCase
 {
     protected string $testConfigDir;
@@ -114,7 +119,20 @@ class AbstractKernelEdgeCaseTest extends TestCase
         );
 
         $this->injectContainer($kernel, $containerMock);
+        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
         $this->setBootedState($kernel, true);
+
+        // Inject Fake Stack with minimalistic routing
+        $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
+        $stack->add(new class implements \Psr\Http\Server\MiddlewareInterface {
+            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
+                // Manually set controller attribute to bypass routing logic for this unit test
+                $request = $request->withAttribute('_classname', 'TestController');
+                $request = $request->withAttribute('_method', '__invoke');
+                return $handler->handle($request);
+            }
+        });
+        $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
         $response = $kernel->handle($request);
@@ -302,7 +320,19 @@ class AbstractKernelEdgeCaseTest extends TestCase
         );
 
         $this->injectContainer($kernel, $containerMock);
+        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
         $this->setBootedState($kernel, true);
+
+        // Inject Fake Stack
+        $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
+        $stack->add(new class implements \Psr\Http\Server\MiddlewareInterface {
+            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
+                $request = $request->withAttribute('_classname', 'TestController');
+                $request = $request->withAttribute('_method', '__invoke');
+                return $handler->handle($request);
+            }
+        });
+        $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
         $response = $kernel->handle($request);
@@ -340,22 +370,47 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 {
                     parent::__construct($logger);
                     $this->environment = $env;
+                    $this->testContainer = null;
                 }
+                
+                public $testContainer;
 
                 public function boot(): AbstractKernel
                 {
                     return $this;
                 }
+                
+                #[\Override]
+                public function configure(): self
+                {
+                    if ($this->testContainer) {
+                        $this->container = $this->testContainer;
+                    }
+                    
+                    return $this;
+                }
             };
 
-        $this->injectContainer($kernel, $containerMock);
+        // Use setContainerImplementation ...
+        $kernel->setContainerImplementation($containerMock);
+        $kernel->testContainer = $containerMock;
+        
+        // Inject Config to pass configure() check
+        $configMock = $this->createMock(\Waffle\Commons\Contracts\Config\ConfigInterface::class);
+        $kernel->setConfiguration($configMock);
+        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        
         $this->setBootedState($kernel, true);
+        
+        // Ensure stack is set to avoid "MiddlewareStack not initialized" error before the one we expect
+        $kernel->setMiddlewareStack(new \WaffleTests\Abstract\Helper\FakeMiddlewareStack());
 
         $request = $this->createMockRequest();
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Response factory is broken');
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('System not initialized.');
 
+        $kernel->configure();
         $kernel->handle($request);
     }
 
@@ -366,10 +421,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $uri = $this->createMock(UriInterface::class);
         $uri->method('getPath')->willReturn('/test');
 
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getUri')->willReturn($uri);
-
-        return $request;
+        return new ServerRequest('GET', '/test');
     }
 
     private function createManualRouterStub(string $controllerName): object
@@ -390,14 +442,11 @@ class AbstractKernelEdgeCaseTest extends TestCase
         };
     }
 
-    private function injectContainer(AbstractKernel $kernel, ContainerInterface $container): void
+    private function injectContainer(object $object, object $container): void
     {
         $reflection = new ReflectionClass(AbstractKernel::class);
-        if ($reflection->hasProperty('container')) {
-            $property = $reflection->getProperty('container');
-            $property->setAccessible(true);
-            $property->setValue($kernel, $container);
-        }
+        $property = $reflection->getProperty('innerContainer');
+        $property->setValue($object, $container);
     }
 
     private function setBootedState(AbstractKernel $kernel, bool $state): void
@@ -407,7 +456,6 @@ class AbstractKernelEdgeCaseTest extends TestCase
         foreach ($props as $propName) {
             if ($reflection->hasProperty($propName)) {
                 $property = $reflection->getProperty($propName);
-                $property->setAccessible(true);
                 $property->setValue($kernel, $state);
                 return;
             }

@@ -15,7 +15,10 @@ use WaffleTests\TestsTrait\KernelFactoryTrait;
 // No longer mocking Security
 // Added for config helper
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+
 #[CoversClass(System::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class SystemTest extends TestCase
 {
     // Use trait to easily create config files

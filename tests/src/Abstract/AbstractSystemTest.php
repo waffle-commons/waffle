@@ -6,6 +6,7 @@ namespace WaffleTests\Abstract;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Abstract\AbstractSystem;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
@@ -21,10 +22,12 @@ use WaffleTests\AbstractTestCase as TestCase;
  * 2.  The initial state of properties to prevent unexpected null values.
  * 3.  The correct functionality of public methods like `registerRouter`.
  */
-#[CoversClass(AbstractSystem::class)]
+#[CoversClass(System::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class AbstractSystemTest extends TestCase
 {
     private SecurityInterface $securityMock;
+    private ConfigInterface $configMock; // Fix: Declare property
     private AbstractSystem $system;
 
     /**
@@ -41,8 +44,9 @@ final class AbstractSystemTest extends TestCase
     {
         parent::setUp();
 
-        // Create a mock for the Security dependency, as AbstractSystem requires it.
-        $this->securityMock = $this->createMock(SecurityInterface::class);
+        // Create a stub for the Security dependency, as AbstractSystem requires it.
+        $this->securityMock = $this->createStub(SecurityInterface::class);
+        $this->configMock = $this->createStub(ConfigInterface::class); // Added this line
 
         // Create a concrete, anonymous class that extends AbstractSystem for testing purposes.
         // This allows us to instantiate and test the non-abstract methods of the parent.

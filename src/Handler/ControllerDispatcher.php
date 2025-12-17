@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Waffle\Handler;
 
 use Psr\Http\Message\ResponseFactoryInterface;use Psr\Http\Message\ResponseInterface;
+use Waffle\Commons\Contracts\View\ViewInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionMethod;
@@ -29,9 +30,9 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         $method = $request->getAttribute('_method');
         $routeParams = $request->getAttribute('_params', []);
 
-        // 2. Validate Pipeline Integrity
         if (!$classname || !$method) {
-            throw new RuntimeException('Pipeline Error: No controller defined in request attributes. Did the RoutingMiddleware run?');
+            $attrs = var_export($request->getAttributes(), true);
+            throw new RuntimeException('Pipeline Error: No controller defined in request attributes. Did the RoutingMiddleware run? Attributes: ' . $attrs);
         }
 
         if (!is_string($classname) || !is_string($method)) {
@@ -69,7 +70,58 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         $args = $this->resolveArguments($controller, $method, $request, $routeParams);
 
         // 6. Execute
-        return $controller->$method(...$args);
+        $result = $controller->$method(...$args);
+
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+        
+        // 7. Auto-Response Conversion
+        if ($this->container->has(ResponseFactoryInterface::class)) {
+            /** @var ResponseFactoryInterface $factory */
+            $factory = $this->container->get(ResponseFactoryInterface::class);
+            
+            if ($result === null) {
+                return $factory->createResponse(204);
+            }
+            
+            if (is_array($result) || $result instanceof \JsonSerializable) {
+                $response = $factory->createResponse(200)
+                    ->withHeader('Content-Type', 'application/json');
+                $response->getBody()->write(json_encode($result));
+                return $response;
+            }
+            
+            if (is_string($result)) {
+                $response = $factory->createResponse(200)
+                    ->withHeader('Content-Type', 'text/html');
+                $response->getBody()->write($result);
+                return $response;
+            }
+
+            // If it is a View, we likely need to render it?
+            // Assuming Waffle\Core\View exists or similar.
+            // For now, if it's an object with __toString?
+            if (is_object($result) && method_exists($result, '__toString')) {
+                 $response = $factory->createResponse(200);
+                 $response->getBody()->write((string) $result);
+                 return $response;
+            }
+
+            if ($result instanceof ViewInterface) {
+                $response = $factory->createResponse(200)
+                    ->withHeader('Content-Type', 'application/json');
+                $response->getBody()->write(json_encode($result->data));
+                return $response;
+            }
+        }
+
+        throw new RuntimeException(sprintf(
+            'Controller Error: Method "%s::%s" returned "%s", but ResponseInterface was expected and no conversion strategy matched.',
+            get_class($controller),
+            $method,
+            get_debug_type($result)
+        ));
     }
 
     /**
@@ -86,9 +138,20 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             $name = $parameter->getName();
 
             // A. Handle Route Parameters (by name)
-            // We check if the parameter name exists in the extracted route params
             if (array_key_exists($name, $routeParams)) {
-                $args[] = $routeParams[$name];
+                $val = $routeParams[$name];
+                
+                // Auto-cast if type matches
+                if ($type instanceof ReflectionNamedType && $type->isBuiltin()) {
+                     $val = match ($type->getName()) {
+                         'int' => (int) $val,
+                         'float' => (float) $val,
+                         'bool' => filter_var($val, FILTER_VALIDATE_BOOLEAN),
+                         default => $val,
+                     };
+                }
+                
+                $args[] = $val;
                 continue;
             }
 
@@ -106,14 +169,6 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
                     $args[] = $this->container->get($type->getName());
                     continue;
                 }
-            } else {
-                $val = match ($typeName) {
-                    'int' => (int) $name,
-                    'bool' => (bool) $name,
-                    default => $name,
-                };
-                $args[] = $val;
-                continue;
             }
 
             // C. Handle Default Value
@@ -139,22 +194,4 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         return $args;
     }
 
-    /**
-     * Safe resolution wrapper.
-     * Ensures we get an OBJECT, even if the container returns a class string.
-     */
-    private function resolveService(string $id): object
-    {
-        $service = $this->container->get($id);
-
-        if (is_object($service)) {
-            return $service;
-        }
-
-        if (is_string($service) && class_exists($service)) {
-            return new $service();
-        }
-
-        throw new RuntimeException(sprintf('Container Error: Service "%s" resolved to a non-object type.', $id));
-    }
 }

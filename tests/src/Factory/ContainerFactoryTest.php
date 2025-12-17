@@ -9,7 +9,11 @@ use Waffle\Factory\ContainerFactory;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\Controller\TempController;
 use WaffleTests\Helper\Service\TempService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(ContainerFactory::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class ContainerFactoryTest extends TestCase
 {
     private null|string $tempDir = null;
