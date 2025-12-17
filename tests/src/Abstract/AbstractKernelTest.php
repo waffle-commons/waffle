@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use Nyholm\Psr7\ServerRequest;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations; // Fix: Add import
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -13,7 +14,6 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations; // Fix: Add import
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
@@ -271,19 +271,29 @@ class AbstractKernelTest extends TestCase
             container: null,
         );
         $this->kernel->setDeps($this->innerContainer);
-        
+
         // Use Middleware Stack instead of direct Router injection
         $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
 
         // 1. Error Handler Middleware (Catches exceptions and converts to response)
         $stack->add(new class($this->responseFactoryMock) implements \Psr\Http\Server\MiddlewareInterface {
-            public function __construct(private ResponseFactoryInterface $responseFactory) {}
-            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
+            public function __construct(
+                private ResponseFactoryInterface $responseFactory,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
                 try {
                     return $handler->handle($request);
                 } catch (\Waffle\Exception\RouteNotFoundException $e) {
                     $response = $this->responseFactory->createResponse(404);
-                    $response->getBody()->write(json_encode(['message' => 'No route found for path: ' . $request->getUri()->getPath()]));
+                    $response
+                        ->getBody()
+                        ->write(json_encode([
+                            'message' => 'No route found for path: ' . $request->getUri()->getPath(),
+                        ]));
                     return $response;
                 } catch (\Throwable $e) {
                     $response = $this->responseFactory->createResponse(500);
@@ -300,16 +310,20 @@ class AbstractKernelTest extends TestCase
                 }
             }
         });
-        
+
         // 2. Mock Routing Middleware
         $routingMiddleware = new class($this->routerMock) implements \Psr\Http\Server\MiddlewareInterface {
-            public function __construct(private RouterInterface $router) {}
-            
-            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface
-            {
+            public function __construct(
+                private RouterInterface $router,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
                 // Simulate routing: match request and add attributes
                 $match = $this->router->matchRequest($request);
-                
+
                 foreach ($match as $key => $value) {
                     // Mappings if not present
                     if ($key === 'classname' && !isset($match['_classname'])) {
@@ -319,19 +333,19 @@ class AbstractKernelTest extends TestCase
                         $request = $request->withAttribute('_method', $value);
                     }
                     if ($key === 'params' && !isset($match['_params'])) {
-                         $request = $request->withAttribute('_params', $value);
+                        $request = $request->withAttribute('_params', $value);
                     }
-                    
+
                     $request = $request->withAttribute($key, $value);
                 }
 
                 return $handler->handle($request);
             }
         };
-        
+
         $stack->add($routingMiddleware);
         $this->kernel->setMiddlewareStack($stack);
-        
+
         $this->kernel->setSecurity($this->createMock(SecurityInterface::class));
     }
 
@@ -395,14 +409,20 @@ class AbstractKernelTest extends TestCase
             ->expects($this->once())
             ->method('createResponse')
             ->willThrowException(new \RuntimeException('Factory used!'));
-            
+
         // Rebuild stack with the new mock
         $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
         $stack->add(new class($this->responseFactoryMock) implements \Psr\Http\Server\MiddlewareInterface {
-            public function __construct(private ResponseFactoryInterface $factory) {}
-            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
-                 $this->factory->createResponse(200); // Trigger expectation
-                 return $handler->handle($request);
+            public function __construct(
+                private ResponseFactoryInterface $factory,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
+                $this->factory->createResponse(200); // Trigger expectation
+                return $handler->handle($request);
             }
         });
         $this->kernel->setMiddlewareStack($stack);
@@ -412,7 +432,6 @@ class AbstractKernelTest extends TestCase
 
         $this->kernel->handle(new ServerRequest('GET', '/'));
     }
-
 
     public function testHandleCatchesAndRendersThrowable(): void
     {
@@ -457,7 +476,12 @@ class AbstractKernelTest extends TestCase
         // We injected TempController instance above.
         // We need to inject a mock or anonymous class that throws.
         // But services array is keyed by classname.
-        $controller = new class { public function throwError() { throw new \RuntimeException('Something went wrong'); } };
+        $controller = new class {
+            public function throwError()
+            {
+                throw new \RuntimeException('Something went wrong');
+            }
+        };
         $this->innerContainer->services['WaffleTests\Helper\Controller\TempController'] = $controller;
 
         $response = $this->kernel->handle($requestMock);
@@ -491,7 +515,7 @@ class AbstractKernelTest extends TestCase
         // Since AbstractKernel::handle does not catch bootstrap exceptions, we expect ContainerException
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('No Container implementation provided');
-        
+
         $failingKernel->handle($requestMock);
     }
 
@@ -683,8 +707,9 @@ class AbstractKernelTest extends TestCase
             // Helper to inject response factory for error handling
             // We cannot override private createResponse.
             // We rely on Waffle\Commons\Http\Response existing (defined at bottom of file if needed).
-            
-            public function __construct(LoggerInterface $logger) {
+
+            public function __construct(LoggerInterface $logger)
+            {
                 parent::__construct($logger);
                 $this->middlewareStack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
             }
@@ -715,7 +740,7 @@ class AbstractKernelTest extends TestCase
         // handle() throws ContainerException directly if container is missing
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('Container not initialized.');
-        
+
         $kernel->handle($requestMock);
     }
 
@@ -728,8 +753,9 @@ class AbstractKernelTest extends TestCase
         $kernel = new class(new NullLogger()) extends Kernel {
             // Declare property to avoid deprecation
             private $innerContainer;
-            
-            public function __construct(LoggerInterface $logger) {
+
+            public function __construct(LoggerInterface $logger)
+            {
                 parent::__construct($logger);
                 $this->middlewareStack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
             }
@@ -764,7 +790,7 @@ class AbstractKernelTest extends TestCase
         // handle() throws NotFoundException directly if system is missing
         $this->expectException(NotFoundException::class);
         $this->expectExceptionMessage('System not initialized.');
-        
+
         $kernel->handle($requestMock);
     }
 
@@ -814,18 +840,25 @@ class AbstractKernelTest extends TestCase
         $this->responseFactoryMock->method('createResponse')->willReturn($responseStub);
 
         $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
-        
+
         // Configure Router to match request
-        $this->routerMock->method('matchRequest')->willReturn([
-            'classname' => 'WaffleTests\Helper\Controller\TempController',
-            '_classname' => 'WaffleTests\Helper\Controller\TempController',
-            'method' => 'throwError',
-            '_method' => 'throwError',
-            'path' => '/trigger-error',
-        ]);
-        
+        $this->routerMock
+            ->method('matchRequest')
+            ->willReturn([
+                'classname' => 'WaffleTests\Helper\Controller\TempController',
+                '_classname' => 'WaffleTests\Helper\Controller\TempController',
+                'method' => 'throwError',
+                '_method' => 'throwError',
+                'path' => '/trigger-error',
+            ]);
+
         // Inline mock controller that throws
-        $controller = new class { public function throwError() { throw new \RuntimeException('Something went wrong'); } };
+        $controller = new class {
+            public function throwError()
+            {
+                throw new \RuntimeException('Something went wrong');
+            }
+        };
         $this->innerContainer->services['WaffleTests\Helper\Controller\TempController'] = $controller;
 
         $response = $this->kernel->handle($requestMock);
@@ -970,7 +1003,7 @@ class AbstractKernelTest extends TestCase
                 ConfigInterface $config,
                 SecurityInterface $security,
                 PsrContainerInterface $container,
-                \Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface $stack
+                \Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface $stack,
             ): void {
                 $this->config = $config;
                 $this->security = $security;
@@ -1006,32 +1039,47 @@ class AbstractKernelTest extends TestCase
 
         // Inject Fake Stack with ErrorHandler and routing simulation
         $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
-        
+
         // Add ErrorHandler middleware to catch exception and return 500
         $stack->add(new class($this->responseFactoryMock) implements \Psr\Http\Server\MiddlewareInterface {
-             public function __construct(private $factory) {}
-             public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
-                 try {
-                     return $handler->handle($request);
-                 } catch (\Throwable $e) {
-                     $response = $this->factory->createResponse(500);
-                     $response->getBody()->write(json_encode(['message' => $e->getMessage()])); 
-                     // In prod, we don't include trace, which is what we asserting.
-                     // The actual implementation of ErrorHandler would check env.
-                     // Here we simulate the prod behavior by NOT adding trace.
-                     return $response;
-                 }
-             }
+            public function __construct(
+                private $factory,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
+                try {
+                    return $handler->handle($request);
+                } catch (\Throwable $e) {
+                    $response = $this->factory->createResponse(500);
+                    $response->getBody()->write(json_encode(['message' => $e->getMessage()]));
+                    // In prod, we don't include trace, which is what we asserting.
+                    // The actual implementation of ErrorHandler would check env.
+                    // Here we simulate the prod behavior by NOT adding trace.
+                    return $response;
+                }
+            }
         });
 
         $stack->add(new class($routerMock) implements \Psr\Http\Server\MiddlewareInterface {
-            public function __construct(private $router) {}
-            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
+            public function __construct(
+                private $router,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
                 $match = $this->router->matchRequest($request);
                 foreach ($match as $key => $value) {
-                     if ($key === 'classname') $request = $request->withAttribute('_classname', $value);
-                     if ($key === 'method') $request = $request->withAttribute('_method', $value);
-                     if ($key === 'params') $request = $request->withAttribute('_params', $value);
+                    if ($key === 'classname')
+                        $request = $request->withAttribute('_classname', $value);
+                    if ($key === 'method')
+                        $request = $request->withAttribute('_method', $value);
+                    if ($key === 'params')
+                        $request = $request->withAttribute('_params', $value);
                     $request = $request->withAttribute($key, $value);
                 }
                 return $handler->handle($request);
@@ -1118,23 +1166,32 @@ class AbstractKernelTest extends TestCase
         $kernel->setConfiguration($configMock);
         $kernel->setSecurity($securityMock);
         $kernel->setContainerImplementation($this->innerContainer);
-        
+
         // Use fake stack with routing
         $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
         $stack->add(new class($routerMock) implements \Psr\Http\Server\MiddlewareInterface {
-            public function __construct(private $router) {}
-            public function process(ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): ResponseInterface {
+            public function __construct(
+                private $router,
+            ) {}
+
+            public function process(
+                ServerRequestInterface $request,
+                \Psr\Http\Server\RequestHandlerInterface $handler,
+            ): ResponseInterface {
                 $match = $this->router->matchRequest($request);
                 foreach ($match as $key => $value) {
-                     if ($key === 'classname') $request = $request->withAttribute('_classname', $value);
-                     if ($key === 'method') $request = $request->withAttribute('_method', $value);
-                     if ($key === 'params') $request = $request->withAttribute('_params', $value);
+                    if ($key === 'classname')
+                        $request = $request->withAttribute('_classname', $value);
+                    if ($key === 'method')
+                        $request = $request->withAttribute('_method', $value);
+                    if ($key === 'params')
+                        $request = $request->withAttribute('_params', $value);
                     $request = $request->withAttribute($key, $value);
                 }
                 return $handler->handle($request);
             }
         });
-        
+
         $kernel->setMiddlewareStack($stack);
 
         $response = $kernel->handle($requestMock);
@@ -1149,5 +1206,6 @@ class AbstractKernelTest extends TestCase
         static::assertSame('test-slug', $controller->capturedArgs[2]);
     }
 }
-// Removing all setRouter calls as they are no longer needed 
+
+// Removing all setRouter calls as they are no longer needed
 // (setup() handles the stack injection using the mock router)

@@ -101,7 +101,9 @@ abstract class AbstractKernel implements KernelInterface
         $this->boot()->configure();
 
         if ($this->middlewareStack === null) {
-            throw new \RuntimeException('Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?');
+            throw new \RuntimeException(
+                'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?',
+            );
         }
 
         if ($this->container === null) {

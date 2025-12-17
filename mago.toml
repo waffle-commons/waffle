@@ -13,7 +13,6 @@ tab-width = 4
 use-tabs = false
 
 [linter]
-baseline = "mago-linter-baseline.toml"
 integrations = ["phpunit"]
 
 [linter.rules]
@@ -22,7 +21,6 @@ literal-named-argument = { enabled = false }
 halstead = { effort-threshold = 7000 }
 
 [analyzer]
-baseline = "mago-analyzer-baseline.toml"
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true

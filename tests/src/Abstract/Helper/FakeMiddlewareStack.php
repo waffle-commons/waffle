@@ -35,7 +35,7 @@ class FakeMiddlewareStack implements MiddlewareStackInterface
         return new class($this->middlewares, $fallbackHandler) implements RequestHandlerInterface {
             public function __construct(
                 private array $middlewares,
-                private RequestHandlerInterface $fallbackHandler
+                private RequestHandlerInterface $fallbackHandler,
             ) {}
 
             public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface

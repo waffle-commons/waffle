@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
+// No longer mocking Security
+// Added for config helper
+
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
@@ -11,11 +15,6 @@ use Waffle\Core\System;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\SystemTestKernel;
 use WaffleTests\TestsTrait\KernelFactoryTrait;
-
-// No longer mocking Security
-// Added for config helper
-
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 #[CoversClass(System::class)]
 #[AllowMockObjectsWithoutExpectations]

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
-use Psr\Http\Message\ResponseFactoryInterface;use Psr\Http\Message\ResponseInterface;
-use Waffle\Commons\Contracts\View\ViewInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionMethod;
 use ReflectionNamedType;
 use RuntimeException;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\View\ViewInterface;
 
 /**
  * The terminal handler of the framework.
@@ -20,7 +21,7 @@ use Waffle\Commons\Contracts\Container\ContainerInterface;
 final readonly class ControllerDispatcher implements RequestHandlerInterface
 {
     public function __construct(
-        private ContainerInterface $container
+        private ContainerInterface $container,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -32,7 +33,8 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
 
         if (!$classname || !$method) {
             $attrs = var_export($request->getAttributes(), true);
-            throw new RuntimeException('Pipeline Error: No controller defined in request attributes. Did the RoutingMiddleware run? Attributes: ' . $attrs);
+            throw new RuntimeException('Pipeline Error: No controller defined in request attributes. Did the RoutingMiddleware run? Attributes: '
+            . $attrs);
         }
 
         if (!is_string($classname) || !is_string($method)) {
@@ -63,7 +65,11 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
 
         // 4. Check Callable
         if (!method_exists($controller, $method)) {
-            throw new RuntimeException(sprintf('Dispatcher Error: Method "%s" not found in "%s".', $method, $classname));
+            throw new RuntimeException(sprintf(
+                'Dispatcher Error: Method "%s" not found in "%s".',
+                $method,
+                $classname,
+            ));
         }
 
         // 5. Resolve Arguments (Auto-wiring for Controller Methods)
@@ -75,26 +81,24 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         if ($result instanceof ResponseInterface) {
             return $result;
         }
-        
+
         // 7. Auto-Response Conversion
         if ($this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);
-            
+
             if ($result === null) {
                 return $factory->createResponse(204);
             }
-            
+
             if (is_array($result) || $result instanceof \JsonSerializable) {
-                $response = $factory->createResponse(200)
-                    ->withHeader('Content-Type', 'application/json');
+                $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
                 $response->getBody()->write(json_encode($result));
                 return $response;
             }
-            
+
             if (is_string($result)) {
-                $response = $factory->createResponse(200)
-                    ->withHeader('Content-Type', 'text/html');
+                $response = $factory->createResponse(200)->withHeader('Content-Type', 'text/html');
                 $response->getBody()->write($result);
                 return $response;
             }
@@ -103,14 +107,13 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             // Assuming Waffle\Core\View exists or similar.
             // For now, if it's an object with __toString?
             if (is_object($result) && method_exists($result, '__toString')) {
-                 $response = $factory->createResponse(200);
-                 $response->getBody()->write((string) $result);
-                 return $response;
+                $response = $factory->createResponse(200);
+                $response->getBody()->write((string) $result);
+                return $response;
             }
 
             if ($result instanceof ViewInterface) {
-                $response = $factory->createResponse(200)
-                    ->withHeader('Content-Type', 'application/json');
+                $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
                 $response->getBody()->write(json_encode($result->data));
                 return $response;
             }
@@ -120,15 +123,19 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             'Controller Error: Method "%s::%s" returned "%s", but ResponseInterface was expected and no conversion strategy matched.',
             get_class($controller),
             $method,
-            get_debug_type($result)
+            get_debug_type($result),
         ));
     }
 
     /**
      * Resolves dependencies for the controller method using Reflection.
      */
-    private function resolveArguments(string|object $controller, string $method, ServerRequestInterface $request, array $routeParams): array
-    {
+    private function resolveArguments(
+        string|object $controller,
+        string $method,
+        ServerRequestInterface $request,
+        array $routeParams,
+    ): array {
         $reflection = new ReflectionMethod($controller, $method);
         $args = [];
 
@@ -140,26 +147,28 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             // A. Handle Route Parameters (by name)
             if (array_key_exists($name, $routeParams)) {
                 $val = $routeParams[$name];
-                
+
                 // Auto-cast if type matches
                 if ($type instanceof ReflectionNamedType && $type->isBuiltin()) {
-                     $val = match ($type->getName()) {
-                         'int' => (int) $val,
-                         'float' => (float) $val,
-                         'bool' => filter_var($val, FILTER_VALIDATE_BOOLEAN),
-                         default => $val,
-                     };
+                    $val = match ($type->getName()) {
+                        'int' => (int) $val,
+                        'float' => (float) $val,
+                        'bool' => filter_var($val, FILTER_VALIDATE_BOOLEAN),
+                        default => $val,
+                    };
                 }
-                
+
                 $args[] = $val;
                 continue;
             }
 
             // B. Handle Typed Dependencies (Services & Request)
             if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
-
                 // 1. Inject Request if requested
-                if ($typeName === ServerRequestInterface::class || is_subclass_of($typeName, ServerRequestInterface::class)) {
+                if (
+                    $typeName === ServerRequestInterface::class
+                    || is_subclass_of($typeName, ServerRequestInterface::class)
+                ) {
                     $args[] = $request;
                     continue;
                 }
@@ -187,11 +196,10 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
                 'Controller Error: Argument "$%s" in "%s::%s" cannot be resolved. Check type hints or route parameters.',
                 $name,
                 get_class($controller),
-                $method
+                $method,
             ));
         }
 
         return $args;
     }
-
 }

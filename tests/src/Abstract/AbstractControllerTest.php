@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Waffle\Abstract\AbstractController;
-
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
 #[AllowMockObjectsWithoutExpectations]
 class AbstractControllerTest extends TestCase
@@ -29,7 +28,11 @@ class AbstractControllerTest extends TestCase
         $stream = $this->createMock(StreamInterface::class);
 
         $response->method('getBody')->willReturn($stream);
-        $response->expects($this->once())->method('withHeader')->with('Content-Type', 'application/json')->willReturnSelf();
+        $response
+            ->expects($this->once())
+            ->method('withHeader')
+            ->with('Content-Type', 'application/json')
+            ->willReturnSelf();
 
         $factory->expects($this->once())->method('createResponse')->with(200)->willReturn($response);
 
