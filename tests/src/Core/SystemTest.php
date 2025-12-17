@@ -84,6 +84,7 @@ final class SystemTest extends TestCase
         $securityMock = $this->createMock(SecurityInterface::class);
 
         $exception = new class('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
+            #[\Override]
             public function serialize(): array
             {
                 return ['message' => $this->getMessage(), 'code' => $this->getCode()];
@@ -99,7 +100,7 @@ final class SystemTest extends TestCase
         ob_start();
         $system = new System($securityMock);
         $system->boot($testKernel);
-        $output = ob_get_clean() ?? '';
+        $output = (string) ob_get_clean();
 
         // 3. Assertions
         static::assertJson($output, 'The output should be a valid JSON error response.');

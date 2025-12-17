@@ -24,11 +24,14 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         private ContainerInterface $container,
     ) {}
 
+    #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // 1. Retrieve Controller Info from PSR-7 Attributes
+        /** @var mixed $classname */
         $classname = $request->getAttribute('_classname');
+        /** @var mixed $method */
         $method = $request->getAttribute('_method');
+        /** @var array $routeParams */
         $routeParams = $request->getAttribute('_params', []);
 
         if (!$classname || !$method) {
@@ -46,6 +49,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             $this->container->set($classname, $classname);
         }
 
+        /** @var object $controller */
         $controller = $this->container->get($classname);
 
         // We inject the ResponseFactory if the controller needs it (extends AbstractController)
@@ -76,6 +80,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         $args = $this->resolveArguments($controller, $method, $request, $routeParams);
 
         // 6. Execute
+        // @mago-ignore string-member-selector
         $result = $controller->$method(...$args);
 
         if ($result instanceof ResponseInterface) {

@@ -61,6 +61,7 @@ final class AbstractSystemTest extends TestCase
 
             // A minimal implementation of the abstract boot method is required to
             // instantiate the class, even if it's not used in all tests.
+
             #[\Override]
             public function boot(KernelInterface $kernel): \Waffle\Commons\Contracts\System\SystemInterface
             {

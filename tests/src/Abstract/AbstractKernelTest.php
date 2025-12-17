@@ -6,6 +6,8 @@ namespace WaffleTests\Abstract;
 
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations; // Fix: Add import
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -34,74 +36,89 @@ class StubStream implements StreamInterface
 {
     private string $content = '';
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->content;
     }
 
+    #[\Override]
     public function close(): void
     {
     }
 
+    #[\Override]
     public function detach()
     {
         return null;
     }
 
+    #[\Override]
     public function getSize(): null|int
     {
         return strlen($this->content);
     }
 
+    #[\Override]
     public function tell(): int
     {
         return 0;
     }
 
+    #[\Override]
     public function eof(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function isSeekable(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
     }
 
+    #[\Override]
     public function rewind(): void
     {
     }
 
+    #[\Override]
     public function isWritable(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function write(string $string): int
     {
         $this->content .= $string;
         return strlen($string);
     }
 
+    #[\Override]
     public function isReadable(): bool
     {
         return true;
     }
 
+    #[\Override]
     public function read(int $length): string
     {
         return $this->content;
     }
 
+    #[\Override]
     public function getContents(): string
     {
         return $this->content;
     }
 
+    #[\Override]
     public function getMetadata(null|string $key = null)
     {
         return null;
@@ -110,8 +127,10 @@ class StubStream implements StreamInterface
 
 class StubResponse implements ResponseInterface
 {
-    private $body;
-    private $statusCode;
+    private array $headers = [];
+    private string $reasonPhrase = '';
+    private int $statusCode;
+    private StreamInterface $body;
 
     public function __construct(int $code = 200)
     {
@@ -119,11 +138,13 @@ class StubResponse implements ResponseInterface
         $this->body = new StubStream();
     }
 
+    #[\Override]
     public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
+    #[\Override]
     public function withStatus($code, $reasonPhrase = ''): ResponseInterface
     {
         $new = clone $this;
@@ -131,61 +152,73 @@ class StubResponse implements ResponseInterface
         return $new;
     }
 
+    #[\Override]
     public function getReasonPhrase(): string
     {
         return '';
     }
 
+    #[\Override]
     public function getProtocolVersion(): string
     {
         return '1.1';
     }
 
+    #[\Override]
     public function withProtocolVersion($version): ResponseInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function getHeaders(): array
     {
         return [];
     }
 
+    #[\Override]
     public function hasHeader($name): bool
     {
         return false;
     }
 
+    #[\Override]
     public function getHeader($name): array
     {
         return [];
     }
 
+    #[\Override]
     public function getHeaderLine($name): string
     {
         return '';
     }
 
+    #[\Override]
     public function withHeader($name, $value): ResponseInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function withAddedHeader($name, $value): ResponseInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function withoutHeader($name): ResponseInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function getBody(): StreamInterface
     {
         return $this->body;
     }
 
+    #[\Override]
     public function withBody(StreamInterface $body): ResponseInterface
     {
         $new = clone $this;
@@ -203,16 +236,19 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
 {
     public array $services = [];
 
+    #[\Override]
     public function get(string $id): mixed
     {
         return $this->services[$id] ?? null;
     }
 
+    #[\Override]
     public function has(string $id): bool
     {
         return isset($this->services[$id]);
     }
 
+    #[\Override]
     public function set(string $id, mixed $concrete): void
     {
         // CRITICAL FIX: Prevent ContainerFactory from overwriting our pre-configured objects
@@ -244,26 +280,27 @@ class AbstractKernelTest extends TestCase
 {
     private null|WebKernel $kernel = null;
     private null|string $originalAppEnv = null;
-
     private StubContainer $innerContainer;
-    private mixed $routerMock;
-    private mixed $responseFactoryMock;
-    private mixed $securityMock;
-    private mixed $systemMock; // Fix: Declare property
-    private mixed $configMock;
+
+    private RouterInterface&MockObject $routerMock;
+    private ResponseFactoryInterface&MockObject $responseFactoryMock;
+    private \Waffle\Core\System&MockObject $systemMock;
+    private ConfigInterface&MockObject $configMock;
+    private SecurityInterface&MockObject $securityMock;
+    private UriInterface&MockObject $uriMock;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalAppEnv = $_ENV[Constant::APP_ENV] ?? null;
+        $this->originalAppEnv = (string) ($_ENV[Constant::APP_ENV] ?? 'dev');
 
         $this->innerContainer = new StubContainer();
-        $this->routerMock = $this->createStub(RouterInterface::class);
-        $this->responseFactoryMock = $this->createStub(ResponseFactoryInterface::class);
+        $this->routerMock = $this->createMock(RouterInterface::class);
+        $this->responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
         // $this->securityMock is already a stub from setUp
         // $this->configMock is already a stub from setUp
-        $this->systemMock = $this->createStub(\Waffle\Core\System::class); // Fix: Fully qualify
+        $this->systemMock = $this->createMock(\Waffle\Core\System::class); // Fix: Fully qualify
 
         $this->kernel = new WebKernel(
             configDir: $this->testConfigDir,
@@ -281,6 +318,7 @@ class AbstractKernelTest extends TestCase
                 private ResponseFactoryInterface $responseFactory,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,
@@ -291,7 +329,7 @@ class AbstractKernelTest extends TestCase
                     $response = $this->responseFactory->createResponse(404);
                     $response
                         ->getBody()
-                        ->write(json_encode([
+                        ->write((string) json_encode([
                             'message' => 'No route found for path: ' . $request->getUri()->getPath(),
                         ]));
                     return $response;
@@ -305,7 +343,7 @@ class AbstractKernelTest extends TestCase
                         $body['file'] = $e->getFile();
                         $body['line'] = $e->getLine();
                     }
-                    $response->getBody()->write(json_encode($body));
+                    $response->getBody()->write((string) json_encode($body));
                     return $response;
                 }
             }
@@ -317,6 +355,7 @@ class AbstractKernelTest extends TestCase
                 private RouterInterface $router,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,
@@ -324,15 +363,23 @@ class AbstractKernelTest extends TestCase
                 // Simulate routing: match request and add attributes
                 $match = $this->router->matchRequest($request);
 
+                if (!is_array($match)) {
+                    // No match found or invalid return
+                    return $handler->handle($request);
+                }
+
                 foreach ($match as $key => $value) {
                     // Mappings if not present
-                    if ($key === 'classname' && !isset($match['_classname'])) {
+                    if ($key === 'classname' && !array_key_exists('_classname', $match)) {
                         $request = $request->withAttribute('_classname', $value);
                     }
-                    if ($key === 'method' && !isset($match['_method'])) {
+                    if ($key === 'method' && !array_key_exists('_method', $match)) {
                         $request = $request->withAttribute('_method', $value);
                     }
-                    if ($key === 'params' && !isset($match['_params'])) {
+                    // Mago says isset(_params) is always false, but logic requires default?
+                    // Safe to suppress or simplify? Mago implies key 'params' excludes '_params'?
+                    // Let's keep it but ignore if needed, OR trust Mago if the array shape is known.
+                    if ($key === 'params' && !array_key_exists('_params', $match)) {
                         $request = $request->withAttribute('_params', $value);
                     }
 
@@ -362,6 +409,7 @@ class AbstractKernelTest extends TestCase
 
     public function testHandleWithMatchingRouteRendersResponse(): void
     {
+        assert($this->kernel !== null);
         $_ENV[Constant::APP_ENV] = 'dev';
         $this->createTestConfigFile(securityLevel: 2);
 
@@ -403,6 +451,7 @@ class AbstractKernelTest extends TestCase
 
     public function testHandleUsesResponseFactoryFromContainerIfAvailable(): void
     {
+        assert($this->kernel !== null);
         // Re-create mock with expectations
         $this->responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
         $this->responseFactoryMock
@@ -417,6 +466,7 @@ class AbstractKernelTest extends TestCase
                 private ResponseFactoryInterface $factory,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,
@@ -435,6 +485,7 @@ class AbstractKernelTest extends TestCase
 
     public function testHandleCatchesAndRendersThrowable(): void
     {
+        assert($this->kernel !== null);
         $_ENV[Constant::APP_ENV] = 'dev';
         $this->createTestConfigFile(securityLevel: 2);
 
@@ -487,7 +538,8 @@ class AbstractKernelTest extends TestCase
         $response = $this->kernel->handle($requestMock);
 
         static::assertSame(500, $response->getStatusCode());
-        $body = json_decode((string) $response->getBody(), true);
+        /** @var array $body */
+        $body = (array) json_decode((string) $response->getBody(), true);
         static::assertSame('Something went wrong', $body['message']);
     }
 
@@ -521,6 +573,7 @@ class AbstractKernelTest extends TestCase
 
     public function testBootLoadsEnvironmentVariables(): void
     {
+        assert($this->kernel !== null);
         $envContent = "APP_TEST=test_boot\nANOTHER_VAR=waffle_test";
         $envPath = APP_ROOT . '/.env';
         file_put_contents($envPath, $envContent);
@@ -534,6 +587,7 @@ class AbstractKernelTest extends TestCase
 
     public function testBootIgnoresCommentsAndInvalidLinesInEnv(): void
     {
+        assert($this->kernel !== null);
         $envContent = "# This is a comment\nVALID_VAR=value\nINVALID_LINE_WITHOUT_EQUALS\n  # Indented comment";
         $envPath = APP_ROOT . '/.env';
         file_put_contents($envPath, $envContent);
@@ -547,6 +601,7 @@ class AbstractKernelTest extends TestCase
 
     public function testBootDoesNotOverwriteExistingAppEnv(): void
     {
+        assert($this->kernel !== null);
         $_ENV[Constant::APP_ENV] = 'staging';
 
         // Create .env that tries to set APP_ENV to dev
@@ -892,6 +947,7 @@ class AbstractKernelTest extends TestCase
         file_put_contents($controllersDir . '/DummyController.php', $controllerClassContent);
 
         // Mock Config
+        /** @var ConfigInterface&MockObject $configMock */
         $configMock = $this->createMock(ConfigInterface::class);
         $configMock
             ->method('getString')
@@ -913,6 +969,7 @@ class AbstractKernelTest extends TestCase
             }
         };
 
+        /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
         $kernel->setSecurity($securityMock);
         $kernel->setConfiguration($configMock);
@@ -938,11 +995,14 @@ class AbstractKernelTest extends TestCase
     {
         $_ENV[Constant::APP_ENV] = 'prod';
 
+        /** @var ConfigInterface&MockObject $configMock */
         $configMock = $this->createMock(ConfigInterface::class);
+        /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
         // Mock analyze to do nothing
-        $securityMock->method('analyze')->willReturnCallback(function () {});
+        $securityMock->method('analyze')->willReturnCallback(static function () {});
 
+        /** @var UriInterface&MockObject $uriMock */
         $uriMock = $this->createMock(UriInterface::class);
         $uriMock->method('getPath')->willReturn('/trigger-error');
         $requestMock = new ServerRequest('GET', '/trigger-error');
@@ -970,6 +1030,7 @@ class AbstractKernelTest extends TestCase
 
         // Actually, let's use a simpler approach: Mock System to return a router with routes.
         // Mock RouterInterface
+        /** @var \Waffle\Commons\Contracts\Routing\RouterInterface&MockObject $routerMock */
         $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
         $routerMock
             ->method('matchRequest')
@@ -984,6 +1045,7 @@ class AbstractKernelTest extends TestCase
                 'params' => [],
             ]);
 
+        /** @var \Waffle\Core\System&MockObject $systemMock */
         $systemMock = $this->createMock(\Waffle\Core\System::class);
 
         // Update kernel to use this system
@@ -1046,6 +1108,7 @@ class AbstractKernelTest extends TestCase
                 private $factory,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,
@@ -1068,6 +1131,7 @@ class AbstractKernelTest extends TestCase
                 private $router,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,
@@ -1102,6 +1166,7 @@ class AbstractKernelTest extends TestCase
         $_ENV[Constant::APP_ENV] = 'dev';
         $this->createTestConfigFile(securityLevel: 2);
 
+        /** @var UriInterface&MockObject $uriMock */
         $uriMock = $this->createMock(UriInterface::class);
         $uriMock->method('getPath')->willReturn('/args/123/test-slug');
         $requestMock = new ServerRequest('GET', '/args/123/test-slug');
@@ -1123,6 +1188,7 @@ class AbstractKernelTest extends TestCase
         $this->innerContainer->services[ArgumentController::class] = $controller;
 
         // Mock RouterInterface
+        /** @var \Waffle\Commons\Contracts\Routing\RouterInterface&MockObject $routerMock */
         $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
         $routerMock
             ->method('matchRequest')
@@ -1135,6 +1201,7 @@ class AbstractKernelTest extends TestCase
                 'params' => ['id' => '123', 'slug' => 'test-slug'],
             ]);
 
+        /** @var \Waffle\Core\System&MockObject $systemMock */
         $systemMock = $this->createMock(\Waffle\Core\System::class);
 
         // Use anonymous kernel to control system injection
@@ -1160,7 +1227,9 @@ class AbstractKernelTest extends TestCase
             }
         };
 
+        /** @var ConfigInterface&MockObject $configMock */
         $configMock = $this->createMock(ConfigInterface::class);
+        /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
 
         $kernel->setConfiguration($configMock);
@@ -1174,6 +1243,7 @@ class AbstractKernelTest extends TestCase
                 private $router,
             ) {}
 
+            #[\Override]
             public function process(
                 ServerRequestInterface $request,
                 \Psr\Http\Server\RequestHandlerInterface $handler,

@@ -4,7 +4,7 @@ php-version = "8.4.5"
 
 [source]
 paths = ["src/", "tests/"]
-includes = ["vendor"]
+includes = ["vendor", "vendor/waffle-commons/contracts/src", "vendor/waffle-commons/utils/src"]
 excludes = []
 
 [formatter]

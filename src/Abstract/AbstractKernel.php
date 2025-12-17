@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -15,14 +14,12 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
-use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
-use Waffle\Exception\RouteNotFoundException;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Handler\ControllerDispatcher;
 
@@ -96,6 +93,7 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->boot()->configure();
@@ -122,6 +120,7 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+
     #[\Override]
     public function boot(): self
     {
@@ -166,6 +165,7 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+
     #[\Override]
     public function configure(): self
     {

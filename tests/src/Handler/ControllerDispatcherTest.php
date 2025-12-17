@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace WaffleTests\Handler;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
@@ -18,14 +20,15 @@ use WaffleTests\Abstract\StubResponse;
 #[AllowMockObjectsWithoutExpectations]
 class ControllerDispatcherTest extends TestCase
 {
-    private $container;
-    private $request;
-    private $dispatcher;
+    private ContainerInterface&MockObject $container;
+    private ServerRequestInterface&MockObject $request;
+    private ControllerDispatcher $dispatcher;
 
+    #[\Override]
     protected function setUp(): void
     {
-        $this->container = $this->createStub(ContainerInterface::class);
-        $this->request = $this->createStub(ServerRequestInterface::class);
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->request = $this->createMock(ServerRequestInterface::class);
         $this->dispatcher = new ControllerDispatcher($this->container);
     }
 
@@ -70,6 +73,7 @@ class ControllerDispatcherTest extends TestCase
                 ['_params', [], []], // Fix: Provide params default
             ]);
 
+        /** @var ContainerInterface&MockObject $container */
         $this->container = $this->createMock(ContainerInterface::class); // Keep as mock for checks
         $this->container
             ->expects($this->once())
@@ -146,7 +150,7 @@ class ControllerDispatcherTest extends TestCase
             ->willReturn($controller);
 
         $response = $this->dispatcher->handle($this->request);
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        static::assertInstanceOf(ResponseInterface::class, $response);
     }
 
     public function testResolveArgumentsAutoCastsBuiltins(): void
@@ -173,10 +177,10 @@ class ControllerDispatcherTest extends TestCase
 
         $this->dispatcher->handle($this->request);
 
-        $this->assertSame(123, $controller->args[0]);
-        $this->assertTrue($controller->args[1]);
-        $this->assertSame(10.5, $controller->args[2]);
-        $this->assertSame('foo', $controller->args[3]);
+        static::assertSame(123, $controller->args[0]);
+        static::assertTrue($controller->args[1]);
+        static::assertSame(10.5, $controller->args[2]);
+        static::assertSame('foo', $controller->args[3]);
     }
 
     public function testResolveArgumentsHandlesNullable(): void
@@ -203,7 +207,7 @@ class ControllerDispatcherTest extends TestCase
 
         $this->dispatcher->handle($this->request);
 
-        $this->assertNull($controller->calledWith);
+        static::assertNull($controller->calledWith);
     }
 
     public function testResolveArgumentsMaintainsDefaultValues(): void
@@ -229,13 +233,13 @@ class ControllerDispatcherTest extends TestCase
         $this->container->method('get')->willReturn($controller);
         $this->dispatcher->handle($this->request);
 
-        $this->assertSame('default', $controller->val);
+        static::assertSame('default', $controller->val);
     }
 
     public function testResolveArgumentsThrowsExceptionForUnresolvable(): void
     {
         $controller = new class {
-            public function action(\stdClass $required)
+            public function action(\stdClass $_required)
             {
                 return new StubResponse(200);
             }
@@ -324,9 +328,12 @@ class ControllerDispatcherTest extends TestCase
             ]);
 
         // Setup factory
+        /** @var ResponseFactoryInterface&MockObject $factory */
         $factory = $this->createMock(ResponseFactoryInterface::class); // Expectations used
+        /** @var ResponseInterface&MockObject $response */
         $response = $this->createMock(ResponseInterface::class); // Expectations used
-        $stream = $this->createMock(\Psr\Http\Message\StreamInterface::class); // Expectations used
+        /** @var StreamInterface&MockObject $stream */
+        $stream = $this->createMock(StreamInterface::class); // Expectations used
 
         $response->method('getBody')->willReturn($stream);
         $response
@@ -339,6 +346,7 @@ class ControllerDispatcherTest extends TestCase
         // Setup stream write expectation
         $stream->expects($this->once())->method('write')->with('{"foo":"bar"}');
 
+        /** @var ContainerInterface&MockObject $c */
         $c = $this->createMock(ContainerInterface::class);
         $c->method('has')->willReturnMap([
             ['C',                             true],
@@ -381,15 +389,19 @@ class ControllerDispatcherTest extends TestCase
                 ['_params', [], []],
             ]);
 
+        /** @var ResponseFactoryInterface&MockObject $factory */
         $factory = $this->createMock(ResponseFactoryInterface::class);
+        /** @var ResponseInterface&MockObject $response */
         $response = $this->createMock(ResponseInterface::class);
-        $stream = $this->createMock(\Psr\Http\Message\StreamInterface::class);
+        /** @var StreamInterface&MockObject $stream */
+        $stream = $this->createMock(StreamInterface::class);
 
         $response->method('getBody')->willReturn($stream);
         $factory->method('createResponse')->with(200)->willReturn($response);
 
         $stream->expects($this->once())->method('write')->with('Stringable Content');
 
+        /** @var ContainerInterface&MockObject $c */
         $c = $this->createMock(ContainerInterface::class);
         $c->method('has')->willReturnMap([
             ['C',                             true],
