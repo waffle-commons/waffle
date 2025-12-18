@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9ce87f3b53ffac87933f86a0ad21bf2",
+    "content-hash": "141dc977bb54749a5cff0b72f482a230",
     "packages": [
         {
             "name": "psr/cache",
@@ -392,7 +392,7 @@
             "dist": {
                 "type": "path",
                 "url": "../contracts",
-                "reference": "d4dfcfa5bd7a7850946ea05453147c7176dcb6e0"
+                "reference": "84b780ebc7bc04e0711036b3ced6ca64baf5749c"
             },
             "require": {
                 "php": "^8.5",
@@ -405,7 +405,7 @@
                 "psr/log": "^3.0"
             },
             "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
+                "carthage-software/mago": "^1.0.0-rc",
                 "php-mock/php-mock-phpunit": "^2.13",
                 "phpunit/phpunit": "^12.0",
                 "vimeo/psalm": "^6.13"
@@ -478,14 +478,14 @@
             "dist": {
                 "type": "path",
                 "url": "../utils",
-                "reference": "579460b5b0b410cb2536806b26b3bcc167cdf18a"
+                "reference": "02f57dd3f632c96a3b843f6fd73f06a470c9273e"
             },
             "require": {
                 "php": "^8.5",
                 "waffle-commons/contracts": "1.0.0-dev"
             },
             "require-dev": {
-                "carthage-software/mago": "^1.0.0-beta.31",
+                "carthage-software/mago": "^1.0.0-rc",
                 "php-mock/php-mock-phpunit": "^2.13",
                 "phpunit/phpunit": "^12.0",
                 "vimeo/psalm": "^6.13"
@@ -2375,85 +2375,6 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/master"
             },
             "time": "2025-12-06T20:24:35+00:00"
-        },
-        {
-            "name": "nyholm/psr7",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Nyholm/psr7.git",
-                "reference": "889d890ba25e4264ad92ce56b18ef8218611ca51"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Nyholm/psr7/zipball/889d890ba25e4264ad92ce56b18ef8218611ca51",
-                "reference": "889d890ba25e4264ad92ce56b18ef8218611ca51",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2",
-                "psr/http-factory": "^1.0",
-                "psr/http-message": "^1.1 || ^2.0"
-            },
-            "provide": {
-                "php-http/message-factory-implementation": "1.0",
-                "psr/http-factory-implementation": "1.0",
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "http-interop/http-factory-tests": "^0.9",
-                "php-http/message-factory": "^1.0",
-                "php-http/psr7-integration-tests": "^1.0",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
-                "symfony/error-handler": "^4.4"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nyholm\\Psr7\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tobias Nyholm",
-                    "email": "tobias.nyholm@gmail.com"
-                },
-                {
-                    "name": "Martijn van der Ven",
-                    "email": "martijn@vanderven.se"
-                }
-            ],
-            "description": "A fast PHP7 implementation of PSR-7",
-            "homepage": "https://tnyholm.se",
-            "keywords": [
-                "psr-17",
-                "psr-7"
-            ],
-            "support": {
-                "issues": "https://github.com/Nyholm/psr7/issues",
-                "source": "https://github.com/Nyholm/psr7/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Zegnat",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nyholm",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-11-28T13:47:41+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -5797,7 +5718,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nyholm/psr7": 20,
         "psr/http-server-middleware": 20,
         "waffle-commons/contracts": 20,
         "waffle-commons/utils": 20

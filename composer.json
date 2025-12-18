@@ -35,10 +35,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
-        "carthage-software/mago": "^1.0.0-beta.31",
+        "carthage-software/mago": "^1.0.0-rc",
         "vimeo/psalm": "^6.13",
-        "php-mock/php-mock-phpunit": "^2.13",
-        "nyholm/psr7": "^1.8@dev"
+        "php-mock/php-mock-phpunit": "^2.13"
     },
     "repositories": [
         {

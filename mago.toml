@@ -1,6 +1,6 @@
 # Welcome to Mago!
 # For full documentation, see https://mago.carthage.software/tools/overview
-php-version = "8.4.5"
+php-version = "8.5.0"
 
 [source]
 paths = ["src/", "tests/"]
@@ -11,19 +11,33 @@ excludes = []
 print-width = 120
 tab-width = 4
 use-tabs = false
+single-quote = true
+trailing-comma = true
+end-of-line = "lf"
 
 [linter]
 integrations = ["phpunit"]
 
 [linter.rules]
-ambiguous-function-call = { enabled = false }
-literal-named-argument = { enabled = false }
-halstead = { effort-threshold = 7000 }
+no-insecure-comparison = { level = "error" }
+no-literal-password = { level = "error" }
+no-debug-symbols = { level = "error" }
+disallowed-functions = { level = "error", functions = ["eval", "exec", "system", "shell_exec", "passthru", "phpinfo"] }
+
+prefer-interface = { level = "error" }
+strict-types = { level = "error" }
+property-type = { level = "error" }
+return-type = { level = "error" }
+
+cyclomatic-complexity = { level = "warning", threshold = 10 }
+
+prefer-arrow-function = { level = "note" }
+no-redundant-nullsafe = { level = "note" }
 
 [analyzer]
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true
-check-throws = false
-allow-possibly-undefined-array-keys = true
-perform-heuristic-checks = true
+check-throws = true
+strict-list-index-checks = true
+allow-possibly-undefined-array-keys = false
