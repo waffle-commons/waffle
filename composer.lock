@@ -2126,12 +2126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri-interfaces.git",
-                "reference": "191d9b0ebb1512567b8ecdbc6b4b7d10397ec923"
+                "reference": "c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/191d9b0ebb1512567b8ecdbc6b4b7d10397ec923",
-                "reference": "191d9b0ebb1512567b8ecdbc6b4b7d10397ec923",
+                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf",
+                "reference": "c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf",
                 "shasum": ""
             },
             "require": {
@@ -2203,7 +2203,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-12T13:49:22+00:00"
+            "time": "2025-12-17T19:36:45+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3398,12 +3398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "19d1a14f1259fe9dc7d7850e36735cafac73b449"
+                "reference": "55ad6570443c26faf564ba007d3c683172f7ccd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/19d1a14f1259fe9dc7d7850e36735cafac73b449",
-                "reference": "19d1a14f1259fe9dc7d7850e36735cafac73b449",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/55ad6570443c26faf564ba007d3c683172f7ccd2",
+                "reference": "55ad6570443c26faf564ba007d3c683172f7ccd2",
                 "shasum": ""
             },
             "require": {
@@ -3495,7 +3495,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-16T15:00:58+00:00"
+            "time": "2025-12-17T15:08:21+00:00"
         },
         {
             "name": "psr/http-factory",

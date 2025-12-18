@@ -124,38 +124,9 @@ abstract class AbstractKernel implements KernelInterface
     #[\Override]
     public function boot(): self
     {
-        /** @var string $root */
-        $root = APP_ROOT;
-
-        $envFiles = [
-            $root . '/.env',
-            $root . '/.env.local',
-        ];
-
-        foreach ($envFiles as $file) {
-            if (!file_exists($file)) {
-                continue;
-            }
-            $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            if ($lines) {
-                foreach ($lines as $line) {
-                    if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
-                        continue;
-                    }
-                    [$key, $value] = explode('=', $line, 2);
-                    // Only set if not already set (OS env vars take precedence)
-                    if (getenv($key) === false && !isset($_ENV[$key])) {
-                        putenv($line);
-                        $_ENV[$key] = $value;
-                        $_SERVER[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        $appEnv = $_ENV['APP_ENV'] ?? 'prod';
-        if (!isset($_ENV[Constant::APP_ENV])) {
-            $_ENV[Constant::APP_ENV] = $appEnv;
+        $appEnv = Constant::ENV_PROD;
+        if (getenv(Constant::APP_ENV) === false) {
+            putenv($appEnv);
         }
         $this->environment = $appEnv;
 
