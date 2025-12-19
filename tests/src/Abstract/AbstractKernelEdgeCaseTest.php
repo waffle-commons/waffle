@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WaffleTests\Abstract;
 
 use AllowDynamicProperties;
-use Nyholm\Psr7\ServerRequest;
+// use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,6 +23,7 @@ use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Router\Router;
+use WaffleTests\Abstract\Helper\StubServerRequest;
 use WaffleTests\Abstract\Helper\WebKernel;
 
 /**
@@ -123,7 +124,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
         );
 
         $this->injectContainer($kernel, $containerMock);
-        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
         $this->setBootedState($kernel, true);
 
         // Inject Fake Stack with minimalistic routing
@@ -355,7 +356,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
         );
 
         $this->injectContainer($kernel, $containerMock);
-        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
         $this->setBootedState($kernel, true);
 
         // Inject Fake Stack
@@ -436,9 +437,9 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->testContainer = $containerMock;
 
         // Inject Config to pass configure() check
-        $configMock = $this->createMock(\Waffle\Commons\Contracts\Config\ConfigInterface::class);
-        $kernel->setConfiguration($configMock);
-        $kernel->setSecurity($this->createMock(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $configStub = $this->createStub(\Waffle\Commons\Contracts\Config\ConfigInterface::class);
+        $kernel->setConfiguration($configStub);
+        $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
 
         $this->setBootedState($kernel, true);
 
@@ -458,10 +459,10 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
     private function createMockRequest(): ServerRequestInterface
     {
-        $uri = $this->createMock(UriInterface::class);
+        $uri = $this->createStub(UriInterface::class);
         $uri->method('getPath')->willReturn('/test');
 
-        return new ServerRequest('GET', '/test');
+        return new StubServerRequest('GET', '/test');
     }
 
     private function createManualRouterStub(string $controllerName): object

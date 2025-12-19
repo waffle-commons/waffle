@@ -10,9 +10,12 @@ use Psr\Log\NullLogger;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Kernel;
+use WaffleTests\Abstract\Helper\FakeMiddlewareStack;
+use WaffleTests\Abstract\Helper\FakeRoutingMiddleware;
 
 /**
  * This is a test double for the concrete Kernel.
@@ -98,6 +101,19 @@ class WebKernel extends Kernel
         }
 
         parent::configure();
+
+        // Auto-configure middleware stack if not already set, using Fakes
+        if ($this->middlewareStack === null && $this->container !== null && $this->container->has(RouterInterface::class)) {
+            try {
+                $router = $this->container->get(RouterInterface::class);
+                $stack = new FakeMiddlewareStack();
+                $stack->add(new FakeRoutingMiddleware($router));
+                $this->middlewareStack = $stack;
+            } catch (\Throwable $e) {
+                // Ignore
+            }
+        }
+
         return $this;
     }
 }

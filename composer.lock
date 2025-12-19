@@ -2027,12 +2027,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri.git",
-                "reference": "9a2eaf6d630b606745f62dd42f562afef2952da1"
+                "reference": "d3f626ab4092240f53a461dd52b6b6fbba43a74b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/9a2eaf6d630b606745f62dd42f562afef2952da1",
-                "reference": "9a2eaf6d630b606745f62dd42f562afef2952da1",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/d3f626ab4092240f53a461dd52b6b6fbba43a74b",
+                "reference": "d3f626ab4092240f53a461dd52b6b6fbba43a74b",
                 "shasum": ""
             },
             "require": {
@@ -2118,7 +2118,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-12T13:49:22+00:00"
+            "time": "2025-12-19T10:10:17+00:00"
         },
         {
             "name": "league/uri-interfaces",
@@ -2126,12 +2126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri-interfaces.git",
-                "reference": "c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf"
+                "reference": "f17b187715b7a5b4e043614f40cc71fc6c8b7d42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf",
-                "reference": "c51db05c6ff47f66ab01fa7cb588ef044ab6bbcf",
+                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/f17b187715b7a5b4e043614f40cc71fc6c8b7d42",
+                "reference": "f17b187715b7a5b4e043614f40cc71fc6c8b7d42",
                 "shasum": ""
             },
             "require": {
@@ -2203,7 +2203,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-17T19:36:45+00:00"
+            "time": "2025-12-19T10:10:47+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5403,12 +5403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "ba65a969ac918ce0cc3edfac6cdde847eba231dc"
+                "reference": "8947e1ced7a8020011e91356e40778b1ff613faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/ba65a969ac918ce0cc3edfac6cdde847eba231dc",
-                "reference": "ba65a969ac918ce0cc3edfac6cdde847eba231dc",
+                "url": "https://api.github.com/repos/symfony/string/zipball/8947e1ced7a8020011e91356e40778b1ff613faa",
+                "reference": "8947e1ced7a8020011e91356e40778b1ff613faa",
                 "shasum": ""
             },
             "require": {
@@ -5465,7 +5465,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/8.0"
+                "source": "https://github.com/symfony/string/tree/8.1"
             },
             "funding": [
                 {
@@ -5485,7 +5485,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-01T09:13:36+00:00"
+            "time": "2025-12-19T08:33:17+00:00"
         },
         {
             "name": "theseer/tokenizer",

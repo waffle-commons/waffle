@@ -21,14 +21,14 @@ use WaffleTests\Abstract\StubResponse;
 class ControllerDispatcherTest extends TestCase
 {
     private ContainerInterface&MockObject $container;
-    private ServerRequestInterface&MockObject $request;
+    private ServerRequestInterface $request;
     private ControllerDispatcher $dispatcher;
 
     #[\Override]
     protected function setUp(): void
     {
         $this->container = $this->createMock(ContainerInterface::class);
-        $this->request = $this->createMock(ServerRequestInterface::class);
+        $this->request = $this->createStub(ServerRequestInterface::class);
         $this->dispatcher = new ControllerDispatcher($this->container);
     }
 
