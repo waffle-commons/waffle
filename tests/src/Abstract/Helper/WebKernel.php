@@ -9,9 +9,13 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Kernel;
+use WaffleTests\Abstract\Helper\FakeMiddlewareStack;
+use WaffleTests\Abstract\Helper\FakeRoutingMiddleware;
 
 /**
  * This is a test double for the concrete Kernel.
@@ -52,21 +56,25 @@ class WebKernel extends Kernel
                 private string $env,
             ) {}
 
+            #[\Override]
             public function getInt(string $key, null|int $default = null): null|int
             {
                 return 10;
             }
 
+            #[\Override]
             public function getString(string $key, null|string $default = null): null|string
             {
                 return null;
             }
 
+            #[\Override]
             public function getArray(string $key, null|array $default = null): null|array
             {
                 return [];
             }
 
+            #[\Override]
             public function getBool(string $key, bool $default = false): bool
             {
                 return false;
@@ -81,6 +89,7 @@ class WebKernel extends Kernel
             if ($this->security === null) {
                 // Fallback mock if not set
                 $this->security = new class implements SecurityInterface {
+                    #[\Override]
                     public function analyze(object $object, array $expectations = []): void
                     {
                     }
@@ -91,6 +100,24 @@ class WebKernel extends Kernel
             return $this;
         }
 
-        return parent::configure();
+        parent::configure();
+
+        // Auto-configure middleware stack if not already set, using Fakes
+        if (
+            $this->middlewareStack === null
+            && $this->container !== null
+            && $this->container->has(RouterInterface::class)
+        ) {
+            try {
+                $router = $this->container->get(RouterInterface::class);
+                $stack = new FakeMiddlewareStack();
+                $stack->add(new FakeRoutingMiddleware($router));
+                $this->middlewareStack = $stack;
+            } catch (\Throwable $e) {
+                // Ignore
+            }
+        }
+
+        return $this;
     }
 }

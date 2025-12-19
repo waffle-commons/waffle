@@ -5,27 +5,23 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use ReflectionMethod;
-use Throwable;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
-use Waffle\Commons\Contracts\Routing\RouterInterface;
+use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
-use Waffle\Core\View;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
-use Waffle\Exception\RouteNotFoundException;
 use Waffle\Factory\ContainerFactory;
+use Waffle\Handler\ControllerDispatcher;
 
 abstract class AbstractKernel implements KernelInterface
 {
@@ -51,12 +47,15 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->container = $value;
     }
 
-    protected null|RouterInterface $router = null;
-
     protected null|SecurityInterface $security = null;
 
     // Holds the raw PSR-11 implementation injected by Runtime
     private null|PsrContainerInterface $innerContainer = null;
+
+    protected(set) null|MiddlewareStackInterface $middlewareStack = null {
+        get => $this->middlewareStack;
+        set => $this->middlewareStack = $value;
+    }
 
     /**
      * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
@@ -79,9 +78,9 @@ abstract class AbstractKernel implements KernelInterface
         $this->security = $security;
     }
 
-    public function setRouter(RouterInterface $router): void
+    public function setMiddlewareStack(MiddlewareStackInterface $stack): void
     {
-        $this->router = $router;
+        $this->middlewareStack = $stack;
     }
 
     /**
@@ -94,130 +93,40 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        try {
-            $this->boot()->configure();
+        $this->boot()->configure();
 
-            if ($this->container === null) {
-                throw new ContainerException('Container not initialized.');
-            }
-
-            if ($this->system === null) {
-                throw new NotFoundException('System not initialized.');
-            }
-
-            // --- Routing Logic (Bridge) ---
-            if ($this->router === null) {
-                throw new ContainerException('Router not initialized. Please inject RouterInterface.');
-            }
-
-            $matchedRoute = $this->router->matchRequest($request);
-
-            if ($matchedRoute === null) {
-                throw new RouteNotFoundException('No route found for path: ' . $request->getUri()->getPath());
-            }
-
-            // --- Dispatching Logic ---
-            $controllerClass = $matchedRoute[Constant::CLASSNAME];
-            $method = $matchedRoute[Constant::METHOD];
-
-            if (!$this->container->has($controllerClass)) {
-                $this->container->set($controllerClass, $controllerClass);
-            }
-
-            /** @var object $controller */
-            $controller = $this->container->get($controllerClass);
-
-            $refMethod = new ReflectionMethod($controller, $method);
-            $args = [];
-
-            foreach ($refMethod->getParameters() as $param) {
-                $type = $param->getType();
-                if ($type && !$type->isBuiltin() && $this->container->has($type->getName())) {
-                    $args[] = $this->container->get($type->getName());
-                } elseif (isset($matchedRoute['params'][$param->getName()])) {
-                    $val = $matchedRoute['params'][$param->getName()];
-                    if ($type && $type->getName() === 'int') {
-                        $val = (int) $val;
-                    }
-                    $args[] = $val;
-                }
-            }
-
-            /** @var View $view */
-            $view = $refMethod->invokeArgs($controller, $args);
-
-            // --- Response Creation ---
-            $json = json_encode($view->data, JSON_THROW_ON_ERROR);
-
-            $response = $this->createResponse(200);
-            $response->getBody()->write($json);
-            $response->getBody()->rewind();
-
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (Throwable $e) {
-            return $this->handleException($e);
-        }
-    }
-
-    private function createResponse(int $code = 200): ResponseInterface
-    {
-        if ($this->container && $this->container->has(ResponseFactoryInterface::class)) {
-            /** @var ResponseFactoryInterface $factory */
-            $factory = $this->container->get(ResponseFactoryInterface::class);
-            return $factory->createResponse($code);
+        if ($this->middlewareStack === null) {
+            throw new \RuntimeException(
+                'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?',
+            );
         }
 
-        $waffleResponseClass = 'Waffle\\Commons\\Http\\Response';
-        if (class_exists($waffleResponseClass)) {
-            /** @var ResponseInterface */
-            return new $waffleResponseClass($code);
+        if ($this->container === null) {
+            throw new ContainerException('Container not initialized.');
         }
 
-        throw new \RuntimeException(
-            'No Response implementation found. Please install waffle-commons/http or a PSR-17 factory.',
-        );
+        if ($this->system === null) {
+            throw new NotFoundException('System not initialized.');
+        }
+
+        $fallbackHandler = new ControllerDispatcher($this->container);
+
+        return $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
     }
 
     /**
      * {@inheritdoc}
      */
+
     #[\Override]
     public function boot(): self
     {
-        /** @var string $root */
-        $root = APP_ROOT;
-
-        $envFiles = [
-            $root . '/.env',
-            $root . '/.env.local',
-        ];
-
-        foreach ($envFiles as $file) {
-            if (!file_exists($file)) {
-                continue;
-            }
-            $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            if ($lines) {
-                foreach ($lines as $line) {
-                    if (!str_contains($line, '=') || str_starts_with(trim($line), '#')) {
-                        continue;
-                    }
-                    [$key, $value] = explode('=', $line, 2);
-                    // Only set if not already set (OS env vars take precedence)
-                    if (getenv($key) === false && !isset($_ENV[$key])) {
-                        putenv($line);
-                        $_ENV[$key] = $value;
-                        $_SERVER[$key] = $value;
-                    }
-                }
-            }
-        }
-
-        $appEnv = $_ENV['APP_ENV'] ?? 'prod';
-        if (!isset($_ENV[Constant::APP_ENV])) {
-            $_ENV[Constant::APP_ENV] = $appEnv;
+        $appEnv = Constant::ENV_PROD;
+        if (getenv(Constant::APP_ENV) === false) {
+            putenv($appEnv);
         }
         $this->environment = $appEnv;
 
@@ -227,6 +136,7 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+
     #[\Override]
     public function configure(): self
     {
@@ -293,38 +203,5 @@ abstract class AbstractKernel implements KernelInterface
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         return $this;
-    }
-
-    private function handleException(Throwable $e): ResponseInterface
-    {
-        $this->logger->error($e->getMessage(), ['exception' => $e]);
-
-        $data = [
-            'error' => true,
-            'message' => $e->getMessage(),
-        ];
-
-        if ($this->environment === Constant::ENV_DEV) {
-            $data['trace'] = $e->getTraceAsString();
-            $data['file'] = $e->getFile();
-            $data['line'] = $e->getLine();
-        }
-
-        $code = $e instanceof RouteNotFoundException ? 404 : 500;
-
-        try {
-            $json = json_encode($data, JSON_THROW_ON_ERROR);
-            $response = $this->createResponse($code);
-            $response->getBody()->write($json);
-            $response->getBody()->rewind();
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (Throwable $critical) {
-            $response = $this->createResponse(500);
-            $response->getBody()->write(json_encode([
-                'error' => 'Critical System Error',
-                'details' => 'Exception handling failed.',
-            ], JSON_THROW_ON_ERROR));
-            return $response->withHeader('Content-Type', 'application/json');
-        }
     }
 }

@@ -1,63 +1,15 @@
 variant = "loose"
 
 [[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `Waffle\Abstract\AbstractKernel::handle`.'
+file = "src/Abstract/AbstractController.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `InvalidArgumentException` in `Waffle\Abstract\AbstractController::jsonResponse`.'
 count = 1
 
 [[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Commons\Contracts\Container\ContainerInterface::get`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `Waffle\Commons\Contracts\Container\ContainerInterface::has`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-method"
-message = "Method `getname` does not exist on type `ReflectionIntersectionType`."
-count = 3
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-method"
-message = "Method `getname` does not exist on type `ReflectionUnionType`."
-count = 3
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-method"
-message = "Method `isbuiltin` does not exist on type `ReflectionIntersectionType`."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "non-existent-method"
-message = "Method `isbuiltin` does not exist on type `ReflectionUnionType`."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "possibly-null-array-access"
-message = "Cannot perform array access on possibly `null` value."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "possibly-undefined-string-array-index"
-message = "Possibly undefined array key 'params' accessed on `array{'arguments': array<string, mixed>, 'classname': class-string, 'method': string, 'name': truthy-string, 'params'?: array<string, mixed>, 'path': string}`."
+file = "src/Abstract/AbstractController.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Abstract\AbstractController::jsonResponse`.'
 count = 1
 
 [[issues]]
@@ -68,8 +20,38 @@ count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "unknown-class-instantiation"
-message = "Cannot determine the concrete class for instantiation."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Abstract\AbstractKernel::handle`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface` in `Waffle\Abstract\AbstractKernel::configure`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\Container\ContainerException` in `Waffle\Abstract\AbstractKernel::configure`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\Container\ContainerException` in `Waffle\Abstract\AbstractKernel::handle`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\Container\NotFoundException` in `Waffle\Abstract\AbstractKernel::handle`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\InvalidConfigurationException` in `Waffle\Abstract\AbstractKernel::configure`.'
 count = 1
 
 [[issues]]
@@ -79,213 +61,267 @@ message = 'Cannot read from write-only property `Waffle\Abstract\AbstractSystem:
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "deprecated-method"
-message = "Call to deprecated method: `ReflectionProperty::setaccessible`."
+file = "src/Factory/ContainerFactory.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\Container\ContainerException` in `Waffle\Factory\ContainerFactory::registerServices`.'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "invalid-type-cast"
+message = "Casting `mixed` to `float`."
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `is_subclass_of`: expected `class-string|object`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 5
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "non-existent-method"
+message = "Method `getname` does not exist on type `ReflectionIntersectionType`."
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "non-existent-method"
+message = "Method `getname` does not exist on type `ReflectionUnionType`."
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "non-existent-property"
+message = 'Property `$data` does not exist on interface `Waffle\Commons\Contracts\View\ViewInterface`.'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "possibly-false-argument"
+message = 'Argument #1 of method `Psr\Http\Message\StreamInterface::write` is possibly `false`, but parameter type `string` does not accept it.'
 count = 2
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::setUp`.'
+file = "src/Handler/ControllerDispatcher.php"
+code = "possibly-invalid-argument"
+message = "Possible argument type mismatch for argument #1 of `get_class`: expected `object`, but possibly received `object|string`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::tearDown`.'
+file = "src/Handler/ControllerDispatcher.php"
+code = "string-member-selector"
+message = "This member selector uses a non-literal string type (`string`); its specific value cannot be statically determined."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubCommonsContainer::get`.'
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `InvalidArgumentException` in `Waffle\Handler\ControllerDispatcher::handle`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubCommonsContainer::has`.'
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\ContainerExceptionInterface` in `Waffle\Handler\ControllerDispatcher::handle`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getBody`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\ContainerExceptionInterface` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeaderLine`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\NotFoundExceptionInterface` in `Waffle\Handler\ControllerDispatcher::handle`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeader`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\NotFoundExceptionInterface` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getHeaders`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getProtocolVersion`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Handler\ControllerDispatcher::handle`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getReasonPhrase`."
+file = "src/Handler/ControllerDispatcher.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::getStatusCode`."
+file = "src/Trait/RenderingTrait.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `Waffle\Trait\RenderingTrait::rendering`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::hasHeader`."
+file = "tests/src/Abstract/AbstractControllerTest.php"
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `JsonException` in `class@anonymous:2142540051330759669-514:691::testJson`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withAddedHeader`."
+file = "tests/src/Abstract/AbstractControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractControllerTest::testJsonResponseCreatesValidResponse`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withBody`."
+file = "tests/src/Abstract/AbstractControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractControllerTest::testJsonResponseCreatesValidResponse`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withHeader`."
+file = "tests/src/Abstract/AbstractControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractControllerTest::testJsonResponseCreatesValidResponse`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withProtocolVersion`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "invalid-property-read"
+message = 'Cannot read protected property `$system` from class `Waffle\Abstract\AbstractKernel`.'
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `phpunit\framework\assert::assertnotnull` has type `never`, meaning it cannot produce a value.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withStatus`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "no-value"
+message = 'Argument #1 passed to method `phpunit\framework\assert::assertnull` has type `never`, meaning it cannot produce a value.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-4005:7742::withoutHeader`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "redundant-type-comparison"
+message = "Redundant type assertion: `$kernel->system` of type `never` is always not `null`."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureSuccessWithValidDeps`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::__toString`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerInvalid`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::close`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::detach`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfSecurityMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::eof`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testPropertyHooks`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getContents`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureSuccessWithValidDeps`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getMetadata`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testPropertyHooks`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::getSize`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureSuccessWithValidDeps`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isReadable`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerInvalid`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isSeekable`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::isWritable`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfSecurityMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::read`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testPropertyHooks`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::rewind`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureSuccessWithValidDeps`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::seek`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerInvalid`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::tell`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfInnerContainerMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-5591:7579::write`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testConfigureThrowsExceptionIfSecurityMissing`.'
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:10447039815579447816-9921:10415::boot`."
+file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testPropertyHooks`.'
 count = 1
 
 [[issues]]
@@ -296,8 +332,14 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "mixed-property-type-coercion"
+message = 'A value with a less specific type `truthy-mixed` is being assigned to property `$$container` (Waffle\Commons\Contracts\Container\ContainerInterface|null).'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "non-existent-property"
-message = "Property `$environment` does not exist on class `class@anonymous:10447039815579447816-9921:10415`."
+message = "Property `$environment` does not exist on class `class@anonymous:10447039815579447816-12885:13784`."
 count = 1
 
 [[issues]]
@@ -308,249 +350,165 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "unused-parameter"
-message = "Parameter `$code` is never used."
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$containerMock`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "unused-parameter"
-message = "Parameter `$configDir` is never used."
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$responseFactoryMock`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "unused-parameter"
-message = "Parameter `$id` is never used."
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$responseMock`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "unused-parameter"
-message = "Parameter `$request` is never used."
-count = 2
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$streamMock`."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "unused-parameter"
-message = "Parameter `$service` is never used."
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `Exception` in `class@anonymous:10447039815579447816-12279:12485::match`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::createMockRequest`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleCatchesCriticalErrorsDuringExceptionHandling`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsArrayResponseToJson`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsNullResponseToNoContent`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsArrayResponseToJson`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsNullResponseToNoContent`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::createMockRequest`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleCatchesCriticalErrorsDuringExceptionHandling`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsArrayResponseToJson`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsNullResponseToNoContent`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::createMockRequest`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleCatchesCriticalErrorsDuringExceptionHandling`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsArrayResponseToJson`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::testHandleConvertsNullResponseToNoContent`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::injectContainer`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::setBootedState`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "deprecated-method"
-message = "Call to deprecated method: `ReflectionProperty::setaccessible`."
-count = 1
+code = "invalid-iterator"
+message = "The expression provided to `foreach` is not iterable. It resolved to type `mixed`, which is not iterable."
+count = 2
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `class@anonymous:6107558782360210274-30990:33198::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
+message = 'Invalid return type for function `class@anonymous:6107558782360210274-34368:36052::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "invalid-type-cast"
+message = "Casting `mixed` to `array`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "less-specific-return-statement"
-message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-18823:19078` for function `class@anonymous:6107558782360210274-18823:19078::configure`.'
+message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-19667:19922` for function `class@anonymous:6107558782360210274-19667:19922::configure`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "less-specific-return-statement"
-message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-19425:19819` for function `class@anonymous:6107558782360210274-19425:19819::configure`.'
+message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-20269:20663` for function `class@anonymous:6107558782360210274-20269:20663::configure`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::get`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::has`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubContainer::set`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getBody`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeaderLine`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeader`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getHeaders`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getProtocolVersion`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getReasonPhrase`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::getStatusCode`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::hasHeader`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withAddedHeader`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withBody`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withHeader`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withProtocolVersion`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withStatus`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubResponse::withoutHeader`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::__toString`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::close`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::detach`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::eof`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getContents`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getMetadata`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::getSize`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isReadable`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isSeekable`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::isWritable`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::read`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::rewind`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::seek`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::tell`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Abstract\StubStream::write`.'
-count = 1
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Psr\Http\Message\ServerRequestInterface::withattribute`: expected `string`, but found `mixed`.'
+count = 4
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -568,31 +526,31 @@ count = 3
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-array-access"
 message = "Unsafe array access on type `mixed`."
-count = 4
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 11
+count = 12
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 23
+count = 9
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-operand"
 message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
-count = 11
+count = 8
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-property-type-coercion"
 message = 'A value with a less specific type `mixed` is being assigned to property `$$container` (Waffle\Commons\Contracts\Container\ContainerInterface|null).'
-count = 2
+count = 3
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -603,50 +561,20 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffletests\abstract\stubresponse::getbody`. Saw type `mixed`.'
+message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36292:37293::process`. Saw type `mixed`."
 count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffletests\abstract\stubresponse::getstatuscode`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Core\Container` not found.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-method"
-message = 'Method `expects` does not exist on type `Psr\Http\Message\ResponseFactoryInterface`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-method"
-message = 'Method `method` does not exist on type `Psr\Http\Message\ResponseFactoryInterface`.'
-count = 6
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "non-existent-method"
-message = 'Method `method` does not exist on type `Waffle\Commons\Contracts\Routing\RouterInterface`.'
-count = 3
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "nullable-return-statement"
-message = 'Function `class@anonymous:6107558782360210274-30990:33198::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
+message = 'Function `class@anonymous:6107558782360210274-34368:36052::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 11
+count = 5
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -655,57 +583,579 @@ message = "Argument #1 of function `count` is possibly `false`, but parameter ty
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "less-specific-return-statement"
-message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `waffletests\abstract\helper\webkernel` for function `waffletests\abstract\helper\webkernel::configure`.'
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-array-index"
+message = "Possibly undefined array key `int(0)` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getArray`."
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-array-index"
+message = "Possibly undefined array key `int(1)` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getBool`."
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-array-index"
+message = "Possibly undefined array key `int(2)` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getInt`."
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-array-index"
+message = "Possibly undefined array key `string('message')` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-1337:2133::getString`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:14036729167358670975-2615:2809::analyze`."
-count = 1
-
-[[issues]]
-file = "tests/src/AbstractTestCase.php"
-code = "mixed-operand"
-message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-string-array-index"
+message = "Possibly undefined array key 'APP_ENV' accessed on `array{'APP_DEBUG'?: bool, 'APP_ENV'?: string, 'APP_FALLBACK_LOCALE'?: non-empty-string, 'APP_KEY'?: non-empty-string, 'APP_LOCALE'?: non-empty-string, 'APP_NAME'?: non-empty-string, 'APP_SECRET'?: non-empty-string, 'APP_URL'?: non-empty-string, 'CACHE_DRIVER'?: non-empty-string, 'DATABASE_URL'?: non-empty-string, 'DB_CONNECTION'?: non-empty-string, 'DB_DATABASE'?: non-empty-string, 'DB_HOST'?: non-empty-string, 'DB_PASSWORD'?: string, 'DB_PORT'?: non-empty-string, 'DB_USERNAME'?: non-empty-string, 'HOME'?: non-empty-string, 'PATH'?: non-empty-string, 'SECRET'?: non-empty-string, 'SHELL'?: non-empty-string, 'USER'?: non-empty-string, ...<non-empty-string, string>}`."
 count = 2
 
 [[issues]]
-file = "tests/src/Core/Helper/SystemTestKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:8956013134879199278-1152:1330::analyze`."
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-cast"
+message = "Redundant cast to `(string)`: the expression already has this type."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$body`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$configMock`."
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$routerMock`."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$securityMock`."
+count = 3
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$systemMock`."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$uriMock`."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureLoadsServicesAndControllers`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureThrowsExceptionIfSecurityMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testFailsafeContainerIsUsedWhenConfigurationFails`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleCatchesAndRendersThrowable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionExcludesTraceInProdMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionIncludesTraceInDevMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionReturns404ForRouteNotFound`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleThrowsExceptionIfSystemNotInitialized`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleUsesResponseFactoryFromContainerIfAvailable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleWithMatchingRouteRendersResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractKernelTest::testSettersUpdateProperties`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionExcludesTraceInProdMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionIncludesTraceInDevMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testBootDefaultsToProdIfAppEnvMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureLoadsServicesAndControllers`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleCatchesAndRendersThrowable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionExcludesTraceInProdMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionIncludesTraceInDevMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionReturns404ForRouteNotFound`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleWithMatchingRouteRendersResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractKernelTest::testSettersUpdateProperties`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\GeneratorNotSupportedException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureLoadsServicesAndControllers`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureThrowsExceptionIfSecurityMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testFailsafeContainerIsUsedWhenConfigurationFails`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleCatchesAndRendersThrowable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionExcludesTraceInProdMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionIncludesTraceInDevMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionReturns404ForRouteNotFound`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleThrowsExceptionIfSystemNotInitialized`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleUsesResponseFactoryFromContainerIfAvailable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testHandleWithMatchingRouteRendersResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractKernelTest::testSettersUpdateProperties`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureLoadsServicesAndControllers`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testConfigureThrowsExceptionIfSecurityMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testFailsafeContainerIsUsedWhenConfigurationFails`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleCatchesAndRendersThrowable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionExcludesTraceInProdMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionIncludesTraceInDevMode`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleExceptionReturns404ForRouteNotFound`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleResolvesControllerArguments`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleThrowsExceptionIfSystemNotInitialized`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleUsesResponseFactoryFromContainerIfAvailable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testHandleWithMatchingRouteRendersResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelTest::testSettersUpdateProperties`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractKernelTest::testSettersUpdateProperties`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34368:36052::boot`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-16286:16445::throwError`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-28010:28169::throwError`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7635:9248::process`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "non-existent-attribute-class"
+message = 'Attribute class `WaffleTests\Abstract\AllowMockObjectsWithoutExpectations` not found or could not be autoloaded.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractSystemTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Abstract\AbstractSystemTest::testConstructorSetsDependenciesCorrectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Abstract\AbstractSystemTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractSystemTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractSystemTest::testConstructorSetsDependenciesCorrectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/FakeRoutingMiddleware.php"
+code = "invalid-throw"
+message = 'Cannot throw type `Waffle\Commons\Contracts\Routing\Exception\RouteNotFoundExceptionInterface` because it is not an instance of Throwable.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/FakeRoutingMiddleware.php"
+code = "possibly-undefined-string-array-index"
+message = "Possibly undefined array key 'params' accessed on `array{'arguments': array<string, mixed>, 'classname': class-string, 'method': string, 'name': truthy-string, 'params'?: array<string, mixed>, 'path': string}`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/FakeRoutingMiddleware.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `RuntimeException` in `WaffleTests\Abstract\Helper\FakeRoutingMiddleware::process`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/StubServerRequest.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `waffletests\abstract\helper\stubserverrequest::geturi`: expected `Psr\Http\Message\UriInterface`, but found `Psr\Http\Message\UriInterface|null`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/StubServerRequest.php"
+code = "invalid-type-cast"
+message = "Casting type `null` to `array` will produce an empty array."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/StubServerRequest.php"
+code = "invalid-type-cast"
+message = "Object of type `object` cast to `array`. Property visibility (public, protected, private) affects the resulting array."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/StubServerRequest.php"
+code = "nullable-return-statement"
+message = 'Function `waffletests\abstract\helper\stubserverrequest::geturi` is declared to return `Psr\Http\Message\UriInterface` but possibly returns a nullable value (inferred as `Psr\Http\Message\UriInterface|null`).'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "impossible-condition"
+message = "This condition (type `false`) will always evaluate to false."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `waffletests\abstract\helper\fakeroutingmiddleware::__construct`: expected `Waffle\Commons\Contracts\Routing\RouterInterface`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "redundant-comparison"
+message = "Redundant `!==` comparison: left-hand side is never identical to (always false for !==) right-hand side."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "redundant-logical-operation"
+message = "Redundant `&&` operation: left operand is always falsy and right operand is not evaluated."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "redundant-logical-operation"
+message = "Redundant `&&` operation: left operand is evaluated and right operand is always falsy."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/WebKernel.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface` in `WaffleTests\Abstract\Helper\WebKernel::configure`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Core\BaseControllerTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Core\BaseControllerTest::testImplementsRequiredInterfaces`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Core\BaseControllerTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Core\BaseControllerTest::testImplementsRequiredInterfaces`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Core\BaseControllerTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/BaseControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Core\BaseControllerTest::testImplementsRequiredInterfaces`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Core/Helper/SystemTestKernel.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:8956013134879199278-597:759::analyze`."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `LogicException` in `WaffleTests\Core\Helper\SystemTestKernel::configure`.'
 count = 1
 
 [[issues]]
@@ -734,26 +1184,248 @@ count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "missing-override-attribute"
-message = "Missing `#[Override]` attribute on overriding method `class@anonymous:5549540738590508990-2730:2999::serialize`."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Core\SystemTest::testBootHandlesSecurityException`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "possibly-false-argument"
-message = 'Argument #1 of method `phpunit\framework\assert::assertjson` is possibly `false`, but parameter type `string` does not accept it.'
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Core\SystemTest::testBootPerformsSecurityAnalysisOnSuccess`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "possibly-false-argument"
-message = 'Argument #2 of method `phpunit\framework\assert::assertstringcontainsstring` is possibly `false`, but parameter type `string` does not accept it.'
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Core\SystemTest::testBootHandlesSecurityException`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "redundant-null-coalesce"
-message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Core\SystemTest::testBootHandlesSecurityException`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Core\SystemTest::testBootPerformsSecurityAnalysisOnSuccess`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Core\SystemTest::testBootHandlesSecurityException`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Core\SystemTest::testBootPerformsSecurityAnalysisOnSuccess`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface` in `WaffleTests\Core\SystemTest::testBootHandlesSecurityException`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/SystemTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface` in `WaffleTests\Core\SystemTest::testBootPerformsSecurityAnalysisOnSuccess`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/ViewTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Core\ViewTest::testConstructorWithData`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/ViewTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Core\ViewTest::testConstructorWithNullData`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Exception\InvalidConfigurationExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Exception\InvalidConfigurationExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/InvalidConfigurationExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Exception\InvalidConfigurationExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RenderingExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Exception\RenderingExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RenderingExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Exception\RenderingExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RenderingExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Exception\RenderingExceptionTest::testCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RouteNotFoundExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Exception\RouteNotFoundExceptionTest::testExceptionBehavior`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RouteNotFoundExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Exception\RouteNotFoundExceptionTest::testExceptionBehavior`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/RouteNotFoundExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Exception\RouteNotFoundExceptionTest::testExceptionBehavior`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/WaffleExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Exception\WaffleExceptionTest::testSerializeReturnsCorrectStructureAndData`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/WaffleExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Exception\WaffleExceptionTest::testSerializeHandlesNullPreviousException`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Exception/WaffleExceptionTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Exception\WaffleExceptionTest::testSerializeReturnsCorrectStructureAndData`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "invalid-method-access"
+message = "Attempting to access a method on a non-object type (`string`)."
+count = 3
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `rmdir`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `unlink`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryDoesNotExist`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryIsNull`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesIgnoresDotFilesAndDsStore`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesRecursivelyScansDirectories`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesSkipsExistingServices`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryDoesNotExist`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryIsNull`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesIgnoresDotFilesAndDsStore`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesRecursivelyScansDirectories`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesSkipsExistingServices`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryDoesNotExist`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testCreateDoesNothingIfDirectoryIsNull`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesIgnoresDotFilesAndDsStore`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesRecursivelyScansDirectories`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Factory\ContainerFactoryEdgeCaseTest::testRegisterServicesSkipsExistingServices`.'
 count = 1
 
 [[issues]]
@@ -781,82 +1453,406 @@ message = "Possibly null left operand used in string concatenation (type `null|s
 count = 1
 
 [[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "incompatible-parameter-name"
-message = 'Parameter #2 of `WaffleTests\Helper\MockContainer::set()` is named `$service` but parent `Waffle\Commons\Contracts\Container\ContainerInterface::set()` names it `$concrete`'
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Factory\ContainerFactoryTest::testCreateRegistersServicesFromDirectory`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Factory/ContainerFactoryTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Factory\ContainerFactoryTest::testCreateRegistersServicesFromFile`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "redundant-null-coalesce"
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleConvertsStringResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsRequestInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsResponseFactoryIntoAwareController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsServiceFromContainer`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleReturnsResponseInterfaceDirectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsRequestInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsResponseFactoryIntoAwareController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsServiceFromContainer`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleReturnsResponseInterfaceDirectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleConvertsStringResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsRequestInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsResponseFactoryIntoAwareController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsServiceFromContainer`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleReturnsResponseInterfaceDirectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleConvertsStringResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsRequestInterface`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsResponseFactoryIntoAwareController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleInjectsServiceFromContainer`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherEdgeCaseTest::testHandleReturnsResponseInterfaceDirectly`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 4
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 13
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "non-existent-method"
+message = 'Method `method` does not exist on type `Psr\Http\Message\ServerRequestInterface`.'
+count = 13
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$c`."
 count = 2
 
 [[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "invalid-return-statement"
-message = 'Invalid return type for function `waffletests\helper\mockcontainer::instantiate`: expected `object`, but found `null|object`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::get`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::has`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "missing-override-attribute"
-message = 'Missing `#[Override]` attribute on overriding method `WaffleTests\Helper\MockContainer::set`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "mixed-assignment"
-message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$factory`."
 count = 2
 
 [[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "nullable-return-statement"
-message = 'Function `waffletests\helper\mockcontainer::instantiate` is declared to return `object` but possibly returns a nullable value (inferred as `null|object`).'
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$response`."
+count = 2
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$stream`."
+count = 2
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsStringableResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsViewResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleLazyLoadsController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleThrowsExceptionIfFactoryMissingForArrayReturn`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandlesResponseConversionError`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleWarnsButDoesNotCrashIfResponseFactoryMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleWarnsButDoesNotCrashIfResponseFactoryMissing`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherTest::testResolveArgumentsAutoCastsBuiltins`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherTest::testResolveArgumentsHandlesNullable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Handler\ControllerDispatcherTest::testResolveArgumentsMaintainsDefaultValues`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsStringableResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsViewResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleLazyLoadsController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleThrowsExceptionIfFactoryMissingForArrayReturn`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\InvalidArgumentException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandlesResponseConversionError`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::setUp`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsStringableResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleConvertsViewResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleLazyLoadsController`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleThrowsExceptionIfFactoryMissingForArrayReturn`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Handler\ControllerDispatcherTest::testHandlesResponseConversionError`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Handler/ControllerDispatcherTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Handler\ControllerDispatcherTest::testHandleWarnsButDoesNotCrashIfResponseFactoryMissing`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
-code = "possibly-invalid-argument"
-message = "Possible argument type mismatch for argument #1 of `reflectionclass::__construct`: expected `('T.reflectionclass extends object)|class-string<'T.reflectionclass extends object>`, but possibly received `string`."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `InvalidArgumentException` in `WaffleTests\Helper\MockContainer::instantiate`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
-code = "unevaluated-code"
-message = "Unreachable code detected."
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\ContainerExceptionInterface` in `WaffleTests\Helper\MockContainer::instantiate`.'
 count = 1
 
 [[issues]]
-file = "tests/src/TestsTrait/HttpFactoryTrait.php"
-code = "never-return"
-message = "Cannot return value with type 'never' from this function."
+file = "tests/src/Helper/MockContainer.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Psr\Container\NotFoundExceptionInterface` in `WaffleTests\Helper\MockContainer::instantiate`.'
 count = 1
 
 [[issues]]
-file = "tests/src/TestsTrait/HttpFactoryTrait.php"
-code = "non-existent-class"
-message = 'Class `Waffle\Core\Request` not found.'
+file = "tests/src/Helper/MockContainer.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Helper\MockContainer::instantiate`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-1036:1154` in `WaffleTests\Helper\MockContainer::resolve`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-2310:2434` in `WaffleTests\Helper\MockContainer::instantiate`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Helper/MockContainer.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-3210:3359` in `WaffleTests\Helper\MockContainer::instantiate`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\KernelTest::testBootMethodIsCallable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\KernelTest::testKernelCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\KernelTest::testBootMethodIsCallable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\KernelTest::testKernelCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\KernelTest::testBootMethodIsCallable`.'
+count = 1
+
+[[issues]]
+file = "tests/src/KernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\KernelTest::testKernelCanBeInstantiated`.'
 count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
+count = 1
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
@@ -866,38 +1862,8 @@ count = 4
 
 [[issues]]
 file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "mixed-operand"
-message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
-count = 2
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "mixed-property-access"
-message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
 code = "mixed-return-statement"
 message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createandgetconfig`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createandgetsecurity`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockcontainer`. Saw type `mixed`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffletests\teststrait\kernelfactorytrait::createmockkernel`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
@@ -907,37 +1873,37 @@ message = 'Method `createmock` does not exist on type `WaffleTests\TestsTrait\Ke
 count = 4
 
 [[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "non-existent-property"
-message = 'Property `$testConfigDir` does not exist on trait `WaffleTests\TestsTrait\KernelFactoryTrait`.'
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "unused-parameter"
-message = "Parameter `$config` is never used."
-count = 1
-
-[[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "unused-parameter"
-message = "Parameter `$level` is never used."
+file = "tests/src/Trait/RenderingTraitTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Trait\RenderingTraitTest::testRenderingOutputsJsonInDevEnvironment`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Trait/RenderingTraitTest.php"
-code = "possibly-false-argument"
-message = 'Argument #1 of method `phpunit\framework\assert::assertjson` is possibly `false`, but parameter type `string` does not accept it.'
-count = 2
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Trait\RenderingTraitTest::testRenderingOutputsNothingInTestEnvironment`.'
+count = 1
 
 [[issues]]
 file = "tests/src/Trait/RenderingTraitTest.php"
-code = "possibly-false-argument"
-message = 'Argument #2 of method `phpunit\framework\assert::assertstringcontainsstring` is possibly `false`, but parameter type `string` does not accept it.'
-count = 2
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Trait\RenderingTraitTest::testThrowMethodRendersContent`.'
+count = 1
 
 [[issues]]
 file = "tests/src/Trait/RenderingTraitTest.php"
-code = "redundant-null-coalesce"
-message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
-count = 3
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\GeneratorNotSupportedException` in `WaffleTests\Trait\RenderingTraitTest::testRenderingOutputsNothingInTestEnvironment`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Trait/SystemTraitTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\Exception` in `WaffleTests\Trait\SystemTraitTest::testTraitExists`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Trait/SystemTraitTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `PHPUnit\Framework\ExpectationFailedException` in `WaffleTests\Trait\SystemTraitTest::testTraitExists`.'
+count = 1

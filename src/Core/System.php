@@ -26,6 +26,7 @@ class System extends AbstractSystem
     /**
      * @throws InvalidConfigurationExceptionInterface
      */
+
     #[\Override]
     public function boot(KernelInterface $kernel): self
     {

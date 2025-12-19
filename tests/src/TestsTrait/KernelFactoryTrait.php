@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WaffleTests\TestsTrait;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
@@ -11,11 +12,10 @@ use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use WaffleTests\Helper\MockContainer;
 
-// The PSR-11 implementation
-// The Security Decorator
-
 trait KernelFactoryTrait
 {
+    protected string $testConfigDir;
+
     protected function createTestConfigFile(
         int $securityLevel = 10,
         string $controllerPath = 'tests/src/Helper/Controller',
@@ -49,43 +49,41 @@ trait KernelFactoryTrait
             servicePath: $servicePath,
         );
 
+        /** @var ConfigInterface&MockObject $config */
+        // @mago-ignore non-existent-method
         $config = $this->createMock(ConfigInterface::class);
         $config
             ->method('getString')
-            ->willReturnCallback(function ($key) use ($controllerPath, $servicePath) {
-                return match ($key) {
-                    'waffle.paths.controllers' => $controllerPath,
-                    'waffle.paths.services' => $servicePath,
-                    default => null,
-                };
+            ->willReturnCallback(static fn($key) => match ($key) {
+                'waffle.paths.controllers' => $controllerPath,
+                'waffle.paths.services' => $servicePath,
+                default => null,
             });
         $config
             ->method('getInt')
-            ->willReturnCallback(function ($key) use ($securityLevel) {
-                return match ($key) {
-                    'waffle.security.level' => $securityLevel,
-                    default => null,
-                };
+            ->willReturnCallback(static fn($key) => match ($key) {
+                'waffle.security.level' => $securityLevel,
+                default => null,
             });
 
         return $config;
     }
 
-    protected function createAndGetSecurity(int $level = 10, null|ConfigInterface $config = null): SecurityInterface
+    protected function createAndGetSecurity(int $_level = 10, null|ConfigInterface $_config = null): SecurityInterface
     {
-        return $this->createMock(SecurityInterface::class);
+        // @mago-ignore non-existent-method
+        /** @var SecurityInterface&MockObject $mock */
+        $mock = $this->createMock(SecurityInterface::class);
+        return $mock;
     }
 
-    /**
-     * Creates the Core Container (Decorator) wrapping a real Commons Container.
-     */
     /**
      * Creates a Mock Container that behaves like a real one.
      */
     protected function createRealContainer(int $level = 10): ContainerInterface
     {
         $config = $this->createAndGetConfig(securityLevel: $level);
-        $security = $this->createAndGetSecurity(config: $config);
+        $security = $this->createAndGetSecurity($level, $config);
 
         // 1. Create the mock container
         $container = new MockContainer();
@@ -107,11 +105,16 @@ trait KernelFactoryTrait
 
     protected function createMockContainer(): ContainerInterface
     {
-        return $this->createMock(ContainerInterface::class);
+        // @mago-ignore non-existent-method
+        /** @var ContainerInterface&MockObject $mock */
+        $mock = $this->createMock(ContainerInterface::class);
+        return $mock;
     }
 
     protected function createMockKernel(null|ContainerInterface $container = null): KernelInterface
     {
+        // @mago-ignore non-existent-method
+        /** @var AbstractKernel&MockObject $kernel */
         $kernel = $this->createMock(AbstractKernel::class);
         $kernel->container = $container ?? $this->createMockContainer();
         return $kernel;

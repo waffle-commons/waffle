@@ -27,7 +27,7 @@ final class WaffleExceptionTest extends TestCase
 
         // --- Assertions ---
         // We assert that the returned array has the expected structure.
-        static::assertIsArray($serializedData);
+
         static::assertArrayHasKey('message', $serializedData);
         static::assertArrayHasKey('code', $serializedData);
         static::assertArrayHasKey('previous', $serializedData);

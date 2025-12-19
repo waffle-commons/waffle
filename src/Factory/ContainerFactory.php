@@ -31,12 +31,14 @@ final class ContainerFactory
             $files = $this->scanDirectory($directory);
 
             foreach ($files as $class) {
-                if (!$container->has(id: $class)) {
-                    $container->set(
-                        id: $class,
-                        concrete: $class,
-                    );
+                if ($container->has(id: $class)) {
+                    continue;
                 }
+
+                $container->set(
+                    id: $class,
+                    concrete: $class,
+                );
             }
         }
     }

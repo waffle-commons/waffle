@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace WaffleTests\Factory;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Factory\ContainerFactory;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Helper\Controller\TempController;
 use WaffleTests\Helper\Service\TempService;
 
+#[CoversClass(ContainerFactory::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class ContainerFactoryTest extends TestCase
 {
     private null|string $tempDir = null;
