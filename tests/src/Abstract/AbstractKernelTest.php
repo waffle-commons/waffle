@@ -299,7 +299,7 @@ class AbstractKernelTest extends TestCase
         $this->innerContainer = new StubContainer();
         $this->routerMock = $this->createMock(RouterInterface::class);
         $this->responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
-        
+
         $this->systemMock = $this->createMock(\Waffle\Core\System::class);
 
         $this->kernel = new WebKernel(
@@ -567,7 +567,7 @@ class AbstractKernelTest extends TestCase
 
         $this->kernel->boot();
 
-        // Bug in AbstractKernel::boot: putenv('prod') instead of putenv('APP_ENV=prod'). 
+        // Bug in AbstractKernel::boot: putenv('prod') instead of putenv('APP_ENV=prod').
         // We assert code path execution only.
         static::assertFalse(getenv(Constant::APP_ENV));
     }
@@ -683,23 +683,23 @@ class AbstractKernelTest extends TestCase
         // No, we are inside handle().
         // AbstractKernel::handle:
         /*
-            catch (\Throwable $e) {
-               // ...
-               $fallbackHandler = new ControllerDispatcher($this->container); // wait, container is null here?
-            }
-        */
+         * catch (\Throwable $e) {
+         * // ...
+         * $fallbackHandler = new ControllerDispatcher($this->container); // wait, container is null here?
+         * }
+         */
         // Actually, handle() checks container AFTER config.
         /*
-            $this->boot()->configure();
-            if ($this->container === null) throw ...
-        */
+         * $this->boot()->configure();
+         * if ($this->container === null) throw ...
+         */
         // This throw is caught by try/catch?
         // Wait, AbstractKernel::handle does NOT have a try/catch block around the whole method?
         // Let's check view_file(AbstractKernel) again.
         // Lines 97...
         // No try/catch around boot/configure checks!
         // So it throws ContainerException directly.
-        
+
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('Container not initialized.');
 

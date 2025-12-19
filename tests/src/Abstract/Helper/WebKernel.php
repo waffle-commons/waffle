@@ -103,7 +103,11 @@ class WebKernel extends Kernel
         parent::configure();
 
         // Auto-configure middleware stack if not already set, using Fakes
-        if ($this->middlewareStack === null && $this->container !== null && $this->container->has(RouterInterface::class)) {
+        if (
+            $this->middlewareStack === null
+            && $this->container !== null
+            && $this->container->has(RouterInterface::class)
+        ) {
             try {
                 $router = $this->container->get(RouterInterface::class);
                 $stack = new FakeMiddlewareStack();

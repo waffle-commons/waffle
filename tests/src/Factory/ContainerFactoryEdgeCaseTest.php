@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WaffleTests\Factory;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Factory\ContainerFactory;
@@ -34,7 +34,7 @@ class ContainerFactoryEdgeCaseTest extends TestCase
     {
         $files = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+            \RecursiveIteratorIterator::CHILD_FIRST,
         );
 
         foreach ($files as $fileinfo) {
@@ -52,7 +52,7 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         // Create a file starting with dot
         // remove .hidden file creation because it causes test failure
         // touch($this->tempDir . '/.hidden');
-        
+
         // Scan logic:
         // match: is_dir -> valid.
         // str_contains PHPEXT -> valid.
@@ -61,12 +61,12 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         // So .hidden will likely throw if not directory and not .php!
         // Wait, ContainerFactory lines 57-61:
         /*
-            $currentDir = $path === Constant::CURRENT_DIR; // .
-            $previousDir = $path === Constant::PREVIOUS_DIR; // ..
-            $dsStore = str_contains($path, Constant::DS_STORE);
-            if ($currentDir || $previousDir || $dsStore) { continue; }
-        */
-        
+         * $currentDir = $path === Constant::CURRENT_DIR; // .
+         * $previousDir = $path === Constant::PREVIOUS_DIR; // ..
+         * $dsStore = str_contains($path, Constant::DS_STORE);
+         * if ($currentDir || $previousDir || $dsStore) { continue; }
+         */
+
         // So .hidden is NOT ignored by this check.
         // It falls through.
         // match:
@@ -76,7 +76,7 @@ class ContainerFactoryEdgeCaseTest extends TestCase
 
         // So we can't test "ignore .hidden" because it throws!
         // But we can test ignore DS_Store.
-        
+
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->never())->method('set');
 
@@ -92,17 +92,17 @@ class ContainerFactoryEdgeCaseTest extends TestCase
 
         // Create a PHP file in subdir
         $classFile = $subdir . '/TestService.php';
-        file_put_contents($classFile, "<?php namespace Sub; class TestService {}");
-        
-        // We need to make sure `className` method works. 
+        file_put_contents($classFile, '<?php namespace Sub; class TestService {}');
+
+        // We need to make sure `className` method works.
         // `ReflectionTrait::className` extracts namespace class.
         // So we need valid PHP content.
-        
+
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->once())->method('has')->with('TestService')->willReturn(false);
         $container->expects($this->once())->method('set')->with('TestService', 'TestService');
 
-        // We can't rely on namespace extraction in this test env environment simply. 
+        // We can't rely on namespace extraction in this test env environment simply.
         // ReflectionTrait::className reads content and regex matches namespace and class.
         // My content: "<?php namespace Sub; class TestService {}"
         // It SHOULD extract Sub\TestService.
@@ -110,14 +110,14 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         // Wait, why did it extract 'TestService'?
         // Maybe because ReflectionTrait logic is:
         /*
-            if (preg_match('/namespace\s+(.+?);/', $contents, $matches)) {
-               $namespace = $matches[1];
-            }
-            if (preg_match('/class\s+(\w+)/', $contents, $matches)) {
-               $class = $matches[1];
-            }
-            return $namespace ? $namespace . '\\' . $class : $class;
-        */
+         * if (preg_match('/namespace\s+(.+?);/', $contents, $matches)) {
+         * $namespace = $matches[1];
+         * }
+         * if (preg_match('/class\s+(\w+)/', $contents, $matches)) {
+         * $class = $matches[1];
+         * }
+         * return $namespace ? $namespace . '\\' . $class : $class;
+         */
         // Let's check ReflectionTrait in a separate step or just assume it didn't match namespace.
         // "<?php namespace Sub; class TestService {}" SHOULD match.
         // Maybe file buffering or something?
@@ -127,10 +127,10 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         // preg_match('/namespace\s+(.+?);/')
         // My string: "<?php namespace Sub; class"
         // It should match "Sub".
-        
+
         // I'll adjust the test expectation to match what happens, OR fix the content to be more "standard".
         // Maybe add newline after <?php ?
-        
+
         $factory = new ContainerFactory();
         $factory->create($container, $this->tempDir);
     }
@@ -138,7 +138,7 @@ class ContainerFactoryEdgeCaseTest extends TestCase
     public function testRegisterServicesSkipsExistingServices(): void
     {
         $classFile = $this->tempDir . '/TestService.php';
-        file_put_contents($classFile, "<?php class TestService {}");
+        file_put_contents($classFile, '<?php class TestService {}');
 
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->once())->method('has')->with('TestService')->willReturn(true);
@@ -147,12 +147,12 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         $factory = new ContainerFactory();
         $factory->create($container, $this->tempDir);
     }
-    
+
     public function testCreateDoesNothingIfDirectoryIsNull(): void
     {
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->never())->method('set');
-        
+
         $factory = new ContainerFactory();
         // create allows null directory
         $factory->create($container, null);
@@ -162,7 +162,7 @@ class ContainerFactoryEdgeCaseTest extends TestCase
     {
         $container = $this->createMock(ContainerInterface::class);
         $container->expects($this->never())->method('set');
-        
+
         $factory = new ContainerFactory();
         $factory->create($container, $this->tempDir . '/non-existent');
     }
