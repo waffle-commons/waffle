@@ -9,6 +9,4 @@ namespace WaffleTests\Abstract\Helper;
  * It extends the framework's base configuration to be used
  * within the test environment.
  */
-final class TestConfig
-{
-}
+final class TestConfig {}

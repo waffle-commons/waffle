@@ -28,8 +28,8 @@ class WebKernel extends Kernel
     public function __construct(
         string $configDir,
         string $environment,
-        null|ContainerInterface $container = null,
-        null|PsrContainerInterface $innerContainer = null,
+        ?ContainerInterface $container = null,
+        ?PsrContainerInterface $innerContainer = null,
         LoggerInterface $logger = new NullLogger(),
     ) {
         parent::__construct($logger);
@@ -57,19 +57,19 @@ class WebKernel extends Kernel
             ) {}
 
             #[\Override]
-            public function getInt(string $key, null|int $default = null): null|int
+            public function getInt(string $key, ?int $default = null): ?int
             {
                 return 10;
             }
 
             #[\Override]
-            public function getString(string $key, null|string $default = null): null|string
+            public function getString(string $key, ?string $default = null): ?string
             {
                 return null;
             }
 
             #[\Override]
-            public function getArray(string $key, null|array $default = null): null|array
+            public function getArray(string $key, ?array $default = null): ?array
             {
                 return [];
             }

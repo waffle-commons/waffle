@@ -16,7 +16,7 @@ use WaffleTests\Helper\Service\TempService;
 #[AllowMockObjectsWithoutExpectations]
 final class ContainerFactoryTest extends TestCase
 {
-    private null|string $tempDir = null;
+    private ?string $tempDir = null;
 
     #[\Override]
     protected function setUp(): void
@@ -56,10 +56,7 @@ final class ContainerFactoryTest extends TestCase
         // Action
         $container = $this->createRealContainer();
         $factory = new ContainerFactory();
-        $factory->create(
-            container: $container,
-            directory: $helperDir,
-        );
+        $factory->create(container: $container, directory: $helperDir);
 
         // Assertions
         // On vérifie que la factory a bien enregistré les services dans le conteneur.
@@ -76,10 +73,7 @@ final class ContainerFactoryTest extends TestCase
         // Action
         $container = $this->createRealContainer();
         $factory = new ContainerFactory();
-        $factory->create(
-            container: $container,
-            directory: $helperDir,
-        );
+        $factory->create(container: $container, directory: $helperDir);
 
         static::assertTrue($container->has(id: TempService::class));
     }
@@ -98,9 +92,6 @@ final class ContainerFactoryTest extends TestCase
         // Action
         $container = $this->createRealContainer();
         $factory = new ContainerFactory();
-        $factory->create(
-            container: $container,
-            directory: $this->tempDir,
-        );
+        $factory->create(container: $container, directory: $this->tempDir);
     }
 }

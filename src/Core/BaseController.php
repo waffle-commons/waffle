@@ -6,6 +6,4 @@ namespace Waffle\Core;
 
 use Waffle\Abstract\AbstractController;
 
-class BaseController extends AbstractController
-{
-}
+class BaseController extends AbstractController {}

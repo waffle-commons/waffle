@@ -188,7 +188,7 @@ class ControllerDispatcherTest extends TestCase
         $controller = new class {
             public $calledWith = 'not-null';
 
-            public function action(null|string $optional)
+            public function action(?string $optional)
             {
                 $this->calledWith = $optional;
                 return new StubResponse(200);

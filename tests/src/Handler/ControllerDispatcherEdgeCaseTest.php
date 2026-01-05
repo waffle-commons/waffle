@@ -91,9 +91,9 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
     public function testHandleInjectsRequestInterface(): void
     {
         $controller = new class {
-            public null|ServerRequestInterface $capturedRequest = null;
+            public ?ServerRequestInterface $capturedRequest = null;
 
-            public function index(ServerRequestInterface $request): null|array
+            public function index(ServerRequestInterface $request): ?array
             {
                 $this->capturedRequest = $request;
                 return null;
@@ -126,9 +126,9 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
     {
         $service = new \stdClass();
         $controller = new class {
-            public null|\stdClass $capturedService = null;
+            public ?\stdClass $capturedService = null;
 
-            public function index(\stdClass $service): null|array
+            public function index(\stdClass $service): ?array
             {
                 $this->capturedService = $service;
                 return null;
@@ -166,12 +166,12 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
     public function testHandleInjectsResponseFactoryIntoAwareController(): void
     {
         $controller = new class extends AbstractController {
-            public function index(): null|array
+            public function index(): ?array
             {
                 return null;
             }
 
-            public function getFactory(): null|ResponseFactoryInterface
+            public function getFactory(): ?ResponseFactoryInterface
             {
                 return $this->responseFactory ?? null;
             }

@@ -64,10 +64,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
     public function testBootIsIdempotent(): void
     {
-        $kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'test',
-        );
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
 
         $kernel->boot();
         $kernel->boot();
@@ -118,10 +115,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $responseFactoryMock],
             ]);
 
-        $kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'test',
-        );
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
 
         $this->injectContainer($kernel, $containerMock);
         $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
@@ -253,7 +247,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                     }
 
                     #[\Override]
-                    public function getSize(): null|int
+                    public function getSize(): ?int
                     {
                         return 0;
                     }
@@ -350,10 +344,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $responseFactoryMock],
             ]);
 
-        $kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'test',
-        );
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
 
         $this->injectContainer($kernel, $containerMock);
         $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));

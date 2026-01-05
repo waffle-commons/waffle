@@ -13,15 +13,12 @@ final class ContainerFactory
 {
     use ReflectionTrait;
 
-    public function create(ContainerInterface $container, null|string $directory = null): void
+    public function create(ContainerInterface $container, ?string $directory = null): void
     {
-        $this->registerServices(
-            container: $container,
-            directory: $directory,
-        );
+        $this->registerServices(container: $container, directory: $directory);
     }
 
-    private function registerServices(ContainerInterface $container, null|string $directory = null): void
+    private function registerServices(ContainerInterface $container, ?string $directory = null): void
     {
         if (null !== $directory) {
             if (!is_dir($directory)) {
@@ -35,10 +32,7 @@ final class ContainerFactory
                     continue;
                 }
 
-                $container->set(
-                    id: $class,
-                    concrete: $class,
-                );
+                $container->set(id: $class, concrete: $class);
             }
         }
     }

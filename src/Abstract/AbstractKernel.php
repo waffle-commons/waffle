@@ -32,27 +32,27 @@ abstract class AbstractKernel implements KernelInterface
         set => $this->environment = $value;
     }
 
-    public null|ConfigInterface $config = null {
+    public ?ConfigInterface $config = null {
         get => $this->config;
         set => $this->config = $value;
     }
 
-    protected(set) null|System $system = null {
+    protected(set) ?System $system = null {
         get => $this->system;
         set => $this->system = $value;
     }
 
-    public null|ContainerInterface $container = null {
+    public ?ContainerInterface $container = null {
         get => $this->container;
         set => $this->container = $value;
     }
 
-    protected null|SecurityInterface $security = null;
+    protected ?SecurityInterface $security = null;
 
     // Holds the raw PSR-11 implementation injected by Runtime
-    private null|PsrContainerInterface $innerContainer = null;
+    private ?PsrContainerInterface $innerContainer = null;
 
-    protected(set) null|MiddlewareStackInterface $middlewareStack = null {
+    protected(set) ?MiddlewareStackInterface $middlewareStack = null {
         get => $this->middlewareStack;
         set => $this->middlewareStack = $value;
     }
@@ -187,10 +187,7 @@ abstract class AbstractKernel implements KernelInterface
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');
         if (is_string($services)) {
-            $containerFactory->create(
-                container: $this->container,
-                directory: $root . DIRECTORY_SEPARATOR . $services,
-            );
+            $containerFactory->create(container: $this->container, directory: $root . DIRECTORY_SEPARATOR . $services);
         }
         $controllers = $this->config->getString(key: 'waffle.paths.controllers');
         if (is_string($controllers)) {

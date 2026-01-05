@@ -69,7 +69,7 @@ trait KernelFactoryTrait
         return $config;
     }
 
-    protected function createAndGetSecurity(int $_level = 10, null|ConfigInterface $_config = null): SecurityInterface
+    protected function createAndGetSecurity(int $_level = 10, ?ConfigInterface $_config = null): SecurityInterface
     {
         // @mago-ignore non-existent-method
         /** @var SecurityInterface&MockObject $mock */
@@ -111,7 +111,7 @@ trait KernelFactoryTrait
         return $mock;
     }
 
-    protected function createMockKernel(null|ContainerInterface $container = null): KernelInterface
+    protected function createMockKernel(?ContainerInterface $container = null): KernelInterface
     {
         // @mago-ignore non-existent-method
         /** @var AbstractKernel&MockObject $kernel */

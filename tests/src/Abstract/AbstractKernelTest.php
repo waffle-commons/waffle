@@ -55,7 +55,7 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function getSize(): null|int
+    public function getSize(): ?int
     {
         return strlen($this->content);
     }
@@ -120,7 +120,7 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function getMetadata(null|string $key = null)
+    public function getMetadata(?string $key = null)
     {
         return null;
     }
@@ -279,8 +279,8 @@ class ArgumentController
 #[AllowMockObjectsWithoutExpectations] // Add attribute
 class AbstractKernelTest extends TestCase
 {
-    private null|WebKernel $kernel = null;
-    private null|string $originalAppEnv = null;
+    private ?WebKernel $kernel = null;
+    private ?string $originalAppEnv = null;
     private StubContainer $innerContainer;
 
     private RouterInterface&MockObject $routerMock;
@@ -302,11 +302,7 @@ class AbstractKernelTest extends TestCase
 
         $this->systemMock = $this->createMock(\Waffle\Core\System::class);
 
-        $this->kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-            container: null,
-        );
+        $this->kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev', container: null);
         $this->kernel->setDeps($this->innerContainer);
 
         // Use Middleware Stack instead of direct Router injection
@@ -574,10 +570,7 @@ class AbstractKernelTest extends TestCase
 
     public function testSettersUpdateProperties(): void
     {
-        $kernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'dev',
-        );
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev');
 
         $containerMock = $this->createMock(PsrContainerInterface::class);
         $configStub = $this->createStub(ConfigInterface::class);
@@ -870,7 +863,7 @@ class AbstractKernelTest extends TestCase
         // Use anonymous class to avoid WebKernel overwriting config
         $kernel = new class(new NullLogger()) extends Kernel {
             // Expose container for assertion
-            public function getContainer(): null|ContainerInterface
+            public function getContainer(): ?ContainerInterface
             {
                 return $this->container;
             }
@@ -907,7 +900,9 @@ class AbstractKernelTest extends TestCase
         /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
         // Mock analyze to do nothing
-        $securityMock->method('analyze')->willReturnCallback(static function () {});
+        $securityMock
+            ->method('analyze')
+            ->willReturnCallback(static function () {});
 
         /** @var UriInterface&MockObject $uriMock */
         $uriMock = $this->createMock(UriInterface::class);

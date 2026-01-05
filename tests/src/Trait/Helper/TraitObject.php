@@ -13,9 +13,6 @@ class TraitObject
 
     public function rendered(View $view, string $env): void
     {
-        $this->rendering(
-            view: $view,
-            env: $env,
-        );
+        $this->rendering(view: $view, env: $env);
     }
 }

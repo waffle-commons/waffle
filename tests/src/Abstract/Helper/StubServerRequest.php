@@ -18,7 +18,7 @@ class StubServerRequest implements ServerRequestInterface
     private array $uploadedFiles = [];
     private array $serverParams = [];
     private string $method;
-    private UriInterface|null $uri;
+    private ?UriInterface $uri;
 
     public function __construct(string $method = 'GET', string|UriInterface $uri = '/')
     {
@@ -49,7 +49,7 @@ class StubServerRequest implements ServerRequestInterface
                     return '';
                 }
 
-                public function getPort(): null|int
+                public function getPort(): ?int
                 {
                     return null;
                 }
@@ -256,7 +256,7 @@ class StubServerRequest implements ServerRequestInterface
                 return null;
             }
 
-            public function getSize(): null|int
+            public function getSize(): ?int
             {
                 return 0;
             }
