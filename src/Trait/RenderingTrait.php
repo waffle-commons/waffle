@@ -28,15 +28,12 @@ trait RenderingTrait
         }
     }
 
-    public function throw(View $view, null|string $env = null): void
+    public function throw(View $view, ?string $env = null): void
     {
         $thrownEnv = match ($env) {
             Constant::ENV_TEST => Constant::ENV_TEST,
             default => Constant::ENV_EXCEPTION,
         };
-        $this->rendering(
-            view: $view,
-            env: $thrownEnv,
-        );
+        $this->rendering(view: $view, env: $thrownEnv);
     }
 }

@@ -20,6 +20,7 @@ final class SystemTestKernel extends Kernel
         $this->config = $config;
         // Mock Security for testing
         $security = new class implements SecurityInterface {
+            #[\Override]
             public function analyze(object $object, array $expectations = []): void
             {
             }
@@ -38,6 +39,7 @@ final class SystemTestKernel extends Kernel
         }
         if ($this->container === null) {
             $security = new class implements SecurityInterface {
+                #[\Override]
                 public function analyze(object $object, array $expectations = []): void
                 {
                 }

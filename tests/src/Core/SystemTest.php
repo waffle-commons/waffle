@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace WaffleTests\Core;
 
+// No longer mocking Security
+// Added for config helper
+
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
@@ -12,10 +16,8 @@ use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\SystemTestKernel;
 use WaffleTests\TestsTrait\KernelFactoryTrait;
 
-// No longer mocking Security
-// Added for config helper
-
 #[CoversClass(System::class)]
+#[AllowMockObjectsWithoutExpectations]
 final class SystemTest extends TestCase
 {
     // Use trait to easily create config files
@@ -82,6 +84,7 @@ final class SystemTest extends TestCase
         $securityMock = $this->createMock(SecurityInterface::class);
 
         $exception = new class('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
+            #[\Override]
             public function serialize(): array
             {
                 return ['message' => $this->getMessage(), 'code' => $this->getCode()];
@@ -97,7 +100,7 @@ final class SystemTest extends TestCase
         ob_start();
         $system = new System($securityMock);
         $system->boot($testKernel);
-        $output = ob_get_clean() ?? '';
+        $output = (string) ob_get_clean();
 
         // 3. Assertions
         static::assertJson($output, 'The output should be a valid JSON error response.');

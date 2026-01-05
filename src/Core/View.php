@@ -12,6 +12,6 @@ final readonly class View implements ViewInterface
      * @param array<mixed>|null $data
      */
     public function __construct(
-        public null|array $data = null,
+        public ?array $data = null,
     ) {}
 }

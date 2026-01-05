@@ -13,6 +13,8 @@
         displayDetailsOnTestsThatTriggerNotices="true"
         displayDetailsOnTestsThatTriggerWarnings="true"
         displayDetailsOnPhpunitDeprecations="true"
+        failOnWarning="true"
+        failOnNotice="true"
 >
     <php>
         <ini name="error_reporting" value="-1"/>

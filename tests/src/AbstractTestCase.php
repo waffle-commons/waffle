@@ -13,11 +13,12 @@ abstract class AbstractTestCase extends BaseTestCase
     use KernelFactoryTrait;
     use HttpFactoryTrait;
 
-    protected string $testConfigDir = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
+    protected string $testConfigDir;
 
     #[\Override]
     protected function setUp(): void
     {
+        $this->testConfigDir = (string) APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
         parent::setUp();
         // Create a temporary config directory for isolated testing
         if (!is_dir($this->testConfigDir)) {
@@ -35,7 +36,7 @@ abstract class AbstractTestCase extends BaseTestCase
 
     protected function cleanupTestConfig(): void
     {
-        $dirToDelete = APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
+        $dirToDelete = (string) APP_ROOT . DIRECTORY_SEPARATOR . APP_CONFIG;
         if (is_dir($dirToDelete)) {
             $this->recursiveDelete($dirToDelete);
         }

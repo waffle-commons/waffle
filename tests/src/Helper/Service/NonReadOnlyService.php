@@ -6,6 +6,4 @@ namespace WaffleTests\Helper\Service;
 
 use WaffleTests\Trait\Helper\AbstractService;
 
-class NonReadOnlyService extends AbstractService
-{
-}
+class NonReadOnlyService extends AbstractService {}

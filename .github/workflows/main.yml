@@ -18,7 +18,7 @@ jobs:
       - name: Set matrix
         id: set-matrix
         run: |
-          echo 'matrix={"operating-system":["ubuntu-24.04"],"php-version":["8.4"]}' >> $GITHUB_OUTPUT
+          echo 'matrix={"operating-system":["ubuntu-24.04"],"php-version":["8.5"]}' >> $GITHUB_OUTPUT
 
   build:
     name: 🏗️ Build & Install

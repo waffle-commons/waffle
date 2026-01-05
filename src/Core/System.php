@@ -26,27 +26,22 @@ class System extends AbstractSystem
     /**
      * @throws InvalidConfigurationExceptionInterface
      */
+
     #[\Override]
     public function boot(KernelInterface $kernel): self
     {
         try {
             /** @var Kernel $kernel */
-            $this->security->analyze(
-                object: $kernel,
-                expectations: [
-                    Kernel::class,
-                    AbstractKernel::class,
-                    KernelInterface::class,
-                ],
-            );
+            $this->security->analyze(object: $kernel, expectations: [
+                Kernel::class,
+                AbstractKernel::class,
+                KernelInterface::class,
+            ]);
             /** @var ConfigInterface $config */
             $config = $kernel->config;
-            $this->security->analyze(
-                object: $config,
-                expectations: [
-                    ConfigInterface::class,
-                ],
-            );
+            $this->security->analyze(object: $config, expectations: [
+                ConfigInterface::class,
+            ]);
         } catch (SecurityExceptionInterface $e) {
             $this->throw(view: new View(data: $e->serialize()));
         }
