@@ -27,35 +27,20 @@ abstract class AbstractKernel implements KernelInterface
 {
     use ReflectionTrait;
 
-    private string $environment = Constant::ENV_PROD {
-        get => $this->environment;
-        set => $this->environment = $value;
-    }
+    protected string $environment = Constant::ENV_PROD;
 
-    public ?ConfigInterface $config = null {
-        get => $this->config;
-        set => $this->config = $value;
-    }
+    public ?ConfigInterface $config = null;
 
-    protected(set) ?System $system = null {
-        get => $this->system;
-        set => $this->system = $value;
-    }
+    protected(set) ?System $system = null;
 
-    public ?ContainerInterface $container = null {
-        get => $this->container;
-        set => $this->container = $value;
-    }
+    public ?ContainerInterface $container = null;
 
     protected ?SecurityInterface $security = null;
 
     // Holds the raw PSR-11 implementation injected by Runtime
     private ?PsrContainerInterface $innerContainer = null;
 
-    protected(set) ?MiddlewareStackInterface $middlewareStack = null {
-        get => $this->middlewareStack;
-        set => $this->middlewareStack = $value;
-    }
+    protected(set) ?MiddlewareStackInterface $middlewareStack = null;
 
     /**
      * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
