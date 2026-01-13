@@ -22,6 +22,7 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Core\BaseController;
 use Waffle\Core\System; // Fix: Add missing import
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
@@ -261,14 +262,14 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
     }
 }
 
-class ArgumentController
+class ArgumentController extends BaseController
 {
     public array $capturedArgs = [];
 
-    public function action(StubResponse $service, int $id, string $slug): \Waffle\Core\View
+    public function action(StubResponse $service, int $id, string $slug): ResponseInterface
     {
         $this->capturedArgs = func_get_args();
-        return new \Waffle\Core\View(['success' => true]);
+        return $this->jsonResponse(data: ['success' => true]);
     }
 }
 

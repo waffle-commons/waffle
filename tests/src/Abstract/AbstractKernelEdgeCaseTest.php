@@ -52,8 +52,9 @@ class AbstractKernelEdgeCaseTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
+        $this->testConfigDir = __DIR__ . '/../../fixtures/config';
         if (is_dir($this->testConfigDir)) {
-            // Basic cleanup
+            @rmdir($this->testConfigDir);
         }
         $fakeAppDir = APP_ROOT . '/app';
         if (is_dir($fakeAppDir) && is_writable($fakeAppDir)) {

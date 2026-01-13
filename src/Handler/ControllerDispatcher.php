@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use JsonException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,6 +25,9 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         private ContainerInterface $container,
     ) {}
 
+    /**
+     * @throws JsonException
+     */
     #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -98,28 +102,13 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
 
             if (is_array($result) || $result instanceof \JsonSerializable) {
                 $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
-                $response->getBody()->write(json_encode($result));
+                $response->getBody()->write(json_encode($result, JSON_THROW_ON_ERROR));
                 return $response;
             }
 
             if (is_string($result)) {
                 $response = $factory->createResponse(200)->withHeader('Content-Type', 'text/html');
                 $response->getBody()->write($result);
-                return $response;
-            }
-
-            // If it is a View, we likely need to render it?
-            // Assuming Waffle\Core\View exists or similar.
-            // For now, if it's an object with __toString?
-            if (is_object($result) && method_exists($result, '__toString')) {
-                $response = $factory->createResponse(200);
-                $response->getBody()->write((string) $result);
-                return $response;
-            }
-
-            if ($result instanceof ViewInterface) {
-                $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
-                $response->getBody()->write(json_encode($result->data));
                 return $response;
             }
         }

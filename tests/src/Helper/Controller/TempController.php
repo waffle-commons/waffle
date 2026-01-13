@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WaffleTests\Helper\Controller;
 
 use Exception;
+use Psr\Http\Message\ResponseInterface;
 use Waffle\Core\BaseController;
-use Waffle\Core\View;
 
 /**
  * This is a fake controller used exclusively for testing purposes.
@@ -14,30 +14,30 @@ use Waffle\Core\View;
  */
 final class TempController extends BaseController
 {
-    public function list(): View
+    public function list(): ResponseInterface
     {
-        return new View(data: [
+        return $this->jsonResponse(data: [
             'id' => 1,
             'name' => 'John Doe',
         ]);
     }
 
-    public function show(int $id): View
+    public function show(int $id): ResponseInterface
     {
-        return new View([
+        return $this->jsonResponse(data: [
             'id' => $id,
             'name' => 'John Doe',
         ]);
     }
 
-    public function details(int $id, string $slug): View
+    public function details(int $id, string $slug): ResponseInterface
     {
-        return new View(data: ['id' => $id, 'slug' => $slug]);
+        return $this->jsonResponse(data: ['id' => $id, 'slug' => $slug]);
     }
 
-    public function profile(): View
+    public function profile(): ResponseInterface
     {
-        return new View(data: ['page' => 'profile']);
+        return $this->jsonResponse(data: ['page' => 'profile']);
     }
 
     /**

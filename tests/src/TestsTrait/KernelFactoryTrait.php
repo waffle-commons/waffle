@@ -22,19 +22,19 @@ trait KernelFactoryTrait
         string $servicePath = 'tests/src/Helper/Service',
     ): void {
         $yamlContent = <<<YAML
-        waffle:
-          security:
-            level: {$securityLevel}
-          paths:
-            controllers: '{$controllerPath}'
-            services: '{$servicePath}'
-        YAML;
+            waffle:
+              security:
+                level: {$securityLevel}
+              paths:
+                controllers: '{$controllerPath}'
+                services: '{$servicePath}'
+            YAML;
         file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
 
         $yamlContentTest = <<<YAML
-        waffle:
-          test_specific_key: true
-        YAML;
+            waffle:
+              test_specific_key: true
+            YAML;
         file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
     }
 

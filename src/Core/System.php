@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 namespace Waffle\Core;
 
+use ReflectionException;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Abstract\AbstractSystem;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
-use Waffle\Commons\Contracts\Config\Exception\InvalidConfigurationExceptionInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Exception\WaffleException;
 use Waffle\Kernel;
-use Waffle\Trait\RenderingTrait;
 
 class System extends AbstractSystem
 {
-    use RenderingTrait;
-
     public function __construct(SecurityInterface $security)
     {
         $this->security = $security;
     }
 
     /**
-     * @throws InvalidConfigurationExceptionInterface
+     * @throws WaffleException
      */
-
     #[\Override]
     public function boot(KernelInterface $kernel): self
     {
@@ -42,8 +39,8 @@ class System extends AbstractSystem
             $this->security->analyze(object: $config, expectations: [
                 ConfigInterface::class,
             ]);
-        } catch (SecurityExceptionInterface $e) {
-            $this->throw(view: new View(data: $e->serialize()));
+        } catch (SecurityExceptionInterface|ReflectionException $e) {
+            throw new WaffleException(message: $e->getMessage(), code: $e->getCode(), previous: $e);
         }
 
         return $this;

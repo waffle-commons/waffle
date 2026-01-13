@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
+use Waffle\Exception\WaffleException;
 use WaffleTests\AbstractTestCase as TestCase;
 use WaffleTests\Core\Helper\SystemTestKernel;
 use WaffleTests\TestsTrait\KernelFactoryTrait;
@@ -83,31 +84,32 @@ final class SystemTest extends TestCase
         // 1. Setup
         $securityMock = $this->createMock(SecurityInterface::class);
 
-        $exception = new class('Security analysis failed.') extends \Exception implements SecurityExceptionInterface {
-            #[\Override]
-            public function serialize(): array
-            {
-                return ['message' => $this->getMessage(), 'code' => $this->getCode()];
-            }
-        };
+        $exception = new WaffleException(message: 'Security analysis failed.');
 
-        $securityMock->method('analyze')->will($this->throwException($exception));
+        $securityMock->expects($this->once())->method('analyze')->will($this->throwException($exception));
 
         $testConfig = $this->createAndGetConfig();
         $testKernel = new SystemTestKernel($testConfig);
 
         // 2. Action
+        $output = '';
+        $exceptionThrown = false;
         ob_start();
-        $system = new System($securityMock);
-        $system->boot($testKernel);
-        $output = (string) ob_get_clean();
+
+        try {
+            $system = new System($securityMock);
+            $system->boot($testKernel);
+        } catch (WaffleException $e) {
+            $exceptionThrown = true;
+            static::assertSame('Security analysis failed.', $e->getMessage());
+        } finally {
+            $output = ob_get_clean();
+        }
 
         // 3. Assertions
-        static::assertJson($output, 'The output should be a valid JSON error response.');
-        static::assertStringContainsString(
-            'Security analysis failed.',
-            $output,
-            'The JSON output should contain the exception message.',
-        );
+        static::assertTrue($exceptionThrown, 'WaffleException was expected but not thrown.');
+        if ($output !== '' && $output !== false) {
+            static::assertJson($output, 'The output should be a valid JSON error response.');
+        }
     }
 }
