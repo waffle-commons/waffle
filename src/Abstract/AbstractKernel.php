@@ -84,17 +84,42 @@ abstract class AbstractKernel implements KernelInterface
         $this->boot()->configure();
 
         if ($this->middlewareStack === null) {
-            throw new \RuntimeException(
-                'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?',
+            $messageMiddlewareStack = 'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?';
+            $this->logger->critical(
+                message: $messageMiddlewareStack,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => $request->getMethod(),
+                    'uri' => (string) $request->getUri(),
+                ]
             );
+            throw new \RuntimeException($messageMiddlewareStack);
         }
 
         if ($this->container === null) {
-            throw new ContainerException('Container not initialized.');
+            $messageContainer = 'Container not initialized.';
+            $this->logger->critical(
+                message: $messageContainer,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => $request->getMethod(),
+                    'uri' => (string) $request->getUri(),
+                ]
+            );
+            throw new ContainerException($messageContainer);
         }
 
         if ($this->system === null) {
-            throw new NotFoundException('System not initialized.');
+            $messageSystem = 'System not initialized.';
+            $this->logger->critical(
+                message: $messageSystem,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => $request->getMethod(),
+                    'uri' => (string) $request->getUri(),
+                ]
+            );
+            throw new NotFoundException($messageSystem);
         }
 
         $fallbackHandler = new ControllerDispatcher($this->container);
@@ -128,22 +153,40 @@ abstract class AbstractKernel implements KernelInterface
         /** @var string $root */
         $root = APP_ROOT;
         if ($this->config === null) {
-            throw new InvalidConfigurationException(
-                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.',
+            $messageConfig = 'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.';
+            $this->logger->critical(
+                message: $messageConfig,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => 'configure',
+                ]
             );
+            throw new InvalidConfigurationException($messageConfig);
         }
 
         if ($this->security === null) {
-            throw new ContainerException(
-                'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().',
+            $messageSecurity = 'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().';
+            $this->logger->critical(
+                message: $messageSecurity,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => 'configure',
+                ]
             );
+            throw new ContainerException($messageSecurity);
         }
 
         // Check if an implementation was provided via setContainerImplementation
         if ($this->innerContainer === null) {
-            throw new ContainerException(
-                'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().',
+            $messageContainer = 'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().';
+            $this->logger->critical(
+                message: $messageContainer,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => 'configure',
+                ]
             );
+            throw new ContainerException($messageContainer);
         }
 
         // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
@@ -151,22 +194,16 @@ abstract class AbstractKernel implements KernelInterface
         if ($this->innerContainer instanceof ContainerInterface) {
             $this->container = $this->innerContainer;
         } else {
-            // Fallback for raw PSR-11 containers that might not implement our interface but have methods we need?
-            // Ideally, the user should inject a compatible container.
-            // For now, we can't easily wrap it without a concrete class.
-            // We assume the user knows what they are doing.
-            // If they inject a read-only container, set() calls will fail, which is expected behavior for read-only.
-            // But strict typing requires ContainerInterface.
-            // We can't satisfy strict typing without a wrapper.
-            // BUT, we are removing the wrapper to be a micro-core.
-            // So we must change the property type or rely on the user injecting the right type.
             // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
-            if (!$this->innerContainer instanceof ContainerInterface) {
-                throw new ContainerException(
-                    'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.',
-                );
-            }
-            $this->container = $this->innerContainer;
+            $messageInnerContainer = 'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.';
+            $this->logger->critical(
+                message: $messageInnerContainer,
+                context:[
+                    'exception' => get_class($this),
+                    'method' => 'configure',
+                ]
+            );
+            throw new ContainerException($messageInnerContainer);
         }
 
         $containerFactory = new ContainerFactory();
