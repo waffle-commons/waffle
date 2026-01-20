@@ -8,6 +8,7 @@ use JsonException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Waffle\Commons\Contracts\Controller\BaseControllerInterface;
+use Waffle\Exception\RenderingException;
 
 abstract class AbstractController implements BaseControllerInterface
 {
@@ -25,17 +26,21 @@ abstract class AbstractController implements BaseControllerInterface
     /**
      * Private helper to format JSON response (PSR-7).
      * In the future, this logic should move to AbstractController.
-     * @throws JsonException
+     * @throws RenderingException
      */
     protected function jsonResponse(array $data, int $status = 200): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse($status);
+        try {
+            $response = $this->responseFactory->createResponse($status);
 
-        $payload = json_encode($data, JSON_THROW_ON_ERROR);
+            $payload = json_encode($data, JSON_THROW_ON_ERROR);
 
-        $response->getBody()->write($payload);
-        $response->getBody()->rewind(); // Good practice for streams
+            $response->getBody()->write($payload);
+            $response->getBody()->rewind(); // Good practice for streams
 
-        return $response->withHeader('Content-Type', 'application/json');
+            return $response->withHeader('Content-Type', 'application/json');
+        } catch (JsonException $e) {
+            throw new RenderingException(message: $e->getMessage(), code: $e->getCode(), previous: $e);
+        }
     }
 }

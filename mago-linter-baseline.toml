@@ -2,12 +2,6 @@ variant = "loose"
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "cyclomatic-complexity"
-message = "Class has high complexity."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
 code = "no-else-clause"
 message = "Avoid `else` clauses."
 count = 1

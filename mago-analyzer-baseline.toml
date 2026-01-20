@@ -8,6 +8,12 @@ count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractController.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #2 of `waffle\exception\renderingexception::__construct`: expected `int`, but possibly received `int|string`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractController.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `InvalidArgumentException` in `Waffle\Abstract\AbstractController::jsonResponse`.'
 count = 1
@@ -16,12 +22,6 @@ count = 1
 file = "src/Abstract/AbstractController.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Abstract\AbstractController::jsonResponse`.'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "redundant-condition"
-message = "Redundant condition"
 count = 1
 
 [[issues]]
@@ -195,12 +195,6 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractControllerTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `JsonException` in `class@anonymous:2142540051330759669-514:691::testJson`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractControllerTest.php"
-code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `PHPUnit\Event\NoPreviousThrowableException` in `WaffleTests\Abstract\AbstractControllerTest::testJsonResponseCreatesValidResponse`.'
 count = 1
 
@@ -214,6 +208,12 @@ count = 1
 file = "tests/src/Abstract/AbstractControllerTest.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractControllerTest::testJsonResponseCreatesValidResponse`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractControllerTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `class@anonymous:2142540051330759669-514:691::testJson`.'
 count = 1
 
 [[issues]]
@@ -316,6 +316,12 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `PHPUnit\Framework\MockObject\Exception` in `WaffleTests\Abstract\AbstractKernelCoverageTest::testPropertyHooks`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "deprecated-method"
+message = 'Call to deprecated method: `phpunit\framework\testcase::any`.'
 count = 1
 
 [[issues]]
@@ -641,12 +647,6 @@ file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "redundant-docblock-type"
 message = "Redundant docblock type for variable `$uriMock`."
 count = 2
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `JsonException` in `WaffleTests\Abstract\ArgumentController::action`.'
-count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -988,6 +988,12 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
 message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7631:9244::process`."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `WaffleTests\Abstract\ArgumentController::action`.'
 count = 1
 
 [[issues]]
@@ -1779,25 +1785,25 @@ count = 1
 [[issues]]
 file = "tests/src/Helper/Controller/TempController.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `JsonException` in `WaffleTests\Helper\Controller\TempController::details`.'
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `WaffleTests\Helper\Controller\TempController::details`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/Controller/TempController.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `JsonException` in `WaffleTests\Helper\Controller\TempController::list`.'
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `WaffleTests\Helper\Controller\TempController::list`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/Controller/TempController.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `JsonException` in `WaffleTests\Helper\Controller\TempController::profile`.'
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `WaffleTests\Helper\Controller\TempController::profile`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/Controller/TempController.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `JsonException` in `WaffleTests\Helper\Controller\TempController::show`.'
+message = 'Potentially unhandled exception `Waffle\Exception\RenderingException` in `WaffleTests\Helper\Controller\TempController::show`.'
 count = 1
 
 [[issues]]
