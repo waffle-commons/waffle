@@ -48,7 +48,7 @@ class WebKernel extends Kernel
     }
 
     #[\Override]
-    public function configure(): self
+    public function configure(): void
     {
         $this->config = new class($this->configDir, $this->testEnvironment) implements ConfigInterface {
             public function __construct(
@@ -97,7 +97,7 @@ class WebKernel extends Kernel
             }
             $this->system = new System(security: $this->security)->boot(kernel: $this);
 
-            return $this;
+            return;
         }
 
         parent::configure();
@@ -117,7 +117,5 @@ class WebKernel extends Kernel
                 // Ignore
             }
         }
-
-        return $this;
     }
 }

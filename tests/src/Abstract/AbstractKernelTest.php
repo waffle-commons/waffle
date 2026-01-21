@@ -601,10 +601,10 @@ class AbstractKernelTest extends TestCase
         // Create a kernel that doesn't set config in constructor/configure override
         $kernel = new class(new NullLogger()) extends Kernel {
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Intentionally do not set $this->config
-                return parent::configure();
+                parent::configure();
             }
         };
 
@@ -625,10 +625,10 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Config is set, but Security is not
-                return parent::configure();
+                parent::configure();
             }
         };
 
@@ -644,10 +644,9 @@ class AbstractKernelTest extends TestCase
     {
         $kernel = new class(new NullLogger()) extends Kernel {
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Do nothing, skipping container init
-                return $this;
             }
 
             // Helper to inject response factory for error handling
@@ -727,11 +726,10 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Init container but skip System
                 $this->container = $this->innerContainer;
-                return $this;
             }
         };
 
@@ -987,13 +985,12 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Waffle\Core\Container does not exist in src/Core.
                 // AbstractKernel logic assigns innerContainer directly.
                 $this->container = $this->innerContainer;
                 $this->system = $this->systemMock;
-                return $this;
             }
 
             public function getSystem(): \Waffle\Core\System
@@ -1120,13 +1117,12 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Init container but skip System overwrite
                 // We use our local reference because parent's innerContainer is private
                 $this->container = $this->innerContainerRef;
                 $this->system = $this->systemMock;
-                return $this;
             }
         };
 

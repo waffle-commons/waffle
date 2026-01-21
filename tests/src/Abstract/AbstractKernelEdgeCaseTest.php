@@ -139,6 +139,12 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
+
+        // Manual system injection
+        $system =
+            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $this->injectSystem($kernel, $system);
+
         $response = $kernel->handle($request);
 
         static::assertSame(200, $response->getStatusCode());
@@ -367,6 +373,12 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
+
+        // Manual system injection
+        $system =
+            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $this->injectSystem($kernel, $system);
+
         $response = $kernel->handle($request);
 
         static::assertSame(204, $response->getStatusCode());
@@ -414,13 +426,11 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 }
 
                 #[\Override]
-                public function configure(): self
+                public function configure(): void
                 {
                     if ($this->testContainer) {
                         $this->container = $this->testContainer;
                     }
-
-                    return $this;
                 }
             };
 
@@ -475,11 +485,19 @@ class AbstractKernelEdgeCaseTest extends TestCase
         };
     }
 
+    private function injectSystem(object $object, object $system): void
+    {
+        $reflection = new ReflectionClass(AbstractKernel::class);
+        $property = $reflection->getProperty('system');
+        $property->setValue($object, $system);
+    }
+
     private function injectContainer(object $object, object $container): void
     {
         $reflection = new ReflectionClass(AbstractKernel::class);
         $property = $reflection->getProperty('innerContainer');
         $property->setValue($object, $container);
+        $object->container = $container;
     }
 
     private function setBootedState(AbstractKernel $kernel, bool $state): void

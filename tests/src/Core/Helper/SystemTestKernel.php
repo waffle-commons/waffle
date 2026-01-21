@@ -32,7 +32,7 @@ final class SystemTestKernel extends Kernel
     }
 
     #[\Override]
-    public function configure(): self
+    public function configure(): void
     {
         if ($this->config === null) {
             throw new \LogicException('Config not set in SystemTestKernel');
@@ -47,7 +47,5 @@ final class SystemTestKernel extends Kernel
             $innerContainer = new MockContainer();
             $this->container = $innerContainer;
         }
-
-        return $this;
     }
 }

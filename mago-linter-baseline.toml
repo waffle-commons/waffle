@@ -91,6 +91,12 @@ message = "Anonymous class has too many methods."
 count = 2
 
 [[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+[[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "assert-description"
 message = "Missing description in assert function."

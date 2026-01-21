@@ -26,86 +26,8 @@ count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `WaffleTests\Abstract\Helper\ConcreteTestKernel::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `WaffleTests\Core\Helper\TestKernelWithConfig::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `Waffle\Abstract\AbstractKernel::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `Waffle\Kernel::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-3497:3550::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-3831:3884::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-4245:4298::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-4734:4787::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-5377:5671::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:2062258302379995439-859:912::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `void` of `class@anonymous:6107558782360210274-30091:30324::configure()` is incompatible with parent return type `waffle\commons\contracts\core\kernelinterface` of `Waffle\Commons\Contracts\Core\KernelInterface::configure()`'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "invalid-return-statement"
-message = 'Function `waffle\abstract\abstractkernel::configure` is declared to return `waffle\commons\contracts\core\kernelinterface` but no return value was specified.'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
 code = "invalid-throw"
 message = "Cannot throw type `object` because it is not an instance of Throwable."
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractKernel.php"
-code = "missing-return-statement"
-message = "Missing return statement in function 'configure'"
 count = 1
 
 [[issues]]
@@ -446,14 +368,14 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "deprecated-method"
-message = 'Call to deprecated method: `phpunit\framework\testcase::any`.'
+code = "ambiguous-object-property-access"
+message = "Cannot statically verify property access on a generic `object` type."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:10447039815579447816-12856:13755` of `class@anonymous:10447039815579447816-12856:13755::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
+code = "deprecated-method"
+message = 'Call to deprecated method: `phpunit\framework\testcase::any`.'
 count = 1
 
 [[issues]]
@@ -501,7 +423,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `Exception` in `class@anonymous:10447039815579447816-12250:12456::match`."
+message = "Potentially unhandled exception `Exception` in `class@anonymous:10447039815579447816-12688:12894::match`."
 count = 1
 
 [[issues]]
@@ -597,6 +519,12 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unhandled-thrown-type"
+message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::injectSystem`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests\Abstract\AbstractKernelEdgeCaseTest::setBootedState`.'
 count = 1
 
@@ -656,42 +584,6 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-19628:19883` of `class@anonymous:6107558782360210274-19628:19883::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-20230:20624` of `class@anonymous:6107558782360210274-20230:20624::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-20952:21657` of `class@anonymous:6107558782360210274-20952:21657::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-23721:24688` of `class@anonymous:6107558782360210274-23721:24688::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-34351:36035` of `class@anonymous:6107558782360210274-34351:36035::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "incompatible-return-type"
-message = 'Return type `class@anonymous:6107558782360210274-40833:41706` of `class@anonymous:6107558782360210274-40833:41706::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-iterator"
 message = "The expression provided to `foreach` is not iterable. It resolved to type `mixed`, which is not iterable."
 count = 2
@@ -699,25 +591,13 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `class@anonymous:6107558782360210274-34351:36035::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
+message = 'Invalid return type for function `class@anonymous:6107558782360210274-34277:35931::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-type-cast"
 message = "Casting `mixed` to `array`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "less-specific-return-statement"
-message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-19628:19883` for function `class@anonymous:6107558782360210274-19628:19883::configure`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "less-specific-return-statement"
-message = 'Returned type `waffle\commons\contracts\core\kernelinterface` is less specific than the declared return type `class@anonymous:6107558782360210274-20230:20624` for function `class@anonymous:6107558782360210274-20230:20624::configure`.'
 count = 1
 
 [[issues]]
@@ -777,13 +657,13 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36275:37276::process`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36171:37172::process`. Saw type `mixed`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "nullable-return-statement"
-message = 'Function `class@anonymous:6107558782360210274-34351:36035::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
+message = 'Function `class@anonymous:6107558782360210274-34277:35931::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
 count = 1
 
 [[issues]]
@@ -1191,7 +1071,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34351:36035::boot`."
+message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34277:35931::boot`."
 count = 1
 
 [[issues]]
@@ -1203,7 +1083,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27971:28130::throwError`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27897:28056::throwError`."
 count = 1
 
 [[issues]]
@@ -1502,12 +1382,6 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\abstract\helper\webkernel` of `WaffleTests\Abstract\Helper\WebKernel::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
 code = "mixed-argument"
 message = 'Invalid argument type for argument #1 of `waffletests\abstract\helper\fakeroutingmiddleware::__construct`: expected `Waffle\Commons\Contracts\Routing\RouterInterface`, but found `mixed`.'
 count = 1
@@ -1570,12 +1444,6 @@ count = 1
 file = "tests/src/Core/BaseControllerTest.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\Core\BaseControllerTest::testImplementsRequiredInterfaces`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Core/Helper/SystemTestKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\core\helper\systemtestkernel` of `WaffleTests\Core\Helper\SystemTestKernel::configure()` is incompatible with parent return type `void` of `Waffle\Abstract\AbstractKernel::configure()`'
 count = 1
 
 [[issues]]
