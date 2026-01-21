@@ -119,10 +119,10 @@ abstract class AbstractKernel implements KernelInterface
      * @throws WaffleException
      */
     #[\Override]
-    public function configure(): self
+    public function configure(): void
     {
         if ($this->booted) {
-            return $this;
+            return;
         }
 
         /** @var string $root */
@@ -168,8 +168,6 @@ abstract class AbstractKernel implements KernelInterface
 
         $this->system = new System(security: $this->security)->boot(kernel: $this);
         $this->booted = true;
-
-        return $this;
     }
 
     private function validateState(ServerRequestInterface $request): void
@@ -197,12 +195,8 @@ abstract class AbstractKernel implements KernelInterface
      * @param string $method The current method.
      * @param int $code The HTTP status code (must be 100-599).
      */
-    private function logAndThrow(
-        string $exceptionClass,
-        string $message,
-        string $method,
-        int $code = 500,
-    ): void {
+    private function logAndThrow(string $exceptionClass, string $message, string $method, int $code = 500): void
+    {
         $this->logger->critical($message, [
             'exception' => static::class,
             'method' => $method,
