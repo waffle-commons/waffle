@@ -13,6 +13,18 @@ message = "Avoid `else` clauses."
 count = 1
 
 [[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "tagged-todo"
+message = "TODO should be tagged with (@username) or (#issue)."
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+[[issues]]
 file = "src/Exception/WaffleException.php"
 code = "no-redundant-use"
 message = "Unused import: `RenderingTrait`."

@@ -170,6 +170,16 @@ abstract class AbstractKernel implements KernelInterface
         $this->booted = true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function reset(): void
+    {
+        $this->container->reset();
+
+        // TODO: clean buffered logger
+    }
+
     private function validateState(ServerRequestInterface $request): void
     {
         if ($this->middlewareStack === null) {

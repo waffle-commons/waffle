@@ -50,9 +50,15 @@ count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-method"
+message = 'Method `reset` does not exist on type `Waffle\Commons\Contracts\Container\ContainerInterface`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 3
+count = 4
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
