@@ -101,6 +101,10 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         $result = $controller->$method(...$args);
 
         // 7. Auto-Response Conversion
+        if ($result instanceof ResponseInterface) {
+            return $result;
+        }
+
         if ($this->responseConverter !== null) {
             return $this->responseConverter->convert($result);
         }
@@ -113,7 +117,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         }
 
         throw new RuntimeException(sprintf(
-            'Controller Error: Method "%s::%s" returned "%s", but ResponseFactoryInterface is not available in container.',
+            'Controller Error: Method "%s::%s" returned "%s", but no conversion strategy matched.',
             get_class($controller),
             $method,
             get_debug_type($result),

@@ -414,7 +414,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 public $testContainer;
 
                 #[\Override]
-                public function boot(): AbstractKernel
+                public function boot(): static
                 {
                     return $this;
                 }

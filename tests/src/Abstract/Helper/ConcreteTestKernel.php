@@ -12,7 +12,7 @@ use Waffle\Kernel;
 class ConcreteTestKernel extends Kernel
 {
     #[\Override]
-    public function boot(): self
+    public function boot(): static
     {
         return $this;
     }

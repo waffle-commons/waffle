@@ -14,14 +14,14 @@ class FakeMiddlewareStack implements MiddlewareStackInterface
     private array $middlewares = [];
 
     #[\Override]
-    public function add(MiddlewareInterface $middleware): self
+    public function add(MiddlewareInterface $middleware): static
     {
         $this->middlewares[] = $middleware;
         return $this;
     }
 
     #[\Override]
-    public function prepend(MiddlewareInterface $middleware): self
+    public function prepend(MiddlewareInterface $middleware): static
     {
         array_unshift($this->middlewares, $middleware);
         return $this;

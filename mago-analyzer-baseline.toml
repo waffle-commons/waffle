@@ -404,18 +404,6 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "incompatible-return-type"
-message = 'Return type `Waffle\Abstract\AbstractKernel` of `class@anonymous:10447039815579447816-13160:14036::boot()` is incompatible with parent return type `class@anonymous:10447039815579447816-13160:14036` of `Waffle\Abstract\AbstractKernel::boot()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "incompatible-return-type"
-message = 'Return type `Waffle\Abstract\AbstractKernel` of `class@anonymous:10447039815579447816-13160:14036::boot()` is incompatible with parent return type `class@anonymous:10447039815579447816-13160:14036` of `Waffle\Commons\Contracts\Core\KernelInterface::boot()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "mixed-operand"
 message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
 count = 1
@@ -627,7 +615,7 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `class@anonymous:6107558782360210274-34148:35802::getSystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
+message = 'Invalid return type for function `class@anonymous:6107558782360210274-34242:35898::getSystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
 count = 1
 
 [[issues]]
@@ -693,13 +681,13 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36042:37043::process`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36138:37139::process`. Saw type `mixed`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "nullable-return-statement"
-message = 'Function `class@anonymous:6107558782360210274-34148:35802::getSystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
+message = 'Function `class@anonymous:6107558782360210274-34242:35898::getSystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
 count = 1
 
 [[issues]]
@@ -1113,25 +1101,25 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34148:35802::boot`."
+message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34242:35898::boot`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-16216:16375::throwError`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-16310:16469::throwError`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27792:27951::throwError`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27886:28045::throwError`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7604:9217::process`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7698:9311::process`."
 count = 1
 
 [[issues]]
@@ -1340,12 +1328,6 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "unimplemented-abstract-method"
-message = 'Class `WaffleTests\Abstract\StubContainer` does not implement the abstract method `reset`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unused-property"
 message = "Property `$configMock` is never used."
 count = 1
@@ -1378,12 +1360,6 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "write-only-property"
 message = "Property `$systemMock` is written to but never read."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractSystemTest.php"
-code = "incompatible-return-type"
-message = 'Return type `Waffle\Commons\Contracts\System\SystemInterface` of `class@anonymous:7350966032097653580-2252:3038::boot()` is incompatible with parent return type `class@anonymous:7350966032097653580-2252:3038` of `Waffle\Commons\Contracts\System\SystemInterface::boot()`'
 count = 1
 
 [[issues]]
@@ -1426,30 +1402,6 @@ count = 1
 file = "tests/src/Abstract/AbstractSystemTest.php"
 code = "write-only-property"
 message = "Property `$configMock` is written to but never read."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/ConcreteTestKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\abstract\helper\concretetestkernel` of `WaffleTests\Abstract\Helper\ConcreteTestKernel::boot()` is incompatible with parent return type `waffletests\abstract\helper\concretetestkernel&static` of `Waffle\Abstract\AbstractKernel::boot()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/ConcreteTestKernel.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\abstract\helper\concretetestkernel` of `WaffleTests\Abstract\Helper\ConcreteTestKernel::boot()` is incompatible with parent return type `waffletests\abstract\helper\concretetestkernel&static` of `Waffle\Commons\Contracts\Core\KernelInterface::boot()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/FakeMiddlewareStack.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\abstract\helper\fakemiddlewarestack` of `WaffleTests\Abstract\Helper\FakeMiddlewareStack::add()` is incompatible with parent return type `waffletests\abstract\helper\fakemiddlewarestack&static` of `Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface::add()`'
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/FakeMiddlewareStack.php"
-code = "incompatible-return-type"
-message = 'Return type `waffletests\abstract\helper\fakemiddlewarestack` of `WaffleTests\Abstract\Helper\FakeMiddlewareStack::prepend()` is incompatible with parent return type `waffletests\abstract\helper\fakemiddlewarestack&static` of `Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface::prepend()`'
 count = 1
 
 [[issues]]
@@ -2266,12 +2218,6 @@ count = 1
 file = "tests/src/Helper/MockContainer.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-3212:3361` in `WaffleTests\Helper\MockContainer::instantiate`.'
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
-code = "unimplemented-abstract-method"
-message = 'Class `WaffleTests\Helper\MockContainer` does not implement the abstract method `reset`.'
 count = 1
 
 [[issues]]

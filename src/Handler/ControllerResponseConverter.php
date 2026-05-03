@@ -43,7 +43,7 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
         }
 
         throw new RuntimeException(sprintf(
-            'Controller Error: Returned "%s", but ResponseInterface was expected and no conversion strategy matched.',
+            'Controller Error: Returned "%s", but no conversion strategy matched.',
             get_debug_type($result),
         ));
     }

@@ -119,4 +119,10 @@ class MockContainer implements ContainerInterface, PsrContainerInterface
     {
         $this->services[$id] = $concrete;
     }
+
+    #[\Override]
+    public function reset(): void
+    {
+        $this->services = [];
+    }
 }

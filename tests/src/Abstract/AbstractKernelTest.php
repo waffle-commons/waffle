@@ -254,6 +254,12 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
         }
         $this->services[$id] = $concrete;
     }
+
+    #[\Override]
+    public function reset(): void
+    {
+        $this->services = [];
+    }
 }
 
 class ArgumentController extends BaseController
@@ -961,7 +967,7 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function boot(): self
+            public function boot(): static
             {
                 // Force prod environment
                 $ref = new \ReflectionClass(AbstractKernel::class);
