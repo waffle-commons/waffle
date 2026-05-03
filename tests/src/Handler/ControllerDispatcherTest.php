@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
@@ -75,15 +74,8 @@ class ControllerDispatcherTest extends TestCase
 
         /** @var ContainerInterface&MockObject $container */
         $this->container = $this->createMock(ContainerInterface::class); // Keep as mock for checks
-        $this->container
-            ->expects($this->once())
-            ->method('has')
-            ->with($className)
-            ->willReturn(false);
-        $this->container
-            ->expects($this->once())
-            ->method('set')
-            ->with($className, $className);
+        $this->container->expects($this->once())->method('has')->with($className)->willReturn(false);
+        $this->container->expects($this->once())->method('set')->with($className, $className);
         $this->container
             ->expects($this->once())
             ->method('get')
@@ -144,10 +136,7 @@ class ControllerDispatcherTest extends TestCase
                 [ResponseFactoryInterface::class, false],
             ]);
 
-        $this->container
-            ->method('get')
-            ->with($className)
-            ->willReturn($controller);
+        $this->container->method('get')->with($className)->willReturn($controller);
 
         $response = $this->dispatcher->handle($this->request);
         static::assertInstanceOf(ResponseInterface::class, $response);

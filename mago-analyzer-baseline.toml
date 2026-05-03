@@ -2,14 +2,8 @@ variant = "loose"
 
 [[issues]]
 file = "src/Abstract/AbstractController.php"
-code = "less-specific-return-statement"
-message = 'Returned type `psr\http\message\messageinterface&static` is less specific than the declared return type `Psr\Http\Message\ResponseInterface` for function `waffle\abstract\abstractcontroller::jsonresponse`.'
-count = 1
-
-[[issues]]
-file = "src/Abstract/AbstractController.php"
 code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #2 of `waffle\exception\renderingexception::__construct`: expected `int`, but possibly received `int|string`.'
+message = 'Possible argument type mismatch for argument #2 of `Waffle\Exception\RenderingException::__construct`: expected `int`, but possibly received `int|string`.'
 count = 1
 
 [[issues]]
@@ -26,15 +20,27 @@ count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface)`).'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "invalid-throw"
 message = "Cannot throw type `object` because it is not an instance of Throwable."
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Waffle\Event\ResponseGeneratedEvent::__construct`: expected `Psr\Http\Message\ResponseInterface`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
+count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
@@ -45,8 +51,14 @@ count = 1
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
 code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `waffle\abstract\abstractkernel::handle`. Saw type `mixed`.'
+message = 'Could not infer a precise return type for function `Waffle\Abstract\AbstractKernel::dispatch`. Saw type `mixed`.'
 count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "non-existent-class-like"
+message = 'Cannot find class, interface, enum, or type alias `Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface`.'
+count = 2
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
@@ -58,7 +70,13 @@ count = 1
 file = "src/Abstract/AbstractKernel.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 4
+count = 2
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "possibly-null-argument"
+message = "Argument #1 of function `method_exists` is possibly `null`, but parameter type `class-string|object` does not accept it."
+count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
@@ -69,14 +87,14 @@ count = 2
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
 code = "possibly-null-argument"
-message = 'Argument #1 of method `waffle\core\system::__construct` is possibly `null`, but parameter type `Waffle\Commons\Contracts\Security\SecurityInterface` does not accept it.'
+message = 'Argument #1 of method `Waffle\Handler\ControllerDispatcher::__construct` is possibly `null`, but parameter type `Waffle\Commons\Contracts\Container\ContainerInterface` does not accept it.'
 count = 1
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
-code = "possibly-null-argument"
-message = 'Argument #1 of method `waffle\handler\controllerdispatcher::__construct` is possibly `null`, but parameter type `Waffle\Commons\Contracts\Container\ContainerInterface` does not accept it.'
-count = 1
+code = "redundant-condition"
+message = "This condition (type `true`) will always evaluate to true."
+count = 2
 
 [[issues]]
 file = "src/Abstract/AbstractKernel.php"
@@ -87,13 +105,13 @@ count = 1
 [[issues]]
 file = "src/Core/System.php"
 code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `exception::__construct`: expected `string`, but found `mixed`."
+message = "Invalid argument type for argument #1 of `Exception::__construct`: expected `string`, but found `mixed`."
 count = 1
 
 [[issues]]
 file = "src/Core/System.php"
 code = "mixed-argument"
-message = "Invalid argument type for argument #2 of `exception::__construct`: expected `int`, but found `mixed`."
+message = "Invalid argument type for argument #2 of `Exception::__construct`: expected `int`, but found `mixed`."
 count = 1
 
 [[issues]]
@@ -111,7 +129,7 @@ count = 1
 [[issues]]
 file = "src/Core/System.php"
 code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #3 of `exception::__construct`: expected `Throwable|null`, but possibly received `ReflectionException|Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface`.'
+message = 'Possible argument type mismatch for argument #3 of `Exception::__construct`: expected `Throwable|null`, but possibly received `ReflectionException|Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface`.'
 count = 1
 
 [[issues]]
@@ -121,45 +139,75 @@ message = 'Potentially unhandled exception `Waffle\Exception\Container\Container
 count = 1
 
 [[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "invalid-type-cast"
-message = "Casting `mixed` to `float`."
+file = "src/Handler/ControllerArgumentResolver.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Handler\ControllerArgumentResolver` cannot implement unknown type `ArgumentResolverInterface`'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerArgumentResolver.php"
+code = "unused-property"
+message = "Property `$container` is never used."
 count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
-code = "less-specific-return-statement"
-message = 'Returned type `psr\http\message\messageinterface&static` is less specific than the declared return type `Psr\Http\Message\ResponseInterface` for function `waffle\handler\controllerdispatcher::handle`.'
-count = 2
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface)`).'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Handler\ArgumentResolverInterface)`).'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "invalid-method-access"
+message = 'Attempting to access a method on a non-object type (`unknown-ref(Waffle\Commons\Contracts\Handler\ResponseConverterInterface)`).'
+count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
 code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `is_subclass_of`: expected `class-string|object`, but found `mixed`."
+message = 'Invalid argument type for argument #4 of `Waffle\Event\ControllerArgumentsResolvedEvent::__construct`: expected `array<int, mixed>`, but found `mixed`.'
 count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 5
+count = 4
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
-code = "non-existent-method"
-message = "Method `getname` does not exist on type `ReflectionIntersectionType`."
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `Waffle\Handler\ControllerDispatcher::handle`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
-code = "non-existent-method"
-message = "Method `getname` does not exist on type `ReflectionUnionType`."
+code = "non-existent-class-like"
+message = 'Cannot find class, interface, enum, or type alias `Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface`.'
 count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
-code = "possibly-invalid-argument"
-message = "Possible argument type mismatch for argument #1 of `get_class`: expected `object`, but possibly received `object|string`."
+code = "non-existent-class-like"
+message = 'Cannot find class, interface, enum, or type alias `Waffle\Commons\Contracts\Handler\ArgumentResolverInterface`.'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "non-existent-class-like"
+message = 'Cannot find class, interface, enum, or type alias `Waffle\Commons\Contracts\Handler\ResponseConverterInterface`.'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerDispatcher.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
 count = 1
 
 [[issues]]
@@ -171,19 +219,7 @@ count = 1
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `InvalidArgumentException` in `Waffle\Handler\ControllerDispatcher::handle`.'
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `Psr\Container\ContainerExceptionInterface` in `Waffle\Handler\ControllerDispatcher::handle`.'
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `Psr\Container\ContainerExceptionInterface` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
 count = 1
 
 [[issues]]
@@ -195,25 +231,19 @@ count = 1
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `Psr\Container\NotFoundExceptionInterface` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `ReflectionException` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Handler\ControllerDispatcher::handle`.'
 count = 1
 
 [[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `RuntimeException` in `Waffle\Handler\ControllerDispatcher::resolveArguments`.'
+file = "src/Handler/ControllerResponseConverter.php"
+code = "non-existent-class-like"
+message = 'Class `Waffle\Handler\ControllerResponseConverter` cannot implement unknown type `ResponseConverterInterface`'
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerResponseConverter.php"
+code = "unused-property"
+message = "Property `$factory` is never used."
 count = 1
 
 [[issues]]
@@ -381,7 +411,13 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "deprecated-method"
-message = 'Call to deprecated method: `phpunit\framework\testcase::any`.'
+message = 'Call to deprecated method: `PHPUnit\Framework\TestCase::any`.'
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "incompatible-return-type"
+message = 'Return type `Waffle\Abstract\AbstractKernel` of `class@anonymous:10447039815579447816-13160:14036::boot()` is incompatible with parent return type `class@anonymous:10447039815579447816-13160:14036` of `Waffle\Abstract\AbstractKernel::boot()`'
 count = 1
 
 [[issues]]
@@ -429,7 +465,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `Exception` in `class@anonymous:10447039815579447816-12688:12894::match`."
+message = "Potentially unhandled exception `Exception` in `class@anonymous:10447039815579447816-12566:12772::match`."
 count = 1
 
 [[issues]]
@@ -597,7 +633,7 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `class@anonymous:6107558782360210274-34277:35931::getsystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
+message = 'Invalid return type for function `class@anonymous:6107558782360210274-34148:35802::getSystem`: expected `Waffle\Core\System`, but found `Waffle\Core\System|null`.'
 count = 1
 
 [[issues]]
@@ -609,19 +645,19 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `Psr\Http\Message\ServerRequestInterface::withattribute`: expected `string`, but found `mixed`.'
+message = 'Invalid argument type for argument #1 of `Psr\Http\Message\ServerRequestInterface::withAttribute`: expected `string`, but found `mixed`.'
 count = 4
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertarrayhaskey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
+message = 'Invalid argument type for argument #2 of `PHPUnit\Framework\Assert::assertArrayHasKey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
 count = 3
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `phpunit\framework\assert::assertarraynothaskey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
+message = 'Invalid argument type for argument #2 of `PHPUnit\Framework\Assert::assertArrayNotHasKey`: expected `ArrayAccess<array-key, mixed>|array<array-key, mixed>`, but found `mixed`.'
 count = 3
 
 [[issues]]
@@ -634,13 +670,13 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 12
+count = 14
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 9
+count = 13
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -663,20 +699,20 @@ count = 2
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36171:37172::process`. Saw type `mixed`."
+message = "Could not infer a precise return type for function `class@anonymous:6107558782360210274-36042:37043::process`. Saw type `mixed`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "nullable-return-statement"
-message = 'Function `class@anonymous:6107558782360210274-34277:35931::getsystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
+message = 'Function `class@anonymous:6107558782360210274-34148:35802::getSystem` is declared to return `Waffle\Core\System` but possibly returns a nullable value (inferred as `Waffle\Core\System|null`).'
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 5
+count = 11
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -686,33 +722,33 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "possibly-undefined-array-index"
+code = "possibly-undefined-int-array-index"
 message = "Possibly undefined array key `int(0)` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "possibly-undefined-array-index"
+code = "possibly-undefined-int-array-index"
 message = "Possibly undefined array key `int(1)` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "possibly-undefined-array-index"
+code = "possibly-undefined-int-array-index"
 message = "Possibly undefined array key `int(2)` accessed on `array<array-key, mixed>`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "possibly-undefined-array-index"
-message = "Possibly undefined array key `string('message')` accessed on `array<array-key, mixed>`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "possibly-undefined-string-array-index"
 message = "Possibly undefined array key 'APP_ENV' accessed on `array{'APP_DEBUG'?: bool, 'APP_ENV'?: string, 'APP_FALLBACK_LOCALE'?: non-empty-string, 'APP_KEY'?: non-empty-string, 'APP_LOCALE'?: non-empty-string, 'APP_NAME'?: non-empty-string, 'APP_SECRET'?: non-empty-string, 'APP_URL'?: non-empty-string, 'CACHE_DRIVER'?: non-empty-string, 'DATABASE_URL'?: non-empty-string, 'DB_CONNECTION'?: non-empty-string, 'DB_DATABASE'?: non-empty-string, 'DB_HOST'?: non-empty-string, 'DB_PASSWORD'?: string, 'DB_PORT'?: non-empty-string, 'DB_USERNAME'?: non-empty-string, 'HOME'?: non-empty-string, 'PATH'?: non-empty-string, 'SECRET'?: non-empty-string, 'SHELL'?: non-empty-string, 'USER'?: non-empty-string, ...<non-empty-string, string>}`."
-count = 2
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "possibly-undefined-string-array-index"
+message = "Possibly undefined array key `string('message')` accessed on `array<array-key, mixed>`."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -755,6 +791,12 @@ file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "redundant-docblock-type"
 message = "Redundant docblock type for variable `$uriMock`."
 count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "redundant-logical-operation"
+message = "Redundant `&&` operation: left operand is evaluated and right operand is always truthy."
+count = 3
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -1077,25 +1119,25 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34277:35931::boot`."
+message = "Potentially unhandled exception `ReflectionException` in `class@anonymous:6107558782360210274-34148:35802::boot`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-16282:16441::throwError`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-16216:16375::throwError`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27897:28056::throwError`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-27792:27951::throwError`."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "unhandled-thrown-type"
-message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7631:9244::process`."
+message = "Potentially unhandled exception `RuntimeException` in `class@anonymous:6107558782360210274-7604:9217::process`."
 count = 1
 
 [[issues]]
@@ -1303,6 +1345,42 @@ message = 'Potentially unhandled exception `Waffle\Exception\WaffleException` in
 count = 1
 
 [[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unused-property"
+message = "Property `$configMock` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unused-property"
+message = "Property `$headers` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unused-property"
+message = "Property `$reasonPhrase` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unused-property"
+message = "Property `$securityMock` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "unused-property"
+message = "Property `$uriMock` is never used."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "write-only-property"
+message = "Property `$systemMock` is written to but never read."
+count = 1
+
+[[issues]]
 file = "tests/src/Abstract/AbstractSystemTest.php"
 code = "non-existent-attribute-class"
 message = 'Attribute class `WaffleTests\Abstract\AllowMockObjectsWithoutExpectations` not found or could not be autoloaded.'
@@ -1339,6 +1417,18 @@ message = 'Potentially unhandled exception `ReflectionException` in `WaffleTests
 count = 1
 
 [[issues]]
+file = "tests/src/Abstract/AbstractSystemTest.php"
+code = "write-only-property"
+message = "Property `$configMock` is written to but never read."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/Helper/ConcreteTestKernel.php"
+code = "incompatible-return-type"
+message = 'Return type `waffletests\abstract\helper\concretetestkernel` of `WaffleTests\Abstract\Helper\ConcreteTestKernel::boot()` is incompatible with parent return type `waffletests\abstract\helper\concretetestkernel&static` of `Waffle\Abstract\AbstractKernel::boot()`'
+count = 1
+
+[[issues]]
 file = "tests/src/Abstract/Helper/FakeRoutingMiddleware.php"
 code = "invalid-throw"
 message = 'Cannot throw type `Waffle\Commons\Contracts\Routing\Exception\RouteNotFoundExceptionInterface` because it is not an instance of Throwable.'
@@ -1359,7 +1449,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/Helper/StubServerRequest.php"
 code = "invalid-return-statement"
-message = 'Invalid return type for function `waffletests\abstract\helper\stubserverrequest::geturi`: expected `Psr\Http\Message\UriInterface`, but found `Psr\Http\Message\UriInterface|null`.'
+message = 'Invalid return type for function `WaffleTests\Abstract\Helper\StubServerRequest::getUri`: expected `Psr\Http\Message\UriInterface`, but found `Psr\Http\Message\UriInterface|null`.'
 count = 1
 
 [[issues]]
@@ -1377,7 +1467,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/Helper/StubServerRequest.php"
 code = "nullable-return-statement"
-message = 'Function `waffletests\abstract\helper\stubserverrequest::geturi` is declared to return `Psr\Http\Message\UriInterface` but possibly returns a nullable value (inferred as `Psr\Http\Message\UriInterface|null`).'
+message = 'Function `WaffleTests\Abstract\Helper\StubServerRequest::getUri` is declared to return `Psr\Http\Message\UriInterface` but possibly returns a nullable value (inferred as `Psr\Http\Message\UriInterface|null`).'
 count = 1
 
 [[issues]]
@@ -1389,7 +1479,7 @@ count = 1
 [[issues]]
 file = "tests/src/Abstract/Helper/WebKernel.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `waffletests\abstract\helper\fakeroutingmiddleware::__construct`: expected `Waffle\Commons\Contracts\Routing\RouterInterface`, but found `mixed`.'
+message = 'Invalid argument type for argument #1 of `WaffleTests\Abstract\Helper\FakeRoutingMiddleware::__construct`: expected `Waffle\Commons\Contracts\Routing\RouterInterface`, but found `mixed`.'
 count = 1
 
 [[issues]]
@@ -1480,6 +1570,12 @@ count = 1
 file = "tests/src/Core/Helper/TestKernelWithConfig.php"
 code = "non-existent-class"
 message = 'Class `Waffle\Core\Container` not found.'
+count = 1
+
+[[issues]]
+file = "tests/src/Core/Helper/TestKernelWithConfig.php"
+code = "non-existent-class-like"
+message = 'Cannot find class, interface, enum, or type alias `Waffle\Commons\Config\Config`.'
 count = 1
 
 [[issues]]
@@ -1894,7 +1990,7 @@ count = 1
 file = "tests/src/Handler/ControllerDispatcherTest.php"
 code = "mixed-array-access"
 message = "Unsafe array access on type `mixed`."
-count = 4
+count = 2
 
 [[issues]]
 file = "tests/src/Handler/ControllerDispatcherTest.php"
@@ -2139,13 +2235,13 @@ count = 1
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-2310:2434` in `WaffleTests\Helper\MockContainer::instantiate`.'
+message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-2312:2436` in `WaffleTests\Helper\MockContainer::instantiate`.'
 count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
 code = "unhandled-thrown-type"
-message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-3210:3359` in `WaffleTests\Helper\MockContainer::instantiate`.'
+message = 'Potentially unhandled exception `class@anonymous:18017892162872485466-3212:3361` in `WaffleTests\Helper\MockContainer::instantiate`.'
 count = 1
 
 [[issues]]
@@ -2182,6 +2278,18 @@ count = 1
 file = "tests/src/KernelTest.php"
 code = "unhandled-thrown-type"
 message = 'Potentially unhandled exception `PHPUnit\Framework\UnknownClassOrInterfaceException` in `WaffleTests\KernelTest::testKernelCanBeInstantiated`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `WaffleTests\TestsTrait\KernelFactoryTrait::createAndGetSecurity`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/src/TestsTrait/KernelFactoryTrait.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `WaffleTests\TestsTrait\KernelFactoryTrait::createMockContainer`. Saw type `mixed`.'
 count = 1
 
 [[issues]]

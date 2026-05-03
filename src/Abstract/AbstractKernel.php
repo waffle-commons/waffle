@@ -14,10 +14,14 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
+use Waffle\Event\RequestReceivedEvent;
+use Waffle\Event\ResponseGeneratedEvent;
+use Waffle\Event\TerminateEvent;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
@@ -46,6 +50,8 @@ abstract class AbstractKernel implements KernelInterface
 
     protected(set) ?MiddlewareStackInterface $middlewareStack = null;
 
+    protected ?EventDispatcherInterface $dispatcher = null;
+
     /**
      * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
      */
@@ -72,6 +78,11 @@ abstract class AbstractKernel implements KernelInterface
         $this->middlewareStack = $stack;
     }
 
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
     public function __construct(
         protected LoggerInterface $logger = new NullLogger(),
     ) {}
@@ -90,16 +101,61 @@ abstract class AbstractKernel implements KernelInterface
 
         $this->validateState(request: $request);
 
-        $fallbackHandler = new ControllerDispatcher($this->container);
+        // Dispatch RequestReceivedEvent (allows pre-pipeline modification)
+        $requestReceivedEvent = new RequestReceivedEvent($request);
+        $requestReceivedEvent = $this->dispatch($requestReceivedEvent);
+        if ($requestReceivedEvent instanceof RequestReceivedEvent) {
+            $request = $requestReceivedEvent->getRequest();
+        }
 
-        return $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
+        $fallbackHandler = new ControllerDispatcher($this->container, $this->dispatcher);
+
+        $response = $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
+
+        // Dispatch ResponseGeneratedEvent (allows post-pipeline modification)
+        $responseGeneratedEvent = new ResponseGeneratedEvent($response);
+        $responseGeneratedEvent = $this->dispatch($responseGeneratedEvent);
+        if ($responseGeneratedEvent instanceof ResponseGeneratedEvent) {
+            $response = $responseGeneratedEvent->getResponse();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Dispatches a terminate event for heavy async tasks after response emission.
+     * Call this from Runtime after emit() and before reset().
+     */
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
+    {
+        if ($this->dispatcher === null) {
+            return;
+        }
+
+        $this->dispatch(new TerminateEvent($request, $response));
+    }
+
+    /**
+     * Dispatches an event through the event dispatcher if available.
+     *
+     * @template T of object
+     * @param T $event
+     * @return T
+     */
+    protected function dispatch(object $event): object
+    {
+        if ($this->dispatcher === null) {
+            return $event;
+        }
+
+        return $this->dispatcher->dispatch($event);
     }
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    public function boot(): self
+    public function boot(): static
     {
         if ($this->booted) {
             return $this;
@@ -167,6 +223,12 @@ abstract class AbstractKernel implements KernelInterface
         }
 
         $this->system = new System(security: $this->security)->boot(kernel: $this);
+
+        // Lock the container to prevent service override after boot
+        if (method_exists($this->container, 'lock')) {
+            $this->container->lock();
+        }
+
         $this->booted = true;
     }
 

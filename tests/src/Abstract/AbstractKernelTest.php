@@ -45,9 +45,7 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function close(): void
-    {
-    }
+    public function close(): void {}
 
     #[\Override]
     public function detach()
@@ -80,14 +78,10 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function seek(int $offset, int $whence = SEEK_SET): void
-    {
-    }
+    public function seek(int $offset, int $whence = SEEK_SET): void {}
 
     #[\Override]
-    public function rewind(): void
-    {
-    }
+    public function rewind(): void {}
 
     #[\Override]
     public function isWritable(): bool
@@ -500,10 +494,7 @@ class AbstractKernelTest extends TestCase
             ]);
 
         $responseStub = new StubResponse(500);
-        $this->responseFactoryMock
-            ->method('createResponse')
-            ->with(500)
-            ->willReturn($responseStub);
+        $this->responseFactoryMock->method('createResponse')->with(500)->willReturn($responseStub);
 
         // Setup container
         $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
@@ -761,10 +752,7 @@ class AbstractKernelTest extends TestCase
         // For simplicity, passing URI string to constructor handles it.
 
         $responseStub = new StubResponse(404);
-        $this->responseFactoryMock
-            ->method('createResponse')
-            ->with(404)
-            ->willReturn($responseStub);
+        $this->responseFactoryMock->method('createResponse')->with(404)->willReturn($responseStub);
 
         $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
 
@@ -831,10 +819,10 @@ class AbstractKernelTest extends TestCase
         $controllersDir = APP_ROOT . '/src/Controller';
 
         if (!is_dir($servicesDir)) {
-            mkdir($servicesDir, 0777, true);
+            mkdir($servicesDir, 0o777, true);
         }
         if (!is_dir($controllersDir)) {
-            mkdir($controllersDir, 0777, true);
+            mkdir($controllersDir, 0o777, true);
         }
 
         // Create dummy service class
@@ -899,9 +887,7 @@ class AbstractKernelTest extends TestCase
         /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
         // Mock analyze to do nothing
-        $securityMock
-            ->method('analyze')
-            ->willReturnCallback(static function () {});
+        $securityMock->method('analyze')->willReturnCallback(static function () {});
 
         /** @var UriInterface&MockObject $uriMock */
         $uriMock = $this->createMock(UriInterface::class);

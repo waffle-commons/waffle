@@ -9,13 +9,10 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Kernel;
-use WaffleTests\Abstract\Helper\FakeMiddlewareStack;
-use WaffleTests\Abstract\Helper\FakeRoutingMiddleware;
 
 /**
  * This is a test double for the concrete Kernel.
@@ -90,9 +87,7 @@ class WebKernel extends Kernel
                 // Fallback mock if not set
                 $this->security = new class implements SecurityInterface {
                     #[\Override]
-                    public function analyze(object $object, array $expectations = []): void
-                    {
-                    }
+                    public function analyze(object $object, array $expectations = []): void {}
                 };
             }
             $this->system = new System(security: $this->security)->boot(kernel: $this);

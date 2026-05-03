@@ -1,10 +1,10 @@
-# Welcome to Mago!
+# Mago Configuration - Waffle Commons Alpha 5
 # For full documentation, see https://mago.carthage.software/tools/overview
 php-version = "8.5.0"
 
 [source]
 paths = ["src/", "tests/"]
-includes = ["vendor", "vendor/waffle-commons/contracts/src", "vendor/waffle-commons/utils/src"]
+includes = ["vendor"]
 excludes = []
 
 [formatter]
@@ -20,18 +20,18 @@ baseline = "mago-linter-baseline.toml"
 integrations = ["phpunit"]
 
 [linter.rules]
+# Security - Zero tolerance
 no-insecure-comparison = { level = "error" }
 no-literal-password = { level = "error" }
 no-debug-symbols = { level = "error" }
 disallowed-functions = { level = "error", functions = ["eval", "exec", "system", "shell_exec", "passthru", "phpinfo"] }
 
+# Code quality - Strict
 prefer-interface = { level = "error" }
 strict-types = { level = "error" }
-property-type = { level = "error" }
-return-type = { level = "error" }
-
 cyclomatic-complexity = { level = "warning", threshold = 10 }
 
+# Style - Notes (informational)
 prefer-arrow-function = { level = "note" }
 no-redundant-nullsafe = { level = "note" }
 

@@ -143,7 +143,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
         $container
             ->method('has')
             ->willReturnCallback(
-                fn($id) => $id === 'stdClass' || $id === 'TestController' || $id === ResponseFactoryInterface::class,
+                static fn($id) => (
+                    $id === 'stdClass'
+                    || $id === 'TestController'
+                    || $id === ResponseFactoryInterface::class
+                ),
             );
         $container
             ->method('get')

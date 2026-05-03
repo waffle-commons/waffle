@@ -7,7 +7,6 @@ namespace WaffleTests\Factory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Factory\ContainerFactory;
 

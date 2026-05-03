@@ -6,7 +6,6 @@ namespace WaffleTests\Abstract\Helper;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 class StubServerRequest implements ServerRequestInterface
@@ -74,7 +73,7 @@ class StubServerRequest implements ServerRequestInterface
                     return $this;
                 }
 
-                public function withUserInfo($user, $password = null): UriInterface
+                public function withUserInfo($user, #[\SensitiveParameter] $password = null): UriInterface
                 {
                     return $this;
                 }
@@ -247,9 +246,7 @@ class StubServerRequest implements ServerRequestInterface
                 return '';
             }
 
-            public function close(): void
-            {
-            }
+            public function close(): void {}
 
             public function detach()
             {
@@ -276,13 +273,9 @@ class StubServerRequest implements ServerRequestInterface
                 return false;
             }
 
-            public function seek($offset, $whence = SEEK_SET): void
-            {
-            }
+            public function seek($offset, $whence = SEEK_SET): void {}
 
-            public function rewind(): void
-            {
-            }
+            public function rewind(): void {}
 
             public function isWritable(): bool
             {

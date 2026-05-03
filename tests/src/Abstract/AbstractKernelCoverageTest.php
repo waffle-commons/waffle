@@ -14,7 +14,6 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Exception\Container\ContainerException;
-use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
 
 #[CoversClass(AbstractKernel::class)]

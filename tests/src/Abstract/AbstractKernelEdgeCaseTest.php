@@ -41,7 +41,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
         parent::setUp();
         $this->testConfigDir = __DIR__ . '/../../fixtures/config';
         if (!is_dir($this->testConfigDir)) {
-            mkdir($this->testConfigDir, 0777, true);
+            mkdir($this->testConfigDir, 0o777, true);
         }
 
         if (!defined('APP_ROOT')) {
@@ -243,9 +243,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                     }
 
                     #[\Override]
-                    public function close(): void
-                    {
-                    }
+                    public function close(): void {}
 
                     #[\Override]
                     public function detach()
@@ -278,14 +276,10 @@ class AbstractKernelEdgeCaseTest extends TestCase
                     }
 
                     #[\Override]
-                    public function seek($offset, $whence = SEEK_SET): void
-                    {
-                    }
+                    public function seek($offset, $whence = SEEK_SET): void {}
 
                     #[\Override]
-                    public function rewind(): void
-                    {
-                    }
+                    public function rewind(): void {}
 
                     #[\Override]
                     public function isWritable(): bool
@@ -407,8 +401,8 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $responseFactoryMock],
             ]);
 
-        $kernel =
-            new #[AllowDynamicProperties]
+        $kernel = new
+            #[AllowDynamicProperties]
             class($this->testConfigDir, 'test', new NullLogger()) extends AbstractKernel {
                 public function __construct(string $_configDir, string $env, LoggerInterface $logger)
                 {
@@ -535,7 +529,5 @@ class StubCommonsContainer implements \Psr\Container\ContainerInterface
         return true;
     }
 
-    public function set(string $_id, mixed $_service): void
-    {
-    }
+    public function set(string $_id, mixed $_service): void {}
 }

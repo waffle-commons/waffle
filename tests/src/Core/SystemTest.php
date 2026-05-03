@@ -9,7 +9,6 @@ namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Exception\WaffleException;
@@ -32,7 +31,7 @@ final class SystemTest extends TestCase
         parent::setUp();
         // Ensure the empty directory exists for the success test
         if (!is_dir($this->testConfigDir . DIRECTORY_SEPARATOR . $this->emptyControllerDir)) {
-            mkdir($this->testConfigDir . DIRECTORY_SEPARATOR . $this->emptyControllerDir, 0777, true);
+            mkdir($this->testConfigDir . DIRECTORY_SEPARATOR . $this->emptyControllerDir, 0o777, true);
         }
     }
 

@@ -67,7 +67,7 @@ class MockContainer implements ContainerInterface, PsrContainerInterface
     private function instantiate(string $class): object
     {
         if (!class_exists($class) && !interface_exists($class)) {
-            throw new \InvalidArgumentException("Class or interface \"$class\" does not exist.");
+            throw new \InvalidArgumentException("Class or interface \"{$class}\" does not exist.");
         }
         $reflector = new \ReflectionClass($class);
 

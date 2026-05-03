@@ -22,7 +22,7 @@
         <server name="SHELL_VERBOSITY" value="-1"/>
     </php>
     <testsuites>
-        <testsuite name="Waffle (core) Test Suite">
+        <testsuite name="Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

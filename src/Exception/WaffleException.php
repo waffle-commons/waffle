@@ -6,7 +6,6 @@ namespace Waffle\Exception;
 
 use Exception;
 use Throwable;
-use Waffle\Trait\RenderingTrait;
 
 class WaffleException extends Exception
 {

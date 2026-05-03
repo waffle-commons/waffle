@@ -25,7 +25,7 @@ class System extends AbstractSystem
      * @throws WaffleException
      */
     #[\Override]
-    public function boot(KernelInterface $kernel): self
+    public function boot(KernelInterface $kernel): static
     {
         try {
             /** @var Kernel $kernel */

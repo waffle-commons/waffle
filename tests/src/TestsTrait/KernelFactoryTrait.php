@@ -73,8 +73,7 @@ trait KernelFactoryTrait
     {
         // @mago-ignore non-existent-method
         /** @var SecurityInterface&MockObject $mock */
-        $mock = $this->createMock(SecurityInterface::class);
-        return $mock;
+        return $this->createMock(SecurityInterface::class);
     }
 
     /**
@@ -107,8 +106,7 @@ trait KernelFactoryTrait
     {
         // @mago-ignore non-existent-method
         /** @var ContainerInterface&MockObject $mock */
-        $mock = $this->createMock(ContainerInterface::class);
-        return $mock;
+        return $this->createMock(ContainerInterface::class);
     }
 
     protected function createMockKernel(?ContainerInterface $container = null): KernelInterface
