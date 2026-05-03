@@ -7,7 +7,6 @@ namespace WaffleTests\Factory;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Factory\ContainerFactory;
 
@@ -99,8 +98,8 @@ class ContainerFactoryEdgeCaseTest extends TestCase
         // So we need valid PHP content.
 
         $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->once())->method('has')->with('TestService')->willReturn(false);
-        $container->expects($this->once())->method('set')->with('TestService', 'TestService');
+        $container->expects($this->once())->method('has')->with('Sub\TestService')->willReturn(false);
+        $container->expects($this->once())->method('set')->with('Sub\TestService', 'Sub\TestService');
 
         // We can't rely on namespace extraction in this test env environment simply.
         // ReflectionTrait::className reads content and regex matches namespace and class.

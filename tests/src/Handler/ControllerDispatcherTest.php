@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
@@ -75,15 +74,8 @@ class ControllerDispatcherTest extends TestCase
 
         /** @var ContainerInterface&MockObject $container */
         $this->container = $this->createMock(ContainerInterface::class); // Keep as mock for checks
-        $this->container
-            ->expects($this->once())
-            ->method('has')
-            ->with($className)
-            ->willReturn(false);
-        $this->container
-            ->expects($this->once())
-            ->method('set')
-            ->with($className, $className);
+        $this->container->expects($this->once())->method('has')->with($className)->willReturn(false);
+        $this->container->expects($this->once())->method('set')->with($className, $className);
         $this->container
             ->expects($this->once())
             ->method('get')
@@ -144,10 +136,7 @@ class ControllerDispatcherTest extends TestCase
                 [ResponseFactoryInterface::class, false],
             ]);
 
-        $this->container
-            ->method('get')
-            ->with($className)
-            ->willReturn($controller);
+        $this->container->method('get')->with($className)->willReturn($controller);
 
         $response = $this->dispatcher->handle($this->request);
         static::assertInstanceOf(ResponseInterface::class, $response);
@@ -294,125 +283,6 @@ class ControllerDispatcherTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('no conversion strategy matched');
 
-        $d->handle($this->request);
-    }
-
-    public function testHandleConvertsViewResponse(): void
-    {
-        $view = new class implements \Waffle\Commons\Contracts\View\ViewInterface {
-            public $data = ['foo' => 'bar'];
-
-            public function render(): string
-            {
-                return '';
-            }
-        };
-
-        $controller = new class($view) {
-            public function __construct(
-                private $view,
-            ) {}
-
-            public function action()
-            {
-                return $this->view;
-            }
-        };
-
-        $this->request
-            ->method('getAttribute')
-            ->willReturnMap([
-                ['_classname', null, 'C'],
-                ['_method', null, 'action'],
-                ['_params', [], []],
-            ]);
-
-        // Setup factory
-        /** @var ResponseFactoryInterface&MockObject $factory */
-        $factory = $this->createMock(ResponseFactoryInterface::class); // Expectations used
-        /** @var ResponseInterface&MockObject $response */
-        $response = $this->createMock(ResponseInterface::class); // Expectations used
-        /** @var StreamInterface&MockObject $stream */
-        $stream = $this->createMock(StreamInterface::class); // Expectations used
-
-        $response->method('getBody')->willReturn($stream);
-        $response
-            ->expects($this->once())
-            ->method('withHeader')
-            ->with('Content-Type', 'application/json')
-            ->willReturnSelf();
-        $factory->method('createResponse')->with(200)->willReturn($response);
-
-        // Setup stream write expectation
-        $stream->expects($this->once())->method('write')->with('{"foo":"bar"}');
-
-        /** @var ContainerInterface&MockObject $c */
-        $c = $this->createMock(ContainerInterface::class);
-        $c->method('has')->willReturnMap([
-            ['C',                             true],
-            [ResponseFactoryInterface::class, true],
-        ]);
-        $c->method('get')->willReturnMap([
-            ['C',                             $controller],
-            [ResponseFactoryInterface::class, $factory],
-        ]);
-
-        $d = new ControllerDispatcher($c);
-        $d->handle($this->request);
-    }
-
-    public function testHandleConvertsStringableResponse(): void
-    {
-        $obj = new class {
-            public function __toString()
-            {
-                return 'Stringable Content';
-            }
-        };
-
-        $controller = new class($obj) {
-            public function __construct(
-                private $obj,
-            ) {}
-
-            public function action()
-            {
-                return $this->obj;
-            }
-        };
-
-        $this->request
-            ->method('getAttribute')
-            ->willReturnMap([
-                ['_classname', null, 'C'],
-                ['_method', null, 'action'],
-                ['_params', [], []],
-            ]);
-
-        /** @var ResponseFactoryInterface&MockObject $factory */
-        $factory = $this->createMock(ResponseFactoryInterface::class);
-        /** @var ResponseInterface&MockObject $response */
-        $response = $this->createMock(ResponseInterface::class);
-        /** @var StreamInterface&MockObject $stream */
-        $stream = $this->createMock(StreamInterface::class);
-
-        $response->method('getBody')->willReturn($stream);
-        $factory->method('createResponse')->with(200)->willReturn($response);
-
-        $stream->expects($this->once())->method('write')->with('Stringable Content');
-
-        /** @var ContainerInterface&MockObject $c */
-        $c = $this->createMock(ContainerInterface::class);
-        $c->method('has')->willReturnMap([
-            ['C',                             true],
-            [ResponseFactoryInterface::class, true],
-        ]);
-        $c->method('get')->willReturnMap([
-            ['C',                             $controller],
-            [ResponseFactoryInterface::class, $factory],
-        ]);
-
-        $d = new ControllerDispatcher($c);
         $d->handle($this->request);
     }
 

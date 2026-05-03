@@ -41,7 +41,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
         parent::setUp();
         $this->testConfigDir = __DIR__ . '/../../fixtures/config';
         if (!is_dir($this->testConfigDir)) {
-            mkdir($this->testConfigDir, 0777, true);
+            mkdir($this->testConfigDir, 0o777, true);
         }
 
         if (!defined('APP_ROOT')) {
@@ -52,8 +52,9 @@ class AbstractKernelEdgeCaseTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
+        $this->testConfigDir = __DIR__ . '/../../fixtures/config';
         if (is_dir($this->testConfigDir)) {
-            // Basic cleanup
+            @rmdir($this->testConfigDir);
         }
         $fakeAppDir = APP_ROOT . '/app';
         if (is_dir($fakeAppDir) && is_writable($fakeAppDir)) {
@@ -138,6 +139,12 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
+
+        // Manual system injection
+        $system =
+            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $this->injectSystem($kernel, $system);
+
         $response = $kernel->handle($request);
 
         static::assertSame(200, $response->getStatusCode());
@@ -236,9 +243,7 @@ class AbstractKernelEdgeCaseTest extends TestCase
                     }
 
                     #[\Override]
-                    public function close(): void
-                    {
-                    }
+                    public function close(): void {}
 
                     #[\Override]
                     public function detach()
@@ -271,14 +276,10 @@ class AbstractKernelEdgeCaseTest extends TestCase
                     }
 
                     #[\Override]
-                    public function seek($offset, $whence = SEEK_SET): void
-                    {
-                    }
+                    public function seek($offset, $whence = SEEK_SET): void {}
 
                     #[\Override]
-                    public function rewind(): void
-                    {
-                    }
+                    public function rewind(): void {}
 
                     #[\Override]
                     public function isWritable(): bool
@@ -366,6 +367,12 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $kernel->setMiddlewareStack($stack);
 
         $request = $this->createMockRequest();
+
+        // Manual system injection
+        $system =
+            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $this->injectSystem($kernel, $system);
+
         $response = $kernel->handle($request);
 
         static::assertSame(204, $response->getStatusCode());
@@ -394,8 +401,8 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $responseFactoryMock],
             ]);
 
-        $kernel =
-            new #[AllowDynamicProperties]
+        $kernel = new
+            #[AllowDynamicProperties]
             class($this->testConfigDir, 'test', new NullLogger()) extends AbstractKernel {
                 public function __construct(string $_configDir, string $env, LoggerInterface $logger)
                 {
@@ -407,19 +414,17 @@ class AbstractKernelEdgeCaseTest extends TestCase
                 public $testContainer;
 
                 #[\Override]
-                public function boot(): AbstractKernel
+                public function boot(): static
                 {
                     return $this;
                 }
 
                 #[\Override]
-                public function configure(): self
+                public function configure(): void
                 {
                     if ($this->testContainer) {
                         $this->container = $this->testContainer;
                     }
-
-                    return $this;
                 }
             };
 
@@ -474,11 +479,19 @@ class AbstractKernelEdgeCaseTest extends TestCase
         };
     }
 
+    private function injectSystem(object $object, object $system): void
+    {
+        $reflection = new ReflectionClass(AbstractKernel::class);
+        $property = $reflection->getProperty('system');
+        $property->setValue($object, $system);
+    }
+
     private function injectContainer(object $object, object $container): void
     {
         $reflection = new ReflectionClass(AbstractKernel::class);
         $property = $reflection->getProperty('innerContainer');
         $property->setValue($object, $container);
+        $object->container = $container;
     }
 
     private function setBootedState(AbstractKernel $kernel, bool $state): void
@@ -516,7 +529,5 @@ class StubCommonsContainer implements \Psr\Container\ContainerInterface
         return true;
     }
 
-    public function set(string $_id, mixed $_service): void
-    {
-    }
+    public function set(string $_id, mixed $_service): void {}
 }

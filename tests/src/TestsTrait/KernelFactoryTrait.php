@@ -22,19 +22,19 @@ trait KernelFactoryTrait
         string $servicePath = 'tests/src/Helper/Service',
     ): void {
         $yamlContent = <<<YAML
-        waffle:
-          security:
-            level: {$securityLevel}
-          paths:
-            controllers: '{$controllerPath}'
-            services: '{$servicePath}'
-        YAML;
+            waffle:
+              security:
+                level: {$securityLevel}
+              paths:
+                controllers: '{$controllerPath}'
+                services: '{$servicePath}'
+            YAML;
         file_put_contents($this->testConfigDir . '/app.yaml', $yamlContent);
 
         $yamlContentTest = <<<YAML
-        waffle:
-          test_specific_key: true
-        YAML;
+            waffle:
+              test_specific_key: true
+            YAML;
         file_put_contents($this->testConfigDir . '/app_test.yaml', $yamlContentTest);
     }
 
@@ -73,8 +73,7 @@ trait KernelFactoryTrait
     {
         // @mago-ignore non-existent-method
         /** @var SecurityInterface&MockObject $mock */
-        $mock = $this->createMock(SecurityInterface::class);
-        return $mock;
+        return $this->createMock(SecurityInterface::class);
     }
 
     /**
@@ -107,8 +106,7 @@ trait KernelFactoryTrait
     {
         // @mago-ignore non-existent-method
         /** @var ContainerInterface&MockObject $mock */
-        $mock = $this->createMock(ContainerInterface::class);
-        return $mock;
+        return $this->createMock(ContainerInterface::class);
     }
 
     protected function createMockKernel(?ContainerInterface $container = null): KernelInterface

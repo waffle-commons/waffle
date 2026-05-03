@@ -22,6 +22,7 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Core\BaseController;
 use Waffle\Core\System; // Fix: Add missing import
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
@@ -44,9 +45,7 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function close(): void
-    {
-    }
+    public function close(): void {}
 
     #[\Override]
     public function detach()
@@ -79,14 +78,10 @@ class StubStream implements StreamInterface
     }
 
     #[\Override]
-    public function seek(int $offset, int $whence = SEEK_SET): void
-    {
-    }
+    public function seek(int $offset, int $whence = SEEK_SET): void {}
 
     #[\Override]
-    public function rewind(): void
-    {
-    }
+    public function rewind(): void {}
 
     #[\Override]
     public function isWritable(): bool
@@ -259,16 +254,22 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
         }
         $this->services[$id] = $concrete;
     }
+
+    #[\Override]
+    public function reset(): void
+    {
+        $this->services = [];
+    }
 }
 
-class ArgumentController
+class ArgumentController extends BaseController
 {
     public array $capturedArgs = [];
 
-    public function action(StubResponse $service, int $id, string $slug): \Waffle\Core\View
+    public function action(StubResponse $service, int $id, string $slug): ResponseInterface
     {
         $this->capturedArgs = func_get_args();
-        return new \Waffle\Core\View(['success' => true]);
+        return $this->jsonResponse(data: ['success' => true]);
     }
 }
 
@@ -499,10 +500,7 @@ class AbstractKernelTest extends TestCase
             ]);
 
         $responseStub = new StubResponse(500);
-        $this->responseFactoryMock
-            ->method('createResponse')
-            ->with(500)
-            ->willReturn($responseStub);
+        $this->responseFactoryMock->method('createResponse')->with(500)->willReturn($responseStub);
 
         // Setup container
         $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
@@ -600,10 +598,10 @@ class AbstractKernelTest extends TestCase
         // Create a kernel that doesn't set config in constructor/configure override
         $kernel = new class(new NullLogger()) extends Kernel {
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Intentionally do not set $this->config
-                return parent::configure();
+                parent::configure();
             }
         };
 
@@ -624,10 +622,10 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Config is set, but Security is not
-                return parent::configure();
+                parent::configure();
             }
         };
 
@@ -643,10 +641,9 @@ class AbstractKernelTest extends TestCase
     {
         $kernel = new class(new NullLogger()) extends Kernel {
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Do nothing, skipping container init
-                return $this;
             }
 
             // Helper to inject response factory for error handling
@@ -726,11 +723,10 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Init container but skip System
                 $this->container = $this->innerContainer;
-                return $this;
             }
         };
 
@@ -762,10 +758,7 @@ class AbstractKernelTest extends TestCase
         // For simplicity, passing URI string to constructor handles it.
 
         $responseStub = new StubResponse(404);
-        $this->responseFactoryMock
-            ->method('createResponse')
-            ->with(404)
-            ->willReturn($responseStub);
+        $this->responseFactoryMock->method('createResponse')->with(404)->willReturn($responseStub);
 
         $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
 
@@ -832,10 +825,10 @@ class AbstractKernelTest extends TestCase
         $controllersDir = APP_ROOT . '/src/Controller';
 
         if (!is_dir($servicesDir)) {
-            mkdir($servicesDir, 0777, true);
+            mkdir($servicesDir, 0o777, true);
         }
         if (!is_dir($controllersDir)) {
-            mkdir($controllersDir, 0777, true);
+            mkdir($controllersDir, 0o777, true);
         }
 
         // Create dummy service class
@@ -900,9 +893,7 @@ class AbstractKernelTest extends TestCase
         /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
         // Mock analyze to do nothing
-        $securityMock
-            ->method('analyze')
-            ->willReturnCallback(static function () {});
+        $securityMock->method('analyze')->willReturnCallback(static function () {});
 
         /** @var UriInterface&MockObject $uriMock */
         $uriMock = $this->createMock(UriInterface::class);
@@ -976,7 +967,7 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function boot(): self
+            public function boot(): static
             {
                 // Force prod environment
                 $ref = new \ReflectionClass(AbstractKernel::class);
@@ -986,13 +977,12 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Waffle\Core\Container does not exist in src/Core.
                 // AbstractKernel logic assigns innerContainer directly.
                 $this->container = $this->innerContainer;
                 $this->system = $this->systemMock;
-                return $this;
             }
 
             public function getSystem(): \Waffle\Core\System
@@ -1119,13 +1109,12 @@ class AbstractKernelTest extends TestCase
             }
 
             #[\Override]
-            public function configure(): self
+            public function configure(): void
             {
                 // Init container but skip System overwrite
                 // We use our local reference because parent's innerContainer is private
                 $this->container = $this->innerContainerRef;
                 $this->system = $this->systemMock;
-                return $this;
             }
         };
 

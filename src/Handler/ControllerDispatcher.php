@@ -8,11 +8,12 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use ReflectionMethod;
-use ReflectionNamedType;
 use RuntimeException;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Commons\Contracts\View\ViewInterface;
+use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
+use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
+use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
+use Waffle\Event\ControllerArgumentsResolvedEvent;
 
 /**
  * The terminal handler of the framework.
@@ -22,8 +23,14 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
 {
     public function __construct(
         private ContainerInterface $container,
+        private ?EventDispatcherInterface $dispatcher = null,
+        private ?ArgumentResolverInterface $argumentResolver = null,
+        private ?ResponseConverterInterface $responseConverter = null,
     ) {}
 
+    /**
+     * @throws \JsonException
+     */
     #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -77,134 +84,43 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         }
 
         // 5. Resolve Arguments (Auto-wiring for Controller Methods)
-        $args = $this->resolveArguments($controller, $method, $request, $routeParams);
+        $resolver = $this->argumentResolver ?? new ControllerArgumentResolver($this->container);
+        $args = $resolver->resolve($controller, $method, $request, $routeParams);
+
+        // 5b. Dispatch ControllerArgumentsResolvedEvent
+        if ($this->dispatcher !== null) {
+            $event = new ControllerArgumentsResolvedEvent($request, $classname, $method, $args);
+            $event = $this->dispatcher->dispatch($event);
+            if ($event instanceof ControllerArgumentsResolvedEvent) {
+                $args = $event->getArguments();
+            }
+        }
 
         // 6. Execute
         // @mago-ignore string-member-selector
         $result = $controller->$method(...$args);
 
+        // 7. Auto-Response Conversion
         if ($result instanceof ResponseInterface) {
             return $result;
         }
 
-        // 7. Auto-Response Conversion
+        if ($this->responseConverter !== null) {
+            return $this->responseConverter->convert($result);
+        }
+
         if ($this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);
-
-            if ($result === null) {
-                return $factory->createResponse(204);
-            }
-
-            if (is_array($result) || $result instanceof \JsonSerializable) {
-                $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
-                $response->getBody()->write(json_encode($result));
-                return $response;
-            }
-
-            if (is_string($result)) {
-                $response = $factory->createResponse(200)->withHeader('Content-Type', 'text/html');
-                $response->getBody()->write($result);
-                return $response;
-            }
-
-            // If it is a View, we likely need to render it?
-            // Assuming Waffle\Core\View exists or similar.
-            // For now, if it's an object with __toString?
-            if (is_object($result) && method_exists($result, '__toString')) {
-                $response = $factory->createResponse(200);
-                $response->getBody()->write((string) $result);
-                return $response;
-            }
-
-            if ($result instanceof ViewInterface) {
-                $response = $factory->createResponse(200)->withHeader('Content-Type', 'application/json');
-                $response->getBody()->write(json_encode($result->data));
-                return $response;
-            }
+            $converter = new ControllerResponseConverter($factory);
+            return $converter->convert($result);
         }
 
         throw new RuntimeException(sprintf(
-            'Controller Error: Method "%s::%s" returned "%s", but ResponseInterface was expected and no conversion strategy matched.',
+            'Controller Error: Method "%s::%s" returned "%s", but no conversion strategy matched.',
             get_class($controller),
             $method,
             get_debug_type($result),
         ));
-    }
-
-    /**
-     * Resolves dependencies for the controller method using Reflection.
-     */
-    private function resolveArguments(
-        string|object $controller,
-        string $method,
-        ServerRequestInterface $request,
-        array $routeParams,
-    ): array {
-        $reflection = new ReflectionMethod($controller, $method);
-        $args = [];
-
-        foreach ($reflection->getParameters() as $parameter) {
-            $type = $parameter->getType();
-            $typeName = $type?->getName();
-            $name = $parameter->getName();
-
-            // A. Handle Route Parameters (by name)
-            if (array_key_exists($name, $routeParams)) {
-                $val = $routeParams[$name];
-
-                // Auto-cast if type matches
-                if ($type instanceof ReflectionNamedType && $type->isBuiltin()) {
-                    $val = match ($type->getName()) {
-                        'int' => (int) $val,
-                        'float' => (float) $val,
-                        'bool' => filter_var($val, FILTER_VALIDATE_BOOLEAN),
-                        default => $val,
-                    };
-                }
-
-                $args[] = $val;
-                continue;
-            }
-
-            // B. Handle Typed Dependencies (Services & Request)
-            if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
-                // 1. Inject Request if requested
-                if (
-                    $typeName === ServerRequestInterface::class
-                    || is_subclass_of($typeName, ServerRequestInterface::class)
-                ) {
-                    $args[] = $request;
-                    continue;
-                }
-
-                // 2. Inject Service from Container
-                if ($this->container->has($type->getName())) {
-                    $args[] = $this->container->get($type->getName());
-                    continue;
-                }
-            }
-
-            // C. Handle Default Value
-            if ($parameter->isDefaultValueAvailable()) {
-                $args[] = $parameter->getDefaultValue();
-                continue;
-            }
-
-            // D. Handle Nullable
-            if ($parameter->allowsNull()) {
-                $args[] = null;
-                continue;
-            }
-
-            throw new RuntimeException(sprintf(
-                'Controller Error: Argument "$%s" in "%s::%s" cannot be resolved. Check type hints or route parameters.',
-                $name,
-                get_class($controller),
-                $method,
-            ));
-        }
-
-        return $args;
     }
 }

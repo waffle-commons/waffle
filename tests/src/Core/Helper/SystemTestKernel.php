@@ -21,9 +21,7 @@ final class SystemTestKernel extends Kernel
         // Mock Security for testing
         $security = new class implements SecurityInterface {
             #[\Override]
-            public function analyze(object $object, array $expectations = []): void
-            {
-            }
+            public function analyze(object $object, array $expectations = []): void {}
         };
 
         // Use MockContainer for testing
@@ -32,7 +30,7 @@ final class SystemTestKernel extends Kernel
     }
 
     #[\Override]
-    public function configure(): self
+    public function configure(): void
     {
         if ($this->config === null) {
             throw new \LogicException('Config not set in SystemTestKernel');
@@ -40,14 +38,10 @@ final class SystemTestKernel extends Kernel
         if ($this->container === null) {
             $security = new class implements SecurityInterface {
                 #[\Override]
-                public function analyze(object $object, array $expectations = []): void
-                {
-                }
+                public function analyze(object $object, array $expectations = []): void {}
             };
             $innerContainer = new MockContainer();
             $this->container = $innerContainer;
         }
-
-        return $this;
     }
 }

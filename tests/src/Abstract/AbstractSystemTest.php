@@ -63,7 +63,7 @@ final class AbstractSystemTest extends TestCase
             // instantiate the class, even if it's not used in all tests.
 
             #[\Override]
-            public function boot(KernelInterface $kernel): \Waffle\Commons\Contracts\System\SystemInterface
+            public function boot(KernelInterface $kernel): static
             {
                 return $this;
             }

@@ -9,17 +9,23 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use RuntimeException;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
+use Waffle\Event\RequestReceivedEvent;
+use Waffle\Event\ResponseGeneratedEvent;
+use Waffle\Event\TerminateEvent;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
+use Waffle\Exception\WaffleException;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Handler\ControllerDispatcher;
 
@@ -27,35 +33,24 @@ abstract class AbstractKernel implements KernelInterface
 {
     use ReflectionTrait;
 
-    private string $environment = Constant::ENV_PROD {
-        get => $this->environment;
-        set => $this->environment = $value;
-    }
+    protected string $environment = Constant::ENV_PROD;
 
-    public ?ConfigInterface $config = null {
-        get => $this->config;
-        set => $this->config = $value;
-    }
+    protected bool $booted = false;
 
-    protected(set) ?System $system = null {
-        get => $this->system;
-        set => $this->system = $value;
-    }
+    public ?ConfigInterface $config = null;
 
-    public ?ContainerInterface $container = null {
-        get => $this->container;
-        set => $this->container = $value;
-    }
+    protected(set) ?System $system = null;
+
+    public ?ContainerInterface $container = null;
 
     protected ?SecurityInterface $security = null;
 
     // Holds the raw PSR-11 implementation injected by Runtime
     private ?PsrContainerInterface $innerContainer = null;
 
-    protected(set) ?MiddlewareStackInterface $middlewareStack = null {
-        get => $this->middlewareStack;
-        set => $this->middlewareStack = $value;
-    }
+    protected(set) ?MiddlewareStackInterface $middlewareStack = null;
+
+    protected ?EventDispatcherInterface $dispatcher = null;
 
     /**
      * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
@@ -83,47 +78,89 @@ abstract class AbstractKernel implements KernelInterface
         $this->middlewareStack = $stack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
     public function __construct(
         protected LoggerInterface $logger = new NullLogger(),
     ) {}
 
     /**
      * {@inheritdoc}
+     * @throws WaffleException|InvalidConfigurationException|ContainerException
      */
     #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->boot()->configure();
-
-        if ($this->middlewareStack === null) {
-            throw new \RuntimeException(
-                'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?',
-            );
+        // PERFORMANCE: Only initialize if not already booted
+        if (!$this->booted) {
+            $this->boot()->configure();
         }
 
-        if ($this->container === null) {
-            throw new ContainerException('Container not initialized.');
+        $this->validateState(request: $request);
+
+        // Dispatch RequestReceivedEvent (allows pre-pipeline modification)
+        $requestReceivedEvent = new RequestReceivedEvent($request);
+        $requestReceivedEvent = $this->dispatch($requestReceivedEvent);
+        if ($requestReceivedEvent instanceof RequestReceivedEvent) {
+            $request = $requestReceivedEvent->getRequest();
         }
 
-        if ($this->system === null) {
-            throw new NotFoundException('System not initialized.');
+        $fallbackHandler = new ControllerDispatcher($this->container, $this->dispatcher);
+
+        $response = $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
+
+        // Dispatch ResponseGeneratedEvent (allows post-pipeline modification)
+        $responseGeneratedEvent = new ResponseGeneratedEvent($response);
+        $responseGeneratedEvent = $this->dispatch($responseGeneratedEvent);
+        if ($responseGeneratedEvent instanceof ResponseGeneratedEvent) {
+            $response = $responseGeneratedEvent->getResponse();
         }
 
-        $fallbackHandler = new ControllerDispatcher($this->container);
+        return $response;
+    }
 
-        return $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
+    /**
+     * Dispatches a terminate event for heavy async tasks after response emission.
+     * Call this from Runtime after emit() and before reset().
+     */
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
+    {
+        if ($this->dispatcher === null) {
+            return;
+        }
+
+        $this->dispatch(new TerminateEvent($request, $response));
+    }
+
+    /**
+     * Dispatches an event through the event dispatcher if available.
+     *
+     * @template T of object
+     * @param T $event
+     * @return T
+     */
+    protected function dispatch(object $event): object
+    {
+        if ($this->dispatcher === null) {
+            return $event;
+        }
+
+        return $this->dispatcher->dispatch($event);
     }
 
     /**
      * {@inheritdoc}
      */
-
     #[\Override]
-    public function boot(): self
+    public function boot(): static
     {
+        if ($this->booted) {
+            return $this;
+        }
+
         $appEnv = Constant::ENV_PROD;
         if (getenv(Constant::APP_ENV) === false) {
             putenv($appEnv);
@@ -135,30 +172,31 @@ abstract class AbstractKernel implements KernelInterface
 
     /**
      * {@inheritdoc}
+     * @throws WaffleException
      */
-
     #[\Override]
-    public function configure(): self
+    public function configure(): void
     {
+        if ($this->booted) {
+            return;
+        }
+
         /** @var string $root */
         $root = APP_ROOT;
         if ($this->config === null) {
-            throw new InvalidConfigurationException(
-                'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.',
-            );
+            $messageConfig = 'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.';
+            $this->logAndThrow(InvalidConfigurationException::class, $messageConfig, 'configure');
         }
 
         if ($this->security === null) {
-            throw new ContainerException(
-                'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().',
-            );
+            $messageSecurity = 'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().';
+            $this->logAndThrow(ContainerException::class, $messageSecurity, 'configure');
         }
 
         // Check if an implementation was provided via setContainerImplementation
         if ($this->innerContainer === null) {
-            throw new ContainerException(
-                'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().',
-            );
+            $messageContainer = 'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().';
+            $this->logAndThrow(ContainerException::class, $messageContainer, 'configure');
         }
 
         // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
@@ -166,22 +204,9 @@ abstract class AbstractKernel implements KernelInterface
         if ($this->innerContainer instanceof ContainerInterface) {
             $this->container = $this->innerContainer;
         } else {
-            // Fallback for raw PSR-11 containers that might not implement our interface but have methods we need?
-            // Ideally, the user should inject a compatible container.
-            // For now, we can't easily wrap it without a concrete class.
-            // We assume the user knows what they are doing.
-            // If they inject a read-only container, set() calls will fail, which is expected behavior for read-only.
-            // But strict typing requires ContainerInterface.
-            // We can't satisfy strict typing without a wrapper.
-            // BUT, we are removing the wrapper to be a micro-core.
-            // So we must change the property type or rely on the user injecting the right type.
             // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
-            if (!$this->innerContainer instanceof ContainerInterface) {
-                throw new ContainerException(
-                    'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.',
-                );
-            }
-            $this->container = $this->innerContainer;
+            $messageInnerContainer = 'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.';
+            $this->logAndThrow(ContainerException::class, $messageInnerContainer, 'configure');
         }
 
         $containerFactory = new ContainerFactory();
@@ -199,6 +224,58 @@ abstract class AbstractKernel implements KernelInterface
 
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
-        return $this;
+        // Lock the container to prevent service override after boot
+        if (method_exists($this->container, 'lock')) {
+            $this->container->lock();
+        }
+
+        $this->booted = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset(): void
+    {
+        $this->container->reset();
+
+        // TODO: clean buffered logger
+    }
+
+    private function validateState(ServerRequestInterface $request): void
+    {
+        if ($this->middlewareStack === null) {
+            $messageMiddlewareStack = 'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?';
+            $this->logAndThrow(RuntimeException::class, $messageMiddlewareStack, $request->getMethod());
+        }
+
+        if ($this->container === null) {
+            $messageContainer = 'Container not initialized.';
+            $this->logAndThrow(ContainerException::class, $messageContainer, $request->getMethod());
+        }
+
+        if ($this->system === null) {
+            $messageSystem = 'System not initialized.';
+            $this->logAndThrow(NotFoundException::class, $messageSystem, $request->getMethod());
+        }
+    }
+
+    /**
+     * Centralized error reporting for the handle loop.
+     * @param string $exceptionClass The class of the exception to throw.
+     * @param string $message The error message.
+     * @param string $method The current method.
+     * @param int $code The HTTP status code (must be 100-599).
+     */
+    private function logAndThrow(string $exceptionClass, string $message, string $method, int $code = 500): void
+    {
+        $this->logger->critical($message, [
+            'exception' => static::class,
+            'method' => $method,
+            'code' => $code,
+        ]);
+
+        // We pass the code to the constructor to ensure ErrorHandler receives a valid HTTP status.
+        throw new $exceptionClass($message, $code);
     }
 }

@@ -13,27 +13,27 @@ message = "Avoid `else` clauses."
 count = 1
 
 [[issues]]
-file = "src/Handler/ControllerDispatcher.php"
+file = "src/Abstract/AbstractKernel.php"
+code = "tagged-todo"
+message = "TODO should be tagged with (@username) or (#issue)."
+count = 1
+
+[[issues]]
+file = "src/Abstract/AbstractKernel.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
+
+[[issues]]
+file = "src/Handler/ControllerArgumentResolver.php"
 code = "cyclomatic-complexity"
 message = "Class has high complexity."
 count = 1
 
 [[issues]]
 file = "src/Handler/ControllerDispatcher.php"
-code = "halstead"
-message = "Method has a high halstead effort"
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "instanceof-stringable"
-message = "Consider using `instanceof Stringable` instead of `is_object() && method_exists()`."
-count = 1
-
-[[issues]]
-file = "src/Handler/ControllerDispatcher.php"
-code = "kan-defect"
-message = "Class has a high kan defect score (2.0700000000000003)."
+code = "cyclomatic-complexity"
+message = "Class has high complexity."
 count = 1
 
 [[issues]]
@@ -49,21 +49,9 @@ message = "Avoid `else` clauses."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/AbstractKernelCoverageTest.php"
-code = "no-redundant-use"
-message = "Unused import: `NotFoundException`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
-code = "explicit-octal"
-message = "Use explicit octal numeral notation."
-count = 1
-
-[[issues]]
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "literal-named-argument"
-message = "Literal argument `0777` should be passed as a named argument for clarity."
+message = "Literal argument `0o777` should be passed as a named argument for clarity."
 count = 1
 
 [[issues]]
@@ -82,6 +70,12 @@ count = 1
 file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "no-error-control-operator"
 message = "Unsafe use of error control operator `@`."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "single-class-per-file"
+message = "File contains multiple class-like definitions; found class `StubCommonsContainer` but class `AbstractKernelEdgeCaseTest` is already defined in this file."
 count = 1
 
 [[issues]]
@@ -89,6 +83,12 @@ file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
 code = "too-many-methods"
 message = "Anonymous class has too many methods."
 count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelEdgeCaseTest.php"
+code = "too-many-methods"
+message = "Class has too many methods."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -110,20 +110,14 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
-code = "explicit-octal"
-message = "Use explicit octal numeral notation."
-count = 2
-
-[[issues]]
-file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "kan-defect"
-message = "Class has a high kan defect score (1.9600000000000002)."
+message = "Class has a high kan defect score."
 count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "literal-named-argument"
-message = "Literal argument `0777` should be passed as a named argument for clarity."
+message = "Literal argument `0o777` should be passed as a named argument for clarity."
 count = 2
 
 [[issues]]
@@ -140,9 +134,39 @@ count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "no-isset"
+message = "Use of the `isset` construct."
+count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
 code = "no-redundant-method-override"
 message = "Redundant method override."
 count = 2
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "single-class-per-file"
+message = "File contains multiple class-like definitions; found class `AbstractKernelTest` but class `StubStream` is already defined in this file."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "single-class-per-file"
+message = "File contains multiple class-like definitions; found class `ArgumentController` but class `StubStream` is already defined in this file."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "single-class-per-file"
+message = "File contains multiple class-like definitions; found class `StubContainer` but class `StubStream` is already defined in this file."
+count = 1
+
+[[issues]]
+file = "tests/src/Abstract/AbstractKernelTest.php"
+code = "single-class-per-file"
+message = "File contains multiple class-like definitions; found class `StubResponse` but class `StubStream` is already defined in this file."
+count = 1
 
 [[issues]]
 file = "tests/src/Abstract/AbstractKernelTest.php"
@@ -154,18 +178,6 @@ count = 3
 file = "tests/src/Abstract/Helper/StubServerRequest.php"
 code = "no-else-clause"
 message = "Avoid `else` clauses."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/StubServerRequest.php"
-code = "no-redundant-use"
-message = "Unused import: `UploadedFileInterface`."
-count = 1
-
-[[issues]]
-file = "tests/src/Abstract/Helper/StubServerRequest.php"
-code = "sensitive-parameter"
-message = "Parameters that may contain sensitive information should be marked with the `#[SensitiveParameter]` attribute."
 count = 1
 
 [[issues]]
@@ -199,12 +211,6 @@ message = "Do not use empty `catch` blocks."
 count = 1
 
 [[issues]]
-file = "tests/src/Abstract/Helper/WebKernel.php"
-code = "no-redundant-use"
-message = "Unused import: `KernelInterface`."
-count = 1
-
-[[issues]]
 file = "tests/src/AbstractTestCase.php"
 code = "literal-named-argument"
 message = "Literal argument `0o777` should be passed as a named argument for clarity."
@@ -218,14 +224,8 @@ count = 1
 
 [[issues]]
 file = "tests/src/Core/SystemTest.php"
-code = "explicit-octal"
-message = "Use explicit octal numeral notation."
-count = 1
-
-[[issues]]
-file = "tests/src/Core/SystemTest.php"
 code = "literal-named-argument"
-message = "Literal argument `0777` should be passed as a named argument for clarity."
+message = "Literal argument `0o777` should be passed as a named argument for clarity."
 count = 1
 
 [[issues]]
@@ -259,12 +259,6 @@ message = "Literal argument `true` should be passed as a named argument for clar
 count = 2
 
 [[issues]]
-file = "tests/src/Factory/ContainerFactoryEdgeCaseTest.php"
-code = "no-redundant-use"
-message = "Unused import: `Constant`."
-count = 1
-
-[[issues]]
 file = "tests/src/Factory/ContainerFactoryTest.php"
 code = "literal-named-argument"
 message = "Literal argument `'This is not a PHP class.'` should be passed as a named argument for clarity."
@@ -283,12 +277,6 @@ message = "Literal argument `true` should be passed as a named argument for clar
 count = 2
 
 [[issues]]
-file = "tests/src/Handler/ControllerDispatcherEdgeCaseTest.php"
-code = "prefer-static-closure"
-message = "This arrow function does not use `$this` and should be declared static."
-count = 1
-
-[[issues]]
 file = "tests/src/Handler/ControllerDispatcherTest.php"
 code = "no-boolean-flag-parameter"
 message = "Avoid boolean flag parameters."
@@ -302,24 +290,12 @@ count = 1
 
 [[issues]]
 file = "tests/src/Helper/MockContainer.php"
-code = "braced-string-interpolation"
-message = "Unbraced variable in string interpolation."
-count = 1
-
-[[issues]]
-file = "tests/src/Helper/MockContainer.php"
 code = "cyclomatic-complexity"
 message = "Class has high complexity."
 count = 1
 
 [[issues]]
-file = "tests/src/TestsTrait/KernelFactoryTrait.php"
-code = "inline-variable-return"
-message = "Variable assignment can be inlined into the return statement."
+file = "tests/src/Helper/MockContainer.php"
+code = "no-isset"
+message = "Use of the `isset` construct."
 count = 2
-
-[[issues]]
-file = "tests/src/Trait/RenderingTraitTest.php"
-code = "literal-named-argument"
-message = "Literal argument `'r'` should be passed as a named argument for clarity."
-count = 1

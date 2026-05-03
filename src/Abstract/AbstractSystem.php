@@ -14,11 +14,7 @@ abstract class AbstractSystem implements SystemInterface
     use ReflectionTrait;
     use SystemTrait;
 
-    public SecurityInterface $security {
-        set => $this->security = $value;
-    }
+    protected(set) SecurityInterface $security;
 
-    protected(set) object $config {
-        set => $this->config = $value;
-    }
+    protected(set) object $config;
 }

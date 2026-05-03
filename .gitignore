@@ -7,7 +7,9 @@
 /.idx
 
 # Framework dev specific
+/.env
 /.env.local
+/.env.*.local
 
 # Vendors
 /vendor
