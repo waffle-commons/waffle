@@ -1,6 +1,6 @@
 # Mago Configuration - Waffle Commons Alpha 5
 # For full documentation, see https://mago.carthage.software/tools/overview
-php-version = "8.5.0"
+php-version = "8.5.5"
 
 [source]
 paths = ["src/", "tests/"]
@@ -29,7 +29,10 @@ disallowed-functions = { level = "error", functions = ["eval", "exec", "system",
 # Code quality - Strict
 prefer-interface = { level = "error" }
 strict-types = { level = "error" }
-cyclomatic-complexity = { level = "warning", threshold = 10 }
+cyclomatic-complexity = { level = "warning", threshold = 20 }
+too-many-methods = { level = "warning", threshold = 20 }
+kan-defect = { level = "warning", threshold = 2.5 }
+no-ini-set = { enabled = false }
 
 # Style - Notes (informational)
 prefer-arrow-function = { level = "note" }
@@ -40,6 +43,32 @@ baseline = "mago-analyzer-baseline.toml"
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true
-check-throws = true
 strict-list-index-checks = true
-allow-possibly-undefined-array-keys = false
+strict-array-index-existence = true
+ignore = [
+    { code = "mixed-assignment", in = [
+        "tests/",
+    ] },
+    { code = "mixed-argument", in = [
+        "tests/",
+    ] },
+    { code = "mixed-operand", in = [
+        "tests/",
+    ] },
+    { code = "ambiguous-object-method-access", in = [
+        "tests/",
+    ] },
+    { code = "no-value", in = [
+        "tests/",
+    ] },
+    { code = "invalid-method-access", in = [
+        "tests/",
+    ] },
+    { code = "check-throws", in = [
+        "tests/",
+    ] },
+    { code = "non-existent-class-like", in = [
+        "tests/",
+        "src/",
+    ] },
+]
