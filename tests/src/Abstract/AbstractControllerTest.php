@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Waffle\Abstract\AbstractController;
+use Waffle\Exception\RenderingException;
 
 #[AllowMockObjectsWithoutExpectations]
 class AbstractControllerTest extends TestCase
@@ -38,5 +39,26 @@ class AbstractControllerTest extends TestCase
 
         $controller->setResponseFactory($factory);
         $controller->testJson(['key' => 'value']);
+    }
+
+    public function testJsonResponseWrapsJsonExceptionInRenderingException(): void
+    {
+        $controller = new class extends AbstractController {
+            public function testJson(array $data)
+            {
+                return $this->jsonResponse($data);
+            }
+        };
+
+        $factory = $this->createMock(ResponseFactoryInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
+        $factory->method('createResponse')->willReturn($response);
+
+        $controller->setResponseFactory($factory);
+
+        // Invalid UTF-8 makes json_encode throw under JSON_THROW_ON_ERROR.
+        $this->expectException(RenderingException::class);
+
+        $controller->testJson(['bad' => "\xB1\x31"]);
     }
 }

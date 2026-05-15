@@ -9,6 +9,7 @@ namespace WaffleTests\Core;
 
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Waffle\Commons\Contracts\Security\Exception\SecurityExceptionInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Core\System;
 use Waffle\Exception\WaffleException;
@@ -109,6 +110,35 @@ final class SystemTest extends TestCase
         static::assertTrue($exceptionThrown, 'WaffleException was expected but not thrown.');
         if ($output !== '' && $output !== false) {
             static::assertJson($output, 'The output should be a valid JSON error response.');
+        }
+    }
+
+    /**
+     * Exercises the `catch (SecurityExceptionInterface|ReflectionException)` branch:
+     * the catch must wrap any SecurityExceptionInterface in a WaffleException with
+     * the original as the previous-throwable.
+     */
+    public function testBootWrapsSecurityExceptionInterfaceInWaffleException(): void
+    {
+        $securityException = new class('Voter denied') extends \RuntimeException implements SecurityExceptionInterface {
+            #[\Override]
+            public function serialize(): array
+            {
+                return ['message' => $this->getMessage(), 'code' => $this->getCode()];
+            }
+        };
+
+        $securityMock = $this->createMock(SecurityInterface::class);
+        $securityMock->expects($this->once())->method('analyze')->will($this->throwException($securityException));
+
+        $kernel = new SystemTestKernel($this->createAndGetConfig());
+
+        try {
+            new System($securityMock)->boot($kernel);
+            static::fail('Expected WaffleException');
+        } catch (WaffleException $e) {
+            static::assertSame('Voter denied', $e->getMessage());
+            static::assertSame($securityException, $e->getPrevious());
         }
     }
 }
