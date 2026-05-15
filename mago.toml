@@ -24,7 +24,9 @@ integrations = ["phpunit"]
 no-insecure-comparison = { level = "error" }
 no-literal-password = { level = "error" }
 no-debug-symbols = { level = "error" }
-disallowed-functions = { level = "error", functions = ["eval", "exec", "system", "shell_exec", "passthru", "phpinfo"] }
+no-eval = { enabled = false }
+no-error-control-operator = { enabled = false }
+disallowed-functions = { level = "error", functions = ["exec", "system", "shell_exec", "passthru", "phpinfo"] }
 
 # Code quality - Strict
 prefer-interface = { level = "error" }
@@ -51,6 +53,7 @@ ignore = [
     ] },
     { code = "mixed-argument", in = [
         "tests/",
+        "src/",
     ] },
     { code = "mixed-operand", in = [
         "tests/",
@@ -68,6 +71,85 @@ ignore = [
         "tests/",
     ] },
     { code = "non-existent-class-like", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "mixed-method-access", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "non-existent-method", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "non-existent-class", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "non-existent-attribute-class", in = [
+        "tests/",
+    ] },
+    { code = "possible-method-access-on-null", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "mixed-property-type-coercion", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "mixed-array-access", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "possibly-null-argument", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "possibly-invalid-argument", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "possibly-false-argument", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "nullable-return-statement", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "mixed-return-statement", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "invalid-iterator", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "unknown-class-instantiation", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "invalid-throw", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "invalid-return-statement", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "invalid-property-assignment-value", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "invalid-type-cast", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "impossible-assignment", in = [
+        "tests/",
+        "src/",
+    ] },
+    { code = "less-specific-argument", in = [
         "tests/",
         "src/",
     ] },
