@@ -241,7 +241,7 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
     #[\Override]
     public function has(string $id): bool
     {
-        return isset($this->services[$id]);
+        return array_key_exists($id, $this->services);
     }
 
     #[\Override]
@@ -249,7 +249,11 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
     {
         // CRITICAL FIX: Prevent ContainerFactory from overwriting our pre-configured objects
         // with class name strings found during scanning.
-        if (isset($this->services[$id]) && is_object($this->services[$id]) && is_string($concrete)) {
+        if (
+            array_key_exists($id, $this->services)
+            && is_object($this->services[$id])
+            && is_string($concrete)
+        ) {
             return;
         }
         $this->services[$id] = $concrete;
@@ -596,14 +600,7 @@ class AbstractKernelTest extends TestCase
     public function testConfigureThrowsExceptionIfConfigMissing(): void
     {
         // Create a kernel that doesn't set config in constructor/configure override
-        $kernel = new class(new NullLogger()) extends Kernel {
-            #[\Override]
-            public function configure(): void
-            {
-                // Intentionally do not set $this->config
-                parent::configure();
-            }
-        };
+        $kernel = new class(new NullLogger()) extends Kernel {};
 
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Configuration not initialized');
@@ -619,13 +616,6 @@ class AbstractKernelTest extends TestCase
             public function setTestConfig(ConfigInterface $config): void
             {
                 $this->config = $config;
-            }
-
-            #[\Override]
-            public function configure(): void
-            {
-                // Config is set, but Security is not
-                parent::configure();
             }
         };
 

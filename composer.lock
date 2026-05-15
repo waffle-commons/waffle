@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3a84dc643594442d58dfcc00989df14",
+    "content-hash": "704820aa74cf68e4fa043c3fd19c862c",
     "packages": [
         {
             "name": "psr/cache",
@@ -428,16 +428,16 @@
         },
         {
             "name": "waffle-commons/contracts",
-            "version": "0.1.0-alpha5",
+            "version": "0.1.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "47ad1c565b6144432fb9ecf9bd2e0c0c27206060"
+                "reference": "a95e303bdc38b7ba2da18d491dc9d84ae79e8710"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/47ad1c565b6144432fb9ecf9bd2e0c0c27206060",
-                "reference": "47ad1c565b6144432fb9ecf9bd2e0c0c27206060",
+                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/a95e303bdc38b7ba2da18d491dc9d84ae79e8710",
+                "reference": "a95e303bdc38b7ba2da18d491dc9d84ae79e8710",
                 "shasum": ""
             },
             "require": {
@@ -477,22 +477,22 @@
             "description": "Contracts component for Waffle framework.",
             "support": {
                 "issues": "https://github.com/waffle-commons/contracts/issues",
-                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha5"
+                "source": "https://github.com/waffle-commons/contracts/tree/0.1.0-alpha6"
             },
-            "time": "2026-05-02T05:56:30+00:00"
+            "time": "2026-05-15T15:09:06+00:00"
         },
         {
             "name": "waffle-commons/utils",
-            "version": "0.1.0-alpha5",
+            "version": "0.1.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/utils.git",
-                "reference": "d4182a7fcbe3c804d87bf3e7f524319a6938a8ea"
+                "reference": "71595dd45639586939ebfe7cff2ebbba34b2f585"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/d4182a7fcbe3c804d87bf3e7f524319a6938a8ea",
-                "reference": "d4182a7fcbe3c804d87bf3e7f524319a6938a8ea",
+                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/71595dd45639586939ebfe7cff2ebbba34b2f585",
+                "reference": "71595dd45639586939ebfe7cff2ebbba34b2f585",
                 "shasum": ""
             },
             "require": {
@@ -525,9 +525,9 @@
             "description": "Utils component for Waffle framework.",
             "support": {
                 "issues": "https://github.com/waffle-commons/utils/issues",
-                "source": "https://github.com/waffle-commons/utils/tree/0.1.0-alpha5"
+                "source": "https://github.com/waffle-commons/utils/tree/0.1.0-alpha6"
             },
-            "time": "2026-05-02T05:58:28+00:00"
+            "time": "2026-05-15T15:22:33+00:00"
         }
     ],
     "packages-dev": [

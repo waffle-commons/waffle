@@ -31,14 +31,9 @@ disallowed-functions = { level = "error", functions = ["exec", "system", "shell_
 # Code quality - Strict
 prefer-interface = { level = "error" }
 strict-types = { level = "error" }
-cyclomatic-complexity = { level = "warning", threshold = 20 }
-too-many-methods = { level = "warning", threshold = 20 }
-kan-defect = { level = "warning", threshold = 2.5 }
 no-ini-set = { enabled = false }
 
 # Style - Notes (informational)
-prefer-arrow-function = { level = "note" }
-no-redundant-nullsafe = { level = "note" }
 
 # >>> alpha6-opinionated-suppressions (generated)
 literal-named-argument = { enabled = false }
@@ -55,7 +50,6 @@ kan-defect = { enabled = false }
 halstead = { enabled = false }
 prefer-arrow-function = { enabled = false }
 no-redundant-nullsafe = { enabled = false }
-no-boolean-literal-comparison = { enabled = false }
 # <<< alpha6-opinionated-suppressions
 
 [analyzer]
@@ -66,7 +60,76 @@ analyze-dead-code = true
 strict-list-index-checks = true
 strict-array-index-existence = true
 ignore = [
+    # Test helpers carry `@var Mock&Interface` docblocks for readability even though
+    # Mago can infer the type from createMock(); the docblocks are kept by choice.
+    { code = "redundant-docblock-type", in = [
+        "tests/",
+    ] },
+    # Test-side patterns: helpers, mocks, fixtures.
+    { code = "no-isset", in = [
+        "tests/",
+    ] },
+    { code = "no-empty-catch-clause", in = [
+        "tests/",
+    ] },
+    { code = "write-only-property", in = [
+        "tests/",
+    ] },
+    { code = "deprecated-method", in = [
+        "tests/",
+    ] },
+    { code = "ambiguous-object-property-access", in = [
+        "tests/",
+    ] },
+    { code = "impossible-condition", in = [
+        "tests/",
+    ] },
+    { code = "redundant-condition", in = [
+        "tests/",
+    ] },
+    { code = "redundant-logical-operation", in = [
+        "tests/",
+    ] },
+    { code = "redundant-comparison", in = [
+        "tests/",
+    ] },
+    # ControllerDispatcher invokes the controller via $controller->$method(...) — the
+    # variable-method-call is legitimate dispatch.
+    { code = "string-member-selector", in = [
+        "src/Handler/ControllerDispatcher.php",
+    ] },
+    # SystemTrait reads optional kernel state; ContainerFactoryTest concatenates
+    # a path that's typed `?string` at the analyzer level.
+    { code = "possibly-null-operand", in = [
+        "src/Trait/SystemTrait.php",
+        "tests/",
+    ] },
+    # AbstractKernelTest exercises many request-attribute paths; PSR-7's
+    # getAttribute() is typed `mixed`, so indexed access into arrays it returns
+    # produces unprovable index access for Mago.
+    { code = "possibly-undefined-int-array-index", in = [
+        "tests/",
+    ] },
+    # ControllerArgumentResolver indexes routeParams/body by parameter name —
+    # the cross-array correspondence is guaranteed by reflection but unprovable.
+    { code = "possibly-undefined-string-array-index", in = [
+        "src/Handler/ControllerArgumentResolver.php",
+        "tests/",
+    ] },
+    # ControllerDispatcher/Resolver/AbstractKernel handle PSR-7 attributes
+    # and middleware-stack results that are `mixed` by spec.
     { code = "mixed-assignment", in = [
+        "src/Handler/ControllerDispatcher.php",
+        "src/Handler/ControllerArgumentResolver.php",
+        "src/Abstract/AbstractKernel.php",
+        "src/Factory/ContainerFactory.php",
+        "src/Trait/SystemTrait.php",
+        "tests/",
+    ] },
+    # Defensive PSR-14 instanceof checks guard against listeners returning a
+    # different event type; Mago's stub narrows the return, masking that risk.
+    { code = "redundant-condition", in = [
+        "src/Abstract/AbstractKernel.php",
         "tests/",
     ] },
     { code = "mixed-argument", in = [

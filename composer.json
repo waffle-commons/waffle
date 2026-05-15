@@ -29,8 +29,8 @@
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^3.0",
         "psr/cache": "^3.0",
-        "waffle-commons/contracts": "self.version",
-        "waffle-commons/utils": "self.version",
+        "waffle-commons/contracts": "^0.1.0-alpha6",
+        "waffle-commons/utils": "^0.1.0-alpha6",
         "psr/http-server-middleware": "^1.0@dev"
     },
     "require-dev": {
