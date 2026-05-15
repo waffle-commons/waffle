@@ -40,6 +40,24 @@ no-ini-set = { enabled = false }
 prefer-arrow-function = { level = "note" }
 no-redundant-nullsafe = { level = "note" }
 
+# >>> alpha6-opinionated-suppressions (generated)
+literal-named-argument = { enabled = false }
+no-boolean-flag-parameter = { enabled = false }
+single-class-per-file = { enabled = false }
+no-else-clause = { enabled = false }
+block-statement = { enabled = false }
+assertion-style = { enabled = false }
+assert-description = { enabled = false }
+tagged-todo = { enabled = false }
+cyclomatic-complexity = { enabled = false }
+too-many-methods = { enabled = false }
+kan-defect = { enabled = false }
+halstead = { enabled = false }
+prefer-arrow-function = { enabled = false }
+no-redundant-nullsafe = { enabled = false }
+no-boolean-literal-comparison = { enabled = false }
+# <<< alpha6-opinionated-suppressions
+
 [analyzer]
 baseline = "mago-analyzer-baseline.toml"
 find-unused-definitions = true
