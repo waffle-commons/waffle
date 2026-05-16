@@ -31,7 +31,7 @@
         "psr/cache": "^3.0",
         "waffle-commons/contracts": "self.version",
         "waffle-commons/utils": "self.version",
-        "psr/http-server-middleware": "^1.0@dev"
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
@@ -75,23 +75,5 @@
             "carthage-software/mago": true,
             "cyclonedx/cyclonedx-php-composer": true
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "canonical": false,
-            "url": "../contracts",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "canonical": false,
-            "url": "../utils",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
+    }
 }
