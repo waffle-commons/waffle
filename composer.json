@@ -1,6 +1,6 @@
 {
     "name": "waffle-commons/waffle",
-    "version": "0.1.0-alpha5",
+    "version": "0.1.0-beta0",
     "description": "A modern, minimalist, and security-focused PHP micro-framework.",
     "type": "library",
     "license": "MIT",
@@ -31,7 +31,7 @@
         "psr/cache": "^3.0",
         "waffle-commons/contracts": "self.version",
         "waffle-commons/utils": "self.version",
-        "psr/http-server-middleware": "^1.0@dev"
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.0",
@@ -44,6 +44,7 @@
         "formatter": "vendor/bin/mago fmt",
         "linter": "vendor/bin/mago lint",
         "analyzer": "vendor/bin/mago analyze",
+        "guard": "vendor/bin/mago guard",
         "phpunit": "vendor/bin/phpunit --log-junit var/data/phpunit-coverage/junit.xml --coverage-html var/data/phpunit-coverage",
         "benchmark": [
             "Composer\\Config::disableProcessTimeout",
@@ -52,7 +53,8 @@
         "mago": [
             "@formatter",
             "@linter",
-            "@analyzer"
+            "@analyzer",
+            "@guard"
         ],
         "tests": [
             "@phpunit"

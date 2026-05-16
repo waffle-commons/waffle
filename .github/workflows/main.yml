@@ -124,6 +124,27 @@ jobs:
       - name: Run Mago Analyze
         run: vendor/bin/mago analyze --reporting-format=github
 
+  mago_guard:
+    name: 🛡️ Guardian Analysis (Mago Guard)
+    needs: build
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+      - uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+      - run: composer install --no-progress --prefer-dist
+      - name: Run Mago Guard
+        run: vendor/bin/mago guard --reporting-format=github
+
   secret_scan:
     name: 🕵️ Secret Scanning (TruffleHog)
     needs: build

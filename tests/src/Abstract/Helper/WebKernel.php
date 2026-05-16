@@ -72,7 +72,7 @@ class WebKernel extends Kernel
             }
 
             #[\Override]
-            public function getBool(string $key, bool $default = false): bool
+            public function getBool(string $key, ?bool $default = null): ?bool
             {
                 return false;
             }
@@ -108,8 +108,10 @@ class WebKernel extends Kernel
                 $stack = new FakeMiddlewareStack();
                 $stack->add(new FakeRoutingMiddleware($router));
                 $this->middlewareStack = $stack;
-            } catch (\Throwable $e) {
-                // Ignore
+            } catch (\Throwable $ignored) {
+                // Intentional: test fixture allows the Router resolution to fail —
+                // the kernel under test will surface the missing-service error itself.
+                $ignored = null;
             }
         }
     }
