@@ -16,7 +16,6 @@ trailing-comma = true
 end-of-line = "lf"
 
 [linter]
-baseline = "mago-linter-baseline.toml"
 integrations = ["phpunit"]
 
 [linter.rules]
@@ -53,7 +52,6 @@ no-redundant-nullsafe = { enabled = false }
 # <<< alpha6-opinionated-suppressions
 
 [analyzer]
-baseline = "mago-analyzer-baseline.toml"
 find-unused-definitions = true
 find-unused-expressions = true
 analyze-dead-code = true
