@@ -249,11 +249,7 @@ class StubContainer implements ContainerInterface, PsrContainerInterface
     {
         // CRITICAL FIX: Prevent ContainerFactory from overwriting our pre-configured objects
         // with class name strings found during scanning.
-        if (
-            array_key_exists($id, $this->services)
-            && is_object($this->services[$id])
-            && is_string($concrete)
-        ) {
+        if (array_key_exists($id, $this->services) && is_object($this->services[$id]) && is_string($concrete)) {
             return;
         }
         $this->services[$id] = $concrete;
