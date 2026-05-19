@@ -34,7 +34,7 @@
         "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.0",
+        "phpunit/phpunit": "^12.0 || ^13.0",
         "carthage-software/mago": "^1.0.0-rc",
         "vimeo/psalm": "^6.13",
         "php-mock/php-mock-phpunit": "^2.13",
