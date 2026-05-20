@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Waffle\Handler;
 
 use Psr\Http\Message\ServerRequestInterface;
-use ReflectionClass;
-use ReflectionMethod;
 use ReflectionNamedType;
 use RuntimeException;
 use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Exception\ValidationException;
+use Waffle\Service\ReflectionService;
 
 final readonly class ControllerArgumentResolver implements ArgumentResolverInterface
 {
     public function __construct(
         private ContainerInterface $container,
+        private ReflectionService $reflectionService,
     ) {}
 
     #[\Override]
@@ -27,10 +27,9 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
         ServerRequestInterface $request,
         array $routeParams,
     ): array {
-        $reflection = new ReflectionMethod($controller, $method);
         $args = [];
 
-        foreach ($reflection->getParameters() as $parameter) {
+        foreach ($this->reflectionService->getMethodParameters($controller, $method) as $parameter) {
             $type = $parameter->getType();
             $typeName = $type?->getName();
             $name = $parameter->getName();
@@ -66,8 +65,8 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
 
                 // 2. Hydrate DTOs marked with #[Dto] from the parsed request body (RFC-011).
                 //    Property Hooks in the DTO perform the validation; we only assemble args.
-                if ($this->isDtoType($typeName)) {
-                    $args[] = $this->hydrateDto((string) $typeName, $request);
+                if ($typeName !== null && $this->reflectionService->hasAttribute($typeName, Dto::class)) {
+                    $args[] = $this->hydrateDto($typeName, $request);
                     continue;
                 }
 
@@ -102,17 +101,6 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
     }
 
     /**
-     * Returns true when $typeName is a loadable class carrying the #[Dto] marker.
-     */
-    private function isDtoType(?string $typeName): bool
-    {
-        if ($typeName === null || !class_exists($typeName)) {
-            return false;
-        }
-        return new ReflectionClass($typeName)->getAttributes(Dto::class) !== [];
-    }
-
-    /**
      * Hydrates a `#[Dto]`-marked class from the request's parsed body.
      *
      * Validation is delegated to the DTO's Property Hooks (RFC-011 §3.1). This
@@ -132,16 +120,15 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             throw new ValidationException(message: sprintf('Expected JSON object body for "%s".', $dtoClass));
         }
 
-        $reflection = new ReflectionClass($dtoClass);
-        $constructor = $reflection->getConstructor();
+        $params = $this->reflectionService->getConstructorParameters($dtoClass);
 
         // No constructor → no inputs to hydrate; the DTO is its own default.
-        if ($constructor === null) {
-            return $reflection->newInstance();
+        if ($params === null) {
+            return $this->reflectionService->newInstance($dtoClass);
         }
 
         $args = [];
-        foreach ($constructor->getParameters() as $param) {
+        foreach ($params as $param) {
             $paramName = $param->getName();
 
             if (array_key_exists($paramName, $body)) {
@@ -164,6 +151,6 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             );
         }
 
-        return $reflection->newInstance(...$args);
+        return $this->reflectionService->newInstance($dtoClass, $args);
     }
 }

@@ -11,6 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Exception\ValidationException;
 use Waffle\Handler\ControllerArgumentResolver;
+use Waffle\Service\ReflectionService;
 use WaffleTests\Helper\Dto\EmptyDto;
 use WaffleTests\Helper\Dto\OptionalFieldsDto;
 use WaffleTests\Helper\Dto\UserRegistrationDto;
@@ -45,7 +46,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             }
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         $args = $resolver->resolve(
             controller: $controller,
@@ -67,7 +68,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             public function register(UserRegistrationDto $payload): void {}
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Expected JSON object body');
@@ -81,7 +82,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             public function register(UserRegistrationDto $payload): void {}
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         try {
             $resolver->resolve(
@@ -103,7 +104,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             public function register(UserRegistrationDto $payload): void {}
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         try {
             $resolver->resolve(
@@ -130,7 +131,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             }
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         // 'admin' is not in the DTO constructor and must be silently dropped.
         $args = $resolver->resolve(
@@ -156,7 +157,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             }
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         $args = $resolver->resolve(
             controller: $controller,
@@ -174,7 +175,7 @@ final class ControllerArgumentResolverDtoTest extends TestCase
             public function consume(OptionalFieldsDto $payload): void {}
         };
 
-        $resolver = new ControllerArgumentResolver($this->container());
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
 
         // Provide only 'favoriteNumber'; 'nickname' has a default and should not be required.
         $args = $resolver->resolve(

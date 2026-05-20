@@ -12,6 +12,7 @@ use RuntimeException;
 use stdClass;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Handler\ControllerArgumentResolver;
+use Waffle\Service\ReflectionService;
 
 #[CoversClass(ControllerArgumentResolver::class)]
 #[AllowMockObjectsWithoutExpectations]
@@ -30,7 +31,7 @@ final class ControllerArgumentResolverTest extends TestCase
 
         $request = $this->createStub(ServerRequestInterface::class);
 
-        $resolver = new ControllerArgumentResolver($container);
+        $resolver = new ControllerArgumentResolver($container, new ReflectionService());
         $args = $resolver->resolve($controller, 'action', $request, []);
 
         static::assertCount(1, $args);
@@ -50,7 +51,7 @@ final class ControllerArgumentResolverTest extends TestCase
 
         $request = $this->createStub(ServerRequestInterface::class);
 
-        $resolver = new ControllerArgumentResolver($container);
+        $resolver = new ControllerArgumentResolver($container, new ReflectionService());
         $args = $resolver->resolve($controller, 'action', $request, []);
 
         static::assertCount(1, $args);
@@ -67,7 +68,7 @@ final class ControllerArgumentResolverTest extends TestCase
 
         $request = $this->createStub(ServerRequestInterface::class);
 
-        $resolver = new ControllerArgumentResolver($container);
+        $resolver = new ControllerArgumentResolver($container, new ReflectionService());
         $args = $resolver->resolve($controller, 'action', $request, ['id' => '42']);
 
         static::assertSame([42], $args);
@@ -84,7 +85,7 @@ final class ControllerArgumentResolverTest extends TestCase
 
         $request = $this->createStub(ServerRequestInterface::class);
 
-        $resolver = new ControllerArgumentResolver($container);
+        $resolver = new ControllerArgumentResolver($container, new ReflectionService());
         $args = $resolver->resolve($controller, 'action', $request, []);
 
         static::assertSame(['fallback'], $args);
@@ -101,7 +102,7 @@ final class ControllerArgumentResolverTest extends TestCase
 
         $request = $this->createStub(ServerRequestInterface::class);
 
-        $resolver = new ControllerArgumentResolver($container);
+        $resolver = new ControllerArgumentResolver($container, new ReflectionService());
         $args = $resolver->resolve($controller, 'action', $request, []);
 
         static::assertSame([null], $args);
@@ -121,6 +122,11 @@ final class ControllerArgumentResolverTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Argument "$svc"');
 
-        new ControllerArgumentResolver($container)->resolve($controller, 'action', $request, []);
+        new ControllerArgumentResolver($container, new ReflectionService())->resolve(
+            $controller,
+            'action',
+            $request,
+            [],
+        );
     }
 }

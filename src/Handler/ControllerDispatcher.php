@@ -14,6 +14,7 @@ use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
 use Waffle\Event\ControllerArgumentsResolvedEvent;
+use Waffle\Service\ReflectionService;
 
 /**
  * The terminal handler of the framework.
@@ -84,7 +85,10 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         }
 
         // 5. Resolve Arguments (Auto-wiring for Controller Methods)
-        $resolver = $this->argumentResolver ?? new ControllerArgumentResolver($this->container);
+        $resolver = $this->argumentResolver ?? new ControllerArgumentResolver(
+            $this->container,
+            new ReflectionService(),
+        );
         $args = $resolver->resolve($controller, $method, $request, $routeParams);
 
         // 5b. Dispatch ControllerArgumentsResolvedEvent

@@ -7,6 +7,7 @@ namespace Waffle\Abstract;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use RuntimeException;
@@ -17,7 +18,6 @@ use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Core\System;
 use Waffle\Event\RequestReceivedEvent;
 use Waffle\Event\ResponseGeneratedEvent;
@@ -27,12 +27,12 @@ use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\WaffleException;
 use Waffle\Factory\ContainerFactory;
+use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
+use Waffle\Service\ReflectionService;
 
 abstract class AbstractKernel implements KernelInterface
 {
-    use ReflectionTrait;
-
     protected string $environment = Constant::ENV_PROD;
 
     protected bool $booted = false;
@@ -108,7 +108,19 @@ abstract class AbstractKernel implements KernelInterface
             $request = $requestReceivedEvent->getRequest();
         }
 
-        $fallbackHandler = new ControllerDispatcher($this->container, $this->dispatcher);
+        // Beta-1 hardening (Roadmap §1.1 — Découplage du Kernel): the terminal
+        // handler comes exclusively from the container under PSR-15's
+        // RequestHandlerInterface. configure() registers a ControllerDispatcher
+        // by default; downstream apps swap it by pre-registering their own
+        // handler before configure() runs.
+        $fallbackHandler = $this->container->get(RequestHandlerInterface::class);
+        if (!$fallbackHandler instanceof RequestHandlerInterface) {
+            $this->logAndThrow(
+                ContainerException::class,
+                'Kernel Error: container returned a non-RequestHandlerInterface instance for the terminal handler.',
+                $request->getMethod(),
+            );
+        }
 
         $response = $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
 
@@ -161,11 +173,11 @@ abstract class AbstractKernel implements KernelInterface
             return $this;
         }
 
-        $appEnv = Constant::ENV_PROD;
-        if (getenv(Constant::APP_ENV) === false) {
-            putenv($appEnv);
-        }
-        $this->environment = $appEnv;
+        // Beta-1 hardening: read APP_ENV from the process environment without
+        // mutating global state (the prior `putenv($appEnv)` was both a latent
+        // bug — missing '=' sentinel — and a worker-mode safety hazard).
+        $envVar = getenv(Constant::APP_ENV);
+        $this->environment = is_string($envVar) && $envVar !== '' ? $envVar : Constant::ENV_PROD;
 
         return $this;
     }
@@ -224,12 +236,37 @@ abstract class AbstractKernel implements KernelInterface
 
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
+        $this->registerDefaultTerminalHandler();
+
         // Lock the container to prevent service override after boot
         if (method_exists($this->container, 'lock')) {
             $this->container->lock();
         }
 
         $this->booted = true;
+    }
+
+    /**
+     * Registers the default terminal PSR-15 handler in the container under
+     * `RequestHandlerInterface`. Idempotent: pre-registered handlers (e.g. an
+     * app supplying its own dispatcher) win — only the empty-slot case is
+     * filled here.
+     *
+     * Called from {@see self::configure()} during the normal boot path. Test
+     * fixtures that override `configure()` to bypass the standard setup must
+     * call this method themselves once `$this->container` has been assigned,
+     * otherwise {@see self::handle()} cannot resolve the terminal handler.
+     */
+    protected function registerDefaultTerminalHandler(): void
+    {
+        if ($this->container === null || $this->container->has(RequestHandlerInterface::class)) {
+            return;
+        }
+
+        $reflectionService = new ReflectionService();
+        $argumentResolver = new ControllerArgumentResolver($this->container, $reflectionService);
+        $dispatcher = new ControllerDispatcher($this->container, $this->dispatcher, $argumentResolver);
+        $this->container->set(RequestHandlerInterface::class, $dispatcher);
     }
 
     /**

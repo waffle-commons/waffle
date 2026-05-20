@@ -6,12 +6,14 @@ namespace Waffle\Factory;
 
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Commons\Utils\Trait\ReflectionTrait;
+use Waffle\Commons\Utils\Service\ClassParser;
 use Waffle\Exception\Container\ContainerException;
 
 final class ContainerFactory
 {
-    use ReflectionTrait;
+    public function __construct(
+        private readonly ClassParser $parser = new ClassParser(),
+    ) {}
 
     public function create(ContainerInterface $container, ?string $directory = null): void
     {
@@ -38,31 +40,48 @@ final class ContainerFactory
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      * @throws ContainerException
      */
     private function scanDirectory(string $directory): array
     {
+        /** @var list<string> $files */
         $files = [];
         $paths = scandir($directory);
 
-        if ($paths) {
-            foreach ($paths as $path) {
-                $currentDir = $path === Constant::CURRENT_DIR;
-                $previousDir = $path === Constant::PREVIOUS_DIR;
-                $dsStore = str_contains($path, Constant::DS_STORE);
-                if ($currentDir || $previousDir || $dsStore) {
-                    continue;
-                }
+        if (!$paths) {
+            return $files;
+        }
 
-                $file = $directory . DIRECTORY_SEPARATOR . $path;
-
-                match (true) {
-                    is_dir($file) => $files = array_merge($files, $this->scanDirectory($file)),
-                    str_contains($path, Constant::PHPEXT) => $files[] = $this->className($file),
-                    default => throw new ContainerException("Service or class \"{$file}\" not found."),
-                };
+        foreach ($paths as $path) {
+            $currentDir = $path === Constant::CURRENT_DIR;
+            $previousDir = $path === Constant::PREVIOUS_DIR;
+            $dsStore = str_contains($path, Constant::DS_STORE);
+            if ($currentDir || $previousDir || $dsStore) {
+                continue;
             }
+
+            $file = $directory . DIRECTORY_SEPARATOR . $path;
+
+            if (is_dir($file)) {
+                foreach ($this->scanDirectory($file) as $nested) {
+                    if (!is_string($nested)) {
+                        continue;
+                    }
+                    $files[] = $nested;
+                }
+                continue;
+            }
+
+            if (str_contains($path, Constant::PHPEXT)) {
+                $className = $this->parser->className($file);
+                if (is_string($className)) {
+                    $files[] = $className;
+                }
+                continue;
+            }
+
+            throw new ContainerException("Service or class \"{$file}\" not found.");
         }
 
         return $files;

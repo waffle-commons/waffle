@@ -553,17 +553,23 @@ class AbstractKernelTest extends TestCase
 
     public function testBootDefaultsToProdIfAppEnvMissing(): void
     {
+        // Beta-1: boot() no longer mutates process env (the prior putenv('prod')
+        // sentinel was both a latent bug and a worker-mode hazard). Instead the
+        // kernel's $environment property is set to ENV_PROD when no APP_ENV is
+        // visible to getenv(). We use reflection because $environment is protected.
         unset($_ENV[Constant::APP_ENV]);
-        // Ensure no .env file
+        putenv(Constant::APP_ENV); // clear from process env too
         if (file_exists(APP_ROOT . '/.env')) {
             unlink(APP_ROOT . '/.env');
         }
 
+        assert($this->kernel !== null);
         $this->kernel->boot();
 
-        // Bug in AbstractKernel::boot: putenv('prod') instead of putenv('APP_ENV=prod').
-        // We assert code path execution only.
-        static::assertFalse(getenv(Constant::APP_ENV));
+        $environment = new \ReflectionClass(\Waffle\Abstract\AbstractKernel::class)
+            ->getProperty('environment')
+            ->getValue($this->kernel);
+        static::assertSame(Constant::ENV_PROD, $environment);
     }
 
     public function testSettersUpdateProperties(): void
@@ -860,11 +866,17 @@ class AbstractKernelTest extends TestCase
         static::assertTrue($kernel->getContainer()->has('WaffleTests\Helper\Service\DummyService'));
         static::assertTrue($kernel->getContainer()->has('WaffleTests\Helper\Controller\DummyController'));
 
-        // Cleanup
+        // Cleanup — `src/Service` ships ReflectionService.php in production code, so we only
+        // remove the directory if it's empty after deleting the dummy. Same defensive check
+        // for `src/Controller`.
         unlink($servicesDir . '/DummyService.php');
         unlink($controllersDir . '/DummyController.php');
-        rmdir($servicesDir);
-        rmdir($controllersDir);
+        if (is_dir($servicesDir) && count(scandir($servicesDir)) <= 2) {
+            rmdir($servicesDir);
+        }
+        if (is_dir($controllersDir) && count(scandir($controllersDir)) <= 2) {
+            rmdir($controllersDir);
+        }
         if (is_dir(APP_ROOT . '/src') && count(scandir(APP_ROOT . '/src')) <= 2) {
             rmdir(APP_ROOT . '/src');
         }
@@ -969,6 +981,7 @@ class AbstractKernelTest extends TestCase
                 // AbstractKernel logic assigns innerContainer directly.
                 $this->container = $this->innerContainer;
                 $this->system = $this->systemMock;
+                $this->registerDefaultTerminalHandler();
             }
 
             public function getSystem(): \Waffle\Core\System
@@ -1101,6 +1114,7 @@ class AbstractKernelTest extends TestCase
                 // We use our local reference because parent's innerContainer is private
                 $this->container = $this->innerContainerRef;
                 $this->system = $this->systemMock;
+                $this->registerDefaultTerminalHandler();
             }
         };
 
