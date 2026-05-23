@@ -359,29 +359,17 @@ class AbstractKernelTest extends TestCase
             ): ResponseInterface {
                 // Simulate routing: match request and add attributes
                 $match = $this->router->matchRequest($request);
-
-                if (!is_array($match)) {
-                    // No match found or invalid return
+                if ($match === null) {
                     return $handler->handle($request);
                 }
 
-                foreach ($match as $key => $value) {
-                    // Mappings if not present
-                    if ($key === 'classname') {
-                        $request = $request->withAttribute('_classname', $value);
-                    }
-                    if ($key === 'method') {
-                        $request = $request->withAttribute('_method', $value);
-                    }
-                    // Mago says isset(_params) is always false, but logic requires default?
-                    // Safe to suppress or simplify? Mago implies key 'params' excludes '_params'?
-                    // Let's keep it but ignore if needed, OR trust Mago if the array shape is known.
-                    if ($key === 'params') {
-                        $request = $request->withAttribute('_params', $value);
-                    }
-
-                    $request = $request->withAttribute($key, $value);
-                }
+                $request = $request
+                    ->withAttribute('_classname', $match->className)
+                    ->withAttribute('_method', $match->method)
+                    ->withAttribute('_arguments', $match->arguments)
+                    ->withAttribute('_path', $match->path)
+                    ->withAttribute('_name', $match->name)
+                    ->withAttribute('_params', $match->params);
 
                 return $handler->handle($request);
             }
@@ -416,16 +404,14 @@ class AbstractKernelTest extends TestCase
 
         $this->routerMock
             ->method('matchRequest')
-            ->willReturn([
-                'path' => '/users',
-                'classname' => 'WaffleTests\Helper\Controller\TempController',
-                '_classname' => 'WaffleTests\Helper\Controller\TempController',
-                'method' => 'list',
-                '_method' => 'list',
-                'name' => 'users',
-                'arguments' => [],
-                'params' => [],
-            ]);
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'list',
+                arguments: [],
+                path: '/users',
+                name: 'users',
+                params: [],
+            ));
 
         $responseStub = new StubResponse(200);
         $this->responseFactoryMock->method('createResponse')->willReturn($responseStub);
@@ -488,16 +474,14 @@ class AbstractKernelTest extends TestCase
 
         $this->routerMock
             ->method('matchRequest')
-            ->willReturn([
-                'path' => '/trigger-error',
-                'classname' => 'WaffleTests\Helper\Controller\TempController',
-                '_classname' => 'WaffleTests\Helper\Controller\TempController',
-                'method' => 'throwError',
-                '_method' => 'throwError',
-                'name' => 'error',
-                'arguments' => [],
-                'params' => [],
-            ]);
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'throwError',
+                arguments: [],
+                path: '/trigger-error',
+                name: 'error',
+                params: [],
+            ));
 
         $responseStub = new StubResponse(500);
         $this->responseFactoryMock->method('createResponse')->with(500)->willReturn($responseStub);
@@ -784,13 +768,14 @@ class AbstractKernelTest extends TestCase
         // Configure Router to match request
         $this->routerMock
             ->method('matchRequest')
-            ->willReturn([
-                'classname' => 'WaffleTests\Helper\Controller\TempController',
-                '_classname' => 'WaffleTests\Helper\Controller\TempController',
-                'method' => 'throwError',
-                '_method' => 'throwError',
-                'path' => '/trigger-error',
-            ]);
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'throwError',
+                arguments: [],
+                path: '/trigger-error',
+                name: 'error',
+                params: [],
+            ));
 
         // Inline mock controller that throws
         $controller = new class {
@@ -925,16 +910,14 @@ class AbstractKernelTest extends TestCase
         $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
         $routerMock
             ->method('matchRequest')
-            ->willReturn([
-                'path' => '/trigger-error',
-                'classname' => 'WaffleTests\Helper\Controller\TempController',
-                '_classname' => 'WaffleTests\Helper\Controller\TempController',
-                'method' => 'throwError',
-                '_method' => 'throwError',
-                'name' => 'error',
-                'arguments' => [],
-                'params' => [],
-            ]);
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'throwError',
+                arguments: [],
+                path: '/trigger-error',
+                name: 'error',
+                params: [],
+            ));
 
         /** @var \Waffle\Core\System&MockObject $systemMock */
         $systemMock = $this->createMock(\Waffle\Core\System::class);
@@ -1028,15 +1011,16 @@ class AbstractKernelTest extends TestCase
                 \Psr\Http\Server\RequestHandlerInterface $handler,
             ): ResponseInterface {
                 $match = $this->router->matchRequest($request);
-                foreach ($match as $key => $value) {
-                    if ($key === 'classname')
-                        $request = $request->withAttribute('_classname', $value);
-                    if ($key === 'method')
-                        $request = $request->withAttribute('_method', $value);
-                    if ($key === 'params')
-                        $request = $request->withAttribute('_params', $value);
-                    $request = $request->withAttribute($key, $value);
+                if ($match === null) {
+                    return $handler->handle($request);
                 }
+                $request = $request
+                    ->withAttribute('_classname', $match->className)
+                    ->withAttribute('_method', $match->method)
+                    ->withAttribute('_arguments', $match->arguments)
+                    ->withAttribute('_path', $match->path)
+                    ->withAttribute('_name', $match->name)
+                    ->withAttribute('_params', $match->params);
                 return $handler->handle($request);
             }
         });
@@ -1083,14 +1067,14 @@ class AbstractKernelTest extends TestCase
         $routerMock = $this->createMock(\Waffle\Commons\Contracts\Routing\RouterInterface::class);
         $routerMock
             ->method('matchRequest')
-            ->willReturn([
-                'path' => '/args/{id}/{slug}',
-                'classname' => ArgumentController::class,
-                'method' => 'action',
-                'name' => 'args_test',
-                'arguments' => [],
-                'params' => ['id' => '123', 'slug' => 'test-slug'],
-            ]);
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: ArgumentController::class,
+                method: 'action',
+                arguments: [],
+                path: '/args/{id}/{slug}',
+                name: 'args_test',
+                params: ['id' => '123', 'slug' => 'test-slug'],
+            ));
 
         /** @var \Waffle\Core\System&MockObject $systemMock */
         $systemMock = $this->createMock(\Waffle\Core\System::class);
@@ -1140,15 +1124,16 @@ class AbstractKernelTest extends TestCase
                 \Psr\Http\Server\RequestHandlerInterface $handler,
             ): ResponseInterface {
                 $match = $this->router->matchRequest($request);
-                foreach ($match as $key => $value) {
-                    if ($key === 'classname')
-                        $request = $request->withAttribute('_classname', $value);
-                    if ($key === 'method')
-                        $request = $request->withAttribute('_method', $value);
-                    if ($key === 'params')
-                        $request = $request->withAttribute('_params', $value);
-                    $request = $request->withAttribute($key, $value);
+                if ($match === null) {
+                    return $handler->handle($request);
                 }
+                $request = $request
+                    ->withAttribute('_classname', $match->className)
+                    ->withAttribute('_method', $match->method)
+                    ->withAttribute('_arguments', $match->arguments)
+                    ->withAttribute('_path', $match->path)
+                    ->withAttribute('_name', $match->name)
+                    ->withAttribute('_params', $match->params);
                 return $handler->handle($request);
             }
         });

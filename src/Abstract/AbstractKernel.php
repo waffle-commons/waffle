@@ -16,8 +16,10 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
+use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Core\System;
 use Waffle\Event\RequestReceivedEvent;
 use Waffle\Event\ResponseGeneratedEvent;
@@ -105,7 +107,7 @@ abstract class AbstractKernel implements KernelInterface
         $requestReceivedEvent = new RequestReceivedEvent($request);
         $requestReceivedEvent = $this->dispatch($requestReceivedEvent);
         if ($requestReceivedEvent instanceof RequestReceivedEvent) {
-            $request = $requestReceivedEvent->getRequest();
+            $request = $requestReceivedEvent->request;
         }
 
         // Beta-1 hardening (Roadmap §1.1 — Découplage du Kernel): the terminal
@@ -128,7 +130,7 @@ abstract class AbstractKernel implements KernelInterface
         $responseGeneratedEvent = new ResponseGeneratedEvent($response);
         $responseGeneratedEvent = $this->dispatch($responseGeneratedEvent);
         if ($responseGeneratedEvent instanceof ResponseGeneratedEvent) {
-            $response = $responseGeneratedEvent->getResponse();
+            $response = $responseGeneratedEvent->response;
         }
 
         return $response;
@@ -259,14 +261,69 @@ abstract class AbstractKernel implements KernelInterface
      */
     protected function registerDefaultTerminalHandler(): void
     {
-        if ($this->container === null || $this->container->has(RequestHandlerInterface::class)) {
+        if ($this->container === null) {
             return;
         }
 
-        $reflectionService = new ReflectionService();
-        $argumentResolver = new ControllerArgumentResolver($this->container, $reflectionService);
-        $dispatcher = new ControllerDispatcher($this->container, $this->dispatcher, $argumentResolver);
-        $this->container->set(RequestHandlerInterface::class, $dispatcher);
+        // Sensible defaults: register the framework's standard reflection +
+        // argument-resolver implementations only when the AppKernelFactory hasn't
+        // already bound its own. Each registration is gated by container.has() AND
+        // a type check on container.get(), so a permissive blanket-has() test
+        // double cannot starve the kernel of its dependencies.
+        $reflectionService = $this->resolveOrDefault(
+            ReflectionServiceInterface::class,
+            ReflectionServiceInterface::class,
+            static fn(): ReflectionServiceInterface => new ReflectionService(),
+        );
+
+        $argumentResolver = $this->resolveOrDefault(
+            ArgumentResolverInterface::class,
+            ArgumentResolverInterface::class,
+            fn(): ArgumentResolverInterface => new ControllerArgumentResolver($this->container, $reflectionService),
+        );
+
+        if ($this->container->has(RequestHandlerInterface::class)) {
+            return;
+        }
+
+        $this->container->set(
+            RequestHandlerInterface::class,
+            new ControllerDispatcher($this->container, $this->dispatcher, $argumentResolver),
+        );
+    }
+
+    /**
+     * Returns the container-bound instance of `$interface` if it exists and is
+     * the expected type; otherwise constructs a default via `$factory`, binds
+     * it to the container, and returns it.
+     *
+     * Defensive against test doubles whose `has()` returns true for unknown IDs
+     * but whose `get()` returns null — without this guard, those doubles would
+     * crash the kernel boot with a TypeError on the first dependency lookup.
+     *
+     * @template TService of object
+     * @param class-string<TService> $interface
+     * @param class-string<TService> $expectedType
+     * @param callable(): TService   $factory
+     * @return TService
+     */
+    private function resolveOrDefault(string $interface, string $expectedType, callable $factory): object
+    {
+        $container = $this->container;
+        if ($container === null) {
+            return $factory();
+        }
+
+        if ($container->has($interface)) {
+            $candidate = $container->get($interface);
+            if ($candidate instanceof $expectedType) {
+                return $candidate;
+            }
+        }
+
+        $instance = $factory();
+        $container->set($interface, $instance);
+        return $instance;
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Waffle\Service;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
+use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 
 /**
  * Centralizes the reflection access the framework performs on user-land controllers
@@ -14,11 +15,12 @@ use ReflectionParameter;
  *
  * Stateless and side-effect free; safe to share across FrankenPHP worker requests.
  */
-final readonly class ReflectionService
+final readonly class ReflectionService implements ReflectionServiceInterface
 {
     /**
      * @param class-string $attributeName
      */
+    #[\Override]
     public function hasAttribute(string $className, string $attributeName): bool
     {
         if (!class_exists($className)) {
@@ -32,6 +34,7 @@ final readonly class ReflectionService
      * @param class-string|object $target
      * @return list<ReflectionParameter>
      */
+    #[\Override]
     public function getMethodParameters(string|object $target, string $method): array
     {
         return new ReflectionMethod($target, $method)->getParameters();
@@ -43,6 +46,7 @@ final readonly class ReflectionService
      * @param class-string $className
      * @return list<ReflectionParameter>|null
      */
+    #[\Override]
     public function getConstructorParameters(string $className): ?array
     {
         $constructor = new ReflectionClass($className)->getConstructor();
@@ -57,6 +61,7 @@ final readonly class ReflectionService
      * @param class-string $className
      * @param array<string, mixed> $namedArgs
      */
+    #[\Override]
     public function newInstance(string $className, array $namedArgs = []): object
     {
         return new ReflectionClass($className)->newInstance(...$namedArgs);

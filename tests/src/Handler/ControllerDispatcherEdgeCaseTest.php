@@ -13,7 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
+use Waffle\Service\ReflectionService;
 use WaffleTests\Abstract\Helper\StubServerRequest;
 
 #[CoversClass(ControllerDispatcher::class)]
@@ -38,7 +40,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($controller);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -80,7 +86,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -112,7 +122,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -157,7 +171,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -193,7 +211,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');

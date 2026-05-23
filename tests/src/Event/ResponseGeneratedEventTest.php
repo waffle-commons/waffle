@@ -16,7 +16,7 @@ final class ResponseGeneratedEventTest extends TestCase
 
         $event = new ResponseGeneratedEvent($response);
 
-        static::assertSame($response, $event->getResponse());
+        static::assertSame($response, $event->response);
     }
 
     public function testWithResponseProducesNewEventWithSwappedResponse(): void
@@ -28,7 +28,7 @@ final class ResponseGeneratedEventTest extends TestCase
         $next = $event->withResponse($b);
 
         static::assertNotSame($event, $next);
-        static::assertSame($a, $event->getResponse());
-        static::assertSame($b, $next->getResponse());
+        static::assertSame($a, $event->response);
+        static::assertSame($b, $next->response);
     }
 }

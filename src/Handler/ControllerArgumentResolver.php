@@ -10,14 +10,14 @@ use RuntimeException;
 use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
+use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Exception\ValidationException;
-use Waffle\Service\ReflectionService;
 
 final readonly class ControllerArgumentResolver implements ArgumentResolverInterface
 {
     public function __construct(
         private ContainerInterface $container,
-        private ReflectionService $reflectionService,
+        private ReflectionServiceInterface $reflectionService,
     ) {}
 
     #[\Override]

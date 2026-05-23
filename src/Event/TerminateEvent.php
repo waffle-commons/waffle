@@ -10,17 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 final class TerminateEvent
 {
     public function __construct(
-        private(set) ServerRequestInterface $request,
-        private(set) ResponseInterface $response,
+        public private(set) ServerRequestInterface $request,
+        public private(set) ResponseInterface $response,
     ) {}
-
-    public function getRequest(): ServerRequestInterface
-    {
-        return $this->request;
-    }
-
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
 }

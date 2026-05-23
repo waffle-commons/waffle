@@ -14,18 +14,22 @@ use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
 use Waffle\Event\ControllerArgumentsResolvedEvent;
-use Waffle\Service\ReflectionService;
 
 /**
  * The terminal handler of the framework.
  * It executes the controller identified by the request attributes.
+ *
+ * Leftover-purge §3: the dispatcher never instantiates its own dependencies.
+ * The `ArgumentResolverInterface` is now required at construction time; callers
+ * (AppKernelFactory + AbstractKernel default-handler registration) resolve it
+ * from the container.
  */
 final readonly class ControllerDispatcher implements RequestHandlerInterface
 {
     public function __construct(
         private ContainerInterface $container,
-        private ?EventDispatcherInterface $dispatcher = null,
-        private ?ArgumentResolverInterface $argumentResolver = null,
+        private ?EventDispatcherInterface $dispatcher,
+        private ArgumentResolverInterface $argumentResolver,
         private ?ResponseConverterInterface $responseConverter = null,
     ) {}
 
@@ -84,19 +88,16 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             ));
         }
 
-        // 5. Resolve Arguments (Auto-wiring for Controller Methods)
-        $resolver = $this->argumentResolver ?? new ControllerArgumentResolver(
-            $this->container,
-            new ReflectionService(),
-        );
-        $args = $resolver->resolve($controller, $method, $request, $routeParams);
+        // 5. Resolve Arguments (Auto-wiring for Controller Methods) via the
+        // injected ArgumentResolverInterface — no in-handler instantiation.
+        $args = $this->argumentResolver->resolve($controller, $method, $request, $routeParams);
 
         // 5b. Dispatch ControllerArgumentsResolvedEvent
         if ($this->dispatcher !== null) {
             $event = new ControllerArgumentsResolvedEvent($request, $classname, $method, $args);
             $event = $this->dispatcher->dispatch($event);
             if ($event instanceof ControllerArgumentsResolvedEvent) {
-                $args = $event->getArguments();
+                $args = $event->arguments;
             }
         }
 

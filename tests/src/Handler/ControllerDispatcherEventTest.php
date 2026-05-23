@@ -48,9 +48,9 @@ final class ControllerDispatcherEventTest extends TestCase
             ->willReturnCallback(static function (object $event): object {
                 if ($event instanceof ControllerArgumentsResolvedEvent) {
                     return new ControllerArgumentsResolvedEvent(
-                        request: $event->getRequest(),
-                        controller: $event->getController(),
-                        method: $event->getMethod(),
+                        request: $event->request,
+                        controller: $event->controller,
+                        method: $event->method,
                         arguments: [99, 'mutated'],
                     );
                 }
