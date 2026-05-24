@@ -265,11 +265,20 @@ abstract class AbstractKernel implements KernelInterface
             return;
         }
 
-        // Sensible defaults: register the framework's standard reflection +
-        // argument-resolver implementations only when the AppKernelFactory hasn't
-        // already bound its own. Each registration is gated by container.has() AND
-        // a type check on container.get(), so a permissive blanket-has() test
-        // double cannot starve the kernel of its dependencies.
+        // Fast path: if the terminal handler is already wired (the AppKernelFactory
+        // composes ReflectionService + ArgumentResolver + ControllerDispatcher and
+        // binds RequestHandlerInterface), do nothing. Returning here BEFORE touching
+        // the infra-service slots is deliberate — resolving them through a
+        // SecureContainer would run controller-grade security analysis over framework
+        // plumbing (and ReflectionService's `string|object` union params trip the
+        // analyzer). Apps own the wiring; the kernel only fills the empty-slot case.
+        if ($this->container->has(RequestHandlerInterface::class)) {
+            return;
+        }
+
+        // Sensible defaults for library/test consumers that did NOT pre-wire a
+        // handler. Each lookup is gated by container.has() + a type check, so a
+        // permissive blanket-has() test double cannot starve the kernel of its deps.
         $reflectionService = $this->resolveOrDefault(
             ReflectionServiceInterface::class,
             ReflectionServiceInterface::class,
@@ -281,10 +290,6 @@ abstract class AbstractKernel implements KernelInterface
             ArgumentResolverInterface::class,
             fn(): ArgumentResolverInterface => new ControllerArgumentResolver($this->container, $reflectionService),
         );
-
-        if ($this->container->has(RequestHandlerInterface::class)) {
-            return;
-        }
 
         $this->container->set(
             RequestHandlerInterface::class,

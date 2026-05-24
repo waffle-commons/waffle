@@ -68,6 +68,9 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
         $streamMock->expects($this->once())->method('write')->with('Hello World');
         $responseMock->method('getBody')->willReturn($streamMock);
         $responseMock->method('withHeader')->willReturnSelf();
+        // Phase 3 Task 3.3: the string-response path now also applies CSP +
+        // X-Content-Type-Options via withAddedHeader; the mock must answer it.
+        $responseMock->method('withAddedHeader')->willReturnSelf();
 
         $factoryMock = $this->createMock(ResponseFactoryInterface::class);
         $factoryMock->method('createResponse')->willReturn($responseMock);

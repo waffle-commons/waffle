@@ -14,6 +14,7 @@ use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Service\ReflectionService;
 use WaffleTests\Helper\Dto\EmptyDto;
 use WaffleTests\Helper\Dto\OptionalFieldsDto;
+use WaffleTests\Helper\Dto\PlainRejectionDto;
 use WaffleTests\Helper\Dto\UserRegistrationDto;
 
 #[CoversClass(ControllerArgumentResolver::class)]
@@ -167,6 +168,58 @@ final class ControllerArgumentResolverDtoTest extends TestCase
         );
 
         static::assertInstanceOf(EmptyDto::class, $args[0]);
+    }
+
+    public function testPlainInvalidArgumentExceptionIsTranslatedToValidationException(): void
+    {
+        $controller = new class {
+            public function consume(PlainRejectionDto $payload): void {}
+        };
+
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
+
+        try {
+            $resolver->resolve(
+                controller: $controller,
+                method: 'consume',
+                request: $this->request(['code' => '']),
+                routeParams: [],
+            );
+            static::fail('Expected ValidationException');
+        } catch (ValidationException $e) {
+            // Plain \InvalidArgumentException from a Property Hook → unified 422
+            // with no field name (DTO author opted out of structured reporting).
+            static::assertNull($e->getField());
+            static::assertSame(422, $e->getCode());
+            static::assertSame('code must not be empty.', $e->getMessage());
+            static::assertInstanceOf(\InvalidArgumentException::class, $e->getPrevious());
+        }
+    }
+
+    public function testConstructorTypeErrorIsTranslatedToValidationException(): void
+    {
+        $controller = new class {
+            public function register(UserRegistrationDto $payload): void {}
+        };
+
+        $resolver = new ControllerArgumentResolver($this->container(), new ReflectionService());
+
+        try {
+            // UserRegistrationDto::__construct expects int $age; passing a string
+            // bypasses the Property Hook and trips PHP's native TypeError at
+            // constructor invocation — the resolver must translate it.
+            $resolver->resolve(
+                controller: $controller,
+                method: 'register',
+                request: $this->request(['email' => 'alice@example.com', 'age' => 'thirty']),
+                routeParams: [],
+            );
+            static::fail('Expected ValidationException');
+        } catch (ValidationException $e) {
+            static::assertSame(422, $e->getCode());
+            static::assertNull($e->getField());
+            static::assertInstanceOf(\TypeError::class, $e->getPrevious());
+        }
     }
 
     public function testOptionalFieldsAreOmittedWhenMissing(): void

@@ -12,8 +12,15 @@ use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
 
 final readonly class ControllerResponseConverter implements ResponseConverterInterface
 {
+    /**
+     * @param string $stringResponseCsp Content-Security-Policy applied to controller
+     *                                  returns of type `string` (text/html responses).
+     *                                  Beta-1 Phase 3 default mitigates reflected XSS
+     *                                  by allowing only same-origin loads.
+     */
     public function __construct(
         private ResponseFactoryInterface $factory,
+        private string $stringResponseCsp = "default-src 'self'",
     ) {}
 
     /**
@@ -37,7 +44,16 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
         }
 
         if (is_string($result)) {
-            $response = $this->factory->createResponse(200)->withHeader('Content-Type', 'text/html');
+            // Beta-1 Phase 3 (Task 3.3): every auto-generated text/html response carries
+            // a strict CSP + nosniff floor so that a controller returning user-influenced
+            // strings cannot reflect XSS payloads back to the browser. `withAddedHeader`
+            // is used (not `withHeader`) so any upstream middleware that already set a
+            // stricter policy is preserved verbatim.
+            $response = $this->factory
+                ->createResponse(200)
+                ->withHeader('Content-Type', 'text/html')
+                ->withAddedHeader('Content-Security-Policy', $this->stringResponseCsp)
+                ->withAddedHeader('X-Content-Type-Options', 'nosniff');
             $response->getBody()->write($result);
             return $response;
         }

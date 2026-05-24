@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionNamedType;
 use RuntimeException;
+use TypeError;
 use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Exception\Validation\ValidationExceptionInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Exception\ValidationException;
@@ -151,6 +154,22 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             );
         }
 
-        return $this->reflectionService->newInstance($dtoClass, $args);
+        // Construction may fail inside the DTO's Property Hooks (validation logic
+        // lives there per RFC-011). Translate every hook-driven rejection into a
+        // unified ValidationException so ErrorHandlerMiddleware can emit an
+        // RFC 7807 422 response — regardless of whether the DTO threw a typed
+        // ValidationExceptionInterface, a plain \InvalidArgumentException, or
+        // tripped a \TypeError from the constructor signature.
+        try {
+            return $this->reflectionService->newInstance($dtoClass, $args);
+        } catch (ValidationExceptionInterface $e) {
+            // DTO emitted a typed validation error — preserve `field` + bubble.
+            throw $e;
+        } catch (InvalidArgumentException|TypeError $e) {
+            // TypeError at constructor entry is reachable from user input (e.g. body
+            // sends string "thirty" where the DTO declares int $age). Translate to a
+            // 422 instead of letting a 500 surface — the input is invalid, not the code.
+            throw new ValidationException(message: $e->getMessage(), field: null, code: 422, previous: $e);
+        }
     }
 }
