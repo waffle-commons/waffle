@@ -9,9 +9,14 @@
 Waffle — the Kernel
 ===================
 
-> **Release:** `v0.1.0-beta0`
+> **Release:** `v0.1.0-beta1`
 
 The application kernel. Orchestrates request handling against the PSR-15 middleware stack, dispatches `RequestReceivedEvent` / `ResponseGeneratedEvent` / `TerminateEvent`, and resolves controllers via the container. The kernel itself stays agnostic of routing, security, logging, and HTTP — every concrete dependency is injected.
+
+## 🆕 Beta-1 highlights
+
+- **Kernel decoupling.** `AbstractKernel::handle()` resolves the terminal handler from the container under `Psr\Http\Server\RequestHandlerInterface` — there is no hard-coded `new ControllerDispatcher(...)` on the hot path. `configure()` registers a default `ControllerDispatcher` only when the slot is empty (`has()`-gated, idempotent), so an app can swap in its own terminal handler by pre-registering one.
+- **Native DTO validation → 422.** `ControllerArgumentResolver` hydrates `#[Dto]`-tagged parameters from the parsed request body, letting PHP 8.5 *set* property hooks run their assertions during construction. A hook failure is trapped and re-thrown as a unified `ValidationException`, which the error handler renders as RFC 7807 `422 Unprocessable Entity` — closing the Mass-Assignment gap without any external validation package.
 
 ## 📦 Installation
 
