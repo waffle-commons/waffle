@@ -392,6 +392,51 @@ class AbstractKernelTest extends TestCase
         parent::tearDown();
     }
 
+    public function testSetEventDispatcherIsStoredAndUsedByTerminate(): void
+    {
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev');
+
+        $dispatcher = $this->createMock(\Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface::class);
+        $dispatcher
+            ->expects(static::once())
+            ->method('dispatch')
+            ->with(static::isInstanceOf(\Waffle\Event\TerminateEvent::class))
+            ->willReturnArgument(0);
+
+        $kernel->setEventDispatcher($dispatcher);
+        $kernel->terminate(new StubServerRequest('GET', '/'), $this->createStub(ResponseInterface::class));
+    }
+
+    public function testTerminateIsANoOpWhenNoDispatcherIsSet(): void
+    {
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev');
+
+        $dispatcher = new \ReflectionProperty(\Waffle\Abstract\AbstractKernel::class, 'dispatcher')->getValue($kernel);
+        static::assertNull($dispatcher, 'no dispatcher should be configured by default');
+
+        // With no dispatcher, terminate() must return without attempting a dispatch.
+        $kernel->terminate(new StubServerRequest('GET', '/'), $this->createStub(ResponseInterface::class));
+    }
+
+    public function testResetDelegatesToTheContainer(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects(static::once())->method('reset');
+
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev', container: $container);
+        $kernel->reset();
+    }
+
+    public function testBootIsIdempotentOnceBooted(): void
+    {
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev');
+
+        new \ReflectionProperty(\Waffle\Abstract\AbstractKernel::class, 'booted')->setValue($kernel, true);
+
+        // Already booted → boot() returns the same instance without re-reading env.
+        static::assertSame($kernel, $kernel->boot());
+    }
+
     public function testHandleWithMatchingRouteRendersResponse(): void
     {
         assert($this->kernel !== null);

@@ -7,8 +7,10 @@ namespace Waffle\Handler;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionType;
+use ReflectionUnionType;
 use RuntimeException;
-use TypeError;
 use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Exception\Validation\ValidationExceptionInterface;
@@ -135,6 +137,7 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             $paramName = $param->getName();
 
             if (array_key_exists($paramName, $body)) {
+                $this->assertAssignable($param, $body[$paramName], $dtoClass);
                 $args[$paramName] = $body[$paramName];
                 continue;
             }
@@ -154,22 +157,86 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             );
         }
 
-        // Construction may fail inside the DTO's Property Hooks (validation logic
-        // lives there per RFC-011). Translate every hook-driven rejection into a
-        // unified ValidationException so ErrorHandlerMiddleware can emit an
-        // RFC 7807 422 response — regardless of whether the DTO threw a typed
-        // ValidationExceptionInterface, a plain \InvalidArgumentException, or
-        // tripped a \TypeError from the constructor signature.
+        // Value-level validation lives inside the DTO's Property Hooks (RFC-011).
+        // Scalar *type* mismatches were already rejected by assertAssignable() above,
+        // so a native \TypeError can no longer reach this point — the framework never
+        // catches Error subclasses. Translate hook-driven rejections into a unified
+        // ValidationException for the RFC 7807 422 mapping.
         try {
             return $this->reflectionService->newInstance($dtoClass, $args);
         } catch (ValidationExceptionInterface $e) {
             // DTO emitted a typed validation error — preserve `field` + bubble.
             throw $e;
-        } catch (InvalidArgumentException|TypeError $e) {
-            // TypeError at constructor entry is reachable from user input (e.g. body
-            // sends string "thirty" where the DTO declares int $age). Translate to a
-            // 422 instead of letting a 500 surface — the input is invalid, not the code.
+        } catch (InvalidArgumentException $e) {
+            // A Property Hook rejected the value with a plain \InvalidArgumentException
+            // (the DTO author opted out of typed reporting). Unify it as a 422.
             throw new ValidationException(message: $e->getMessage(), field: null, code: 422, previous: $e);
         }
+    }
+
+    /**
+     * Rejects a body value whose runtime type cannot satisfy the parameter's
+     * declared type BEFORE construction. A scalar mismatch (e.g. "thirty" for
+     * `int $age`) becomes a field-level 422 here instead of relying on catching
+     * PHP's native \TypeError — an Error subclass the framework must let
+     * propagate, never intercept.
+     *
+     * @throws ValidationException
+     */
+    private function assertAssignable(ReflectionParameter $param, mixed $value, string $dtoClass): void
+    {
+        $type = $param->getType();
+
+        // Untyped, or an intersection type we cannot satisfy from a JSON scalar:
+        // defer to the constructor / Property Hook.
+        if (!$type instanceof ReflectionNamedType && !$type instanceof ReflectionUnionType) {
+            return;
+        }
+
+        if ($value === null) {
+            if (!$type->allowsNull()) {
+                throw $this->typeViolation($param, $type, $dtoClass);
+            }
+            return;
+        }
+
+        $candidates = $type instanceof ReflectionNamedType ? [$type] : $type->getTypes();
+        foreach ($candidates as $candidate) {
+            if ($candidate instanceof ReflectionNamedType && $this->valueSatisfies($value, $candidate->getName())) {
+                return;
+            }
+        }
+
+        throw $this->typeViolation($param, $type, $dtoClass);
+    }
+
+    /**
+     * Whether a decoded JSON value can satisfy a declared scalar/array type.
+     * Object and class/interface types resolve to `false`: this resolver hydrates
+     * scalars and arrays from the request body, not nested objects.
+     */
+    private function valueSatisfies(mixed $value, string $typeName): bool
+    {
+        return match ($typeName) {
+            'mixed' => true,
+            'int' => is_int($value),
+            'float' => is_int($value) || is_float($value),
+            'string' => is_string($value),
+            'bool' => is_bool($value),
+            'array', 'iterable' => is_array($value),
+            default => false,
+        };
+    }
+
+    private function typeViolation(
+        ReflectionParameter $param,
+        ReflectionType $type,
+        string $dtoClass,
+    ): ValidationException {
+        return new ValidationException(
+            message: sprintf('Field "%s" must be of type %s for "%s".', $param->getName(), (string) $type, $dtoClass),
+            field: $param->getName(),
+            code: 422,
+        );
     }
 }
