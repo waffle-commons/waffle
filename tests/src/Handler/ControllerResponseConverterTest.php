@@ -113,7 +113,7 @@ final class ControllerResponseConverterTest extends TestCase
         $addedHeaders = [];
         $response
             ->method('withAddedHeader')
-            ->willReturnCallback(function (string $name, mixed $value) use (
+            ->willReturnCallback(static function (string $name, mixed $value) use (
                 $response,
                 &$addedHeaders,
             ): ResponseInterface {
@@ -142,7 +142,7 @@ final class ControllerResponseConverterTest extends TestCase
         $addedHeaders = [];
         $response
             ->method('withAddedHeader')
-            ->willReturnCallback(function (string $name, mixed $value) use (
+            ->willReturnCallback(static function (string $name, mixed $value) use (
                 $response,
                 &$addedHeaders,
             ): ResponseInterface {
