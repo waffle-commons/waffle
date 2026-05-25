@@ -91,6 +91,7 @@ class WebKernel extends Kernel
                 };
             }
             $this->system = new System(security: $this->security)->boot(kernel: $this);
+            $this->registerDefaultTerminalHandler();
 
             return;
         }

@@ -9,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
-use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Routing\Exception\RouteNotFoundExceptionInterface;
 use Waffle\Commons\Contracts\Routing\RouterInterface;
 
@@ -32,19 +31,14 @@ final readonly class FakeRoutingMiddleware implements MiddlewareInterface
                 throw new RuntimeException('Route not found.');
             }
 
-            $params = $match[Constant::PARAMS];
-            if ($params === null) {
-                $params = [];
-            }
-
-            // We enrich the request with the controller and params found by the router
+            // We enrich the request with the controller and params found by the router.
             $request = $request
-                ->withAttribute('_classname', $match[Constant::CLASSNAME])
-                ->withAttribute('_method', $match[Constant::METHOD])
-                ->withAttribute('_arguments', $match[Constant::ARGUMENTS])
-                ->withAttribute('_path', $match[Constant::PATH])
-                ->withAttribute('_name', $match[Constant::NAME])
-                ->withAttribute('_params', $params);
+                ->withAttribute('_classname', $match->className)
+                ->withAttribute('_method', $match->method)
+                ->withAttribute('_arguments', $match->arguments)
+                ->withAttribute('_path', $match->path)
+                ->withAttribute('_name', $match->name)
+                ->withAttribute('_params', $match->params);
         } catch (RuntimeException|RouteNotFoundExceptionInterface $e) {
             throw $e;
         }

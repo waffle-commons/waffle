@@ -22,9 +22,9 @@ final class ControllerArgumentsResolvedEventTest extends TestCase
             arguments: $arguments,
         );
 
-        static::assertSame($request, $event->getRequest());
-        static::assertSame('App\\Controller\\Foo', $event->getController());
-        static::assertSame('bar', $event->getMethod());
-        static::assertSame($arguments, $event->getArguments());
+        static::assertSame($request, $event->request);
+        static::assertSame('App\\Controller\\Foo', $event->controller);
+        static::assertSame('bar', $event->method);
+        static::assertSame($arguments, $event->arguments);
     }
 }

@@ -27,6 +27,7 @@ final class ControllerResponseConverterTest extends TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->method('withHeader')->willReturnSelf();
+        $response->method('withAddedHeader')->willReturnSelf();
         $response->method('getBody')->willReturn($body);
 
         $factory = $this->createMock(ResponseFactoryInterface::class);
@@ -96,6 +97,87 @@ final class ControllerResponseConverterTest extends TestCase
         $result = new ControllerResponseConverter($factory)->convert('<h1>Hello</h1>');
 
         static::assertSame($response, $result);
+    }
+
+    public function testStringResponseAppliesXssMitigationHeaders(): void
+    {
+        // Phase 3 Task 3.3 — string responses must carry a strict CSP + nosniff floor.
+        $body = $this->createMock(StreamInterface::class);
+        $body->method('write');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getBody')->willReturn($body);
+        $response->method('withHeader')->willReturnSelf();
+
+        // Capture every withAddedHeader call so we can assert both XSS headers landed.
+        $addedHeaders = [];
+        $response
+            ->method('withAddedHeader')
+            ->willReturnCallback(static function (string $name, mixed $value) use (
+                $response,
+                &$addedHeaders,
+            ): ResponseInterface {
+                $addedHeaders[$name] = $value;
+                return $response;
+            });
+
+        $factory = $this->createMock(ResponseFactoryInterface::class);
+        $factory->method('createResponse')->willReturn($response);
+
+        new ControllerResponseConverter($factory)->convert('<h1>Hello</h1>');
+
+        static::assertSame("default-src 'self'", $addedHeaders['Content-Security-Policy'] ?? null);
+        static::assertSame('nosniff', $addedHeaders['X-Content-Type-Options'] ?? null);
+    }
+
+    public function testCustomCspOverridesDefault(): void
+    {
+        $body = $this->createMock(StreamInterface::class);
+        $body->method('write');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getBody')->willReturn($body);
+        $response->method('withHeader')->willReturnSelf();
+
+        $addedHeaders = [];
+        $response
+            ->method('withAddedHeader')
+            ->willReturnCallback(static function (string $name, mixed $value) use (
+                $response,
+                &$addedHeaders,
+            ): ResponseInterface {
+                $addedHeaders[$name] = $value;
+                return $response;
+            });
+
+        $factory = $this->createMock(ResponseFactoryInterface::class);
+        $factory->method('createResponse')->willReturn($response);
+
+        new ControllerResponseConverter(
+            factory: $factory,
+            stringResponseCsp: "default-src 'none'; img-src 'self'",
+        )->convert('<img src="x">');
+
+        static::assertSame("default-src 'none'; img-src 'self'", $addedHeaders['Content-Security-Policy'] ?? null);
+        static::assertSame('nosniff', $addedHeaders['X-Content-Type-Options'] ?? null);
+    }
+
+    public function testNonStringResponsesDoNotReceiveXssHeaders(): void
+    {
+        // Array (→ JSON) path must NOT add CSP / nosniff — those belong to text/html.
+        $body = $this->createMock(StreamInterface::class);
+        $body->method('write');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->method('getBody')->willReturn($body);
+        $response->method('withHeader')->willReturnSelf();
+        // Strict expectation: withAddedHeader must never be called for non-string paths.
+        $response->expects($this->never())->method('withAddedHeader');
+
+        $factory = $this->createMock(ResponseFactoryInterface::class);
+        $factory->method('createResponse')->willReturn($response);
+
+        new ControllerResponseConverter($factory)->convert(['payload' => 'ok']);
     }
 
     public function testUnsupportedTypeThrows(): void

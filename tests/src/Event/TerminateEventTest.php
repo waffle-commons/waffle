@@ -18,7 +18,7 @@ final class TerminateEventTest extends TestCase
 
         $event = new TerminateEvent($request, $response);
 
-        static::assertSame($request, $event->getRequest());
-        static::assertSame($response, $event->getResponse());
+        static::assertSame($request, $event->request);
+        static::assertSame($response, $event->response);
     }
 }

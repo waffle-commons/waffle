@@ -7,6 +7,7 @@ namespace Waffle\Abstract;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use RuntimeException;
@@ -15,9 +16,10 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
+use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
-use Waffle\Commons\Utils\Trait\ReflectionTrait;
+use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Core\System;
 use Waffle\Event\RequestReceivedEvent;
 use Waffle\Event\ResponseGeneratedEvent;
@@ -27,12 +29,12 @@ use Waffle\Exception\Container\NotFoundException;
 use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\WaffleException;
 use Waffle\Factory\ContainerFactory;
+use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
+use Waffle\Service\ReflectionService;
 
 abstract class AbstractKernel implements KernelInterface
 {
-    use ReflectionTrait;
-
     protected string $environment = Constant::ENV_PROD;
 
     protected bool $booted = false;
@@ -105,10 +107,22 @@ abstract class AbstractKernel implements KernelInterface
         $requestReceivedEvent = new RequestReceivedEvent($request);
         $requestReceivedEvent = $this->dispatch($requestReceivedEvent);
         if ($requestReceivedEvent instanceof RequestReceivedEvent) {
-            $request = $requestReceivedEvent->getRequest();
+            $request = $requestReceivedEvent->request;
         }
 
-        $fallbackHandler = new ControllerDispatcher($this->container, $this->dispatcher);
+        // Beta-1 hardening (Roadmap §1.1 — Découplage du Kernel): the terminal
+        // handler comes exclusively from the container under PSR-15's
+        // RequestHandlerInterface. configure() registers a ControllerDispatcher
+        // by default; downstream apps swap it by pre-registering their own
+        // handler before configure() runs.
+        $fallbackHandler = $this->container->get(RequestHandlerInterface::class);
+        if (!$fallbackHandler instanceof RequestHandlerInterface) {
+            $this->logAndThrow(
+                ContainerException::class,
+                'Kernel Error: container returned a non-RequestHandlerInterface instance for the terminal handler.',
+                $request->getMethod(),
+            );
+        }
 
         $response = $this->middlewareStack->createHandler($fallbackHandler)->handle($request);
 
@@ -116,7 +130,7 @@ abstract class AbstractKernel implements KernelInterface
         $responseGeneratedEvent = new ResponseGeneratedEvent($response);
         $responseGeneratedEvent = $this->dispatch($responseGeneratedEvent);
         if ($responseGeneratedEvent instanceof ResponseGeneratedEvent) {
-            $response = $responseGeneratedEvent->getResponse();
+            $response = $responseGeneratedEvent->response;
         }
 
         return $response;
@@ -161,11 +175,11 @@ abstract class AbstractKernel implements KernelInterface
             return $this;
         }
 
-        $appEnv = Constant::ENV_PROD;
-        if (getenv(Constant::APP_ENV) === false) {
-            putenv($appEnv);
-        }
-        $this->environment = $appEnv;
+        // Beta-1 hardening: read APP_ENV from the process environment without
+        // mutating global state (the prior `putenv($appEnv)` was both a latent
+        // bug — missing '=' sentinel — and a worker-mode safety hazard).
+        $envVar = getenv(Constant::APP_ENV);
+        $this->environment = is_string($envVar) && $envVar !== '' ? $envVar : Constant::ENV_PROD;
 
         return $this;
     }
@@ -224,12 +238,97 @@ abstract class AbstractKernel implements KernelInterface
 
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
+        $this->registerDefaultTerminalHandler();
+
         // Lock the container to prevent service override after boot
         if (method_exists($this->container, 'lock')) {
             $this->container->lock();
         }
 
         $this->booted = true;
+    }
+
+    /**
+     * Registers the default terminal PSR-15 handler in the container under
+     * `RequestHandlerInterface`. Idempotent: pre-registered handlers (e.g. an
+     * app supplying its own dispatcher) win — only the empty-slot case is
+     * filled here.
+     *
+     * Called from {@see self::configure()} during the normal boot path. Test
+     * fixtures that override `configure()` to bypass the standard setup must
+     * call this method themselves once `$this->container` has been assigned,
+     * otherwise {@see self::handle()} cannot resolve the terminal handler.
+     */
+    protected function registerDefaultTerminalHandler(): void
+    {
+        if ($this->container === null) {
+            return;
+        }
+
+        // Fast path: if the terminal handler is already wired (the AppKernelFactory
+        // composes ReflectionService + ArgumentResolver + ControllerDispatcher and
+        // binds RequestHandlerInterface), do nothing. Returning here BEFORE touching
+        // the infra-service slots is deliberate — resolving them through a
+        // SecureContainer would run controller-grade security analysis over framework
+        // plumbing (and ReflectionService's `string|object` union params trip the
+        // analyzer). Apps own the wiring; the kernel only fills the empty-slot case.
+        if ($this->container->has(RequestHandlerInterface::class)) {
+            return;
+        }
+
+        // Sensible defaults for library/test consumers that did NOT pre-wire a
+        // handler. Each lookup is gated by container.has() + a type check, so a
+        // permissive blanket-has() test double cannot starve the kernel of its deps.
+        $reflectionService = $this->resolveOrDefault(
+            ReflectionServiceInterface::class,
+            ReflectionServiceInterface::class,
+            static fn(): ReflectionServiceInterface => new ReflectionService(),
+        );
+
+        $argumentResolver = $this->resolveOrDefault(
+            ArgumentResolverInterface::class,
+            ArgumentResolverInterface::class,
+            fn(): ArgumentResolverInterface => new ControllerArgumentResolver($this->container, $reflectionService),
+        );
+
+        $this->container->set(
+            RequestHandlerInterface::class,
+            new ControllerDispatcher($this->container, $this->dispatcher, $argumentResolver),
+        );
+    }
+
+    /**
+     * Returns the container-bound instance of `$interface` if it exists and is
+     * the expected type; otherwise constructs a default via `$factory`, binds
+     * it to the container, and returns it.
+     *
+     * Defensive against test doubles whose `has()` returns true for unknown IDs
+     * but whose `get()` returns null — without this guard, those doubles would
+     * crash the kernel boot with a TypeError on the first dependency lookup.
+     *
+     * @template TService of object
+     * @param class-string<TService> $interface
+     * @param class-string<TService> $expectedType
+     * @param callable(): TService   $factory
+     * @return TService
+     */
+    private function resolveOrDefault(string $interface, string $expectedType, callable $factory): object
+    {
+        $container = $this->container;
+        if ($container === null) {
+            return $factory();
+        }
+
+        if ($container->has($interface)) {
+            $candidate = $container->get($interface);
+            if ($candidate instanceof $expectedType) {
+                return $candidate;
+            }
+        }
+
+        $instance = $factory();
+        $container->set($interface, $instance);
+        return $instance;
     }
 
     /**

@@ -13,7 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
+use Waffle\Service\ReflectionService;
 use WaffleTests\Abstract\StubResponse;
 
 #[AllowMockObjectsWithoutExpectations]
@@ -28,7 +30,11 @@ class ControllerDispatcherTest extends TestCase
     {
         $this->container = $this->createMock(ContainerInterface::class);
         $this->request = $this->createStub(ServerRequestInterface::class);
-        $this->dispatcher = new ControllerDispatcher($this->container);
+        $this->dispatcher = new ControllerDispatcher(
+            $this->container,
+            null,
+            new ControllerArgumentResolver($this->container, new ReflectionService()),
+        );
     }
 
     public function testHandleThrowsExceptionIfAttributesMissing(): void
@@ -87,7 +93,11 @@ class ControllerDispatcherTest extends TestCase
                 }
             });
 
-        $this->dispatcher = new ControllerDispatcher($this->container); // Re-init with mock
+        $this->dispatcher = new ControllerDispatcher(
+            $this->container,
+            null,
+            new ControllerArgumentResolver($this->container, new ReflectionService()),
+        ); // Re-init with mock
         $this->dispatcher->handle($this->request);
     }
 
@@ -278,7 +288,7 @@ class ControllerDispatcherTest extends TestCase
             [ResponseFactoryInterface::class, $this->createStub(ResponseFactoryInterface::class)],
         ]);
 
-        $d = new ControllerDispatcher($c);
+        $d = new ControllerDispatcher($c, null, new ControllerArgumentResolver($c, new ReflectionService()));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('no conversion strategy matched');
@@ -310,7 +320,7 @@ class ControllerDispatcherTest extends TestCase
         ]); // Factory missing
         $c->method('get')->willReturnMap([['C', $controller]]);
 
-        $d = new ControllerDispatcher($c);
+        $d = new ControllerDispatcher($c, null, new ControllerArgumentResolver($c, new ReflectionService()));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('no conversion strategy matched');

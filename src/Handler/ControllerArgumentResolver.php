@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
-use ReflectionClass;
-use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionParameter;
+use ReflectionType;
+use ReflectionUnionType;
 use RuntimeException;
 use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Exception\Validation\ValidationExceptionInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
+use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Exception\ValidationException;
 
 final readonly class ControllerArgumentResolver implements ArgumentResolverInterface
 {
     public function __construct(
         private ContainerInterface $container,
+        private ReflectionServiceInterface $reflectionService,
     ) {}
 
     #[\Override]
@@ -27,10 +32,9 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
         ServerRequestInterface $request,
         array $routeParams,
     ): array {
-        $reflection = new ReflectionMethod($controller, $method);
         $args = [];
 
-        foreach ($reflection->getParameters() as $parameter) {
+        foreach ($this->reflectionService->getMethodParameters($controller, $method) as $parameter) {
             $type = $parameter->getType();
             $typeName = $type?->getName();
             $name = $parameter->getName();
@@ -66,8 +70,8 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
 
                 // 2. Hydrate DTOs marked with #[Dto] from the parsed request body (RFC-011).
                 //    Property Hooks in the DTO perform the validation; we only assemble args.
-                if ($this->isDtoType($typeName)) {
-                    $args[] = $this->hydrateDto((string) $typeName, $request);
+                if ($typeName !== null && $this->reflectionService->hasAttribute($typeName, Dto::class)) {
+                    $args[] = $this->hydrateDto($typeName, $request);
                     continue;
                 }
 
@@ -102,17 +106,6 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
     }
 
     /**
-     * Returns true when $typeName is a loadable class carrying the #[Dto] marker.
-     */
-    private function isDtoType(?string $typeName): bool
-    {
-        if ($typeName === null || !class_exists($typeName)) {
-            return false;
-        }
-        return new ReflectionClass($typeName)->getAttributes(Dto::class) !== [];
-    }
-
-    /**
      * Hydrates a `#[Dto]`-marked class from the request's parsed body.
      *
      * Validation is delegated to the DTO's Property Hooks (RFC-011 §3.1). This
@@ -132,19 +125,19 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             throw new ValidationException(message: sprintf('Expected JSON object body for "%s".', $dtoClass));
         }
 
-        $reflection = new ReflectionClass($dtoClass);
-        $constructor = $reflection->getConstructor();
+        $params = $this->reflectionService->getConstructorParameters($dtoClass);
 
         // No constructor → no inputs to hydrate; the DTO is its own default.
-        if ($constructor === null) {
-            return $reflection->newInstance();
+        if ($params === null) {
+            return $this->reflectionService->newInstance($dtoClass);
         }
 
         $args = [];
-        foreach ($constructor->getParameters() as $param) {
+        foreach ($params as $param) {
             $paramName = $param->getName();
 
             if (array_key_exists($paramName, $body)) {
+                $this->assertAssignable($param, $body[$paramName], $dtoClass);
                 $args[$paramName] = $body[$paramName];
                 continue;
             }
@@ -164,6 +157,86 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             );
         }
 
-        return $reflection->newInstance(...$args);
+        // Value-level validation lives inside the DTO's Property Hooks (RFC-011).
+        // Scalar *type* mismatches were already rejected by assertAssignable() above,
+        // so a native \TypeError can no longer reach this point — the framework never
+        // catches Error subclasses. Translate hook-driven rejections into a unified
+        // ValidationException for the RFC 7807 422 mapping.
+        try {
+            return $this->reflectionService->newInstance($dtoClass, $args);
+        } catch (ValidationExceptionInterface $e) {
+            // DTO emitted a typed validation error — preserve `field` + bubble.
+            throw $e;
+        } catch (InvalidArgumentException $e) {
+            // A Property Hook rejected the value with a plain \InvalidArgumentException
+            // (the DTO author opted out of typed reporting). Unify it as a 422.
+            throw new ValidationException(message: $e->getMessage(), field: null, code: 422, previous: $e);
+        }
+    }
+
+    /**
+     * Rejects a body value whose runtime type cannot satisfy the parameter's
+     * declared type BEFORE construction. A scalar mismatch (e.g. "thirty" for
+     * `int $age`) becomes a field-level 422 here instead of relying on catching
+     * PHP's native \TypeError — an Error subclass the framework must let
+     * propagate, never intercept.
+     *
+     * @throws ValidationException
+     */
+    private function assertAssignable(ReflectionParameter $param, mixed $value, string $dtoClass): void
+    {
+        $type = $param->getType();
+
+        // Untyped, or an intersection type we cannot satisfy from a JSON scalar:
+        // defer to the constructor / Property Hook.
+        if (!$type instanceof ReflectionNamedType && !$type instanceof ReflectionUnionType) {
+            return;
+        }
+
+        if ($value === null) {
+            if (!$type->allowsNull()) {
+                throw $this->typeViolation($param, $type, $dtoClass);
+            }
+            return;
+        }
+
+        $candidates = $type instanceof ReflectionNamedType ? [$type] : $type->getTypes();
+        foreach ($candidates as $candidate) {
+            if ($candidate instanceof ReflectionNamedType && $this->valueSatisfies($value, $candidate->getName())) {
+                return;
+            }
+        }
+
+        throw $this->typeViolation($param, $type, $dtoClass);
+    }
+
+    /**
+     * Whether a decoded JSON value can satisfy a declared scalar/array type.
+     * Object and class/interface types resolve to `false`: this resolver hydrates
+     * scalars and arrays from the request body, not nested objects.
+     */
+    private function valueSatisfies(mixed $value, string $typeName): bool
+    {
+        return match ($typeName) {
+            'mixed' => true,
+            'int' => is_int($value),
+            'float' => is_int($value) || is_float($value),
+            'string' => is_string($value),
+            'bool' => is_bool($value),
+            'array', 'iterable' => is_array($value),
+            default => false,
+        };
+    }
+
+    private function typeViolation(
+        ReflectionParameter $param,
+        ReflectionType $type,
+        string $dtoClass,
+    ): ValidationException {
+        return new ValidationException(
+            message: sprintf('Field "%s" must be of type %s for "%s".', $param->getName(), (string) $type, $dtoClass),
+            field: $param->getName(),
+            code: 422,
+        );
     }
 }

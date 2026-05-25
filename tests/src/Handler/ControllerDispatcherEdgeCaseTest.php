@@ -13,7 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
+use Waffle\Service\ReflectionService;
 use WaffleTests\Abstract\Helper\StubServerRequest;
 
 #[CoversClass(ControllerDispatcher::class)]
@@ -38,7 +40,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($controller);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -62,6 +68,9 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
         $streamMock->expects($this->once())->method('write')->with('Hello World');
         $responseMock->method('getBody')->willReturn($streamMock);
         $responseMock->method('withHeader')->willReturnSelf();
+        // Phase 3 Task 3.3: the string-response path now also applies CSP +
+        // X-Content-Type-Options via withAddedHeader; the mock must answer it.
+        $responseMock->method('withAddedHeader')->willReturnSelf();
 
         $factoryMock = $this->createMock(ResponseFactoryInterface::class);
         $factoryMock->method('createResponse')->willReturn($responseMock);
@@ -80,7 +89,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -112,7 +125,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -157,7 +174,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');
@@ -193,7 +214,11 @@ class ControllerDispatcherEdgeCaseTest extends TestCase
                 [ResponseFactoryInterface::class, $factoryMock],
             ]);
 
-        $dispatcher = new ControllerDispatcher($container);
+        $dispatcher = new ControllerDispatcher(
+            $container,
+            null,
+            new ControllerArgumentResolver($container, new ReflectionService()),
+        );
 
         $request = new StubServerRequest('GET', '/');
         $request = $request->withAttribute('_classname', 'TestController')->withAttribute('_method', 'index');

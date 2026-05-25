@@ -22,7 +22,10 @@ use RuntimeException;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Exception\Container\NotFoundException;
+use Waffle\Handler\ControllerArgumentResolver;
+use Waffle\Handler\ControllerDispatcher;
 use Waffle\Router\Router;
+use Waffle\Service\ReflectionService;
 use WaffleTests\Abstract\Helper\StubServerRequest;
 use WaffleTests\Abstract\Helper\WebKernel;
 
@@ -108,12 +111,19 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
         $routerStub = $this->createManualRouterStub('TestController');
 
+        $dispatcher = new ControllerDispatcher(
+            $containerMock,
+            null,
+            new ControllerArgumentResolver($containerMock, new ReflectionService()),
+        );
+
         $containerMock
             ->method('get')
             ->willReturnMap([
-                ['TestController',                $controllerService],
-                [Router::class,                   $routerStub],
+                ['TestController', $controllerService],
+                [Router::class, $routerStub],
                 [ResponseFactoryInterface::class, $responseFactoryMock],
+                [\Psr\Http\Server\RequestHandlerInterface::class, $dispatcher],
             ]);
 
         $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
@@ -337,12 +347,19 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
         $routerStub = $this->createManualRouterStub('TestController');
 
+        $dispatcher = new ControllerDispatcher(
+            $containerMock,
+            null,
+            new ControllerArgumentResolver($containerMock, new ReflectionService()),
+        );
+
         $containerMock
             ->method('get')
             ->willReturnMap([
-                ['TestController',                $controllerService],
-                [Router::class,                   $routerStub],
+                ['TestController', $controllerService],
+                [Router::class, $routerStub],
                 [ResponseFactoryInterface::class, $responseFactoryMock],
+                [\Psr\Http\Server\RequestHandlerInterface::class, $dispatcher],
             ]);
 
         $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');

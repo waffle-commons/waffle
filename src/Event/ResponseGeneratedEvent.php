@@ -9,13 +9,8 @@ use Psr\Http\Message\ResponseInterface;
 final class ResponseGeneratedEvent
 {
     public function __construct(
-        private(set) ResponseInterface $response,
+        public private(set) ResponseInterface $response,
     ) {}
-
-    public function getResponse(): ResponseInterface
-    {
-        return $this->response;
-    }
 
     public function withResponse(ResponseInterface $response): self
     {

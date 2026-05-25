@@ -6,12 +6,10 @@ namespace Waffle\Abstract;
 
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Contracts\System\SystemInterface;
-use Waffle\Commons\Utils\Trait\ReflectionTrait;
 use Waffle\Trait\SystemTrait;
 
 abstract class AbstractSystem implements SystemInterface
 {
-    use ReflectionTrait;
     use SystemTrait;
 
     protected(set) SecurityInterface $security;

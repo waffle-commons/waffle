@@ -242,4 +242,3 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml
-        if: matrix.php-version == '8.4'

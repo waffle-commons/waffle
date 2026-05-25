@@ -16,7 +16,7 @@ final class RequestReceivedEventTest extends TestCase
 
         $event = new RequestReceivedEvent($request);
 
-        static::assertSame($request, $event->getRequest());
+        static::assertSame($request, $event->request);
     }
 
     public function testWithRequestProducesNewEventWithSwappedRequest(): void
@@ -28,7 +28,7 @@ final class RequestReceivedEventTest extends TestCase
         $next = $event->withRequest($b);
 
         static::assertNotSame($event, $next);
-        static::assertSame($a, $event->getRequest());
-        static::assertSame($b, $next->getRequest());
+        static::assertSame($a, $event->request);
+        static::assertSame($b, $next->request);
     }
 }
