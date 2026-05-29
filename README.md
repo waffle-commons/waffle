@@ -9,7 +9,7 @@
 Waffle — the Kernel
 ===================
 
-> **Release:** `v0.1.0-beta1`
+> **Release:** `v0.1.0-beta2` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 The application kernel. Orchestrates request handling against the PSR-15 middleware stack, dispatches `RequestReceivedEvent` / `ResponseGeneratedEvent` / `TerminateEvent`, and resolves controllers via the container. The kernel itself stays agnostic of routing, security, logging, and HTTP — every concrete dependency is injected.
 
@@ -109,6 +109,22 @@ All three are PSR-14 events; `RequestReceivedEvent` and `ResponseGeneratedEvent`
 - Constructor property promotion on `$logger`.
 - Typed-constant defaults (`Constant::ENV_PROD`).
 - `#[\Override]` on every method overriding `KernelInterface`.
+
+## 🧭 Architectural boundary (`mago guard`)
+
+An active dependency **perimeter** is enforced on every CI run by `vendor/bin/mago guard` (bundled into `composer mago`; zero baselines). The rules live in [`mago.toml`](./mago.toml) under `[guard.perimeter]` — a forbidden `use` statement fails the build, not a reviewer.
+
+As the framework assembly package, `waffle` lives under the top-level `Waffle` namespace (not `Waffle\Commons\*`). Production code under `Waffle` may depend **only** on:
+
+- `Waffle\**` — itself (the kernel, handlers, events, and factories)
+- `Waffle\Commons\Contracts\**` — the shared contracts package
+- `Waffle\Commons\Utils\**` — the `ClassParser` discovery helper
+- `Psr\**` — PSR interfaces (PSR-7 / PSR-11 / PSR-15 / PSR-17)
+- `@global` + `Psl\**` — PHP core and the PHP Standard Library
+
+Test code under `WaffleTests` is unrestricted (`@all`). Structural rules are guarded too: interfaces must be named `*Interface`, `Exception\**` classes must end in `*Exception`, and any `Enum\**` namespace may hold only `enum` declarations.
+
+Note: `waffle` depends only on `contracts` + `utils` directly. The concrete components (`http`, `routing`, `security`, …) are wired at the **application** layer (e.g. the skeleton's `AppKernelFactory`), not pulled in here — that is what keeps the kernel component-agnostic.
 
 ## 🧪 Testing
 
