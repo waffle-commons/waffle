@@ -483,12 +483,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "1492405974ad0ba80cd9b8094c339aedbe373261"
+                "reference": "7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/1492405974ad0ba80cd9b8094c339aedbe373261",
-                "reference": "1492405974ad0ba80cd9b8094c339aedbe373261",
+                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b",
+                "reference": "7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b",
                 "shasum": ""
             },
             "require": {
@@ -532,7 +532,7 @@
                 "issues": "https://github.com/waffle-commons/contracts/issues",
                 "source": "https://github.com/waffle-commons/contracts/tree/main"
             },
-            "time": "2026-05-29T13:32:42+00:00"
+            "time": "2026-05-30T18:44:28+00:00"
         },
         {
             "name": "waffle-commons/utils",
@@ -540,12 +540,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/utils.git",
-                "reference": "72c031ed45ab6290342d2d8e2b467b1d3a1e9122"
+                "reference": "434d5929dc75a62050b726ba2cb3532d680557d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/72c031ed45ab6290342d2d8e2b467b1d3a1e9122",
-                "reference": "72c031ed45ab6290342d2d8e2b467b1d3a1e9122",
+                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/434d5929dc75a62050b726ba2cb3532d680557d4",
+                "reference": "434d5929dc75a62050b726ba2cb3532d680557d4",
                 "shasum": ""
             },
             "require": {
@@ -581,7 +581,7 @@
                 "issues": "https://github.com/waffle-commons/utils/issues",
                 "source": "https://github.com/waffle-commons/utils/tree/main"
             },
-            "time": "2026-05-29T13:38:54+00:00"
+            "time": "2026-05-30T18:48:59+00:00"
         }
     ],
     "packages-dev": [
