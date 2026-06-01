@@ -22,6 +22,7 @@ use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Routing\RouterInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Commons\Contracts\Service\ResettableInterface;
 use Waffle\Core\BaseController;
 use Waffle\Core\System; // Fix: Add missing import
 use Waffle\Exception\Container\ContainerException;
@@ -425,6 +426,34 @@ class AbstractKernelTest extends TestCase
 
         $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev', container: $container);
         $kernel->reset();
+    }
+
+    public function testResetAlsoDrainsAResettableLogger(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects(static::once())->method('reset');
+
+        // A buffered logger that opts into ResettableInterface must be drained on
+        // reset() so log state never bleeds from request N into request N+1.
+        $logger = new class extends NullLogger implements ResettableInterface {
+            public bool $wasReset = false;
+
+            #[\Override]
+            public function reset(): void
+            {
+                $this->wasReset = true;
+            }
+        };
+
+        $kernel = new WebKernel(
+            configDir: $this->testConfigDir,
+            environment: 'dev',
+            container: $container,
+            logger: $logger,
+        );
+        $kernel->reset();
+
+        static::assertTrue($logger->wasReset, 'A ResettableInterface logger must be drained on kernel reset.');
     }
 
     public function testBootIsIdempotentOnceBooted(): void
