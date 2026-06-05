@@ -61,6 +61,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      */
     public function setContainerImplementation(PsrContainerInterface $container): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->innerContainer = $container;
     }
 
@@ -69,21 +70,25 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      */
     public function setConfiguration(ConfigInterface $config): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->config = $config;
     }
 
     public function setSecurity(SecurityInterface $security): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->security = $security;
     }
 
     public function setMiddlewareStack(MiddlewareStackInterface $stack): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->middlewareStack = $stack;
     }
 
     public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->dispatcher = $dispatcher;
     }
 
@@ -182,6 +187,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         // mutating global state (the prior `putenv($appEnv)` was both a latent
         // bug — missing '=' sentinel — and a worker-mode safety hazard).
         $envVar = getenv(Constant::APP_ENV);
+        // @igor-ignore: one-time boot read of APP_ENV; persists for the worker lifetime, not per request
         $this->environment = is_string($envVar) && $envVar !== '' ? $envVar : Constant::ENV_PROD;
 
         return $this;
@@ -219,6 +225,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
         // We cast it to our interface to support set() operations if available.
         if ($this->innerContainer instanceof ContainerInterface) {
+            // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
             $this->container = $this->innerContainer;
         } else {
             // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
@@ -239,6 +246,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
             );
         }
 
+        // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         $this->registerDefaultTerminalHandler();
@@ -248,6 +256,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
             $this->container->lock();
         }
 
+        // @igor-ignore: one-shot boot latch; flipped once after configure(), never per request
         $this->booted = true;
     }
 
