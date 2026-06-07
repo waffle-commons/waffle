@@ -483,12 +483,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/contracts.git",
-                "reference": "7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b"
+                "reference": "0f70ec3375f0ec03a7e4d4ed87e8cc974506c935"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b",
-                "reference": "7acfd0427a54b0b6908ea2c4e064f2e5526f8d5b",
+                "url": "https://api.github.com/repos/waffle-commons/contracts/zipball/0f70ec3375f0ec03a7e4d4ed87e8cc974506c935",
+                "reference": "0f70ec3375f0ec03a7e4d4ed87e8cc974506c935",
                 "shasum": ""
             },
             "require": {
@@ -532,7 +532,7 @@
                 "issues": "https://github.com/waffle-commons/contracts/issues",
                 "source": "https://github.com/waffle-commons/contracts/tree/main"
             },
-            "time": "2026-05-30T18:44:28+00:00"
+            "time": "2026-06-07T00:39:38+00:00"
         },
         {
             "name": "waffle-commons/utils",
@@ -540,12 +540,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/waffle-commons/utils.git",
-                "reference": "434d5929dc75a62050b726ba2cb3532d680557d4"
+                "reference": "10fbc6e9f824ba2635e70acf0e96186eb966d552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/434d5929dc75a62050b726ba2cb3532d680557d4",
-                "reference": "434d5929dc75a62050b726ba2cb3532d680557d4",
+                "url": "https://api.github.com/repos/waffle-commons/utils/zipball/10fbc6e9f824ba2635e70acf0e96186eb966d552",
+                "reference": "10fbc6e9f824ba2635e70acf0e96186eb966d552",
                 "shasum": ""
             },
             "require": {
@@ -555,6 +555,7 @@
             "require-dev": {
                 "carthage-software/mago": "^1.29",
                 "cyclonedx/cyclonedx-php-composer": "^6.2",
+                "igor-php/igor-php": "^0.6.3",
                 "php-mock/php-mock-phpunit": "^2.15",
                 "phpunit/phpunit": "^12.5",
                 "vimeo/psalm": "^6.16"
@@ -581,7 +582,7 @@
                 "issues": "https://github.com/waffle-commons/utils/issues",
                 "source": "https://github.com/waffle-commons/utils/tree/main"
             },
-            "time": "2026-05-30T18:48:59+00:00"
+            "time": "2026-06-07T00:40:55+00:00"
         }
     ],
     "packages-dev": [
