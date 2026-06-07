@@ -15,11 +15,13 @@ use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Core\KernelInterface;
+use Waffle\Commons\Contracts\Core\TerminableInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
+use Waffle\Commons\Contracts\Service\ResettableInterface;
 use Waffle\Core\System;
 use Waffle\Event\RequestReceivedEvent;
 use Waffle\Event\ResponseGeneratedEvent;
@@ -33,7 +35,7 @@ use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
 use Waffle\Service\ReflectionService;
 
-abstract class AbstractKernel implements KernelInterface
+abstract class AbstractKernel implements KernelInterface, TerminableInterface
 {
     protected string $environment = Constant::ENV_PROD;
 
@@ -59,6 +61,7 @@ abstract class AbstractKernel implements KernelInterface
      */
     public function setContainerImplementation(PsrContainerInterface $container): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->innerContainer = $container;
     }
 
@@ -67,21 +70,25 @@ abstract class AbstractKernel implements KernelInterface
      */
     public function setConfiguration(ConfigInterface $config): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->config = $config;
     }
 
     public function setSecurity(SecurityInterface $security): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->security = $security;
     }
 
     public function setMiddlewareStack(MiddlewareStackInterface $stack): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->middlewareStack = $stack;
     }
 
     public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
     {
+        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->dispatcher = $dispatcher;
     }
 
@@ -140,6 +147,7 @@ abstract class AbstractKernel implements KernelInterface
      * Dispatches a terminate event for heavy async tasks after response emission.
      * Call this from Runtime after emit() and before reset().
      */
+    #[\Override]
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
     {
         if ($this->dispatcher === null) {
@@ -179,6 +187,7 @@ abstract class AbstractKernel implements KernelInterface
         // mutating global state (the prior `putenv($appEnv)` was both a latent
         // bug — missing '=' sentinel — and a worker-mode safety hazard).
         $envVar = getenv(Constant::APP_ENV);
+        // @igor-ignore: one-time boot read of APP_ENV; persists for the worker lifetime, not per request
         $this->environment = is_string($envVar) && $envVar !== '' ? $envVar : Constant::ENV_PROD;
 
         return $this;
@@ -216,6 +225,7 @@ abstract class AbstractKernel implements KernelInterface
         // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
         // We cast it to our interface to support set() operations if available.
         if ($this->innerContainer instanceof ContainerInterface) {
+            // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
             $this->container = $this->innerContainer;
         } else {
             // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
@@ -236,6 +246,7 @@ abstract class AbstractKernel implements KernelInterface
             );
         }
 
+        // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         $this->registerDefaultTerminalHandler();
@@ -245,6 +256,7 @@ abstract class AbstractKernel implements KernelInterface
             $this->container->lock();
         }
 
+        // @igor-ignore: one-shot boot latch; flipped once after configure(), never per request
         $this->booted = true;
     }
 
@@ -334,11 +346,16 @@ abstract class AbstractKernel implements KernelInterface
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function reset(): void
     {
         $this->container->reset();
 
-        // TODO: clean buffered logger
+        // Drain any buffered logger so log entries never bleed across requests in
+        // worker mode. Decoupled: only loggers that opt into ResettableInterface.
+        if ($this->logger instanceof ResettableInterface) {
+            $this->logger->reset();
+        }
     }
 
     private function validateState(ServerRequestInterface $request): void

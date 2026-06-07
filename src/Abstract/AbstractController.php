@@ -20,6 +20,7 @@ abstract class AbstractController implements BaseControllerInterface
      */
     public function setResponseFactory(ResponseFactoryInterface $responseFactory): void
     {
+        // @igor-ignore: setter DI wired once per controller instantiation by ControllerDispatcher; per-request, not shared
         $this->responseFactory = $responseFactory;
     }
 
