@@ -30,6 +30,10 @@ permit = [
     "Waffle\\**",
     "Waffle\\Commons\\Contracts\\**",
     "Waffle\\Commons\\Utils\\**",
+    # Worker-safety audit tooling: the #[WorkerSafe] attribute (igor-php 0.7+) is
+    # dev-only metadata read solely by `wfl igor`. It is inert at runtime and
+    # introduces no inter-component coupling, so it is permitted in production src.
+    "IgorPhp\\IgorBundle\\Attribute\\**",
     "@layer:core",
     "@layer:psr",
 ]

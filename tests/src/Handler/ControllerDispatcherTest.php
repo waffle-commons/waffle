@@ -13,6 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use Waffle\Abstract\AbstractController;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Handler\ResponseFactoryAwareInterface;
 use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
 use Waffle\Service\ReflectionService;
@@ -326,5 +327,92 @@ class ControllerDispatcherTest extends TestCase
         $this->expectExceptionMessage('no conversion strategy matched');
 
         $d->handle($this->request);
+    }
+
+    public function testHandleInjectsResponseFactoryIntoAwareController(): void
+    {
+        $factory = $this->createStub(ResponseFactoryInterface::class);
+        $controller = new class implements ResponseFactoryAwareInterface {
+            public ?ResponseFactoryInterface $injected = null;
+
+            #[\Override]
+            public function setResponseFactory(ResponseFactoryInterface $responseFactory): void
+            {
+                $this->injected = $responseFactory;
+            }
+
+            public function index(): ResponseInterface
+            {
+                return new StubResponse(200);
+            }
+        };
+
+        $this->request
+            ->method('getAttribute')
+            ->willReturnMap([
+                ['_classname', null, 'C'],
+                ['_method', null, 'index'],
+                ['_params', [], []],
+            ]);
+
+        $c = $this->createStub(ContainerInterface::class);
+        $c->method('has')->willReturnMap([
+            ['C',                             true],
+            [ResponseFactoryInterface::class, true],
+        ]);
+        $c->method('get')->willReturnMap([
+            ['C',                             $controller],
+            [ResponseFactoryInterface::class, $factory],
+        ]);
+
+        $d = new ControllerDispatcher($c, null, new ControllerArgumentResolver($c, new ReflectionService()));
+        $d->handle($this->request);
+
+        static::assertSame($factory, $controller->injected);
+    }
+
+    public function testHandleDoesNotInjectFactoryWhenControllerIsNotAware(): void
+    {
+        // The controller exposes a setResponseFactory() method but does NOT
+        // implement ResponseFactoryAwareInterface. ARCH-05 switched the dispatcher
+        // from a method_exists() heuristic to an instanceof check, so this
+        // look-alike method must be ignored.
+        $factory = $this->createStub(ResponseFactoryInterface::class);
+        $controller = new class {
+            public ?ResponseFactoryInterface $injected = null;
+
+            public function setResponseFactory(ResponseFactoryInterface $responseFactory): void
+            {
+                $this->injected = $responseFactory;
+            }
+
+            public function index(): ResponseInterface
+            {
+                return new StubResponse(200);
+            }
+        };
+
+        $this->request
+            ->method('getAttribute')
+            ->willReturnMap([
+                ['_classname', null, 'C'],
+                ['_method', null, 'index'],
+                ['_params', [], []],
+            ]);
+
+        $c = $this->createStub(ContainerInterface::class);
+        $c->method('has')->willReturnMap([
+            ['C',                             true],
+            [ResponseFactoryInterface::class, true],
+        ]);
+        $c->method('get')->willReturnMap([
+            ['C',                             $controller],
+            [ResponseFactoryInterface::class, $factory],
+        ]);
+
+        $d = new ControllerDispatcher($c, null, new ControllerArgumentResolver($c, new ReflectionService()));
+        $d->handle($this->request);
+
+        static::assertNull($controller->injected);
     }
 }

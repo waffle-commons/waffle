@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use JsonException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Waffle\Commons\Contracts\Controller\BaseControllerInterface;
+use Waffle\Commons\Contracts\Handler\ResponseFactoryAwareInterface;
 use Waffle\Exception\RenderingException;
 
-abstract class AbstractController implements BaseControllerInterface
+abstract class AbstractController implements BaseControllerInterface, ResponseFactoryAwareInterface
 {
     protected ResponseFactoryInterface $responseFactory;
 
@@ -18,9 +20,13 @@ abstract class AbstractController implements BaseControllerInterface
      * Dependency Injection via Setter.
      * Called by the ControllerDispatcher before the action is executed.
      */
+    #[\Override]
+    #[WorkerSafe(
+        scope: 'setter-di',
+        reason: 'wired once per controller instantiation by ControllerDispatcher; per-request, not shared',
+    )]
     public function setResponseFactory(ResponseFactoryInterface $responseFactory): void
     {
-        // @igor-ignore: setter DI wired once per controller instantiation by ControllerDispatcher; per-request, not shared
         $this->responseFactory = $responseFactory;
     }
 
