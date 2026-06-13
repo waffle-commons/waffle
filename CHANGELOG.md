@@ -5,6 +5,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
+## [0.1.0-beta4] — 2026-06-13
+
+**Theme: kernel lifecycle extensibility & diagnostics.**
+
+### Added
+- Typed kernel lifecycle events dispatched by `Abstract\AbstractKernel` — `Event\RequestReceivedEvent`, `Event\ResponseGeneratedEvent`, `Event\TerminateEvent` (ARCH-04).
+- `Event\Listener\OrphanedConnectionListener` — on `TerminateEvent`, emits a PSR-3 `warning` for a pooled PDO connection left open at request end (DIAG-03).
+
+### Changed
+- `Handler\ControllerDispatcher` resolves response factories via an explicit `instanceof ResponseFactoryAwareInterface` check rather than method-existence heuristics (ARCH-05).
+- Worker-safety migration to igor-php 0.7 (`#[WorkerSafe]`).
+
 ## [0.1.0-beta3] — 2026-06-07
 
 **Theme: identity federation & stateless persistence (ecosystem wave).**
