@@ -1,260 +1,104 @@
-# **Contributing to the Waffle Framework**
+# Contributing to the Waffle Framework
 
-First off, thank you sincerely for considering contributing to the Waffle Framework. Your involvement, 
-whether big or small, is crucial for its growth and success. As an open-source project, Waffle thrives on 
-the collective effort and expertise of the PHP community. We aim to build not just a great tool, but also 
-a welcoming and collaborative environment around it.
+First off — thank you for considering a contribution to Waffle. Whether you're filing a bug, sharpening the docs, or shipping a feature, your help moves the ecosystem forward. Waffle is a community-driven, open-source project and contributions of every size are welcome.
 
-This is a community-driven project, and we genuinely welcome contributions of all kinds. This includes, 
-but is not limited to: reporting bugs, suggesting new features or improvements, writing or refining documentation, 
-submitting code patches, creating examples, or even just participating in discussions to help others. 
-Every contribution helps make Waffle better.
+## Code of Conduct
 
+This project is governed by the [Waffle Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you agree to uphold it. Please read it before contributing — we are committed to keeping this a welcoming, respectful community.
 
-## **Code of Conduct**
-To ensure a positive and inclusive environment for everyone, this project and everyone participating in it is 
-governed by the [Waffle Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold 
-this code. Please take a moment to read it before contributing. We are committed to enforcing this code to 
-make our community a place where everyone feels safe, respected, and valued.
+## How the project is organised (one minute)
 
-## **How Can I Contribute?**
-There are many ways to contribute to the Waffle Framework's development. Here are some of the most common:
+Waffle is a **monorepo of independent Git submodules**. The umbrella repository — [`waffle-commons/monorepo`](https://github.com/waffle-commons/monorepo) — wires together 18 framework components plus the `skeleton`, `workspace`, `component-template`, and `documentation`. **Each component is its own Git repository, released independently on Packagist;** the umbrella is purely a development and integration convenience.
 
-### **Reporting Bugs**
-Encountering unexpected behavior or errors is a natural part of software development. If you find a bug in Waffle, 
-your detailed report is invaluable.
-- **Check Existing Issues First:** Before submitting a new bug report, please take a moment to search the 
-[existing issues](https://github.com/waffle-commons/waffle/issues) to see if someone else has already reported 
-the same problem. This avoids duplicates and allows you to add relevant information or context to an ongoing 
-investigation.
-- **Provide Clear Steps:** Use the [bug report template](https://github.com/waffle-commons/waffle/issues) 
-when opening an issue. The most helpful bug reports include clear, concise, and step-by-step instructions on 
-how to reliably reproduce the issue. A minimal reproducible example (the smallest amount of code necessary 
-to demonstrate the bug) is often the key to a quick fix.
-- **Include Environment Details:** Specify the exact versions you are using (Waffle framework, PHP, 
-operating system, web server if applicable). Sometimes bugs are specific to certain environments.
-- **Logs and Error Messages:** Include the full text of any relevant error messages, stack traces, or logs. 
-Copying and pasting this information accurately is crucial. If possible, set the relevant logging level 
-to DEBUG to capture more details.
-- **Use the `bug` Label:** While maintainers will usually label issues, feel free to suggest the `bug` label 
-if appropriate.
+> **The one load-bearing rule:** every component depends **only** on `waffle-commons/contracts` (with the pure-function `waffle-commons/utils` as the single sanctioned shared foundation) — **never** on another component's concrete classes. This *Component-Agnosticism* invariant is enforced by `mago guard` on every pull request.
 
-### **Suggesting Enhancements**
-Do you have an idea that could make Waffle even better? We'd love to hear it! Enhancements can range from 
-small quality-of-life improvements to entirely new features.
-- **Discuss First (Optional but Recommended):** For significant changes or new features, consider starting 
-a discussion in the [Discussions tab](https://github.com/waffle-commons/waffle/discussions) first. 
-This allows the community and maintainers to provide feedback on the concept before you invest time in 
-a detailed proposal or implementation.
-- **Use the Template:** Open a [new feature request](https://github.com/waffle-commons/waffle/issues). 
-Explain the problem your enhancement solves (the "why") and then describe your proposed solution 
-(the "what" and "how").
-- **Provide Context and Use Cases:** Why is this enhancement needed? Who would benefit from it? 
-What specific scenarios does it enable or improve? Concrete examples are very helpful.
-- **Consider Alternatives:** Briefly mention any alternative solutions you considered and why 
-your proposed approach seems better.
-- **Use `enhancement` or `feature` Labels:** Suggest the appropriate label for your idea.
+## 🗺️ Roadmap & RFCs come first
 
-### **Code Contributions**
-Patches, bug fixes, and new features implemented through code are highly welcome.
-- **Find an Issue:** A great way to start is by looking at issues labeled 
-[`good first issue`](https://github.com/waffle-commons/waffle/labels/good%20first%20issue) (ideal for newcomers) 
-or [`help wanted`](https://github.com/waffle-commons/waffle/labels/help%20wanted) (issues we'd appreciate community 
-assistance with).
-- **Discuss Your Approach:** Especially for larger changes, it's a good idea to comment on the relevant issue 
-or open a new one to discuss your intended implementation strategy before you start coding. This ensures 
-your work aligns with the project's direction and avoids duplicated effort.
-- **Follow Coding Standards:** Waffle uses [Mago](https://mago.carthage.software/) for code formatting and 
-static analysis. Please ensure your code adheres to the project's standards by running the appropriate 
-commands inside the development environment (see workflow below). Pull requests that fail CI checks due 
-to formatting or analysis errors will need correction.
-- **Write Tests:** All code contributions must include relevant unit or integration tests using PHPUnit. 
-Aim for high test coverage for any new or modified code. Contributions that decrease overall test coverage 
-may not be accepted. See the "Running Tests" section below for how to execute the test suite.
-- **Keep Pull Requests Focused:** Create small, focused pull requests that address a single issue or implement 
-a single feature. This makes the review process much easier and faster. Avoid mixing unrelated changes in one PR.
+The project's **official roadmap and design record live in `project_system/`** inside the umbrella repository. It is the binding plan of record for the whole ecosystem:
 
-## **Development Workflow using `waffle-commons/workspace`**
-To ensure consistency between local development, CI, and potential contributions from others, 
-Waffle development and integration testing is primarily managed through the dedicated 
-`waffle-commons/workspace` project. This setup uses Docker and Composer path repositories to link the 
-core framework and its components together in an isolated environment.
+- [`project_system/Roadmaps/`](https://github.com/waffle-commons/monorepo/tree/main/project_system/Roadmaps) — the official, release-by-release roadmap. **If a plan isn't written here, it isn't committed direction.**
+- [`project_system/RFCs/`](https://github.com/waffle-commons/monorepo/tree/main/project_system/RFCs) — the authoritative design specifications (`RFC-001` … `RFC-022`) every component implements.
+- [`project_system/Logs/Releases/`](https://github.com/waffle-commons/monorepo/tree/main/project_system/Logs/Releases) and [`Logs/Retrospectives/`](https://github.com/waffle-commons/monorepo/tree/main/project_system/Logs/Retrospectives) — what shipped in each wave, and what we learned.
 
-1. **Fork and Clone Required Repositories:**
-- **Fork** the official `waffle-commons/waffle` repository on GitHub to your own account.
-- **Clone** the official `waffle-commons/workspace` repository locally.
-- **Clone** your **fork** of `waffle-commons/waffle` locally.
-- _(Optional)_ Clone any other official `waffle-commons/*` component repositories you might need locally.
+**Before starting significant work:**
 
-The core idea is to have the workspace project and your fork of waffle (and potentially other components) 
-reside as sibling directories within a common parent folder. The recommended structure is `~/waffle-commons/`.
-```
-~/waffle-commons/          # Common parent directory
-├── workspace/             # The official development environment orchestrator (Docker, Composer links)
-│   ├── docker-compose.yml
-│   ├── Dockerfile
-│   ├── composer.json      # Defines links to ../waffle, ../http, etc.
-│   └── ...
-├── waffle/                # Your FORK of the core framework repository
-│   ├── src/
-│   ├── tests/
-│   ├── composer.json
-│   └── ...
-└── http/                  # Example: Official Waffle HTTP component repository (clone if needed)
-│   ├── src/
-│   ├── composer.json
-│   └── ...
-└── ...                    # Other components as needed
-```
-Execute the following commands to set up this structure (replace `YOUR_USERNAME`):
-```shell
-# Create the parent directory if it doesn't exist
-mkdir -p ~/waffle-commons
-cd ~/waffle-commons
+1. Check the current roadmap to see whether (and when) it's planned.
+2. Read the relevant RFC and align your design with it.
+3. For a new subsystem or a design change, open a discussion / propose the RFC + roadmap update **first**. Code that contradicts the roadmap or an RFC will be sent back.
 
-# Clone the workspace orchestrator (official repo)
-git clone git@github.com:waffle-commons/workspace.git
+Small, self-contained fixes (bugs, docs, tests) don't need an RFC — just open a PR. The full governance lifecycle (RFC → roadmap → release log → retrospective) is documented in [`docs/reference/project-system.md`](https://github.com/waffle-commons/monorepo/blob/main/docs/reference/project-system.md).
 
-# Clone YOUR FORK of the core Waffle framework
-git clone git@github.com:YOUR_USERNAME/waffle.git
+## Ways to contribute
 
-# Clone any other OFFICIAL components you need to modify or test alongside waffle
-# git clone git@github.com:waffle-commons/http.git # For example
-# git clone git@github.com:waffle-commons/yaml.git # For example
-```
-Cloning these repositories side-by-side allows the `workspace`'s Composer configuration to locate and link 
-them using simple relative paths like `../waffle`.
+### Reporting bugs
 
-2. **Configure Workspace Composer:**
-The `composer.json` file located inside `~/waffle-commons/workspace/` is the central piece for linking 
-your local development versions. It uses Composer's `path` repository type with the `options.versions` key 
-to force the usage of your local clones.
+Search the [existing issues](https://github.com/waffle-commons/waffle/issues) first to avoid duplicates. A great report includes: a minimal reproducible example, the exact versions (Waffle component, PHP, OS), and the full text of any errors / stack traces / logs (set logging to `DEBUG` where useful).
 
-Verify your `~/waffle-commons/workspace/composer.json` looks similar to this example, ensuring 
-the `"url"` points correctly (`../waffle`) and the version in `"require"` matches the version specified 
-under `"options.versions"`:
-```json
-{
-    "name": "waffle-commons/workspace",
-    // ...
-    "require": {
-        "php": "^8.4",
-        "waffle-commons/waffle": "1.0.0-dev" // Must match version in options below
-        // "waffle-commons/http": "1.0.0-dev" // Example for another component
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../waffle", // Relative path FROM workspace TO your waffle fork
-            "options": {
-                // Force Composer to treat the local path as this specific version
-                "versions": { "waffle-commons/waffle": "0.1.0-dev" },
-                "symlink": true // Create symlinks instead of copying
-            }
-        }
-        // Add entries for other official waffle-commons/* components here if needed
-        // ,{
-        //    "type": "path",
-        //    "url": "../http", // Relative path FROM workspace TO http
-        //    "options": {
-        //        "versions": { "waffle-commons/http": "1.0.0-dev" },
-        //        "symlink": true
-        //    }
-        // }
-    ],
-    // ...
-    "prefer-stable": false,   // Allow Composer to pick dev versions if needed
-}
+### Suggesting enhancements
+
+For anything beyond a small tweak, start a thread in [Discussions](https://github.com/waffle-commons/waffle/discussions) or check the roadmap above — significant features are coordinated through RFCs. Explain the problem (the *why*), then the proposed solution (the *what* / *how*), with concrete use cases and the alternatives you considered.
+
+### Code & documentation
+
+Patches, fixes, and features are very welcome. Look for [`good first issue`](https://github.com/waffle-commons/waffle/labels/good%20first%20issue) and [`help wanted`](https://github.com/waffle-commons/waffle/labels/help%20wanted). Every code change ships with tests, and every behaviour change ships with the matching Diátaxis doc update.
+
+## Development workflow (monorepo + Docker)
+
+All development runs inside the `waffle-dev` Docker container — **native PHP on the host is intentionally unsupported**, so everyone (and CI) runs the exact same toolchain.
+
+**1. Clone the umbrella with submodules:**
+
+```bash
+git clone --recurse-submodules git@github.com:waffle-commons/monorepo.git waffle-commons
+cd waffle-commons
 ```
 
-_(Adjust the development version string like `"1.0.0-dev"` consistently if the project uses a different 
-convention for its development branches/versions.)_
+**2. Start the dev environment (from `workspace/`):**
 
-3. **Start the Development Environment:**
-The Docker setup is managed entirely within the `workspace` project. Navigate to its directory and use 
-Docker Compose commands.
-```shell
-cd ~/waffle-commons/workspace
-
-# Build the Docker image (only needed initially or if you modify the Dockerfile)
-docker compose build
-
-# Start the services (FrankenPHP web server) in detached mode (-d) (for the first time)
-docker compose up -d
-
-# Start the services (FrankenPHP web server)
-docker compose start
-
-# To view logs (useful for debugging startup issues):
-# docker-compose logs -f waffle-dev
-```
-This typically starts a FrankenPHP server accessible via `http://localhost:8080` (or `https://localhost:8443`).
-
-4. **Install Dependencies (Inside Docker):**
-This is a crucial step. Run `composer install` _from within the running Docker container_, specifying 
-the `/waffle-commons/workspace` directory. This command reads the `workspace/composer.json` and creates
-symlinks inside the container's `/workspace/vendor` directory pointing to your local code 
-(e.g., `/waffle-commons/waffle`, `/waffle-commons/http`).
-```shell
-# Execute 'composer install' inside the 'workspace' container,
-# telling it to operate within the /waffle-commons/workspace directory.
-docker exec waffle-dev -w=/waffle-commons/workspace composer install
-```
-After this, `/waffle-commons/workspace/vendor/waffle-commons/waffle` inside the container should be a symbolic 
-link pointing to `/waffle-commons/waffle`. You can verify this using 
-`docker exec waffle-dev ls -l /waffle-commons/workspace/vendor/waffle-commons/`.
-
-_Note:_ Run `composer update` instead if `composer.lock` is out of sync or after adding new local path repositories.
-
-5. **Create a New Branch:**
-Before making changes, create a new branch in **your fork** of the `waffle-commons/waffle` repository:
-```shell
-cd ~/waffle-commons/waffle
-git checkout -b feature/my-cool-feature # Or bugfix/fix-that-bug
+```bash
+cd workspace
+docker compose up -d        # builds + starts the `waffle-dev` container
 ```
 
-6. **Making Changes:**
-- Edit the code directly in your local `~/waffle-commons/waffle/` directory (your fork).
-- Changes are instantly reflected inside the Docker container due to volume mounts and symlinks.
+**3. Work on any component, inside the container:**
 
-7. **Running Tests (Inside Docker):**
-Run tests within the Docker container for consistency with CI.
-
-- **Run Waffle's own unit/integration tests:** Execute PHPUnit using the configuration file within the mounted `waffle` directory:
-```shell
-docker exec waffle-dev -w=/waffle-commons/waffle composer tests
+```bash
+docker exec -it -w /waffle-commons/waffle waffle-dev composer mago    # fmt + lint + analyze + guard
+docker exec -it -w /waffle-commons/waffle waffle-dev composer tests   # PHPUnit (+ coverage)
 ```
-- Ensure all tests pass before committing.
 
-8. **Static Analysis (Inside Docker):**
-Run static analysis tools like `Mago` within the container, targeting the `waffle` codebase:
-```shell
-docker exec waffle-dev -w=/waffle-commons/waffle composer formatter
-docker exec waffle-dev -w=/waffle-commons/waffle composer linter
-docker exec waffle-dev -w=/waffle-commons/waffle composer analyzer
+**4. Fan a command across every component, or audit the whole ecosystem:**
+
+```bash
+./loop.sh composer mago     # run a command in every component
+./coverage.sh               # aggregate PHPUnit coverage, enforce the 95% bar
+./igor.sh                   # (a.k.a. `wfl igor`) worker-mode state-reset / memory-neutrality audit
 ```
-Fix any reported issues.
 
-9. **Committing and Pull Requests:**
-Your Git workflow operates on your local fork.
+The host-side `bin/wfl` CLI wraps the common Docker / mago / phpunit calls. Full walkthrough: [`docs/tutorials/setup-your-monorepo-workspace.md`](https://github.com/waffle-commons/monorepo/blob/main/docs/tutorials/setup-your-monorepo-workspace.md).
 
-- Stage and commit your changes within `~/waffle-commons/waffle/`:
-```shell
-cd ~/waffle-commons/waffle
-git add .\
-git commit -m "feat: Add cool new feature" # Follow Conventional Commits
-```
-- Keep commits focused on single logical changes.
-- Push your feature branch to **your fork** on GitHub:
-```shell
-git push origin feature/my-cool-feature
-```
-- From **your fork** on GitHub, open a Pull Request targeting the `main` branch (or appropriate development branch) 
-of the **official `waffle-commons/waffle`** repository.
-- Fill out the Pull Request template comprehensively, explaining your changes and linking relevant issues 
-(e.g., `Fixes #123`). Ensure all CI checks pass on your PR.
+## Quality bar (every PR, every modified component)
 
-**Thank you again for your contribution! Following this workflow helps keep development consistent and efficient 
-for everyone involved.**
+- **Static analysis:** `composer mago` — `fmt` + `lint` + `analyze` + `guard` with **zero errors, zero warnings, zero baseline files** (the Zero-Baseline *Mago Purge Protocol*).
+- **Tests:** `composer tests` — PHPUnit with **≥ 95% coverage** on changed code.
+- **Worker safety:** `wfl igor` — **0 KO** (no state leaks across requests; FrankenPHP resident-worker safe).
+- **Strict PHP 8.5:** `declare(strict_types=1)`, no `mixed`, typed constants, Property Hooks for DTO validation, asymmetric visibility (`public private(set)`), `#[\Override]` on every override.
+- **Component-Agnosticism preserved** (`mago guard` green — only `contracts`/`utils` as dependencies).
+- **Language:** code, identifiers, and framework-emitted logs/exceptions are **English**. The `skeleton`, `workspace`, and `academy` template apps are the only places French comments/strings are allowed.
 
-****
+## Pull requests
+
+- **Target the specific component's repository**, not the umbrella, for code changes (e.g. a core change → a PR to [`waffle-commons/waffle`](https://github.com/waffle-commons/waffle)). Roadmap/RFC changes go to the umbrella's `project_system/`.
+- Branch off `main` (or the active `pre-release/*` branch). Use **[Conventional Commits](https://www.conventionalcommits.org/)** (`feat:`, `fix:`, `docs:`, `chore:`, …).
+- Keep each PR small and focused on a single logical change.
+- `composer mago` and `composer tests` must pass in every modified component.
+- Secure at least one `@waffle-commons/waffle-core` review approval (CODEOWNERS).
+- Ship the matching docs: [`/documentation`](https://github.com/waffle-commons/monorepo/tree/main/documentation) for framework-facing changes, [`/docs`](https://github.com/waffle-commons/monorepo/tree/main/docs) for monorepo/process changes.
+
+## Where to read more
+
+- **Contributing to the monorepo (full guide):** [`/docs`](https://github.com/waffle-commons/monorepo/tree/main/docs) — tutorials, how-tos, reference, explanation.
+- **Building an app on Waffle:** [`/documentation`](https://github.com/waffle-commons/monorepo/tree/main/documentation).
+- **Project rules & AI-assistant conventions:** [`AGENTS.md`](https://github.com/waffle-commons/monorepo/blob/main/AGENTS.md) and [`CLAUDE.md`](https://github.com/waffle-commons/monorepo/blob/main/CLAUDE.md).
+
+Thank you again for contributing — welcome aboard. 🧇

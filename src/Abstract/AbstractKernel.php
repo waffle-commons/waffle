@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Abstract;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,6 +36,30 @@ use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
 use Waffle\Service\ReflectionService;
 
+/**
+ * Base HTTP kernel: turns a PSR-7 request into a PSR-7 response and exposes the
+ * framework's request lifecycle as three optional, dispatcher-gated hooks.
+ *
+ * Lifecycle (per request, in order):
+ *  1. boot() + configure() — once per worker; wires the container, middleware
+ *     stack and default terminal handler.
+ *  2. {@see RequestReceivedEvent} — dispatched before the PSR-15 pipeline runs.
+ *     A listener may return the event carrying a replaced `request`, which the
+ *     kernel then uses for the remainder of the request.
+ *  3. The PSR-15 middleware pipeline executes, terminating in the
+ *     RequestHandlerInterface resolved from the container.
+ *  4. {@see ResponseGeneratedEvent} — dispatched after the pipeline. A listener
+ *     may return the event carrying a replaced `response`, which becomes the
+ *     kernel's return value.
+ *  5. {@see TerminateEvent} — dispatched by terminate() after the response has
+ *     been emitted, for deferred/async work (independent of the PSR-15 stack).
+ *
+ * Every hook is a no-op when no EventDispatcher is set (the default), so the
+ * lifecycle imposes zero cost on apps that never subscribe to it. The event
+ * objects live in this component (Waffle\Event\*) by design — they are
+ * framework-internal lifecycle signals, not part of the cross-component
+ * contracts surface.
+ */
 abstract class AbstractKernel implements KernelInterface, TerminableInterface
 {
     protected string $environment = Constant::ENV_PROD;
@@ -59,36 +84,51 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
     /**
      * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
      */
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+    )]
     public function setContainerImplementation(PsrContainerInterface $container): void
     {
-        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->innerContainer = $container;
     }
 
     /**
      * Allows injecting Configuration (e.g., from waffle-commons/config).
      */
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+    )]
     public function setConfiguration(ConfigInterface $config): void
     {
-        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->config = $config;
     }
 
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+    )]
     public function setSecurity(SecurityInterface $security): void
     {
-        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->security = $security;
     }
 
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+    )]
     public function setMiddlewareStack(MiddlewareStackInterface $stack): void
     {
-        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->middlewareStack = $stack;
     }
 
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+    )]
     public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
     {
-        // @igor-ignore: boot-time setter DI; injected once before requests, persists for the worker lifetime
         $this->dispatcher = $dispatcher;
     }
 
@@ -177,6 +217,10 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      * {@inheritdoc}
      */
     #[\Override]
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'one-time APP_ENV read; persists for the worker lifetime, not per request',
+    )]
     public function boot(): static
     {
         if ($this->booted) {
@@ -187,7 +231,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         // mutating global state (the prior `putenv($appEnv)` was both a latent
         // bug — missing '=' sentinel — and a worker-mode safety hazard).
         $envVar = getenv(Constant::APP_ENV);
-        // @igor-ignore: one-time boot read of APP_ENV; persists for the worker lifetime, not per request
         $this->environment = is_string($envVar) && $envVar !== '' ? $envVar : Constant::ENV_PROD;
 
         return $this;
@@ -198,6 +241,10 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      * @throws WaffleException
      */
     #[\Override]
+    #[WorkerSafe(
+        scope: 'boot-time',
+        reason: 'one-time boot wiring guarded by $booted; persists for the worker lifetime',
+    )]
     public function configure(): void
     {
         if ($this->booted) {
@@ -225,7 +272,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
         // We cast it to our interface to support set() operations if available.
         if ($this->innerContainer instanceof ContainerInterface) {
-            // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
             $this->container = $this->innerContainer;
         } else {
             // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
@@ -246,7 +292,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
             );
         }
 
-        // @igor-ignore: one-time boot wiring, guarded by $booted; persists for the worker lifetime
         $this->system = new System(security: $this->security)->boot(kernel: $this);
 
         $this->registerDefaultTerminalHandler();
@@ -256,7 +301,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
             $this->container->lock();
         }
 
-        // @igor-ignore: one-shot boot latch; flipped once after configure(), never per request
         $this->booted = true;
     }
 

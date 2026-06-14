@@ -13,6 +13,7 @@ use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
+use Waffle\Commons\Contracts\Handler\ResponseFactoryAwareInterface;
 use Waffle\Event\ControllerArgumentsResolvedEvent;
 
 /**
@@ -64,18 +65,16 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         /** @var object $controller */
         $controller = $this->container->get($classname);
 
-        // We inject the ResponseFactory if the controller needs it (extends AbstractController)
-        if (method_exists($controller, 'setResponseFactory')) {
-            if ($this->container->has(ResponseFactoryInterface::class)) {
-                $factory = $this->container->get(ResponseFactoryInterface::class);
-
-                // Ensure we got an object before injecting
-                if (is_object($factory) && $factory instanceof ResponseFactoryInterface) {
-                    $controller->setResponseFactory($factory);
-                }
-            } else {
-                // Warning: Controller needs factory but container doesn't have it.
-                // We don't throw here to allow execution if jsonResponse is not called.
+        // ARCH-05: inject the PSR-17 factory only into controllers that declare
+        // the need through the formal ResponseFactoryAwareInterface contract —
+        // an explicit interface check, never a loose method_exists() heuristic.
+        if (
+            $controller instanceof ResponseFactoryAwareInterface
+            && $this->container->has(ResponseFactoryInterface::class)
+        ) {
+            $factory = $this->container->get(ResponseFactoryInterface::class);
+            if ($factory instanceof ResponseFactoryInterface) {
+                $controller->setResponseFactory($factory);
             }
         }
 
@@ -114,6 +113,12 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             return $this->responseConverter->convert($result);
         }
 
+        // No converter injected: build the framework default from the container's
+        // PSR-17 factory. ControllerResponseConverter is a stateless `final
+        // readonly` value object, so on-demand construction is worker-safe — not a
+        // service-locator call for a stateful dependency. This stays in handle()
+        // (rather than the constructor) because the default-handler path has no
+        // guaranteed ResponseFactory until the app wires one.
         if ($this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);

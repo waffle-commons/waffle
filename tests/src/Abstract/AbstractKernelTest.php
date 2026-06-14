@@ -501,6 +501,84 @@ class AbstractKernelTest extends TestCase
         static::assertJsonStringEqualsJsonString('{"id":1,"name":"John Doe"}', (string) $response->getBody());
     }
 
+    public function testHandleDispatchesResponseGeneratedEventAndReturnsMutatedResponse(): void
+    {
+        assert($this->kernel !== null);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $this->createTestConfigFile(securityLevel: 2);
+
+        $this->routerMock
+            ->method('matchRequest')
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'list',
+                arguments: [],
+                path: '/users',
+                name: 'users',
+                params: [],
+            ));
+        $this->responseFactoryMock->method('createResponse')->willReturn(new StubResponse(200));
+        $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
+        $this->innerContainer->services['WaffleTests\Helper\Controller\TempController'] =
+            new \WaffleTests\Helper\Controller\TempController();
+
+        // The dispatcher swaps the generated response for a sentinel (HTTP 418).
+        $mutated = new StubResponse(418);
+        $dispatcher = $this->createStub(\Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface::class);
+        $dispatcher->method('dispatch')->willReturnCallback(static fn(object $event): object => $event
+            instanceof \Waffle\Event\ResponseGeneratedEvent
+                ? new \Waffle\Event\ResponseGeneratedEvent($mutated)
+                : $event);
+        $this->kernel->setEventDispatcher($dispatcher);
+
+        $response = $this->kernel->handle(new StubServerRequest('GET', '/users'));
+
+        static::assertSame(
+            418,
+            $response->getStatusCode(),
+            'kernel must return the response carried by ResponseGeneratedEvent',
+        );
+    }
+
+    public function testHandleDispatchesRequestReceivedEventAndUsesMutatedRequest(): void
+    {
+        assert($this->kernel !== null);
+        $_ENV[Constant::APP_ENV] = 'dev';
+        $this->createTestConfigFile(securityLevel: 2);
+
+        // The dispatcher tags the request before the PSR-15 pipeline runs.
+        $dispatcher = $this->createStub(\Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface::class);
+        $dispatcher->method('dispatch')->willReturnCallback(static fn(object $event): object => $event
+            instanceof \Waffle\Event\RequestReceivedEvent
+                ? new \Waffle\Event\RequestReceivedEvent($event->request->withAttribute('_marker', 'mutated'))
+                : $event);
+        $this->kernel->setEventDispatcher($dispatcher);
+
+        // Proof the mutated request flows into the pipeline: the router sees the tag.
+        $this->routerMock
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with(static::callback(
+                static fn(ServerRequestInterface $r): bool => $r->getAttribute('_marker') === 'mutated',
+            ))
+            ->willReturn(new \Waffle\Commons\Contracts\Routing\MatchedRoute(
+                className: 'WaffleTests\\Helper\\Controller\\TempController',
+                method: 'list',
+                arguments: [],
+                path: '/users',
+                name: 'users',
+                params: [],
+            ));
+        $this->responseFactoryMock->method('createResponse')->willReturn(new StubResponse(200));
+        $this->innerContainer->services[ResponseFactoryInterface::class] = $this->responseFactoryMock;
+        $this->innerContainer->services['WaffleTests\Helper\Controller\TempController'] =
+            new \WaffleTests\Helper\Controller\TempController();
+
+        $response = $this->kernel->handle(new StubServerRequest('GET', '/users'));
+
+        static::assertSame(200, $response->getStatusCode());
+    }
+
     public function testHandleUsesResponseFactoryFromContainerIfAvailable(): void
     {
         assert($this->kernel !== null);
