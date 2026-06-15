@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Waffle\Abstract;
 
 use IgorPhp\IgorBundle\Attribute\WorkerSafe;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use RuntimeException;
 use Waffle\Commons\Contracts\Config\ConfigInterface;
 use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
@@ -28,8 +26,6 @@ use Waffle\Event\RequestReceivedEvent;
 use Waffle\Event\ResponseGeneratedEvent;
 use Waffle\Event\TerminateEvent;
 use Waffle\Exception\Container\ContainerException;
-use Waffle\Exception\Container\NotFoundException;
-use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Exception\WaffleException;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Handler\ControllerArgumentResolver;
@@ -59,6 +55,11 @@ use Waffle\Service\ReflectionService;
  * objects live in this component (Waffle\Event\*) by design — they are
  * framework-internal lifecycle signals, not part of the cross-component
  * contracts surface.
+ *
+ * ARCH-03: every required collaborator is injected at construction (mandatory
+ * constructor parameters), so a half-built kernel is unrepresentable. The previous
+ * nullable fields + `set*()` setters + `validateState()` temporal-coupling
+ * machinery are gone.
  */
 abstract class AbstractKernel implements KernelInterface, TerminableInterface
 {
@@ -66,79 +67,36 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
 
     protected bool $booted = false;
 
-    public ?ConfigInterface $config = null;
-
     protected(set) ?System $system = null;
-
-    public ?ContainerInterface $container = null;
-
-    protected ?SecurityInterface $security = null;
-
-    // Holds the raw PSR-11 implementation injected by Runtime
-    private ?PsrContainerInterface $innerContainer = null;
-
-    protected(set) ?MiddlewareStackInterface $middlewareStack = null;
 
     protected ?EventDispatcherInterface $dispatcher = null;
 
+    public function __construct(
+        public protected(set) ConfigInterface $config,
+        public protected(set) ContainerInterface $container,
+        protected SecurityInterface $security,
+        protected(set) MiddlewareStackInterface $middlewareStack,
+        protected LoggerInterface $logger = new NullLogger(),
+    ) {}
+
     /**
-     * Allows injecting a specific PSR-11 container implementation (e.g., from waffle-commons/container).
+     * Optionally wire the lifecycle event dispatcher — the ONE optional
+     * collaborator (the kernel's hooks no-op without it). Kept as a boot-time
+     * setter so the required-collaborator constructor stays within the 5-parameter
+     * bound; a missing dispatcher never leaves the kernel half-built (ARCH-03).
      */
     #[WorkerSafe(
         scope: 'boot-time',
-        reason: 'setter DI injected once before requests; persists for the worker lifetime',
-    )]
-    public function setContainerImplementation(PsrContainerInterface $container): void
-    {
-        $this->innerContainer = $container;
-    }
-
-    /**
-     * Allows injecting Configuration (e.g., from waffle-commons/config).
-     */
-    #[WorkerSafe(
-        scope: 'boot-time',
-        reason: 'setter DI injected once before requests; persists for the worker lifetime',
-    )]
-    public function setConfiguration(ConfigInterface $config): void
-    {
-        $this->config = $config;
-    }
-
-    #[WorkerSafe(
-        scope: 'boot-time',
-        reason: 'setter DI injected once before requests; persists for the worker lifetime',
-    )]
-    public function setSecurity(SecurityInterface $security): void
-    {
-        $this->security = $security;
-    }
-
-    #[WorkerSafe(
-        scope: 'boot-time',
-        reason: 'setter DI injected once before requests; persists for the worker lifetime',
-    )]
-    public function setMiddlewareStack(MiddlewareStackInterface $stack): void
-    {
-        $this->middlewareStack = $stack;
-    }
-
-    #[WorkerSafe(
-        scope: 'boot-time',
-        reason: 'setter DI injected once before requests; persists for the worker lifetime',
+        reason: 'optional dispatcher wired once before requests; persists for the worker lifetime',
     )]
     public function setEventDispatcher(EventDispatcherInterface $dispatcher): void
     {
         $this->dispatcher = $dispatcher;
     }
 
-    public function __construct(
-        protected LoggerInterface $logger = new NullLogger(),
-    ) {}
-
     /**
      * {@inheritdoc}
-     * @throws WaffleException|InvalidConfigurationException|ContainerException
+     * @throws WaffleException|ContainerException
      */
     #[\Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -147,8 +105,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         if (!$this->booted) {
             $this->boot()->configure();
         }
-
-        $this->validateState(request: $request);
 
         // Dispatch RequestReceivedEvent (allows pre-pipeline modification)
         $requestReceivedEvent = new RequestReceivedEvent($request);
@@ -253,31 +209,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
 
         /** @var string $root */
         $root = APP_ROOT;
-        if ($this->config === null) {
-            $messageConfig = 'Configuration not initialized. Please inject a ConfigInterface implementation into the Kernel.';
-            $this->logAndThrow(InvalidConfigurationException::class, $messageConfig, 'configure');
-        }
-
-        if ($this->security === null) {
-            $messageSecurity = 'Security implementation not provided. Please inject a SecurityInterface implementation via setSecurity().';
-            $this->logAndThrow(ContainerException::class, $messageSecurity, 'configure');
-        }
-
-        // Check if an implementation was provided via setContainerImplementation
-        if ($this->innerContainer === null) {
-            $messageContainer = 'No Container implementation provided. Please ensure the Runtime injects a PSR-11 container via setContainerImplementation().';
-            $this->logAndThrow(ContainerException::class, $messageContainer, 'configure');
-        }
-
-        // The container is now expected to be fully configured (and potentially decorated) by the Runtime/Factory.
-        // We cast it to our interface to support set() operations if available.
-        if ($this->innerContainer instanceof ContainerInterface) {
-            $this->container = $this->innerContainer;
-        } else {
-            // Let's assume the user injects Waffle\Commons\Contracts\Container\ContainerInterface.
-            $messageInnerContainer = 'The injected container must implement Waffle\Commons\Contracts\Container\ContainerInterface.';
-            $this->logAndThrow(ContainerException::class, $messageInnerContainer, 'configure');
-        }
 
         $containerFactory = new ContainerFactory();
         $services = $this->config->getString(key: 'waffle.paths.services');
@@ -312,15 +243,11 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      *
      * Called from {@see self::configure()} during the normal boot path. Test
      * fixtures that override `configure()` to bypass the standard setup must
-     * call this method themselves once `$this->container` has been assigned,
-     * otherwise {@see self::handle()} cannot resolve the terminal handler.
+     * call this method themselves, otherwise {@see self::handle()} cannot
+     * resolve the terminal handler.
      */
     protected function registerDefaultTerminalHandler(): void
     {
-        if ($this->container === null) {
-            return;
-        }
-
         // Fast path: if the terminal handler is already wired (the AppKernelFactory
         // composes ReflectionService + ArgumentResolver + ControllerDispatcher and
         // binds RequestHandlerInterface), do nothing. Returning here BEFORE touching
@@ -370,20 +297,15 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      */
     private function resolveOrDefault(string $interface, string $expectedType, callable $factory): object
     {
-        $container = $this->container;
-        if ($container === null) {
-            return $factory();
-        }
-
-        if ($container->has($interface)) {
-            $candidate = $container->get($interface);
+        if ($this->container->has($interface)) {
+            $candidate = $this->container->get($interface);
             if ($candidate instanceof $expectedType) {
                 return $candidate;
             }
         }
 
         $instance = $factory();
-        $container->set($interface, $instance);
+        $this->container->set($interface, $instance);
         return $instance;
     }
 
@@ -402,24 +324,6 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         }
     }
 
-    private function validateState(ServerRequestInterface $request): void
-    {
-        if ($this->middlewareStack === null) {
-            $messageMiddlewareStack = 'Kernel Error: MiddlewareStack not initialized. Did you call setMiddlewareStack()?';
-            $this->logAndThrow(RuntimeException::class, $messageMiddlewareStack, $request->getMethod());
-        }
-
-        if ($this->container === null) {
-            $messageContainer = 'Container not initialized.';
-            $this->logAndThrow(ContainerException::class, $messageContainer, $request->getMethod());
-        }
-
-        if ($this->system === null) {
-            $messageSystem = 'System not initialized.';
-            $this->logAndThrow(NotFoundException::class, $messageSystem, $request->getMethod());
-        }
-    }
-
     /**
      * Centralized error reporting for the handle loop.
      * @param string $exceptionClass The class of the exception to throw.
@@ -427,7 +331,7 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
      * @param string $method The current method.
      * @param int $code The HTTP status code (must be 100-599).
      */
-    private function logAndThrow(string $exceptionClass, string $message, string $method, int $code = 500): void
+    private function logAndThrow(string $exceptionClass, string $message, string $method, int $code = 500): never
     {
         $this->logger->critical($message, [
             'exception' => static::class,

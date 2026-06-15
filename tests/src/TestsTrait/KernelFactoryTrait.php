@@ -114,7 +114,9 @@ trait KernelFactoryTrait
         // @mago-ignore non-existent-method
         /** @var AbstractKernel&MockObject $kernel */
         $kernel = $this->createMock(AbstractKernel::class);
-        $kernel->container = $container ?? $this->createMockContainer();
+        // `container` is public protected(set) (ARCH-03 hardening) — set via reflection.
+        $property = new \ReflectionProperty(AbstractKernel::class, 'container');
+        $property->setValue($kernel, $container ?? $this->createMockContainer());
         return $kernel;
     }
 }

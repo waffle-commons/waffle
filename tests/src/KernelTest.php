@@ -6,6 +6,10 @@ namespace WaffleTests;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Waffle\Abstract\AbstractKernel;
+use Waffle\Commons\Contracts\Config\ConfigInterface;
+use Waffle\Commons\Contracts\Container\ContainerInterface;
+use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
+use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Kernel;
 use WaffleTests\AbstractTestCase as TestCase;
 
@@ -13,20 +17,29 @@ use WaffleTests\AbstractTestCase as TestCase;
  * This test class is dedicated to validating the concrete Kernel class.
  *
  * Its primary purpose is to ensure that the class can be instantiated correctly
- * and that it properly extends its abstract parent. This simple validation is
- * essential for achieving 100% code coverage and confirming the basic integrity
- * of the framework's main entry point.
+ * (via constructor injection, ARCH-03) and that it properly extends its abstract
+ * parent.
  */
 #[CoversClass(Kernel::class)]
 final class KernelTest extends TestCase
 {
+    private function makeKernel(): Kernel
+    {
+        return new Kernel(
+            config: $this->createStub(ConfigInterface::class),
+            container: $this->createStub(ContainerInterface::class),
+            security: $this->createStub(SecurityInterface::class),
+            middlewareStack: $this->createStub(MiddlewareStackInterface::class),
+        );
+    }
+
     /**
      * This test verifies that the Kernel class can be instantiated and that it
      * correctly inherits from AbstractKernel.
      */
     public function testKernelCanBeInstantiated(): void
     {
-        $kernel = new Kernel();
+        $kernel = $this->makeKernel();
 
         // Assert that the object is an instance of the concrete Kernel class.
         static::assertInstanceOf(Kernel::class, $kernel);
@@ -36,13 +49,12 @@ final class KernelTest extends TestCase
     }
 
     /**
-     * This test is a placeholder to ensure that the boot() method can be called
-     * without errors. It will be expanded upon if the concrete Kernel class
-     * ever overrides the boot() method with its own specific logic.
+     * This test ensures that the boot() method can be called without errors and
+     * returns the same instance (fluent interface).
      */
     public function testBootMethodIsCallable(): void
     {
-        $kernel = new Kernel();
+        $kernel = $this->makeKernel();
         $bootedKernel = $kernel->boot();
 
         // The primary assertion is that the boot method returns an instance of itself,
