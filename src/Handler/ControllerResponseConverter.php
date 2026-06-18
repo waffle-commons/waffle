@@ -9,6 +9,9 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
+use Waffle\Commons\Contracts\Telemetry\Enum\SpanKind;
+use Waffle\Commons\Contracts\Telemetry\NullTracer;
+use Waffle\Commons\Contracts\Telemetry\TracerInterface;
 
 final readonly class ControllerResponseConverter implements ResponseConverterInterface
 {
@@ -21,6 +24,7 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
     public function __construct(
         private ResponseFactoryInterface $factory,
         private string $stringResponseCsp = "default-src 'self'",
+        private TracerInterface $tracer = new NullTracer(),
     ) {}
 
     /**
@@ -28,6 +32,23 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
      */
     #[\Override]
     public function convert(mixed $result): ResponseInterface
+    {
+        $span = $this->tracer->startSpan('waffle.response.convert', SpanKind::Internal);
+
+        try {
+            $response = $this->convertResult($result);
+            $span->setAttribute('http.response.status_code', $response->getStatusCode());
+
+            return $response;
+        } finally {
+            $span->end();
+        }
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function convertResult(mixed $result): ResponseInterface
     {
         if ($result instanceof ResponseInterface) {
             return $result;
