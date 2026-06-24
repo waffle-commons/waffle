@@ -95,7 +95,7 @@ block-statement = { enabled = false }
 assertion-style = { enabled = false }
 assert-description = { enabled = false }
 tagged-todo = { enabled = false }
-cyclomatic-complexity = { enabled = false }
+cyclomatic-complexity = { enabled = true, threshold = 50 }
 too-many-methods = { enabled = false }
 kan-defect = { enabled = false }
 halstead = { enabled = false }
@@ -142,11 +142,6 @@ ignore = [
     ] },
     { code = "redundant-comparison", in = [
         "tests/",
-    ] },
-    # ControllerDispatcher invokes the controller via $controller->$method(...) — the
-    # variable-method-call is legitimate dispatch.
-    { code = "string-member-selector", in = [
-        "src/Handler/ControllerDispatcher.php",
     ] },
     # SystemTrait reads optional kernel state; ContainerFactoryTest concatenates
     # a path that's typed `?string` at the analyzer level.

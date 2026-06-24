@@ -392,6 +392,103 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
     // --- Helpers ---
 
+    public function testHandleThrowsWhenContainerReturnsANonRequestHandler(): void
+    {
+        // handle() resolves the terminal handler from the container under
+        // RequestHandlerInterface; a non-handler value must be logged and thrown
+        // as a ContainerException (the kernel never silently degrades).
+        /** @var ContainerInterface&MockObject $container */
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('has')->willReturn(true);
+        $container->method('get')->willReturn(new \stdClass());
+
+        $logger = new \WaffleTests\Helper\RecordingLogger();
+
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test', logger: $logger);
+        $this->injectContainer($kernel, $container);
+        $this->setBootedState($kernel, true);
+
+        $this->expectException(\Waffle\Exception\Container\ContainerException::class);
+
+        try {
+            $kernel->handle(new StubServerRequest('GET', '/'));
+        } finally {
+            static::assertNotEmpty($logger->records, 'the failure must be logged');
+            static::assertSame('critical', $logger->records[0]['level']);
+        }
+    }
+
+    public function testRegisterDefaultTerminalHandlerIgnoresAWronglyTypedBinding(): void
+    {
+        // resolveOrDefault(): a container.has() returning true for the interface
+        // but get() yielding the WRONG type must NOT be used — the kernel builds
+        // and binds its own default instead (lines guarding test-double doubles).
+        $container = new class implements ContainerInterface {
+            /** @var array<string, mixed> */
+            public array $services = [];
+
+            // While true, claim to have ReflectionServiceInterface but return the
+            // WRONG type — resolveOrDefault() must discard it and build a default.
+            public bool $forceWrongType = true;
+
+            #[\Override]
+            public function get(string $id): mixed
+            {
+                if (
+                    $this->forceWrongType
+                    && $id === \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class
+                ) {
+                    return new \stdClass();
+                }
+
+                return $this->services[$id] ?? null;
+            }
+
+            #[\Override]
+            public function has(string $id): bool
+            {
+                if (
+                    $this->forceWrongType
+                    && $id === \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class
+                ) {
+                    return true;
+                }
+
+                return array_key_exists($id, $this->services);
+            }
+
+            #[\Override]
+            public function set(string $id, mixed $concrete): void
+            {
+                $this->services[$id] = $concrete;
+            }
+
+            #[\Override]
+            public function reset(): void
+            {
+                $this->services = [];
+            }
+        };
+
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
+        $this->injectContainer($kernel, $container);
+
+        // Drive registerDefaultTerminalHandler() through configure().
+        $kernel->configure();
+
+        // The wrongly-typed candidate was discarded and a real default bound.
+        static::assertInstanceOf(
+            \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class,
+            $container->services[\Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class] ?? null,
+            'resolveOrDefault must bind a real ReflectionService when the candidate is the wrong type',
+        );
+        // A ControllerDispatcher was wired as the terminal handler.
+        static::assertInstanceOf(
+            \Psr\Http\Server\RequestHandlerInterface::class,
+            $container->services[\Psr\Http\Server\RequestHandlerInterface::class] ?? null,
+        );
+    }
+
     private function createMockRequest(): ServerRequestInterface
     {
         $uri = $this->createStub(UriInterface::class);

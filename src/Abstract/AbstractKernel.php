@@ -27,6 +27,7 @@ use Waffle\Event\ResponseGeneratedEvent;
 use Waffle\Event\TerminateEvent;
 use Waffle\Exception\Container\ContainerException;
 use Waffle\Exception\WaffleException;
+use Waffle\Factory\CompiledContainerLoader;
 use Waffle\Factory\ContainerFactory;
 use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
@@ -231,6 +232,16 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         if (method_exists($this->container, 'lock')) {
             $this->container->lock();
         }
+
+        // AOT-01 fast path: when WAFFLE_AOT=1 and a compiled artifact exists and
+        // loads cleanly, swap in the reflection-free compiled container (which
+        // composes the just-locked runtime container). On any miss the loader logs
+        // a warning and returns the runtime container UNCHANGED (RFC-019 mandatory
+        // fallback), so the default dev path is entirely unaffected.
+        $this->container = new CompiledContainerLoader(
+            artifactPath: $root . DIRECTORY_SEPARATOR . CompiledContainerLoader::DEFAULT_ARTIFACT,
+            logger: $this->logger,
+        )->load($this->container);
 
         $this->booted = true;
     }
