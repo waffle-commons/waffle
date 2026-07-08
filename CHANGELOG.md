@@ -5,7 +5,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
-## [0.1.0-beta5] — 2026-06-26
+## [0.1.0-beta5] — 2026-07-08
 
 **Theme: AOT fast-path, reactive flush & immutable kernel.**
 
