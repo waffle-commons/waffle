@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WaffleTests\Abstract;
 
-use AllowDynamicProperties;
 // use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,13 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 use ReflectionClass;
-use RuntimeException;
 use Waffle\Abstract\AbstractKernel;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
-use Waffle\Exception\Container\NotFoundException;
 use Waffle\Handler\ControllerArgumentResolver;
 use Waffle\Handler\ControllerDispatcher;
 use Waffle\Router\Router;
@@ -395,80 +390,104 @@ class AbstractKernelEdgeCaseTest extends TestCase
         static::assertSame(204, $response->getStatusCode());
     }
 
-    public function testHandleCatchesCriticalErrorsDuringExceptionHandling(): void
-    {
-        $responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
-        $responseFactoryMock
-            ->method('createResponse')
-            ->willThrowException(new RuntimeException('Response factory is broken'));
+    // --- Helpers ---
 
-        $throwingRouter = new class {
-            public function match(ServerRequestInterface $_request): array
+    public function testHandleThrowsWhenContainerReturnsANonRequestHandler(): void
+    {
+        // handle() resolves the terminal handler from the container under
+        // RequestHandlerInterface; a non-handler value must be logged and thrown
+        // as a ContainerException (the kernel never silently degrades).
+        /** @var ContainerInterface&MockObject $container */
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('has')->willReturn(true);
+        $container->method('get')->willReturn(new \stdClass());
+
+        $logger = new \WaffleTests\Helper\RecordingLogger();
+
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test', logger: $logger);
+        $this->injectContainer($kernel, $container);
+        $this->setBootedState($kernel, true);
+
+        $this->expectException(\Waffle\Exception\Container\ContainerException::class);
+
+        try {
+            $kernel->handle(new StubServerRequest('GET', '/'));
+        } finally {
+            static::assertNotEmpty($logger->records, 'the failure must be logged');
+            static::assertSame('critical', $logger->records[0]['level']);
+        }
+    }
+
+    public function testRegisterDefaultTerminalHandlerIgnoresAWronglyTypedBinding(): void
+    {
+        // resolveOrDefault(): a container.has() returning true for the interface
+        // but get() yielding the WRONG type must NOT be used — the kernel builds
+        // and binds its own default instead (lines guarding test-double doubles).
+        $container = new class implements ContainerInterface {
+            /** @var array<string, mixed> */
+            public array $services = [];
+
+            // While true, claim to have ReflectionServiceInterface but return the
+            // WRONG type — resolveOrDefault() must discard it and build a default.
+            public bool $forceWrongType = true;
+
+            #[\Override]
+            public function get(string $id): mixed
             {
-                throw new \Exception('Initial error to trigger handleException');
+                if (
+                    $this->forceWrongType
+                    && $id === \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class
+                ) {
+                    return new \stdClass();
+                }
+
+                return $this->services[$id] ?? null;
+            }
+
+            #[\Override]
+            public function has(string $id): bool
+            {
+                if (
+                    $this->forceWrongType
+                    && $id === \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class
+                ) {
+                    return true;
+                }
+
+                return array_key_exists($id, $this->services);
+            }
+
+            #[\Override]
+            public function set(string $id, mixed $concrete): void
+            {
+                $this->services[$id] = $concrete;
+            }
+
+            #[\Override]
+            public function reset(): void
+            {
+                $this->services = [];
             }
         };
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->method('has')->willReturn(true);
-        $containerMock
-            ->method('get')
-            ->willReturnMap([
-                [Router::class,                   $throwingRouter],
-                [ResponseFactoryInterface::class, $responseFactoryMock],
-            ]);
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
+        $this->injectContainer($kernel, $container);
 
-        $kernel = new
-            #[AllowDynamicProperties]
-            class($this->testConfigDir, 'test', new NullLogger()) extends AbstractKernel {
-                public function __construct(string $_configDir, string $env, LoggerInterface $logger)
-                {
-                    parent::__construct($logger);
-                    $this->environment = $env;
-                    $this->testContainer = null;
-                }
-
-                public $testContainer;
-
-                #[\Override]
-                public function boot(): static
-                {
-                    return $this;
-                }
-
-                #[\Override]
-                public function configure(): void
-                {
-                    if ($this->testContainer) {
-                        $this->container = $this->testContainer;
-                    }
-                }
-            };
-
-        // Use setContainerImplementation ...
-        $kernel->setContainerImplementation($containerMock);
-        $kernel->testContainer = $containerMock;
-
-        // Inject Config to pass configure() check
-        $configStub = $this->createStub(\Waffle\Commons\Contracts\Config\ConfigInterface::class);
-        $kernel->setConfiguration($configStub);
-        $kernel->setSecurity($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
-
-        $this->setBootedState($kernel, true);
-
-        // Ensure stack is set to avoid "MiddlewareStack not initialized" error before the one we expect
-        $kernel->setMiddlewareStack(new \WaffleTests\Abstract\Helper\FakeMiddlewareStack());
-
-        $request = $this->createMockRequest();
-
-        $this->expectException(NotFoundException::class);
-        $this->expectExceptionMessage('System not initialized.');
-
+        // Drive registerDefaultTerminalHandler() through configure().
         $kernel->configure();
-        $kernel->handle($request);
-    }
 
-    // --- Helpers ---
+        // The wrongly-typed candidate was discarded and a real default bound.
+        static::assertInstanceOf(
+            \Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class,
+            $container->services[\Waffle\Commons\Contracts\Service\ReflectionServiceInterface::class] ?? null,
+            'resolveOrDefault must bind a real ReflectionService when the candidate is the wrong type',
+        );
+        // A ControllerDispatcher was wired as the terminal handler.
+        static::assertInstanceOf(
+            \Psr\Http\Server\RequestHandlerInterface::class,
+            $container->services[\Psr\Http\Server\RequestHandlerInterface::class] ?? null,
+        );
+    }
 
     private function createMockRequest(): ServerRequestInterface
     {
@@ -505,10 +524,11 @@ class AbstractKernelEdgeCaseTest extends TestCase
 
     private function injectContainer(object $object, object $container): void
     {
+        // ARCH-03: `container` is public protected(set) — reflection (like
+        // injectSystem) is needed to set it from outside the kernel hierarchy.
         $reflection = new ReflectionClass(AbstractKernel::class);
-        $property = $reflection->getProperty('innerContainer');
+        $property = $reflection->getProperty('container');
         $property->setValue($object, $container);
-        $object->container = $container;
     }
 
     private function setBootedState(AbstractKernel $kernel, bool $state): void

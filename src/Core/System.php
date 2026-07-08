@@ -34,7 +34,6 @@ class System extends AbstractSystem
                 AbstractKernel::class,
                 KernelInterface::class,
             ]);
-            /** @var ConfigInterface $config */
             $config = $kernel->config;
             $this->security->analyze(object: $config, expectations: [
                 ConfigInterface::class,

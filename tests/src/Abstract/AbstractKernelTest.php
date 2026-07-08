@@ -25,9 +25,6 @@ use Waffle\Commons\Contracts\Security\SecurityInterface;
 use Waffle\Commons\Contracts\Service\ResettableInterface;
 use Waffle\Core\BaseController;
 use Waffle\Core\System; // Fix: Add missing import
-use Waffle\Exception\Container\ContainerException;
-use Waffle\Exception\Container\NotFoundException;
-use Waffle\Exception\InvalidConfigurationException;
 use Waffle\Kernel;
 use WaffleTests\Abstract\Helper\StubServerRequest;
 use WaffleTests\Abstract\Helper\WebKernel;
@@ -664,27 +661,28 @@ class AbstractKernelTest extends TestCase
         static::assertSame('Something went wrong', $body['message']);
     }
 
-    public function testFailsafeContainerIsUsedWhenConfigurationFails(): void
+    public function testHandleFailsClosedWhenTerminalHandlerIsInvalid(): void
     {
-        $failingKernel = new WebKernel(
-            configDir: $this->testConfigDir,
-            environment: 'prod',
-            container: null,
-            innerContainer: null,
+        // ARCH-03 fail-closed: if the container resolves a non-RequestHandler for the
+        // terminal slot, handle() raises a ContainerException rather than dispatching.
+        $config = $this->createMock(ConfigInterface::class);
+        $config->method('getString')->willReturn(null);
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('has')->willReturn(true);
+        $container->method('get')->willReturn(new \stdClass());
+
+        $kernel = new Kernel(
+            config: $config,
+            container: $container,
+            security: $this->createStub(SecurityInterface::class),
+            middlewareStack: new \WaffleTests\Abstract\Helper\FakeMiddlewareStack(),
         );
-        $failingKernel->setSecurity($this->createMock(SecurityInterface::class));
 
-        $uriMock = $this->createMock(UriInterface::class);
-        $uriMock->method('getPath')->willReturn('/users');
-        $requestMock = new StubServerRequest('GET', '/users');
+        $this->expectException(\Waffle\Exception\Container\ContainerException::class);
+        $this->expectExceptionMessage('non-RequestHandlerInterface');
 
-        // If Waffle\Commons\Http\Response exists, it returns 500.
-        // If not, it throws RuntimeException.
-        // Since AbstractKernel::handle does not catch bootstrap exceptions, we expect ContainerException
-        $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage('No Container implementation provided');
-
-        $failingKernel->handle($requestMock);
+        $kernel->handle(new StubServerRequest('GET', '/'));
     }
 
     public function testBootDefaultsToProdIfAppEnvMissing(): void
@@ -706,171 +704,6 @@ class AbstractKernelTest extends TestCase
             ->getProperty('environment')
             ->getValue($this->kernel);
         static::assertSame(Constant::ENV_PROD, $environment);
-    }
-
-    public function testSettersUpdateProperties(): void
-    {
-        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'dev');
-
-        $containerMock = $this->createMock(PsrContainerInterface::class);
-        $configStub = $this->createStub(ConfigInterface::class);
-        $securityMock = $this->createMock(SecurityInterface::class);
-
-        $kernel->setContainerImplementation($containerMock);
-        $kernel->setConfiguration($configStub);
-        $kernel->setSecurity($securityMock);
-
-        // Use reflection to verify properties are set
-        // We reflect on AbstractKernel to find the property
-        $reflector = new \ReflectionClass(AbstractKernel::class);
-
-        $containerProp = $reflector->getProperty('innerContainer');
-        // Property is protected in AbstractKernel
-        static::assertSame($containerMock, $containerProp->getValue($kernel));
-
-        $configProp = $reflector->getProperty('config');
-        static::assertSame($configStub, $configProp->getValue($kernel));
-
-        $securityProp = $reflector->getProperty('security');
-        static::assertSame($securityMock, $securityProp->getValue($kernel));
-    }
-
-    public function testConfigureThrowsExceptionIfConfigMissing(): void
-    {
-        // Create a kernel that doesn't set config in constructor/configure override
-        $kernel = new class(new NullLogger()) extends Kernel {};
-
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Configuration not initialized');
-
-        $kernel->configure();
-    }
-
-    public function testConfigureThrowsExceptionIfSecurityMissing(): void
-    {
-        $configMock = $this->createMock(ConfigInterface::class);
-
-        $kernel = new class(new NullLogger()) extends Kernel {
-            public function setTestConfig(ConfigInterface $config): void
-            {
-                $this->config = $config;
-            }
-        };
-
-        $kernel->setTestConfig($configMock);
-
-        $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage('Security implementation not provided');
-
-        $kernel->configure();
-    }
-
-    public function testHandleThrowsExceptionIfContainerNotInitialized(): void
-    {
-        $kernel = new class(new NullLogger()) extends Kernel {
-            #[\Override]
-            public function configure(): void
-            {
-                // Do nothing, skipping container init
-            }
-
-            // Helper to inject response factory for error handling
-            // We cannot override private createResponse.
-            // We rely on Waffle\Commons\Http\Response existing (defined at bottom of file if needed).
-
-            public function __construct(LoggerInterface $logger)
-            {
-                parent::__construct($logger);
-                $this->middlewareStack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
-            }
-        };
-
-        // We don't need to set factory since we can't inject it into private method.
-        // We rely on the fallback class.
-
-        $requestMock = new StubServerRequest('GET', '/');
-        // $this->createMock(ServerRequestInterface::class);
-
-        // We need to ensure createResponse doesn't fail before our check
-        // But handle() calls boot()->configure() then checks container.
-        // If configure() returns $this (which it does in our mock), then it checks $this->container.
-        // If $this->container is null, it throws ContainerException.
-        // The catch block catches Throwable.
-        // But handleException() creates a response with createResponse().
-        // If createResponse() is not mocked (because container is empty), handleException throws RuntimeException?
-        // No, we are inside handle().
-        // AbstractKernel::handle:
-        /*
-         * catch (\Throwable $e) {
-         * // ...
-         * $fallbackHandler = new ControllerDispatcher($this->container); // wait, container is null here?
-         * }
-         */
-        // Actually, handle() checks container AFTER config.
-        /*
-         * $this->boot()->configure();
-         * if ($this->container === null) throw ...
-         */
-        // This throw is caught by try/catch?
-        // Wait, AbstractKernel::handle does NOT have a try/catch block around the whole method?
-        // Let's check view_file(AbstractKernel) again.
-        // Lines 97...
-        // No try/catch around boot/configure checks!
-        // So it throws ContainerException directly.
-
-        $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage('Container not initialized.');
-
-        $kernel->handle($requestMock);
-    }
-
-    public function testHandleThrowsExceptionIfSystemNotInitialized(): void
-    {
-        $configMock = $this->createMock(ConfigInterface::class);
-        $securityMock = $this->createMock(SecurityInterface::class);
-        $containerMock = $this->createMock(ContainerInterface::class);
-
-        $kernel = new class(new NullLogger()) extends Kernel {
-            // Declare property to avoid deprecation
-            private $innerContainer;
-
-            public function __construct(LoggerInterface $logger)
-            {
-                parent::__construct($logger);
-                $this->middlewareStack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
-            }
-
-            public function setDeps(
-                ConfigInterface $config,
-                SecurityInterface $security,
-                PsrContainerInterface $container,
-            ): void {
-                $this->config = $config;
-                $this->security = $security;
-                $this->innerContainer = $container;
-            }
-
-            #[\Override]
-            public function configure(): void
-            {
-                // Init container but skip System
-                $this->container = $this->innerContainer;
-            }
-        };
-
-        $kernel->setDeps($configMock, $securityMock, $containerMock);
-        $kernel->configure();
-
-        // We rely on the fallback class for response creation.
-
-        $requestMock = $this->createMock(ServerRequestInterface::class);
-
-        // Same here: handle() catches the exception.
-        // handle() throws NotFoundException directly if system is missing
-        $this->expectException(NotFoundException::class);
-        $this->expectExceptionMessage('System not initialized.');
-
-        $kernel->handle($requestMock);
     }
 
     public function testHandleExceptionReturns404ForRouteNotFound(): void
@@ -982,20 +815,25 @@ class AbstractKernelTest extends TestCase
         require_once $servicesDir . '/DummyService.php';
         require_once $controllersDir . '/DummyController.php';
 
-        // Use anonymous class to avoid WebKernel overwriting config
-        $kernel = new class(new NullLogger()) extends Kernel {
+        /** @var SecurityInterface&MockObject $securityMock */
+        $securityMock = $this->createMock(SecurityInterface::class);
+
+        // Anonymous Kernel: the test config (real service/controller paths) drives
+        // the standard configure() directory scan. ARCH-03: collaborators are
+        // injected at construction.
+        $kernel = new class(
+            $configMock,
+            $this->innerContainer,
+            $securityMock,
+            new \WaffleTests\Abstract\Helper\FakeMiddlewareStack(),
+            new NullLogger(),
+        ) extends Kernel {
             // Expose container for assertion
             public function getContainer(): ?ContainerInterface
             {
                 return $this->container;
             }
         };
-
-        /** @var SecurityInterface&MockObject $securityMock */
-        $securityMock = $this->createMock(SecurityInterface::class);
-        $kernel->setSecurity($securityMock);
-        $kernel->setConfiguration($configMock);
-        $kernel->setContainerImplementation($this->innerContainer);
 
         $kernel->configure();
 
@@ -1084,7 +922,16 @@ class AbstractKernelTest extends TestCase
                 LoggerInterface $logger,
                 private $systemMock,
             ) {
-                parent::__construct($logger);
+                // ARCH-03: parent now requires its collaborators at construction.
+                // These placeholders are immediately replaced by setDeps() below; only
+                // System stays test-controlled (set in configure()).
+                parent::__construct(
+                    config: WebKernel::defaultConfig(),
+                    container: WebKernel::defaultContainer(),
+                    security: WebKernel::defaultSecurity(),
+                    middlewareStack: new \WaffleTests\Abstract\Helper\FakeMiddlewareStack(),
+                    logger: $logger,
+                );
             }
 
             public function setDeps(
@@ -1231,37 +1078,10 @@ class AbstractKernelTest extends TestCase
         /** @var \Waffle\Core\System&MockObject $systemMock */
         $systemMock = $this->createMock(\Waffle\Core\System::class);
 
-        // Use anonymous kernel to control system injection
-        $kernel = new class(new NullLogger(), $systemMock, $this->innerContainer) extends Kernel {
-            private $systemMock;
-            private $innerContainerRef; // Store reference to pass to Container
-
-            public function __construct(LoggerInterface $logger, $systemMock, $innerContainer)
-            {
-                parent::__construct($logger);
-                $this->systemMock = $systemMock;
-                $this->innerContainerRef = $innerContainer;
-            }
-
-            #[\Override]
-            public function configure(): void
-            {
-                // Init container but skip System overwrite
-                // We use our local reference because parent's innerContainer is private
-                $this->container = $this->innerContainerRef;
-                $this->system = $this->systemMock;
-                $this->registerDefaultTerminalHandler();
-            }
-        };
-
         /** @var ConfigInterface&MockObject $configMock */
         $configMock = $this->createMock(ConfigInterface::class);
         /** @var SecurityInterface&MockObject $securityMock */
         $securityMock = $this->createMock(SecurityInterface::class);
-
-        $kernel->setConfiguration($configMock);
-        $kernel->setSecurity($securityMock);
-        $kernel->setContainerImplementation($this->innerContainer);
 
         // Use fake stack with routing
         $stack = new \WaffleTests\Abstract\Helper\FakeMiddlewareStack();
@@ -1290,7 +1110,29 @@ class AbstractKernelTest extends TestCase
             }
         });
 
-        $kernel->setMiddlewareStack($stack);
+        // Anonymous kernel: inject a mocked System via configure() (ARCH-03 —
+        // collaborators are constructor-injected; only System stays test-controlled).
+        $kernel = new class($configMock, $this->innerContainer, $securityMock, $stack, $systemMock) extends Kernel {
+            private \Waffle\Core\System $injectedSystem;
+
+            public function __construct(
+                ConfigInterface $config,
+                ContainerInterface $container,
+                SecurityInterface $security,
+                \Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface $stack,
+                \Waffle\Core\System $injectedSystem,
+            ) {
+                parent::__construct($config, $container, $security, $stack, new NullLogger());
+                $this->injectedSystem = $injectedSystem;
+            }
+
+            #[\Override]
+            public function configure(): void
+            {
+                $this->system = $this->injectedSystem;
+                $this->registerDefaultTerminalHandler();
+            }
+        };
 
         $response = $kernel->handle($requestMock);
 

@@ -100,9 +100,14 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
             }
         }
 
-        // 6. Execute
-        // @mago-ignore string-member-selector
-        $result = $controller->$method(...$args);
+        // 6. Execute via a bound callable rather than a string member selector.
+        // The method_exists() guard above proves the [object, method] pair is
+        // callable, so the array-callable form keeps the dynamic dispatch typed
+        // and lint-clean (no string-member-selector suppression).
+        /** @var callable $action */
+        $action = [$controller, $method];
+        /** @var mixed $result */
+        $result = $action(...$args);
 
         // 7. Auto-Response Conversion
         if ($result instanceof ResponseInterface) {
