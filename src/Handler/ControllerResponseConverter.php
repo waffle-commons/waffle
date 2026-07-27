@@ -18,12 +18,20 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
     /**
      * @param string $stringResponseCsp Content-Security-Policy applied to controller
      *                                  returns of type `string` (text/html responses).
-     *                                  Beta-1 Phase 3 default mitigates reflected XSS
-     *                                  by allowing only same-origin loads.
+     *                                  This is defense-in-depth only: it narrows what an
+     *                                  already-injected payload could still do (no inline
+     *                                  script execution, no form-action/meta-refresh
+     *                                  redirection, no base-uri hijack). It was never
+     *                                  sufficient alone against markup injection — the
+     *                                  actual prevention is the `htmlspecialchars()`
+     *                                  escaping applied to every bare `string` return (see
+     *                                  {@see convertResult()}); a controller that
+     *                                  deliberately wants unescaped HTML must opt out with
+     *                                  {@see RawHtml}.
      */
     public function __construct(
         private ResponseFactoryInterface $factory,
-        private string $stringResponseCsp = "default-src 'self'",
+        private string $stringResponseCsp = "default-src 'self'; form-action 'self'; base-uri 'self'",
         private TracerInterface $tracer = new NullTracer(),
     ) {}
 
@@ -64,24 +72,40 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
             return $response;
         }
 
+        if ($result instanceof RawHtml) {
+            // Explicit opt-out: the controller vouches for this markup, so it is
+            // written verbatim — same CSP/nosniff floor as the escaped path below.
+            return $this->htmlResponse($result->html);
+        }
+
         if (is_string($result)) {
-            // Beta-1 Phase 3 (Task 3.3): every auto-generated text/html response carries
-            // a strict CSP + nosniff floor so that a controller returning user-influenced
-            // strings cannot reflect XSS payloads back to the browser. `withAddedHeader`
-            // is used (not `withHeader`) so any upstream middleware that already set a
-            // stricter policy is preserved verbatim.
-            $response = $this->factory
-                ->createResponse(200)
-                ->withHeader('Content-Type', 'text/html')
-                ->withAddedHeader('Content-Security-Policy', $this->stringResponseCsp)
-                ->withAddedHeader('X-Content-Type-Options', 'nosniff');
-            $response->getBody()->write($result);
-            return $response;
+            // A bare `string` return is the common case of a controller echoing back
+            // request-influenced text, so it is escaped by default — this is what
+            // actually prevents markup injection. Controllers that deliberately want
+            // unescaped HTML must opt in via RawHtml above.
+            return $this->htmlResponse(htmlspecialchars($result, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
         }
 
         throw new RuntimeException(sprintf(
             'Controller Error: Returned "%s", but no conversion strategy matched.',
             get_debug_type($result),
         ));
+    }
+
+    /**
+     * Builds the `text/html` response shared by the escaped-string and RawHtml
+     * paths: strict CSP + nosniff floor (defense-in-depth, not a substitute for
+     * escaping — see the constructor docblock), `withAddedHeader` so any upstream
+     * middleware's stricter policy is preserved verbatim.
+     */
+    private function htmlResponse(string $html): ResponseInterface
+    {
+        $response = $this->factory
+            ->createResponse(200)
+            ->withHeader('Content-Type', 'text/html')
+            ->withAddedHeader('Content-Security-Policy', $this->stringResponseCsp)
+            ->withAddedHeader('X-Content-Type-Options', 'nosniff');
+        $response->getBody()->write($html);
+        return $response;
     }
 }
