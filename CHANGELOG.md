@@ -5,6 +5,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
+## [0.1.0-beta6] — 2026-08-03
+
+**Theme: output escaping and route-parameter validation.**
+
+### Fixed
+- Bare `string` returns from a controller are escaped by default (`htmlspecialchars`), with an explicit `RawHtml` opt-out for trusted markup; the response CSP gained `form-action 'self'` and `base-uri 'self'` (Beta6 audit FIX-01).
+- Route parameters are validated before casting: a non-numeric segment bound to an `int` parameter is rejected with the same 422 `ValidationException` the DTO path uses, instead of silently coercing to `0`.
+
+### Documentation
+- The README now links into the central Diátaxis documentation tree (DOC-02).
+
 ## [0.1.0-beta5] — 2026-07-08
 
 **Theme: AOT fast-path, reactive flush & immutable kernel.**
