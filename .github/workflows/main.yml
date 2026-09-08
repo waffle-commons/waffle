@@ -163,6 +163,19 @@ jobs:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
+      # The composer package is only a bootstrapper: bin/igor-php resolves
+      # releases/latest from the GitHub API and downloads THAT binary, so the
+      # composer constraint and composer.lock pin nothing. Seed the version file
+      # it reads, then assert the pin actually took — otherwise an upstream
+      # release silently changes what this gate audits.
+      - name: Pin the Igor auditor
+        env:
+          IGOR_VERSION: '0.7.0'
+        run: |
+          mkdir -p vendor/igor-php/igor-php/resources/bin
+          printf '%s' "$IGOR_VERSION" > vendor/igor-php/igor-php/resources/bin/.version
+          vendor/bin/igor-php --version | grep -qF "$IGOR_VERSION"
+
       - name: Run Igor PHP
         run: vendor/bin/igor-php .
 

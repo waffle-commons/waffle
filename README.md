@@ -10,7 +10,7 @@
 Waffle — the Kernel
 ===================
 
-> **Release:** `0.1.0-beta5` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta6` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 The application kernel. Orchestrates request handling against the PSR-15 middleware stack, dispatches `RequestReceivedEvent` / `ResponseGeneratedEvent` / `TerminateEvent`, and resolves controllers via the container. The kernel itself stays agnostic of routing, security, logging, and HTTP — every concrete dependency is injected.
 
@@ -132,6 +132,14 @@ Note: `waffle` depends only on `contracts` + `utils` directly. The concrete comp
 ```bash
 docker exec -w /waffle-commons/waffle waffle-dev composer tests
 ```
+
+## 📚 Documentation
+
+Central framework docs (Diátaxis) for this component:
+
+- Reference: [`reference/core.md`](https://github.com/waffle-commons/documentation/blob/main/reference/core.md), [`reference/aot.md`](https://github.com/waffle-commons/documentation/blob/main/reference/aot.md)
+- Explanation: [`explanation/architecture.md`](https://github.com/waffle-commons/documentation/blob/main/explanation/architecture.md), [`explanation/lifecycle.md`](https://github.com/waffle-commons/documentation/blob/main/explanation/lifecycle.md)
+- Full documentation tree: [waffle-commons/documentation](https://github.com/waffle-commons/documentation)
 
 ## 📄 License
 

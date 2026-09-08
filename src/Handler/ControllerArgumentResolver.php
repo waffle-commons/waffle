@@ -43,14 +43,12 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             if (array_key_exists($name, $routeParams)) {
                 $val = $routeParams[$name];
 
-                // Auto-cast if type matches
+                // Validate BEFORE casting: a silent `(int) 'abc'` would normalize
+                // invalid input to 0 instead of rejecting it, unlike the DTO
+                // body-hydration path below (assertAssignable()). Route-parameter
+                // scalars get the same field-level 422 rejection mechanism.
                 if ($type instanceof ReflectionNamedType && $type->isBuiltin()) {
-                    $val = match ($type->getName()) {
-                        'int' => (int) $val,
-                        'float' => (float) $val,
-                        'bool' => filter_var($val, FILTER_VALIDATE_BOOLEAN),
-                        default => $val,
-                    };
+                    $val = $this->coerceRouteParam($type->getName(), $val, $name);
                 }
 
                 $args[] = $val;
@@ -103,6 +101,105 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
         }
 
         return $args;
+    }
+
+    /**
+     * Validates and casts a single route-parameter value against a builtin
+     * scalar type. Route segments arrive as raw strings; mirrors
+     * assertAssignable()'s field-level 422 for the DTO body-hydration path
+     * instead of silently normalizing an unparseable value (e.g. `(int) 'abc'`
+     * becoming `0`).
+     *
+     * @throws ValidationException
+     */
+    private function coerceRouteParam(string $typeName, mixed $val, string $paramName): mixed
+    {
+        return match ($typeName) {
+            'int' => $this->coerceRouteInt($val, $paramName),
+            'float' => $this->coerceRouteFloat($val, $paramName),
+            'bool' => $this->coerceRouteBool($val, $paramName),
+            default => $val,
+        };
+    }
+
+    /**
+     * `FILTER_VALIDATE_INT` (not a bare digit regex + cast) so an
+     * out-of-range digit string is REJECTED rather than silently aliased to
+     * `PHP_INT_MAX`/`PHP_INT_MIN` — the same "reject, don't silently
+     * normalize" defect class this coercion exists to close, just harder to
+     * trigger than the original `(int) 'abc'` bug.
+     *
+     * @throws ValidationException
+     */
+    private function coerceRouteInt(mixed $val, string $paramName): int
+    {
+        if (is_int($val)) {
+            return $val;
+        }
+
+        if (is_string($val)) {
+            $parsed = filter_var($val, FILTER_VALIDATE_INT);
+            if ($parsed !== false) {
+                return $parsed;
+            }
+        }
+
+        throw $this->routeParamTypeViolation($paramName, 'int');
+    }
+
+    /**
+     * `is_finite()` guards against `is_numeric()`'s own blind spot: a digit
+     * string with a large enough exponent (e.g. `"1e400"`) is numeric and
+     * casts cleanly to `INF`, which would otherwise be silently accepted
+     * instead of rejected.
+     *
+     * @throws ValidationException
+     */
+    private function coerceRouteFloat(mixed $val, string $paramName): float
+    {
+        if (is_int($val) || is_float($val)) {
+            return (float) $val;
+        }
+
+        if (is_string($val) && is_numeric($val)) {
+            $parsed = (float) $val;
+            if (is_finite($parsed)) {
+                return $parsed;
+            }
+        }
+
+        throw $this->routeParamTypeViolation($paramName, 'float');
+    }
+
+    /**
+     * Explicit bool allow-list via FILTER_NULL_ON_FAILURE: unlike a bare
+     * filter_var(..., FILTER_VALIDATE_BOOLEAN), an unrecognized value is
+     * distinguishable from a genuine `false` and is rejected rather than
+     * silently coerced.
+     *
+     * @throws ValidationException
+     */
+    private function coerceRouteBool(mixed $val, string $paramName): bool
+    {
+        if (is_bool($val)) {
+            return $val;
+        }
+
+        $parsed = filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if ($parsed === null) {
+            throw $this->routeParamTypeViolation($paramName, 'bool');
+        }
+
+        return $parsed;
+    }
+
+    private function routeParamTypeViolation(string $paramName, string $typeName): ValidationException
+    {
+        return new ValidationException(
+            message: sprintf('Route parameter "%s" must be of type %s.', $paramName, $typeName),
+            field: $paramName,
+            code: 422,
+        );
     }
 
     /**
