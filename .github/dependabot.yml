@@ -1,11 +1,33 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration for waffle-commons components (Beta 0 baseline).
+# Reference: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# Beta 0 policy:
+#   - Bumps are restricted to minor + patch within the current major (no
+#     unreviewed major upgrades; majors are an architect decision).
+#   - `waffle-commons/*` internal dependencies are pinned via `self.version`
+#     and synchronized at release-cut time, not by Dependabot.
 
 version: 2
 updates:
-  - package-ecosystem: "composer" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "composer"
+    directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
+    ignore:
+      # Major version updates require architect review (see Beta 0 policy).
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+      # Internal waffle-commons packages are coordinated by release, not Dependabot.
+      - dependency-name: "waffle-commons/*"
+    labels:
+      - "dependencies"
+      - "automated"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "ci"
