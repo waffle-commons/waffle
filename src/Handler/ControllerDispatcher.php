@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,6 +39,9 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
      * @throws \JsonException
      */
     #[\Override]
+    #[WorkerSafe(
+        reason: 're-injects the same boot-time PSR-17 factory on every dispatch (idempotent); AbstractController::setResponseFactory is itself #[WorkerSafe]',
+    )]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var mixed $classname */

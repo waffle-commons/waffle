@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use JsonException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -39,6 +40,9 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
      * @throws JsonException
      */
     #[\Override]
+    #[WorkerSafe(
+        reason: 'per-call span from the injected tracer, ended in finally; attributes and status go to that span only, nothing survives the call',
+    )]
     public function convert(mixed $result): ResponseInterface
     {
         $span = $this->tracer->startSpan('waffle.response.convert', SpanKind::Internal);
