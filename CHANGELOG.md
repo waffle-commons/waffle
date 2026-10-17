@@ -5,6 +5,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
+## [Unreleased]
+
+### Added
+- **The serializer seam (API-02).** When the application registers a
+  `Contracts\Serializer\DtoSerializerInterface`, the framework uses it at the HTTP boundary:
+  - `ControllerArgumentResolver` hydrates a `#[Dto]` parameter through it: from the parsed body when the
+    request factory parsed one, otherwise from the raw body, decoded within the serializer's limits. PUT and
+    PATCH bodies, which the request factory leaves unparsed, now hydrate DTOs too.
+  - `ControllerResponseConverter` writes a returned `#[Dto]` as a `200` JSON response, the shape the OpenAPI
+    document describes.
+  - `ControllerDispatcher` takes the serializer by constructor and hands it to its default converter;
+    `AbstractKernel`'s default wiring passes the registered serializer to the resolver and the dispatcher.
+  Without a serializer, every path behaves as before.
+
 ## [0.1.0-beta6] — 2026-09
 
 **Theme: output escaping and route-parameter validation.**

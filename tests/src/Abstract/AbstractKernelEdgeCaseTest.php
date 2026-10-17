@@ -489,6 +489,61 @@ class AbstractKernelEdgeCaseTest extends TestCase
         );
     }
 
+    public function testTheDefaultResolverHydratesThroughTheRegisteredSerializer(): void
+    {
+        // API-02: a serializer the application registers reaches the default
+        // argument resolver that configure() wires.
+        $dto = new \WaffleTests\Helper\Dto\UserRegistrationDto('ada@example.com', 36);
+        $serializer = new \WaffleTests\Helper\RecordingSerializer($dto);
+        $container = new class implements ContainerInterface {
+            /** @var array<string, object> */
+            public array $services = [];
+
+            #[\Override]
+            public function get(string $id): ?object
+            {
+                return $this->services[$id] ?? null;
+            }
+
+            #[\Override]
+            public function has(string $id): bool
+            {
+                return array_key_exists($id, $this->services);
+            }
+
+            #[\Override]
+            public function set(string $id, object|callable|string $concrete): void
+            {
+                if (is_object($concrete)) {
+                    $this->services[$id] = $concrete;
+                }
+            }
+
+            #[\Override]
+            public function reset(): void
+            {
+                $this->services = [];
+            }
+        };
+        $container->services[\Waffle\Commons\Contracts\Serializer\DtoSerializerInterface::class] = $serializer;
+
+        $kernel = new WebKernel(configDir: $this->testConfigDir, environment: 'test');
+        $this->injectContainer($kernel, $container);
+        $kernel->configure();
+
+        $resolver = $container->services[\Waffle\Commons\Contracts\Handler\ArgumentResolverInterface::class] ?? null;
+        static::assertInstanceOf(ControllerArgumentResolver::class, $resolver);
+
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getParsedBody')->willReturn(['email' => 'ada@example.com', 'age' => 36]);
+        $controller = new class {
+            public function register(\WaffleTests\Helper\Dto\UserRegistrationDto $payload): void {}
+        };
+
+        static::assertSame([$dto], $resolver->resolve($controller, 'register', $request, []));
+        static::assertCount(1, $serializer->denormalized);
+    }
+
     private function createMockRequest(): ServerRequestInterface
     {
         $uri = $this->createStub(UriInterface::class);

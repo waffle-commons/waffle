@@ -15,14 +15,21 @@ use Waffle\Commons\Contracts\Attribute\Dto;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\Exception\Validation\ValidationExceptionInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
+use Waffle\Commons\Contracts\Serializer\DtoSerializerInterface;
 use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Exception\ValidationException;
 
 final readonly class ControllerArgumentResolver implements ArgumentResolverInterface
 {
+    /**
+     * @param DtoSerializerInterface|null $serializer The serializer (API-02) that hydrates `#[Dto]` parameters when
+     *                                                the application registers one; without it, the built-in
+     *                                                reflection hydration below serves.
+     */
     public function __construct(
         private ContainerInterface $container,
         private ReflectionServiceInterface $reflectionService,
+        private ?DtoSerializerInterface $serializer = null,
     ) {}
 
     #[\Override]
@@ -216,6 +223,10 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
      */
     private function hydrateDto(string $dtoClass, ServerRequestInterface $request): object
     {
+        if ($this->serializer !== null && $this->serializer->supports($dtoClass)) {
+            return $this->hydrateThroughSerializer($this->serializer, $dtoClass, $request);
+        }
+
         $body = $request->getParsedBody();
 
         if (!is_array($body)) {
@@ -269,6 +280,28 @@ final readonly class ControllerArgumentResolver implements ArgumentResolverInter
             // (the DTO author opted out of typed reporting). Unify it as a 422.
             throw new ValidationException(message: $e->getMessage(), field: null, code: 422, previous: $e);
         }
+    }
+
+    /**
+     * Hydrates a `#[Dto]` through the serializer (API-02): from the parsed body
+     * when the request factory parsed one (a POST), otherwise from the raw body,
+     * decoded within the serializer's size and depth limits — which covers PUT
+     * and PATCH, whose bodies the request factory leaves unparsed. A payload that
+     * does not fit the DTO is a 422 naming the field; a malformed or oversized
+     * one carries its own status (400, 413).
+     *
+     * @param class-string $dtoClass
+     */
+    private function hydrateThroughSerializer(
+        DtoSerializerInterface $serializer,
+        string $dtoClass,
+        ServerRequestInterface $request,
+    ): object {
+        $body = $request->getParsedBody();
+
+        return is_array($body)
+            ? $serializer->denormalize($body, $dtoClass)
+            : $serializer->deserialize((string) $request->getBody(), $dtoClass);
     }
 
     /**

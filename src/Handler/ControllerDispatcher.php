@@ -15,6 +15,7 @@ use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
 use Waffle\Commons\Contracts\Handler\ResponseFactoryAwareInterface;
+use Waffle\Commons\Contracts\Serializer\DtoSerializerInterface;
 use Waffle\Event\ControllerArgumentsResolvedEvent;
 
 /**
@@ -28,11 +29,17 @@ use Waffle\Event\ControllerArgumentsResolvedEvent;
  */
 final readonly class ControllerDispatcher implements RequestHandlerInterface
 {
+    /**
+     * @param DtoSerializerInterface|null $serializer The serializer (API-02) the default response converter writes
+     *                                                returned `#[Dto]` objects with, when the application registers
+     *                                                one.
+     */
     public function __construct(
         private ContainerInterface $container,
         private ?EventDispatcherInterface $dispatcher,
         private ArgumentResolverInterface $argumentResolver,
         private ?ResponseConverterInterface $responseConverter = null,
+        private ?DtoSerializerInterface $serializer = null,
     ) {}
 
     /**
@@ -131,7 +138,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         if ($this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);
-            $converter = new ControllerResponseConverter($factory);
+            $converter = new ControllerResponseConverter($factory, serializer: $this->serializer);
             return $converter->convert($result);
         }
 

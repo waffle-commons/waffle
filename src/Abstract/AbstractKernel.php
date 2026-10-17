@@ -19,6 +19,7 @@ use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Pipeline\MiddlewareStackInterface;
 use Waffle\Commons\Contracts\Security\SecurityInterface;
+use Waffle\Commons\Contracts\Serializer\DtoSerializerInterface;
 use Waffle\Commons\Contracts\Service\ReflectionServiceInterface;
 use Waffle\Commons\Contracts\Service\ResettableInterface;
 use Waffle\Core\System;
@@ -282,13 +283,38 @@ abstract class AbstractKernel implements KernelInterface, TerminableInterface
         $argumentResolver = $this->resolveOrDefault(
             ArgumentResolverInterface::class,
             ArgumentResolverInterface::class,
-            fn(): ArgumentResolverInterface => new ControllerArgumentResolver($this->container, $reflectionService),
+            fn(): ArgumentResolverInterface => new ControllerArgumentResolver(
+                $this->container,
+                $reflectionService,
+                $this->registeredSerializer(),
+            ),
         );
 
         $this->container->set(
             RequestHandlerInterface::class,
-            new ControllerDispatcher($this->container, $this->dispatcher, $argumentResolver),
+            new ControllerDispatcher(
+                $this->container,
+                $this->dispatcher,
+                $argumentResolver,
+                serializer: $this->registeredSerializer(),
+            ),
         );
+    }
+
+    /**
+     * The serializer the application registered (API-02), if any: the default
+     * argument resolver hydrates `#[Dto]` parameters with it, and the default
+     * dispatcher writes returned `#[Dto]` objects with it.
+     */
+    private function registeredSerializer(): ?DtoSerializerInterface
+    {
+        if (!$this->container->has(DtoSerializerInterface::class)) {
+            return null;
+        }
+
+        $serializer = $this->container->get(DtoSerializerInterface::class);
+
+        return $serializer instanceof DtoSerializerInterface ? $serializer : null;
     }
 
     /**
