@@ -19,6 +19,10 @@ Released in lockstep with the Waffle Commons umbrella tag.
     `AbstractKernel`'s default wiring passes the registered serializer to the resolver and the dispatcher.
   Without a serializer, every path behaves as before.
 
+### Changed
+- `ControllerDispatcher` reads the route-params attribute through `Constant::ATTR_PARAMS` (from
+  `waffle-commons/contracts` 0.1.0-beta7). The name is still `_params` (CARRY-06).
+
 ## [0.1.0-beta6] — 2026-09
 
 **Theme: output escaping and route-parameter validation.**

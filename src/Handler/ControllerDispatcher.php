@@ -10,6 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
@@ -56,7 +57,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         /** @var mixed $method */
         $method = $request->getAttribute('_method');
         /** @var array $routeParams */
-        $routeParams = $request->getAttribute('_params', []);
+        $routeParams = $request->getAttribute(Constant::ATTR_PARAMS, []);
 
         if (!$classname || !$method) {
             $attrs = var_export($request->getAttributes(), true);
