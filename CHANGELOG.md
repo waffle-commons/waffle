@@ -5,7 +5,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Released in lockstep with the Waffle Commons umbrella tag.
 
-## [Unreleased]
+## [0.1.0-beta7] — 2026-11
+
+**Theme: the serializer seam (API-02).**
 
 ### Added
 - **The serializer seam (API-02).** When the application registers a
