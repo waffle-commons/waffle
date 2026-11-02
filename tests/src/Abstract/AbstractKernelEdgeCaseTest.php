@@ -146,8 +146,9 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $request = $this->createMockRequest();
 
         // Manual system injection
-        $system =
-            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $system = new \Waffle\Core\System($this->createStub(
+            \Waffle\Commons\Contracts\Security\SecurityInterface::class,
+        ));
         $this->injectSystem($kernel, $system);
 
         $response = $kernel->handle($request);
@@ -381,8 +382,9 @@ class AbstractKernelEdgeCaseTest extends TestCase
         $request = $this->createMockRequest();
 
         // Manual system injection
-        $system =
-            new \Waffle\Core\System($this->createStub(\Waffle\Commons\Contracts\Security\SecurityInterface::class));
+        $system = new \Waffle\Core\System($this->createStub(
+            \Waffle\Commons\Contracts\Security\SecurityInterface::class,
+        ));
         $this->injectSystem($kernel, $system);
 
         $response = $kernel->handle($request);

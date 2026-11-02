@@ -176,7 +176,7 @@ jobs:
       # version, so only an exact-line match on the merged stream proves it.
       - name: Pin the Igor auditor
         env:
-          IGOR_VERSION: '0.9.7'
+          IGOR_VERSION: '0.10.1'
         run: |
           bin_dir=vendor/igor-php/igor-php/resources/bin
           rm -rf "$bin_dir" && mkdir -p "$bin_dir"
@@ -200,7 +200,7 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog OSS
-        uses: trufflesecurity/trufflehog@v3.97.9
+        uses: trufflesecurity/trufflehog@v3.99.7
         with:
           path: ./
           base: ${{ github.event.repository.default_branch }}
