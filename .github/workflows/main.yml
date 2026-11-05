@@ -11,6 +11,10 @@ on:
 jobs:
   prepare:
     name: ⚙️ Prepare Matrix
+    # One canonical workflow for every component (wfl ci:check compares them
+    # byte for byte). The template repo itself carries placeholder names and
+    # cannot install, so it skips here; every downstream job needs this one.
+    if: github.repository != 'waffle-commons/component-template'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -18,7 +22,7 @@ jobs:
       - name: Set matrix
         id: set-matrix
         run: |
-          echo 'matrix={"operating-system":["ubuntu-24.04"],"php-version":["8.5"]}' >> $GITHUB_OUTPUT
+          echo 'matrix={"operating-system":["ubuntu-24.04"],"php-version":["8.5"]}' >> "$GITHUB_OUTPUT"
 
   build:
     name: 🏗️ Build & Install
@@ -31,7 +35,7 @@ jobs:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -41,10 +45,10 @@ jobs:
 
       - name: Get Composer cache directory
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -63,14 +67,14 @@ jobs:
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
       - name: Cache Composer dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -88,14 +92,14 @@ jobs:
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
       - name: Cache and Install
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -111,12 +115,12 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -132,12 +136,12 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -153,28 +157,31 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
       # The composer package is only a bootstrapper: bin/igor-php resolves
       # releases/latest from the GitHub API and downloads THAT binary, so the
-      # composer constraint and composer.lock pin nothing. Seed the version file
-      # it reads, then assert the pin actually took — otherwise an upstream
-      # release silently changes what this gate audits.
+      # composer constraint and composer.lock pin nothing. Drop any binary a
+      # cache or an earlier run left behind, seed the version file it reads,
+      # then assert against the BINARY's own banner: `--version` prints to
+      # stderr, and the bootstrapper's download message also contains the
+      # version, so only an exact-line match on the merged stream proves it.
       - name: Pin the Igor auditor
         env:
-          IGOR_VERSION: '0.7.0'
+          IGOR_VERSION: '0.10.1'
         run: |
-          mkdir -p vendor/igor-php/igor-php/resources/bin
-          printf '%s' "$IGOR_VERSION" > vendor/igor-php/igor-php/resources/bin/.version
-          vendor/bin/igor-php --version | grep -qF "$IGOR_VERSION"
+          bin_dir=vendor/igor-php/igor-php/resources/bin
+          rm -rf "$bin_dir" && mkdir -p "$bin_dir"
+          printf '%s' "$IGOR_VERSION" > "$bin_dir/.version"
+          vendor/bin/igor-php --version 2>&1 | tee /dev/stderr | grep -qFx "igor-php version $IGOR_VERSION"
 
       - name: Run Igor PHP
         run: vendor/bin/igor-php .
@@ -188,12 +195,12 @@ jobs:
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: TruffleHog OSS
-        uses: trufflesecurity/trufflehog@main
+        uses: trufflesecurity/trufflehog@v3.99.7
         with:
           path: ./
           base: ${{ github.event.repository.default_branch }}
@@ -208,12 +215,12 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -233,12 +240,12 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -255,24 +262,44 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
-    if: failure() || success()
+    if: (failure() || success()) && github.repository != 'waffle-commons/component-template'
+    # The data and queue suites talk to a real Redis (WAFFLE_TEST_REDIS_HOST); without one they skip.
+    services:
+      waffle-redis:
+        image: redis:7-alpine@sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 2s
+          --health-timeout 2s
+          --health-retries 15
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: gd, pgsql, pdo_mysql, pdo_pgsql, gmp, fileinfo, intl, opcache, xml, iconv, redis, mailparse
           coverage: xdebug
           tools: composer:v2
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.composer/cache
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
       - run: composer install --no-progress --prefer-dist
+      # A fresh scaffold has no source: nothing to test or measure yet. The
+      # first PHP file under src/ switches the full test + coverage gate on.
+      - name: Scaffold without source
+        if: hashFiles('src/**/*.php') == ''
+        run: echo "::notice::no PHP source under src/ yet — tests and coverage start with the first class"
       - name: Run PHPUnit tests
+        if: hashFiles('src/**/*.php') != ''
+        env:
+          WAFFLE_TEST_REDIS_HOST: 127.0.0.1
         run: vendor/bin/phpunit --coverage-clover ./var/data/phpunit-coverage/clover.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v6
+        if: hashFiles('src/**/*.php') != ''
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./var/data/phpunit-coverage/clover.xml

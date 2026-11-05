@@ -26,7 +26,7 @@ final class BroadcastFlushListenerTest extends TestCase
         $pushed = [];
         $transport = $this->capturingTransport($pushed);
 
-        (new BroadcastFlushListener($buffer, $transport))($this->terminateEvent());
+        new BroadcastFlushListener($buffer, $transport)($this->terminateEvent());
 
         static::assertCount(2, $pushed);
         // Buffer was drained.
@@ -39,7 +39,7 @@ final class BroadcastFlushListenerTest extends TestCase
         $pushed = [];
         $transport = $this->capturingTransport($pushed);
 
-        (new BroadcastFlushListener($buffer, $transport))($this->terminateEvent());
+        new BroadcastFlushListener($buffer, $transport)($this->terminateEvent());
 
         static::assertSame([], $pushed);
     }

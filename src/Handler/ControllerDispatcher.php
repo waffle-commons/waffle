@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+use Waffle\Commons\Contracts\Constant\Constant;
 use Waffle\Commons\Contracts\Container\ContainerInterface;
 use Waffle\Commons\Contracts\EventDispatcher\EventDispatcherInterface;
 use Waffle\Commons\Contracts\Handler\ArgumentResolverInterface;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
 use Waffle\Commons\Contracts\Handler\ResponseFactoryAwareInterface;
+use Waffle\Commons\Contracts\Serializer\DtoSerializerInterface;
 use Waffle\Event\ControllerArgumentsResolvedEvent;
 
 /**
@@ -27,17 +30,26 @@ use Waffle\Event\ControllerArgumentsResolvedEvent;
  */
 final readonly class ControllerDispatcher implements RequestHandlerInterface
 {
+    /**
+     * @param DtoSerializerInterface|null $serializer The serializer (API-02) the default response converter writes
+     *                                                returned `#[Dto]` objects with, when the application registers
+     *                                                one.
+     */
     public function __construct(
         private ContainerInterface $container,
         private ?EventDispatcherInterface $dispatcher,
         private ArgumentResolverInterface $argumentResolver,
         private ?ResponseConverterInterface $responseConverter = null,
+        private ?DtoSerializerInterface $serializer = null,
     ) {}
 
     /**
      * @throws \JsonException
      */
     #[\Override]
+    #[WorkerSafe(
+        reason: 're-injects the same boot-time PSR-17 factory on every dispatch (idempotent); AbstractController::setResponseFactory is itself #[WorkerSafe]',
+    )]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         /** @var mixed $classname */
@@ -45,7 +57,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         /** @var mixed $method */
         $method = $request->getAttribute('_method');
         /** @var array $routeParams */
-        $routeParams = $request->getAttribute('_params', []);
+        $routeParams = $request->getAttribute(Constant::ATTR_PARAMS, []);
 
         if (!$classname || !$method) {
             $attrs = var_export($request->getAttributes(), true);
@@ -127,7 +139,7 @@ final readonly class ControllerDispatcher implements RequestHandlerInterface
         if ($this->container->has(ResponseFactoryInterface::class)) {
             /** @var ResponseFactoryInterface $factory */
             $factory = $this->container->get(ResponseFactoryInterface::class);
-            $converter = new ControllerResponseConverter($factory);
+            $converter = new ControllerResponseConverter($factory, serializer: $this->serializer);
             return $converter->convert($result);
         }
 

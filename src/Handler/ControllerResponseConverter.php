@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Waffle\Handler;
 
+use IgorPhp\IgorBundle\Attribute\WorkerSafe;
 use JsonException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 use Waffle\Commons\Contracts\Handler\ResponseConverterInterface;
+use Waffle\Commons\Contracts\Serializer\DtoSerializerInterface;
 use Waffle\Commons\Contracts\Telemetry\Enum\SpanKind;
 use Waffle\Commons\Contracts\Telemetry\NullTracer;
 use Waffle\Commons\Contracts\Telemetry\TracerInterface;
@@ -33,12 +35,16 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
         private ResponseFactoryInterface $factory,
         private string $stringResponseCsp = "default-src 'self'; form-action 'self'; base-uri 'self'",
         private TracerInterface $tracer = new NullTracer(),
+        private ?DtoSerializerInterface $serializer = null,
     ) {}
 
     /**
      * @throws JsonException
      */
     #[\Override]
+    #[WorkerSafe(
+        reason: 'per-call span from the injected tracer, ended in finally; attributes and status go to that span only, nothing survives the call',
+    )]
     public function convert(mixed $result): ResponseInterface
     {
         $span = $this->tracer->startSpan('waffle.response.convert', SpanKind::Internal);
@@ -64,6 +70,14 @@ final readonly class ControllerResponseConverter implements ResponseConverterInt
 
         if ($result === null) {
             return $this->factory->createResponse(204);
+        }
+
+        // A returned `#[Dto]` is written by the serializer (API-02): its readable
+        // properties, exactly as the OpenAPI document describes them.
+        if ($this->serializer !== null && is_object($result) && $this->serializer->supports($result::class)) {
+            $response = $this->factory->createResponse(200)->withHeader('Content-Type', 'application/json');
+            $response->getBody()->write($this->serializer->serialize($result));
+            return $response;
         }
 
         if (is_array($result) || $result instanceof \JsonSerializable) {

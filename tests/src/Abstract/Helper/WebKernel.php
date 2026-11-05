@@ -35,9 +35,9 @@ class WebKernel extends Kernel
         LoggerInterface $logger = new NullLogger(),
     ) {
         $resolved =
-            $container ?? (
-                $innerContainer instanceof ContainerInterface ? $innerContainer : null
-            ) ?? self::defaultContainer();
+            $container
+            ?? ($innerContainer instanceof ContainerInterface ? $innerContainer : null)
+            ?? self::defaultContainer();
 
         parent::__construct(
             config: self::testConfig($configDir, $environment),

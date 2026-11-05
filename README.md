@@ -10,9 +10,19 @@
 Waffle — the Kernel
 ===================
 
-> **Release:** `0.1.0-beta6` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
+> **Release:** `0.1.0-beta7` &nbsp;|&nbsp; [`CHANGELOG.md`](./CHANGELOG.md)
 
 The application kernel. Orchestrates request handling against the PSR-15 middleware stack, dispatches `RequestReceivedEvent` / `ResponseGeneratedEvent` / `TerminateEvent`, and resolves controllers via the container. The kernel itself stays agnostic of routing, security, logging, and HTTP — every concrete dependency is injected.
+
+## 🆕 Beta-7 — the serializer seam (API-02)
+
+When the application registers a `Contracts\Serializer\DtoSerializerInterface` (`waffle-commons/serializer`), the kernel uses it at the HTTP boundary:
+
+- `ControllerArgumentResolver` hydrates a `#[Dto]` parameter through it: from the parsed body when the request factory parsed one, otherwise from the raw body, decoded within the serializer's limits. PUT and PATCH bodies, which the request factory leaves unparsed, now hydrate DTOs too.
+- `ControllerResponseConverter` writes a returned `#[Dto]` as a `200` JSON response, the shape the OpenAPI document describes.
+- `ControllerDispatcher` takes the serializer by constructor and hands it to its default converter; `AbstractKernel`'s default wiring passes the registered serializer to the resolver and the dispatcher.
+
+Without a serializer, every path behaves as before. The kernel also exposes its container as the readable `$container` property that `Contracts\Core\KernelInterface` now declares.
 
 ## 🆕 Beta-1 highlights
 

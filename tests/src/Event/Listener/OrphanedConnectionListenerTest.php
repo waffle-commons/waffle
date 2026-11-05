@@ -22,7 +22,7 @@ final class OrphanedConnectionListenerTest extends TestCase
         $logger = new RecordingLogger();
         $tracker = new FixedConnectionTracker([['id' => 'pdo:1', 'kind' => ConnectionKind::Pdo]]);
 
-        (new OrphanedConnectionListener($tracker, $logger))($this->terminateEvent());
+        new OrphanedConnectionListener($tracker, $logger)($this->terminateEvent());
 
         static::assertCount(1, $logger->records);
         static::assertSame('warning', $logger->records[0]['level']);
@@ -35,7 +35,7 @@ final class OrphanedConnectionListenerTest extends TestCase
         $logger = new RecordingLogger();
         $tracker = new FixedConnectionTracker([['id' => 'redis:9', 'kind' => ConnectionKind::Redis]]);
 
-        (new OrphanedConnectionListener($tracker, $logger))($this->terminateEvent());
+        new OrphanedConnectionListener($tracker, $logger)($this->terminateEvent());
 
         static::assertCount(1, $logger->records);
         static::assertSame('info', $logger->records[0]['level']);
@@ -46,7 +46,7 @@ final class OrphanedConnectionListenerTest extends TestCase
         $logger = new RecordingLogger();
         $tracker = new FixedConnectionTracker([['id' => 'stream:3', 'kind' => ConnectionKind::Stream]]);
 
-        (new OrphanedConnectionListener($tracker, $logger))($this->terminateEvent());
+        new OrphanedConnectionListener($tracker, $logger)($this->terminateEvent());
 
         static::assertCount(1, $logger->records);
         static::assertSame('info', $logger->records[0]['level']);
@@ -56,7 +56,7 @@ final class OrphanedConnectionListenerTest extends TestCase
     {
         $logger = new RecordingLogger();
 
-        (new OrphanedConnectionListener(new FixedConnectionTracker(), $logger))($this->terminateEvent());
+        new OrphanedConnectionListener(new FixedConnectionTracker(), $logger)($this->terminateEvent());
 
         static::assertSame([], $logger->records);
     }
@@ -70,7 +70,7 @@ final class OrphanedConnectionListenerTest extends TestCase
             ['id' => 'stream:3', 'kind' => ConnectionKind::Stream],
         ]);
 
-        (new OrphanedConnectionListener($tracker, $logger))($this->terminateEvent());
+        new OrphanedConnectionListener($tracker, $logger)($this->terminateEvent());
 
         $levels = array_map(static fn(array $record): mixed => $record['level'], $logger->records);
         static::assertSame(['warning', 'info', 'info'], $levels);

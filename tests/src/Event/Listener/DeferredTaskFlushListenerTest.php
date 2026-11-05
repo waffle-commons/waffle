@@ -22,7 +22,7 @@ final class DeferredTaskFlushListenerTest extends TestCase
     {
         $runner = $this->countingRunner();
 
-        (new DeferredTaskFlushListener($runner))($this->terminateEvent());
+        new DeferredTaskFlushListener($runner)($this->terminateEvent());
 
         static::assertSame(1, $runner->runs);
     }
@@ -34,7 +34,7 @@ final class DeferredTaskFlushListenerTest extends TestCase
         $logger = new RecordingLogger();
 
         // No try/catch here: the assertion is simply that __invoke() returns.
-        (new DeferredTaskFlushListener($runner, $logger))($this->terminateEvent());
+        new DeferredTaskFlushListener($runner, $logger)($this->terminateEvent());
 
         static::assertCount(1, $logger->records);
         static::assertSame('error', $logger->records[0]['level']);
