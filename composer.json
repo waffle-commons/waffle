@@ -21,7 +21,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.5",
+        "php": "^8.5.12",
         "psr/container": "^2.0",
         "psr/http-message": "^1.1 || ^2.0",
         "psr/http-server-handler": "^1.0",
@@ -38,7 +38,7 @@
         "vimeo/psalm": "^6.20",
         "php-mock/php-mock-phpunit": "^2.16",
         "cyclonedx/cyclonedx-php-composer": "^6.2",
-        "igor-php/igor-php": "^0.10.1"
+        "igor-php/igor-php": "^0.11.0"
     },
     "scripts": {
         "formatter": "vendor/bin/mago fmt",
